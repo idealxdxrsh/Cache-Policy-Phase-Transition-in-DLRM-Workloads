@@ -1,38 +1,40 @@
-# P3 prep (offline, no cluster job): summary (2026-10-23)
+# P3 prep (offline, no cluster job submitted): summary (2026-10-23)
 
-Local only: Python 3.12.3, numpy 1.26.4. No pytest or matplotlib installed locally (none installed).
-Reproduce: `python3 -m unittest discover -s tests -v` and `python3 tools/mutate_policies.py`.
+All data here is SYNTHETIC (tools/gen_synthetic_criteo.py). Its hit rates are smoke tests only, not results.
+Local machine: 12 cores, Python 3.12.3. Venv `.venv/` (gitignored), numpy 1.26.4, matplotlib 3.8.4 (`venv_freeze.txt`).
 
-## Changes
-- `trace_sim/run_trace_sim.py`
-  - `CountMinSketch`: 4 rows, width = next power of two >= capacity (min 16), 4-bit
-    saturating counters, all counters halved every 10 x capacity increments. No doorkeeper.
-  - `WTinyLFUCache` ("W-TinyLFU (Count-Min, window=1%)"): LRU window, SLRU main
-    (80% protected), admits only if sketch(candidate) > sketch(victim); ties rejected.
-    Not modelled: doorkeeper, Caffeine's random admission, adaptive window.
-  - `ARCCache`: Megiddo & Modha 2003 pseudocode (T1/T2/B1/B2, adaptive p).
-  - Exact-counter TinyLFU renamed "TinyLFU-exact (window=1%)" so it is not mistaken for the sketch version.
-  - `DEFAULT_CAPACITIES` = 64, 128, 256, 512, 1000, 2000, 5000, 10k, 20k, 50k, 100k vectors,
-    one cache per embedding table. "1k/2k" taken as 1000/2000 (not 1024/2048).
-- `trace_sim/submit_trace_sim.sh`: same capacity list (not submitted).
-- `trace_sim/plot_trace_results.py`: TinyLFU curve now uses the Count-Min policy. Removed
-  "our RTL" labels from the per-address-history LFU, because the RTL keeps no per-address history.
-- `tests/test_policies.py` (new, unittest; pytest can also run it), 29 tests.
-- `tools/gen_synthetic_criteo.py` (new): synthetic file in train.txt layout.
-- `tools/mutate_policies.py` (new): 11 broken copies, and each one must fail the tests.
+## Code (trace_sim/, tools/, tests/)
+- Policies: LRU, LFU per-address history, LFU reset-on-eviction, TinyLFU-exact, W-TinyLFU with a
+  Count-Min sketch, ARC, plus optional Belady MIN (`--belady`; offline, demand-fetch, no bypass).
+- Capacities: 64..100k vectors (1k = 1000), one cache per table. Results JSON now has a `per_table`
+  list per policy and capacity, plus `tables` with the Zipf alpha per table
+  (log-log OLS of count on rank, ranks with count >= 5).
+- Array path: `--dump_traces` (per-table uint32 files), `--trace_dir --tables N`, `merge_results.py`.
+- plot_trace_results.py: draws every policy present, including ARC, TinyLFU-exact and Belady.
+  Adds per-table small multiples, a Zipf bar chart, and hit_rates.csv / zipf_per_table.csv.
+- Tests: 40 run, OK (`unittest.txt`). Mutation check: 16/16 mutants caught (`mutation.txt`).
+  One test checks that merging the array parts gives exactly the single-run result.
+- Plot run: `timing_200k/figs/`, `timing_2M/merged/figs/` (merge + plot of all 26 parts, rc 0).
 
-## Verification
-- Tests: 29 run, OK (`results/P3_prep/unittest.txt`).
-- Mutation: 11/11 mutants caught (`results/P3_prep/mutation.txt`). Two W-TinyLFU mutants
-  (admit on tie, no SLRU promotion) at first slipped through; I added tests for both.
-- End-to-end sweep, 6 policies x 11 capacities, on 20,000 SYNTHETIC rows (seed 0): ran OK
-  (`results/P3_prep/synthetic/run_log.txt`, `trace_sim_results.json`; timing in `time.txt`).
-  These hit rates come from synthetic Zipf data. They are only a smoke test and must not be reported.
-- Plot script not run: no matplotlib locally (`results/P3_prep/synthetic/plot_log.txt`).
-  `cluster/environment.yml` lists matplotlib.
+## Timing: per-table tasks, 7 policies x 11 capacities, 4 workers, one task at a time
+| rows | tables timed | wall per task (s) | sum of walls (s) | peak RSS per task | source |
+|---|---|---|---|---|---|
+| 200k (1 process, all tables) | 26 | 98.16 sweep | n/a | 237760 kB | `timing_200k/` |
+| 2M | 26 | 21.66 to 40.67 | 916.97 | 212984 kB | `timing_2M/table_*_time.txt` |
+| 10M | 3 (tables 0, 12, 25) | 116.38 / 194.98 / 189.14 | 500.5 | 812976 kB | `timing_10M/` |
+- Measured 10M/2M ratio for the same table: 5.37x (t0), 5.02x (t12), 5.13x (t25).
+- Dump (parse TSV, write traces): 2M 15.54 s, 10M 77.97 s, peak 980084 kB (`timing_*/dump_time.txt`).
+- PROJECTION, not measured: all 26 tables at 10M run one after another would take 26 x (116.38..194.98 s)
+  = 3025.88..5069.48 s. Real Criteo has far more unique ids per table than this synthetic data
+  (table 25 at 10M: 96,023 unique), so real-data time and memory are unknown until the 2M job runs.
 
-## Still open before the P3 cluster run
-- Per-table hit rates (run_one currently sums over the 26 tables) and per-table Zipf fit.
-- Optional Belady. The plot shows only LRU, the two LFUs and W-TinyLFU (not ARC or TinyLFU-exact).
-- Runtime at 2M/10M rows is not measured. The simulator is pure Python.
-- The question "does LFU beat LRU at 256 vectors?" is unanswered. That needs real Criteo data.
+## Decision: sbatch array (one task per table)
+- Pure Python is fine per table. One all-tables process at 10M would need every trace as Python
+  ints at once (peak 812976 kB for one table here), so the work is split per table.
+- `cluster/jobs/p3_dump.sbatch` (8G, 1h) -> `p3_table.sbatch` (`--array=0-25`, 4 CPUs, 16G, 2h)
+  -> `p3_merge.sbatch` (merge with --expect_tables 26, then plot). `cluster/p3_driver.sh` chains 2M and
+  then 10M with afterok and blocks with `sbatch --wait`. Limits are a margin over synthetic data.
+  The driver is NOT run yet: it needs P2 (Criteo on scratch) first. It uses CPU only, no GPU.
+
+## Still open
+- Per-table numbers on real Criteo, and whether LFU beats LRU at 256 vectors: needs the cluster run.

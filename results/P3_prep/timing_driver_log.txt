@@ -1,0 +1,31 @@
+wrote 2000000 synthetic rows to /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/18a9478c-d6b8-4e41-8f50-06c51a4717e4/scratchpad/p3time/synth_2M.txt
+2M table_00 0:21.66
+2M table_01 0:24.71
+2M table_02 0:23.98
+2M table_03 0:27.54
+2M table_04 0:28.34
+2M table_05 0:27.13
+2M table_06 0:30.40
+2M table_07 0:33.17
+2M table_08 0:34.96
+2M table_09 0:36.41
+2M table_10 0:37.05
+2M table_11 0:37.77
+2M table_12 0:38.87
+2M table_13 0:39.14
+2M table_14 0:39.91
+2M table_15 0:40.12
+2M table_16 0:40.67
+2M table_17 0:40.60
+2M table_18 0:40.47
+2M table_19 0:40.60
+2M table_20 0:40.23
+2M table_21 0:40.25
+2M table_22 0:39.50
+2M table_23 0:38.78
+2M table_24 0:37.82
+2M table_25 0:36.89
+wrote 10000000 synthetic rows to /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/18a9478c-d6b8-4e41-8f50-06c51a4717e4/scratchpad/p3time/synth_10M.txt
+10M table_00 1:56.38
+10M table_12 3:14.98
+10M table_25 3:09.14

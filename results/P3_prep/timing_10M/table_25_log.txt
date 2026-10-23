@@ -1,0 +1,37 @@
+
+Trace: 10,000,000 rows, tables [25], 9,499,175 accesses
+  table 25:  9,499,175 accesses     96,023 unique  zipf alpha 1.176 (50914 ranks)
+Running 77 jobs on 4 worker(s)
+
+
+Sweep finished in 187.2s
+
+====================================================================================================
+  capacity |                    LRU | LFU (persistent counte | LFU (gem5 LFURP — rese | TinyLFU-exact (window= | W-TinyLFU (Count-Min,  |                    ARC |  Belady (MIN, offline) | best
+====================================================================================================
+        64 |                 55.79% |                 55.75% |                 64.47% |                 45.83% |                 64.75% |                 64.72% |                 70.22% | Belady (MIN, offli
+       128 |                 63.01% |                 64.28% |                 71.34% |                 52.02% |                 70.62% |                 70.64% |                 75.51% | Belady (MIN, offli
+       256 |                 69.34% |                 72.01% |                 76.04% |                 60.53% |                 75.76% |                 75.73% |                 80.03% | Belady (MIN, offli
+       512 |                 74.86% |                 78.88% |                 80.35% |                 72.16% |                 80.13% |                 80.14% |                 83.94% | Belady (MIN, offli
+     1,000 |                 79.53% |                 84.45% |                 83.90% |                 84.26% |                 83.83% |                 83.84% |                 87.20% | Belady (MIN, offli
+     2,000 |                 83.77% |                 88.27% |                 87.32% |                 88.24% |                 87.20% |                 87.16% |                 90.13% | Belady (MIN, offli
+     5,000 |                 88.58% |                 91.80% |                 91.00% |                 91.78% |                 90.92% |                 90.86% |                 93.39% | Belady (MIN, offli
+    10,000 |                 91.72% |                 94.01% |                 93.41% |                 94.00% |                 93.34% |                 93.21% |                 95.44% | Belady (MIN, offli
+    20,000 |                 94.49% |                 95.87% |                 95.48% |                 95.86% |                 95.43% |                 95.22% |                 97.12% | Belady (MIN, offli
+    50,000 |                 97.59% |                 97.90% |                 97.83% |                 97.89% |                 97.81% |                 97.70% |                 98.65% | Belady (MIN, offli
+   100,000 |                 98.99% |                 98.99% |                 98.99% |                 98.99% |                 98.99% |                 98.99% |                 98.99% | LRU
+
+Saved: /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P3_prep/timing_10M/table_25.json
+
+LFU (history) minus LRU, in percentage points:
+  cap=      64:  -0.04 pp
+  cap=     128:  +1.27 pp
+  cap=     256:  +2.67 pp
+  cap=     512:  +4.02 pp
+  cap=   1,000:  +4.93 pp
+  cap=   2,000:  +4.50 pp
+  cap=   5,000:  +3.22 pp
+  cap=  10,000:  +2.29 pp
+  cap=  20,000:  +1.38 pp
+  cap=  50,000:  +0.30 pp
+  cap= 100,000:  +0.00 pp

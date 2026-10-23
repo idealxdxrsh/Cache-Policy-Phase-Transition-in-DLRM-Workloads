@@ -9,5 +9,10 @@ arc_p_wrong_sign       CAUGHT  (FAILED (failures=1))
 arc_ghost_to_t1        CAUGHT  (FAILED (failures=1))
 arc_no_b2_trim         CAUGHT  (FAILED (failures=4))
 arc_t1_hit_stays       CAUGHT  (FAILED (failures=2))
+belady_evict_nearest   CAUGHT  (FAILED (failures=1, errors=2))
+belady_no_next_update  CAUGHT  (FAILED (failures=43))
+zipf_sign              CAUGHT  (FAILED (failures=3))
+zipf_keep_tail         CAUGHT  (FAILED (failures=1))
+sweep_drop_table       CAUGHT  (FAILED (failures=4))
 
-11/11 mutants caught
+16/16 mutants caught

@@ -38,6 +38,15 @@ MUTANTS = {
                        '                pass\n'),
     'arc_t1_hit_stays': ('            del self.t1[key]\n            self.t2[key] = 1\n            self.hits += 1',
                          '            self.t1.move_to_end(key)\n            self.hits += 1'),
+    'belady_evict_nearest': ('            heapq.heappush(self.heap, (-nu, key))\n            self.hits += 1',
+                             '            heapq.heappush(self.heap, (nu, key))\n            self.hits += 1'),
+    'belady_no_next_update': ('            self.cache[key] = nu\n            heapq.heappush(self.heap, (-nu, key))\n            self.hits += 1',
+                              '            self.hits += 1'),
+    'zipf_sign': ('    return -sxy / sxx, n', '    return sxy / sxx, n'),
+    'zipf_keep_tail': ('for r, c in enumerate(counts, 1) if c >= min_count]',
+                       'for r, c in enumerate(counts, 1)]'),
+    'sweep_drop_table': ("            for i, t in enumerate(table_ids) if traces[i]]",
+                         "            for i, t in enumerate(table_ids) if traces[i] and i]"),
 }
 
 

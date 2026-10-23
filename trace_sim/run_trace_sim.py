@@ -7,10 +7,16 @@ Compares LRU, LFU (per-address history), LFU (reset on eviction),
 TinyLFU (exact counters), W-TinyLFU (Count-Min sketch) and ARC on Criteo
 embedding access traces across cache capacities given in vectors.
 
-Usage:
-    python3 run_trace_sim.py --criteo_path /path/to/criteo_train.csv \
-                             --n_rows 5000000 \
+Usage (one process, all tables):
+    python3 run_trace_sim.py --criteo_path /path/to/train.txt \
+                             --n_rows 2000000 --belady --workers 4 \
                              --output results/
+
+Usage (sbatch array: dump once, one task per table, then merge):
+    python3 run_trace_sim.py --criteo_path train.txt --n_rows 10000000 --dump_traces traces/
+    python3 run_trace_sim.py --trace_dir traces/ --tables 7 --belady --workers 4 \
+                             --output parts/ --tag table_07
+    python3 merge_results.py --output results/trace_sim_results.json parts/table_*.json
 
 Criteo dataset: kaggle competitions download -c criteo-display-ad-challenge
 File: train.txt (TSV) or train.csv
@@ -24,7 +30,9 @@ import sys
 import time
 import json
 import heapq
-from collections import OrderedDict, defaultdict
+import math
+from array import array
+from collections import Counter, OrderedDict, defaultdict
 
 
 # ══════════════════════════════════════════════════════════════
@@ -494,11 +502,75 @@ class ARCCache:
         return self.misses
 
 
+class BeladyCache:
+    """
+    Belady's MIN: on a miss, evict the resident key whose next use is
+    farthest in the future. Offline (needs the whole trace), demand-fetch,
+    no bypass, so on the same trace no policy in this file can have more
+    hits. Call prepare(trace) before replaying exactly that trace.
+    """
+    name = "Belady (MIN, offline)"
+    offline = True
+
+    def __init__(self, capacity):
+        self.cap = capacity
+        self.cache = {}            # key -> position of its next use
+        self.heap = []             # lazy max-heap of (-next_use, key)
+        self.next_use = None
+        self.pos = 0
+        self.hits = self.misses = 0
+
+    def prepare(self, trace):
+        n = len(trace)
+        nxt = [n] * n              # n = never used again
+        last = {}
+        for i in range(n - 1, -1, -1):
+            k = trace[i]
+            nxt[i] = last.get(k, n)
+            last[k] = i
+        self.next_use = nxt
+        self.pos = 0
+
+    def access(self, key):
+        nu = self.next_use[self.pos]
+        self.pos += 1
+        if key in self.cache:
+            self.cache[key] = nu
+            heapq.heappush(self.heap, (-nu, key))
+            self.hits += 1
+            hit = True
+        else:
+            self.misses += 1
+            if len(self.cache) >= self.cap:
+                h = self.heap
+                while True:
+                    neg, k = heapq.heappop(h)
+                    if self.cache.get(k) == -neg:
+                        break
+                del self.cache[k]
+            self.cache[key] = nu
+            heapq.heappush(self.heap, (-nu, key))
+            hit = False
+        if len(self.heap) > 4 * self.cap + 10000:
+            self.heap = [(-v, k) for k, v in self.cache.items()]
+            heapq.heapify(self.heap)
+        return hit
+
+    @property
+    def hit_rate(self):
+        total = self.hits + self.misses
+        return self.hits / total * 100 if total > 0 else 0.0
+
+    @property
+    def dram_reads(self):
+        return self.misses
+
+
 # ══════════════════════════════════════════════════════════════
 # TRACE LOADING
 # ══════════════════════════════════════════════════════════════
 
-def load_criteo_traces(path, n_rows=None, col_indices=None):
+def load_criteo_traces(path, n_rows=None, col_indices=None, as_array=False):
     """
     Load Criteo Train TSV/CSV and extract embedding access traces.
 
@@ -508,11 +580,13 @@ def load_criteo_traces(path, n_rows=None, col_indices=None):
       Cols 14-39: 26 categorical hex features (C1-C26) — these are our embedding IDs
 
     Returns: list of lists — traces[col_idx] = [feature_id, feature_id, ...]
+    With as_array=True each trace is an array('I') (4 bytes per id instead of
+    a Python int object), used when dumping large row counts.
     """
     # Categorical columns are 14..39 (0-indexed)
     cat_cols = list(range(14, 40)) if col_indices is None else col_indices
     n_cat = len(cat_cols)
-    traces = [[] for _ in range(n_cat)]
+    traces = [array('I') if as_array else [] for _ in range(n_cat)]
 
     delimiter = '\t'
     # Auto-detect delimiter from file extension
@@ -553,6 +627,71 @@ def load_criteo_traces(path, n_rows=None, col_indices=None):
 
 
 # ══════════════════════════════════════════════════════════════
+# TRACE STATISTICS
+# ══════════════════════════════════════════════════════════════
+
+def zipf_exponent(trace, min_count=5, min_points=10):
+    """
+    Rank-frequency Zipf exponent: alpha = -slope of an ordinary least-squares
+    fit of log(count) on log(rank), over the ranks whose count >= min_count
+    (the noisy singleton tail is excluded). Returns (alpha, n_points), or
+    (None, n_points) if fewer than min_points ranks qualify.
+    """
+    counts = sorted(Counter(trace).values(), reverse=True)
+    pts = [(math.log(r), math.log(c))
+           for r, c in enumerate(counts, 1) if c >= min_count]
+    n = len(pts)
+    if n < min_points:
+        return None, n
+    mx = sum(x for x, _ in pts) / n
+    my = sum(y for _, y in pts) / n
+    sxx = sum((x - mx) ** 2 for x, _ in pts)
+    sxy = sum((x - mx) * (y - my) for x, y in pts)
+    return -sxy / sxx, n
+
+
+def table_stats(traces, table_ids):
+    stats = []
+    for t, trace in zip(table_ids, traces):
+        alpha, npts = zipf_exponent(trace)
+        stats.append({'table': t, 'column': 14 + t, 'accesses': len(trace),
+                      'unique': len(set(trace)), 'zipf_alpha': alpha,
+                      'zipf_fit_points': npts})
+    return stats
+
+
+# ══════════════════════════════════════════════════════════════
+# PER-TABLE TRACE FILES (for sbatch array tasks)
+# ══════════════════════════════════════════════════════════════
+
+def dump_traces(traces, n_rows, out_dir, source):
+    """Write each table as raw native uint32 (table_XX.u32) + meta.json."""
+    os.makedirs(out_dir, exist_ok=True)
+    for t, trace in enumerate(traces):
+        if not isinstance(trace, array):
+            trace = array('I', trace)        # raises if an id is >= 2**32
+        with open(os.path.join(out_dir, f'table_{t:02d}.u32'), 'wb') as f:
+            trace.tofile(f)
+    meta = {'source': source, 'n_rows': n_rows, 'n_tables': len(traces),
+            'accesses': [len(t) for t in traces], 'itemsize': array('I').itemsize}
+    with open(os.path.join(out_dir, 'meta.json'), 'w') as f:
+        json.dump(meta, f, indent=2)
+
+
+def load_dumped_traces(trace_dir, tables):
+    with open(os.path.join(trace_dir, 'meta.json')) as f:
+        meta = json.load(f)
+    traces = []
+    for t in tables:
+        a = array('I')
+        with open(os.path.join(trace_dir, f'table_{t:02d}.u32'), 'rb') as f:
+            a.frombytes(f.read())
+        assert len(a) == meta['accesses'][t], f"table {t}: length mismatch"
+        traces.append(a.tolist())
+    return traces, meta
+
+
+# ══════════════════════════════════════════════════════════════
 # SIMULATION
 # ══════════════════════════════════════════════════════════════
 
@@ -566,52 +705,80 @@ class TinyLFUPolicy(TinyLFUCache):
 
 
 POLICIES = [LRUCache, LFUCache, LFUResetCache, TinyLFUPolicy, WTinyLFUCache, ARCCache]
+OFFLINE_POLICIES = [BeladyCache]
 
 # Cache capacity in embedding VECTORS, one cache per table (PLAN.md P3).
 # "1k", "2k" are taken as 1000 and 2000, like 5k..100k.
 DEFAULT_CAPACITIES = [64, 128, 256, 512, 1000, 2000, 5000,
                       10000, 20000, 50000, 100000]
 
+# Set before the worker pool is created, so forked workers inherit the
+# traces instead of receiving a pickled copy with every job.
+_TRACES = []
+
 
 def run_one(job):
-    """Simulate one (policy, capacity) pair over every embedding table."""
-    policy_cls, capacity, traces = job
-    hits = misses = 0
-    for trace in traces:
-        if not trace:
-            continue
-        cache = policy_cls(capacity)
-        for key in trace:
-            cache.access(key)
-        hits += cache.hits
-        misses += cache.misses
-    total = hits + misses
-    return (policy_cls.name, capacity, hits, misses,
-            hits / total * 100 if total else 0.0)
+    """Simulate one (policy, capacity, table) triple."""
+    policy_cls, capacity, idx, table = job
+    trace = _TRACES[idx]
+    t0 = time.process_time()
+    cache = policy_cls(capacity)
+    if getattr(cache, 'offline', False):
+        cache.prepare(trace)
+    for key in trace:
+        cache.access(key)
+    return (policy_cls.name, capacity, table, cache.hits, cache.misses,
+            time.process_time() - t0)
 
 
-def run_sweep(traces, capacities, workers):
-    jobs = [(p, c, traces) for c in capacities for p in POLICIES]
-    results = {c: {} for c in capacities}
-    if workers > 1:
-        from multiprocessing import Pool
-        with Pool(processes=workers) as pool:
-            outputs = pool.imap_unordered(run_one, jobs)
-            for name, cap, h, m, hr in outputs:
-                results[cap][name] = {'hits': h, 'misses': m,
-                                      'dram_reads': m, 'hit_rate': hr}
-                print(f"  cap={cap:>8,}  {name:<22} hit-rate={hr:6.2f}%", flush=True)
-    else:
-        for job in jobs:
-            name, cap, h, m, hr = run_one(job)
-            results[cap][name] = {'hits': h, 'misses': m,
-                                  'dram_reads': m, 'hit_rate': hr}
-            print(f"  cap={cap:>8,}  {name:<22} hit-rate={hr:6.2f}%", flush=True)
+def _rate(h, m):
+    return h / (h + m) * 100 if h + m else 0.0
+
+
+def aggregate(per_table):
+    """per_table[cap][policy][table] = (hits, misses) -> results dict."""
+    results = {}
+    for cap, pols in per_table.items():
+        results[cap] = {}
+        for name, tabs in pols.items():
+            h = sum(v[0] for v in tabs.values())
+            m = sum(v[1] for v in tabs.values())
+            results[cap][name] = {
+                'hits': h, 'misses': m, 'dram_reads': m, 'hit_rate': _rate(h, m),
+                'per_table': [{'table': t, 'hits': th, 'misses': tm,
+                               'hit_rate': _rate(th, tm)}
+                              for t, (th, tm) in sorted(tabs.items())]}
     return results
 
 
-def print_table(results, capacities):
-    names = [p.name for p in POLICIES]
+def run_sweep(traces, capacities, workers, policies=None, table_ids=None):
+    """Returns (results, cpu_seconds_per_policy). Empty tables are skipped."""
+    global _TRACES
+    policies = POLICIES if policies is None else policies
+    table_ids = list(range(len(traces))) if table_ids is None else table_ids
+    _TRACES = traces
+    jobs = [(p, c, i, t) for c in capacities for p in policies
+            for i, t in enumerate(table_ids) if traces[i]]
+    per_table = {c: {p.name: {} for p in policies} for c in capacities}
+    cpu = defaultdict(float)
+
+    def collect(out):
+        name, cap, table, h, m, sec = out
+        per_table[cap][name][table] = (h, m)
+        cpu[name] += sec
+
+    if workers > 1:
+        from multiprocessing import get_context
+        with get_context('fork').Pool(processes=workers) as pool:
+            for out in pool.imap_unordered(run_one, jobs, chunksize=1):
+                collect(out)
+    else:
+        for job in jobs:
+            collect(run_one(job))
+    return aggregate(per_table), dict(cpu)
+
+
+def print_table(results, capacities, names):
     print("\n" + "=" * 100)
     print(f"{'capacity':>10} | " + " | ".join(f"{n[:22]:>22}" for n in names) + " | best")
     print("=" * 100)
@@ -625,32 +792,76 @@ def print_table(results, capacities):
 
 def main():
     parser = argparse.ArgumentParser(description="Trace-driven cache policy simulator")
-    parser.add_argument('--criteo_path', required=True,
-                        help='Path to Criteo train.txt (tab-separated)')
+    src = parser.add_mutually_exclusive_group(required=True)
+    src.add_argument('--criteo_path', help='Path to Criteo train.txt (tab-separated)')
+    src.add_argument('--trace_dir', help='directory written by --dump_traces')
     parser.add_argument('--n_rows', type=int, default=2_000_000)
     parser.add_argument('--output', default='results')
     parser.add_argument('--capacities', nargs='+', type=int,
                         default=DEFAULT_CAPACITIES,
                         help='cache size in vectors, per embedding table')
+    parser.add_argument('--tables', nargs='+', type=int, default=None,
+                        help='table indices 0..25 to simulate (default: all)')
+    parser.add_argument('--belady', action='store_true',
+                        help='also run offline Belady MIN')
+    parser.add_argument('--dump_traces', metavar='DIR',
+                        help='write per-table uint32 traces to DIR and exit')
+    parser.add_argument('--tag', default='trace_sim_results',
+                        help='output file name (without .json)')
     parser.add_argument('--workers', type=int, default=1,
                         help='parallel processes (use the number of cores you requested)')
     args = parser.parse_args()
 
+    t_load = time.time()
+    if args.criteo_path:
+        traces, n_rows = load_criteo_traces(args.criteo_path, args.n_rows,
+                                            as_array=bool(args.dump_traces))
+        source = args.criteo_path
+        if args.dump_traces:
+            dump_traces(traces, n_rows, args.dump_traces, source)
+            print(f"Wrote {len(traces)} tables to {args.dump_traces}")
+            return
+        table_ids = args.tables or list(range(len(traces)))
+        traces = [traces[t] for t in table_ids]
+    else:
+        meta = json.load(open(os.path.join(args.trace_dir, 'meta.json')))
+        table_ids = args.tables or list(range(meta['n_tables']))
+        traces, meta = load_dumped_traces(args.trace_dir, table_ids)
+        n_rows, source = meta['n_rows'], meta['source']
+    t_load = time.time() - t_load
+
+    policies = POLICIES + (OFFLINE_POLICIES if args.belady else [])
     os.makedirs(args.output, exist_ok=True)
-    traces, n_rows = load_criteo_traces(args.criteo_path, args.n_rows)
     total = sum(len(t) for t in traces)
-    print(f"\nTrace: {n_rows:,} rows, {total:,} accesses, "
-          f"{len(set(k for t in traces for k in t)):,} unique ids")
-    print(f"Running {len(POLICIES) * len(args.capacities)} jobs on {args.workers} worker(s)\n")
-
+    print(f"\nTrace: {n_rows:,} rows, tables {table_ids}, {total:,} accesses")
     t0 = time.time()
-    results = run_sweep(traces, args.capacities, args.workers)
-    print(f"\nSweep finished in {time.time() - t0:.1f}s")
-    print_table(results, args.capacities)
+    stats = table_stats(traces, table_ids)
+    t_stats = time.time() - t0
+    for s in stats:
+        a = 'n/a' if s['zipf_alpha'] is None else f"{s['zipf_alpha']:.3f}"
+        print(f"  table {s['table']:>2}: {s['accesses']:>10,} accesses "
+              f"{s['unique']:>10,} unique  zipf alpha {a} ({s['zipf_fit_points']} ranks)")
 
-    out = os.path.join(args.output, 'trace_sim_results.json')
+    n_jobs = len(policies) * len(args.capacities) * sum(1 for t in traces if t)
+    print(f"Running {n_jobs} jobs on {args.workers} worker(s)\n")
+    t0 = time.time()
+    results, cpu = run_sweep(traces, args.capacities, args.workers, policies, table_ids)
+    t_sweep = time.time() - t0
+    print(f"\nSweep finished in {t_sweep:.1f}s")
+    names = [p.name for p in policies]
+    print_table(results, args.capacities, names)
+
+    out = os.path.join(args.output, args.tag + '.json')
     with open(out, 'w') as f:
-        json.dump({str(k): v for k, v in results.items()}, f, indent=2)
+        json.dump({'meta': {'source': source, 'n_rows': n_rows, 'tables': table_ids,
+                            'capacities': args.capacities, 'policies': names,
+                            'capacity_unit': 'vectors, one cache per table',
+                            'workers': args.workers,
+                            'wall_seconds': {'load': t_load, 'stats': t_stats,
+                                             'sweep': t_sweep},
+                            'cpu_seconds_per_policy': cpu},
+                   'tables': stats,
+                   'results': {str(k): v for k, v in results.items()}}, f, indent=2)
     print(f"\nSaved: {out}")
 
     print("\nLFU (history) minus LRU, in percentage points:")

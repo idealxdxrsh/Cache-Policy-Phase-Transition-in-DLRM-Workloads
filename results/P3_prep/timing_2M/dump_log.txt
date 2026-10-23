@@ -1,0 +1,8 @@
+Loading Criteo traces from: /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/18a9478c-d6b8-4e41-8f50-06c51a4717e4/scratchpad/p3time/synth_2M.txt
+  Categorical columns: 14..39 (26 embedding tables)
+  Max rows: 2,000,000
+  Loaded 500,000 rows in 3.8s
+  Loaded 1,000,000 rows in 7.7s
+  Loaded 1,500,000 rows in 11.5s
+  Done: 2,000,000 rows, 49,401,536 total accesses in 15.3s
+Wrote 26 tables to /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/18a9478c-d6b8-4e41-8f50-06c51a4717e4/scratchpad/p3time/traces_2M

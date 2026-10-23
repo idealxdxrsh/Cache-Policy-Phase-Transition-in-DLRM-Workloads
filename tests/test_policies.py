@@ -21,7 +21,7 @@ import gen_synthetic_criteo as gen              # noqa: E402
 
 def resident(cache):
     """Number of lines currently holding data (ghost entries excluded)."""
-    if isinstance(cache, (ts.LRUCache, ts.LFUCache, ts.LFUResetCache)):
+    if isinstance(cache, (ts.LRUCache, ts.LFUCache, ts.LFUResetCache, ts.BeladyCache)):
         return len(cache.cache)
     if isinstance(cache, ts.TinyLFUCache):
         return len(cache.window) + len(cache.main)
@@ -361,11 +361,144 @@ class TestTraceLoading(unittest.TestCase):
         traces, _ = ts.load_criteo_traces(self.path, n_rows=500)
         total = sum(len(t) for t in traces)
         caps = [64, 256]
-        res = ts.run_sweep(traces, caps, workers=1)
+        res, cpu = ts.run_sweep(traces, caps, workers=1)
+        self.assertEqual(set(cpu), {p.name for p in ts.POLICIES})
         for cap in caps:
             self.assertEqual(set(res[cap]), {p.name for p in ts.POLICIES})
             for v in res[cap].values():
                 self.assertEqual(v['hits'] + v['misses'], total)
+                self.assertEqual([r['table'] for r in v['per_table']], list(range(26)))
+                self.assertEqual(sum(r['hits'] for r in v['per_table']), v['hits'])
+                for r, tr in zip(v['per_table'], traces):
+                    self.assertEqual(r['hits'] + r['misses'], len(tr))
+
+    def test_per_table_matches_single_table_run(self):
+        traces, _ = ts.load_criteo_traces(self.path, n_rows=500)
+        res, _ = ts.run_sweep(traces, [128], workers=1)
+        for t in (0, 13, 25):
+            c = ts.LRUCache(128)
+            for k in traces[t]:
+                c.access(k)
+            self.assertEqual(res[128]['LRU']['per_table'][t]['hits'], c.hits)
+
+    def test_parallel_equals_serial(self):
+        traces, _ = ts.load_criteo_traces(self.path, n_rows=300)
+        pols = ts.POLICIES + ts.OFFLINE_POLICIES
+        a, _ = ts.run_sweep(traces, [64], 1, pols)
+        b, _ = ts.run_sweep(traces, [64], 3, pols)
+        self.assertEqual(a, b)
+
+    def test_dump_and_reload(self):
+        traces, n = ts.load_criteo_traces(self.path, n_rows=400)
+        d = os.path.join(self.tmp.name, 'dump')
+        ts.dump_traces(traces, n, d, self.path)
+        back, meta = ts.load_dumped_traces(d, [0, 7, 25])
+        self.assertEqual(back, [traces[0], traces[7], traces[25]])
+        self.assertEqual(meta['n_rows'], 400)
+
+    def test_cli_trace_dir_subset(self):
+        import json
+        import subprocess
+        d = os.path.join(self.tmp.name, 'cli')
+        script = os.path.join(ROOT, 'trace_sim', 'run_trace_sim.py')
+        subprocess.run([sys.executable, script, '--criteo_path', self.path,
+                        '--n_rows', '300', '--dump_traces', d],
+                       check=True, capture_output=True)
+        subprocess.run([sys.executable, script, '--trace_dir', d, '--tables', '3', '4',
+                        '--capacities', '64', '--belady', '--output', d, '--tag', 'r'],
+                       check=True, capture_output=True)
+        with open(os.path.join(d, 'r.json')) as f:
+            out = json.load(f)
+        self.assertEqual(out['meta']['tables'], [3, 4])
+        self.assertEqual([s['table'] for s in out['tables']], [3, 4])
+        self.assertIn(ts.BeladyCache.name, out['results']['64'])
+        self.assertEqual([r['table'] for r in out['results']['64']['LRU']['per_table']], [3, 4])
+
+    def test_array_parts_merge_equals_single_run(self):
+        import json
+        import subprocess
+        import merge_results
+        d = os.path.join(self.tmp.name, 'arr')
+        script = os.path.join(ROOT, 'trace_sim', 'run_trace_sim.py')
+        run = lambda *a: subprocess.run([sys.executable, script, *a],
+                                        check=True, capture_output=True)
+        caps = ['64', '512']
+        run('--criteo_path', self.path, '--n_rows', '400', '--dump_traces', d)
+        run('--criteo_path', self.path, '--n_rows', '400', '--capacities', *caps,
+            '--belady', '--output', d, '--tag', 'single')
+        parts = []
+        for group in (['0', '1', '2'], [str(t) for t in range(3, 26)]):
+            tag = 'part_' + group[0]
+            run('--trace_dir', d, '--tables', *group, '--capacities', *caps,
+                '--belady', '--workers', '2', '--output', d, '--tag', tag)
+            with open(os.path.join(d, tag + '.json')) as f:
+                parts.append(json.load(f))
+        merged = merge_results.merge(parts[::-1])
+        with open(os.path.join(d, 'single.json')) as f:
+            single = json.load(f)
+        self.assertEqual(merged['results'], single['results'])
+        self.assertEqual(merged['tables'], single['tables'])
+        self.assertEqual(merged['meta']['tables'], list(range(26)))
+        with self.assertRaises(ValueError):
+            merge_results.merge([parts[0], parts[0]])
+
+
+class TestBelady(unittest.TestCase):
+    def test_hand_trace(self):
+        # cap 2. At c, next uses are a@3, b@4: evict b. a hits. At b, c and a
+        # are never used again: evict either. d misses.
+        trace = list('abcabd')
+        c = ts.BeladyCache(2)
+        c.prepare(trace)
+        got = [c.access(k) for k in trace]
+        self.assertEqual(got, [False, False, False, True, False, False])
+
+    def test_never_worse_than_online_policies(self):
+        for seed in range(4):
+            trace = zipf_trace(8000, 1500, alpha=0.7 + 0.1 * seed, seed=seed)
+            for cap in (1, 8, 64, 300):
+                opt = ts.BeladyCache(cap)
+                opt.prepare(trace)
+                for k in trace:
+                    opt.access(k)
+                for cls in ts.POLICIES:
+                    with self.subTest(seed=seed, cap=cap, policy=cls.name):
+                        c = cls(cap)
+                        for k in trace:
+                            c.access(k)
+                        self.assertGreaterEqual(opt.hits, c.hits)
+
+    def test_cyclic_scan(self):
+        # Cycle of n+1 keys through n lines: LRU never hits, MIN misses
+        # only about once per n accesses after warm-up.
+        n, rounds = 10, 50
+        trace = list(range(n + 1)) * rounds
+        opt, lru = ts.BeladyCache(n), ts.LRUCache(n)
+        opt.prepare(trace)
+        for k in trace:
+            opt.access(k)
+            lru.access(k)
+        self.assertEqual(lru.hits, 0)
+        self.assertGreater(opt.hits, 0.85 * len(trace))
+
+
+class TestZipfFit(unittest.TestCase):
+    def test_recovers_alpha(self):
+        for alpha in (0.6, 0.9, 1.2):
+            with self.subTest(alpha=alpha):
+                trace = zipf_trace(200000, 1000, alpha=alpha, seed=11)
+                est, npts = ts.zipf_exponent(trace)
+                self.assertGreaterEqual(npts, 100)
+                self.assertAlmostEqual(est, alpha, delta=0.05)
+
+    def test_too_few_points(self):
+        self.assertEqual(ts.zipf_exponent(list(range(100))), (None, 0))
+
+    def test_table_stats(self):
+        s = ts.table_stats([[1, 1, 2], []], [4, 9])
+        self.assertEqual(s[0]['column'], 18)
+        self.assertEqual((s[0]['accesses'], s[0]['unique']), (3, 2))
+        self.assertEqual((s[1]['table'], s[1]['accesses']), (9, 0))
 
 
 if __name__ == '__main__':
