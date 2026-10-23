@@ -1,0 +1,12 @@
+{
+ "file": "/scratch/rahulkmr/Adarsh/data/criteo/extracted/train.txt",
+ "rows": 45840617,
+ "bad_ncols": 0,
+ "bad_label": 0,
+ "bad_int_fields": 0,
+ "cat_hex_fields": 1061312074,
+ "cat_empty_fields": 130543968,
+ "cat_non_hex_fields": 0,
+ "cols_14_39_all_hex_or_empty": true,
+ "examples": []
+}

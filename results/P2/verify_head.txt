@@ -1,0 +1,4 @@
+file /scratch/rahulkmr/Adarsh/data/criteo/extracted/train.txt
+wc -l: 45840617
+0	1	1	5	0	1382	4	15	2	181	1	2		2	68fd1e64	80e26c9b	fb936136	7b4723c4	25c83c98	7e0ccccf	de7995b8	1f89b562	a73ee510	a8cd5504	b2cb9c98	37c9c164	2824a5f6	1adce6ef	8ba8b39a	891b62e7	e5ba7672	f54016b9	21ddc
+0	2	0	44	1	102	8	2	2	4	1	1		4	68fd1e64	f0

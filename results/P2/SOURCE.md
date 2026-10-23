@@ -22,6 +22,6 @@ Metadata retrieved 2026-10-24 via `https://api.figshare.com/v2/articles/5732310`
 - Hugging Face `reczoo/Criteo_x4` is a random 8:1:1 re-split, not the original `train.txt`.
 
 ## Verification (filled from results/P2/download.txt after the job)
-- Download job ID: 412889 (verify: 412890), status pending
-- Size / MD5 match: pending
-- SHA-256 (computed): pending
+- Download job ID: 412889 (verify: 412890), both COMPLETED, exit 0, node21
+- Size / MD5 match: yes. size 4576820670 = expected; MD5 df9b1b3766d9ff91d5ca3eb3d23bed27 = expected
+- SHA-256 (computed by us, not published by source): ffb2ecbbc4ca478d2e87cc5168cca29f35a51ac5132c3a8fdea78c378c4e4c33

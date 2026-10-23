@@ -1,0 +1,16 @@
+host node21.hpc.bits-hyderabad.ac.in
+2026-10-24T01:12:03+05:30
+source https://ndownloader.figshare.com/files/10082655
+reachability: HTTP 206
+free on /scratch: 166568 GB
+== archive dac.tar.gz
+size   4576820670 (expected 4576820670)
+md5    df9b1b3766d9ff91d5ca3eb3d23bed27 (expected df9b1b3766d9ff91d5ca3eb3d23bed27)
+sha256 ffb2ecbbc4ca478d2e87cc5168cca29f35a51ac5132c3a8fdea78c378c4e4c33 (computed here; source publishes none)
+checksum OK
+extracted dac.tar.gz
+== extracted (bytes)
+1927 readme.txt
+1460246311 test.txt
+11147184845 train.txt
+2026-10-24T01:21:15+05:30
