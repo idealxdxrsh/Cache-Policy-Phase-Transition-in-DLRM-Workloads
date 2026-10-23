@@ -1,0 +1,57 @@
+test_hand_trace (test_policies.TestARC.test_hand_trace) ... ok
+test_invariants (test_policies.TestARC.test_invariants) ... ok
+test_scan_resistance (test_policies.TestARC.test_scan_resistance) ... ok
+test_capacity_never_exceeded_and_counts_add_up (test_policies.TestAllPolicies.test_capacity_never_exceeded_and_counts_add_up) ... ok
+test_default_capacities_match_plan (test_policies.TestAllPolicies.test_default_capacities_match_plan) ... ok
+test_deterministic (test_policies.TestAllPolicies.test_deterministic) ... ok
+test_mostly_monotone_in_capacity_on_zipf (test_policies.TestAllPolicies.test_mostly_monotone_in_capacity_on_zipf) ... ok
+test_policy_set (test_policies.TestAllPolicies.test_policy_set) ... ok
+test_return_value_is_hit (test_policies.TestAllPolicies.test_return_value_is_hit) ... ok
+test_single_key (test_policies.TestAllPolicies.test_single_key) ... ok
+test_unique_scan_never_hits (test_policies.TestAllPolicies.test_unique_scan_never_hits) ... ok
+test_working_set_that_fits (test_policies.TestAllPolicies.test_working_set_that_fits) ... ok
+test_aging_halves (test_policies.TestCountMinSketch.test_aging_halves) ... ok
+test_never_underestimates_before_aging (test_policies.TestCountMinSketch.test_never_underestimates_before_aging) ... ok
+test_saturates_at_15 (test_policies.TestCountMinSketch.test_saturates_at_15) ... ok
+test_unseen_key_mostly_zero (test_policies.TestCountMinSketch.test_unseen_key_mostly_zero) ... ok
+test_width_rounds_to_power_of_two (test_policies.TestCountMinSketch.test_width_rounds_to_power_of_two) ... ok
+test_heap_lfu_matches_reference (test_policies.TestLFU.test_heap_lfu_matches_reference) ... ok
+test_history_vs_reset (test_policies.TestLFU.test_history_vs_reset) ... ok
+test_hand_trace (test_policies.TestLRU.test_hand_trace) ... ok
+test_generator_layout (test_policies.TestTraceLoading.test_generator_layout) ... ok
+test_loader_matches_direct_parse (test_policies.TestTraceLoading.test_loader_matches_direct_parse) ... ok
+test_row_limit (test_policies.TestTraceLoading.test_row_limit) ... ok
+test_sweep_on_synthetic (test_policies.TestTraceLoading.test_sweep_on_synthetic) ... Loading Criteo traces from: /tmp/tmpp0b2kzkw/synth.txt
+  Categorical columns: 14..39 (26 embedding tables)
+  Done: 2,000 rows, 49,429 total accesses in 0.0s
+Loading Criteo traces from: /tmp/tmpp0b2kzkw/synth.txt
+  Categorical columns: 14..39 (26 embedding tables)
+  Max rows: 300
+  Done: 300 rows, 7,428 total accesses in 0.0s
+Loading Criteo traces from: /tmp/tmpp0b2kzkw/synth.txt
+  Categorical columns: 14..39 (26 embedding tables)
+  Max rows: 500
+  Done: 500 rows, 12,365 total accesses in 0.0s
+  cap=      64  LRU                    hit-rate= 38.67%
+  cap=      64  LFU (persistent counters) hit-rate= 41.62%
+  cap=      64  LFU (gem5 LFURP — reset on eviction) hit-rate= 40.85%
+  cap=      64  TinyLFU-exact (window=1%) hit-rate= 41.56%
+  cap=      64  W-TinyLFU (Count-Min, window=1%) hit-rate= 40.43%
+  cap=      64  ARC                    hit-rate= 40.95%
+  cap=     256  LRU                    hit-rate= 50.55%
+  cap=     256  LFU (persistent counters) hit-rate= 50.55%
+  cap=     256  LFU (gem5 LFURP — reset on eviction) hit-rate= 50.55%
+  cap=     256  TinyLFU-exact (window=1%) hit-rate= 50.57%
+  cap=     256  W-TinyLFU (Count-Min, window=1%) hit-rate= 50.57%
+  cap=     256  ARC                    hit-rate= 50.55%
+ok
+test_admission_rejects_colder_candidate (test_policies.TestWTinyLFU.test_admission_rejects_colder_candidate) ... ok
+test_admission_tie_keeps_victim (test_policies.TestWTinyLFU.test_admission_tie_keeps_victim) ... ok
+test_layout (test_policies.TestWTinyLFU.test_layout) ... ok
+test_scan_resistance (test_policies.TestWTinyLFU.test_scan_resistance) ... ok
+test_slru_promotion_and_demotion (test_policies.TestWTinyLFU.test_slru_promotion_and_demotion) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 5.046s
+
+OK

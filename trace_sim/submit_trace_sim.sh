@@ -8,7 +8,7 @@
 #SBATCH --output=logs/trace_sim_%j.out
 #SBATCH --error=logs/trace_sim_%j.err
 #
-# Trace-driven LRU / LFU / LFU-reset / TinyLFU sweep on Criteo.
+# Trace-driven LRU / LFU / LFU-reset / TinyLFU / W-TinyLFU / ARC sweep on Criteo.
 # Run from the trace_sim/ directory:   mkdir -p logs && sbatch submit_trace_sim.sh
 # Override the dataset path with:      CRITEO_PATH=/path/train.txt sbatch submit_trace_sim.sh
 set -e
@@ -24,7 +24,7 @@ python3 run_trace_sim.py \
     --criteo_path "$CRITEO_PATH" \
     --n_rows "$N_ROWS" \
     --output results \
-    --capacities 100 500 1000 2000 5000 10000 20000 50000 100000 \
+    --capacities 64 128 256 512 1000 2000 5000 10000 20000 50000 100000 \
     --workers "$SLURM_CPUS_PER_TASK"
 
 python3 plot_trace_results.py --results results/trace_sim_results.json --output figs

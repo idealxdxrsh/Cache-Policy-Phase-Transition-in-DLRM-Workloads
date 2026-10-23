@@ -38,7 +38,7 @@ RC = {
 plt.rcParams.update(RC)
 
 C_LRU    = '#888888'   # gray dashed  — LRU
-C_LFU    = '#1a1a1a'   # black solid  — LFU persistent (our RTL)
+C_LFU    = '#1a1a1a'   # black solid  — LFU per-address history (not the RTL)
 C_LFURES = '#555555'   # dark gray    — LFU reset (gem5 LFURP)
 C_TLFU   = '#333333'   # near-black hatch — TinyLFU
 
@@ -63,7 +63,7 @@ def main():
     lru_key   = "LRU"
     lfu_key   = next(k for k in sample if 'persistent' in k)
     reset_key = next(k for k in sample if 'gem5' in k or 'reset' in k.lower())
-    tlfu_key  = next(k for k in sample if 'TinyLFU' in k or 'Tiny' in k)
+    tlfu_key  = next(k for k in sample if 'Count-Min' in k)
 
     lru_hr   = [data[c][lru_key]['hit_rate']   for c in capacities]
     lfu_hr   = [data[c][lfu_key]['hit_rate']   for c in capacities]
@@ -82,11 +82,11 @@ def main():
     ax.plot(cap_k, lru_hr,   color=C_LRU,    ls='--', marker='o', ms=4,
             markerfacecolor='white', markeredgewidth=1.2, label='LRU (baseline)')
     ax.plot(cap_k, lfu_hr,   color=C_LFU,    ls='-',  marker='s', ms=4,
-            label='LFU — persistent counters (our RTL)')
+            label='LFU — per-address history (idealised)')
     ax.plot(cap_k, reset_hr, color=C_LFURES, ls=':',  marker='^', ms=4,
             markerfacecolor='white', markeredgewidth=1.0, label='LFU — gem5 LFURP (reset on evict)')
     ax.plot(cap_k, tlfu_hr,  color=C_TLFU,   ls='-.', marker='D', ms=4,
-            markerfacecolor='white', markeredgewidth=1.0, label='TinyLFU (Window-LRU + LFU)')
+            markerfacecolor='white', markeredgewidth=1.0, label='W-TinyLFU (Count-Min sketch)')
 
     # Find crossover between LRU and LFU persistent
     crossover = None
@@ -143,7 +143,7 @@ def main():
 
     ax.axhline(0, color='#888888', lw=0.8, ls='--', alpha=0.6, label='LRU baseline (0 pp)')
     ax.plot(cap_k, diff_persist, color=C_LFU,    ls='-',  marker='s', ms=4,
-            label='LFU persistent − LRU (our RTL)')
+            label='LFU per-address history − LRU')
     ax.plot(cap_k, diff_reset,   color=C_LFURES, ls=':',  marker='^', ms=4,
             markerfacecolor='white', markeredgewidth=1.0, label='LFU gem5-reset − LRU')
     ax.plot(cap_k, diff_tlfu,    color=C_TLFU,   ls='-.', marker='D', ms=4,

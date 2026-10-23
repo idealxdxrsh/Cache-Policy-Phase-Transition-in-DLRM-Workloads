@@ -1,0 +1,106 @@
+Loading Criteo traces from: /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/18a9478c-d6b8-4e41-8f50-06c51a4717e4/scratchpad/synth_20k.txt
+  Categorical columns: 14..39 (26 embedding tables)
+  Max rows: 20,000
+  Done: 20,000 rows, 494,210 total accesses in 0.2s
+
+Trace: 20,000 rows, 494,210 accesses, 61,141 unique ids
+Running 66 jobs on 4 worker(s)
+
+  cap=      64  LRU                    hit-rate= 40.61%
+  cap=      64  LFU (gem5 LFURP — reset on eviction) hit-rate= 49.80%
+  cap=      64  LFU (persistent counters) hit-rate= 53.18%
+  cap=      64  TinyLFU-exact (window=1%) hit-rate= 53.19%
+  cap=     128  LRU                    hit-rate= 53.74%
+  cap=      64  ARC                    hit-rate= 48.80%
+  cap=     128  LFU (persistent counters) hit-rate= 63.47%
+  cap=     128  LFU (gem5 LFURP — reset on eviction) hit-rate= 60.83%
+  cap=     128  TinyLFU-exact (window=1%) hit-rate= 63.47%
+  cap=     256  LRU                    hit-rate= 65.29%
+  cap=     128  ARC                    hit-rate= 60.11%
+  cap=     256  LFU (gem5 LFURP — reset on eviction) hit-rate= 70.18%
+  cap=     256  LFU (persistent counters) hit-rate= 72.10%
+  cap=      64  W-TinyLFU (Count-Min, window=1%) hit-rate= 50.11%
+  cap=     256  TinyLFU-exact (window=1%) hit-rate= 72.08%
+  cap=     256  ARC                    hit-rate= 69.93%
+  cap=     512  LRU                    hit-rate= 74.79%
+  cap=     512  LFU (gem5 LFURP — reset on eviction) hit-rate= 77.69%
+  cap=     512  LFU (persistent counters) hit-rate= 78.65%
+  cap=     128  W-TinyLFU (Count-Min, window=1%) hit-rate= 60.94%
+  cap=     512  ARC                    hit-rate= 77.58%
+  cap=   1,000  LRU                    hit-rate= 81.60%
+  cap=     512  TinyLFU-exact (window=1%) hit-rate= 78.64%
+  cap=     256  W-TinyLFU (Count-Min, window=1%) hit-rate= 70.15%
+  cap=   1,000  LFU (persistent counters) hit-rate= 83.30%
+  cap=   1,000  LFU (gem5 LFURP — reset on eviction) hit-rate= 82.92%
+  cap=   1,000  TinyLFU-exact (window=1%) hit-rate= 83.32%
+  cap=   1,000  ARC                    hit-rate= 82.94%
+  cap=   2,000  LRU                    hit-rate= 86.10%
+  cap=   2,000  LFU (gem5 LFURP — reset on eviction) hit-rate= 86.38%
+  cap=     512  W-TinyLFU (Count-Min, window=1%) hit-rate= 77.28%
+  cap=   2,000  LFU (persistent counters) hit-rate= 86.41%
+  cap=   2,000  ARC                    hit-rate= 86.39%
+  cap=   5,000  LRU                    hit-rate= 87.63%
+  cap=   2,000  TinyLFU-exact (window=1%) hit-rate= 86.40%
+  cap=   1,000  W-TinyLFU (Count-Min, window=1%) hit-rate= 82.60%
+  cap=   5,000  LFU (persistent counters) hit-rate= 87.63%
+  cap=   5,000  LFU (gem5 LFURP — reset on eviction) hit-rate= 87.63%
+  cap=   5,000  ARC                    hit-rate= 87.63%
+  cap=   5,000  TinyLFU-exact (window=1%) hit-rate= 87.63%
+  cap=  10,000  LRU                    hit-rate= 87.63%
+  cap=   2,000  W-TinyLFU (Count-Min, window=1%) hit-rate= 86.25%
+  cap=  10,000  LFU (persistent counters) hit-rate= 87.63%
+  cap=  10,000  LFU (gem5 LFURP — reset on eviction) hit-rate= 87.63%
+  cap=  10,000  ARC                    hit-rate= 87.63%
+  cap=  10,000  TinyLFU-exact (window=1%) hit-rate= 87.63%
+  cap=  20,000  LRU                    hit-rate= 87.63%
+  cap=   5,000  W-TinyLFU (Count-Min, window=1%) hit-rate= 87.63%
+  cap=  20,000  LFU (persistent counters) hit-rate= 87.63%
+  cap=  20,000  LFU (gem5 LFURP — reset on eviction) hit-rate= 87.63%
+  cap=  20,000  TinyLFU-exact (window=1%) hit-rate= 87.63%
+  cap=  20,000  ARC                    hit-rate= 87.63%
+  cap=  50,000  LRU                    hit-rate= 87.63%
+  cap=  10,000  W-TinyLFU (Count-Min, window=1%) hit-rate= 87.63%
+  cap=  50,000  LFU (persistent counters) hit-rate= 87.63%
+  cap=  50,000  LFU (gem5 LFURP — reset on eviction) hit-rate= 87.63%
+  cap=  50,000  TinyLFU-exact (window=1%) hit-rate= 87.63%
+  cap=  50,000  ARC                    hit-rate= 87.63%
+  cap= 100,000  LRU                    hit-rate= 87.63%
+  cap=  20,000  W-TinyLFU (Count-Min, window=1%) hit-rate= 87.63%
+  cap= 100,000  LFU (persistent counters) hit-rate= 87.63%
+  cap= 100,000  LFU (gem5 LFURP — reset on eviction) hit-rate= 87.63%
+  cap= 100,000  TinyLFU-exact (window=1%) hit-rate= 87.63%
+  cap= 100,000  ARC                    hit-rate= 87.63%
+  cap=  50,000  W-TinyLFU (Count-Min, window=1%) hit-rate= 87.63%
+  cap= 100,000  W-TinyLFU (Count-Min, window=1%) hit-rate= 87.63%
+
+Sweep finished in 8.3s
+
+====================================================================================================
+  capacity |                    LRU | LFU (persistent counte | LFU (gem5 LFURP — rese | TinyLFU-exact (window= | W-TinyLFU (Count-Min,  |                    ARC | best
+====================================================================================================
+        64 |                 40.61% |                 53.18% |                 49.80% |                 53.19% |                 50.11% |                 48.80% | TinyLFU-exact (win
+       128 |                 53.74% |                 63.47% |                 60.83% |                 63.47% |                 60.94% |                 60.11% | LFU (persistent co
+       256 |                 65.29% |                 72.10% |                 70.18% |                 72.08% |                 70.15% |                 69.93% | LFU (persistent co
+       512 |                 74.79% |                 78.65% |                 77.69% |                 78.64% |                 77.28% |                 77.58% | LFU (persistent co
+     1,000 |                 81.60% |                 83.30% |                 82.92% |                 83.32% |                 82.60% |                 82.94% | TinyLFU-exact (win
+     2,000 |                 86.10% |                 86.41% |                 86.38% |                 86.40% |                 86.25% |                 86.39% | LFU (persistent co
+     5,000 |                 87.63% |                 87.63% |                 87.63% |                 87.63% |                 87.63% |                 87.63% | LRU
+    10,000 |                 87.63% |                 87.63% |                 87.63% |                 87.63% |                 87.63% |                 87.63% | LRU
+    20,000 |                 87.63% |                 87.63% |                 87.63% |                 87.63% |                 87.63% |                 87.63% | LRU
+    50,000 |                 87.63% |                 87.63% |                 87.63% |                 87.63% |                 87.63% |                 87.63% | LRU
+   100,000 |                 87.63% |                 87.63% |                 87.63% |                 87.63% |                 87.63% |                 87.63% | LRU
+
+Saved: results/P3_prep/synthetic/trace_sim_results.json
+
+LFU (history) minus LRU, in percentage points:
+  cap=      64: +12.57 pp
+  cap=     128:  +9.73 pp
+  cap=     256:  +6.81 pp
+  cap=     512:  +3.86 pp
+  cap=   1,000:  +1.70 pp
+  cap=   2,000:  +0.31 pp
+  cap=   5,000:  +0.00 pp
+  cap=  10,000:  +0.00 pp
+  cap=  20,000:  +0.00 pp
+  cap=  50,000:  +0.00 pp
+  cap= 100,000:  +0.00 pp

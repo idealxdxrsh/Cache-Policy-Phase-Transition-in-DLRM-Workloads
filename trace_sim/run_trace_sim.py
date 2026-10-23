@@ -3,8 +3,9 @@
 Trace-driven cache policy simulator — Adarsh (2023B1A31167G)
 BITS Pilani Goa / Sharanga HPC
 
-Compares LRU, LFU (persistent counters), and TinyLFU on real Criteo
-embedding access traces across multiple cache capacities.
+Compares LRU, LFU (per-address history), LFU (reset on eviction),
+TinyLFU (exact counters), W-TinyLFU (Count-Min sketch) and ARC on Criteo
+embedding access traces across cache capacities given in vectors.
 
 Usage:
     python3 run_trace_sim.py --criteo_path /path/to/criteo_train.csv \
@@ -281,6 +282,218 @@ class TinyLFUCache:
         return self.misses
 
 
+class CountMinSketch:
+    """
+    Count-Min sketch with 4-bit saturating counters and periodic aging,
+    as used by TinyLFU (Einziger, Friedman & Manes, 2017).
+
+    depth rows of `width` counters (width rounded up to a power of two).
+    Each row uses a fixed multiply-shift hash, so runs are deterministic.
+    After `sample_size` increments every counter is halved (the "reset"
+    aging step) and the increment count is halved too.
+    No doorkeeper Bloom filter is modelled.
+    """
+    MASK64 = (1 << 64) - 1
+    SEEDS = (0x9E3779B97F4A7C15, 0xC2B2AE3D27D4EB4F,
+             0x165667B19E3779F9, 0xD6E8FEB86659FD93)
+
+    def __init__(self, width, sample_size, depth=4, max_count=15):
+        assert 1 <= depth <= len(self.SEEDS)
+        bits = max(4, (max(1, width) - 1).bit_length())
+        self.width = 1 << bits
+        self.shift = 64 - bits
+        self.depth = depth
+        self.max_count = max_count
+        self.sample_size = sample_size
+        self.additions = 0
+        self.rows = [bytearray(self.width) for _ in range(depth)]
+
+    def _indexes(self, key):
+        if not isinstance(key, int):
+            key = hash(key)
+        key &= self.MASK64
+        return [(((key ^ (key >> 29)) * a) & self.MASK64) >> self.shift
+                for a in self.SEEDS[:self.depth]]
+
+    def increment(self, key):
+        mc = self.max_count
+        for row, i in zip(self.rows, self._indexes(key)):
+            if row[i] < mc:
+                row[i] += 1
+        self.additions += 1
+        if self.additions >= self.sample_size:
+            self.age()
+
+    def age(self):
+        for r in range(self.depth):
+            self.rows[r] = bytearray(c >> 1 for c in self.rows[r])
+        self.additions //= 2
+
+    def estimate(self, key):
+        return min(row[i] for row, i in zip(self.rows, self._indexes(key)))
+
+
+class WTinyLFUCache:
+    """
+    Window-TinyLFU with a real Count-Min sketch (Einziger et al., 2017;
+    the layout used by Caffeine):
+      - window: LRU, window_pct of capacity (at least 1 line);
+      - main:   segmented LRU, protected = 80% of main, rest probation;
+      - admission: a line evicted from the window replaces the probation
+        LRU victim only if sketch(candidate) > sketch(victim);
+      - sketch: CountMinSketch, width ~ capacity, 4 rows, 4-bit counters,
+        halved every 10 x capacity accesses.
+    Not modelled: doorkeeper, Caffeine's random admission of warm
+    candidates, adaptive window sizing.
+    """
+    name = "W-TinyLFU (Count-Min, window=1%)"
+
+    def __init__(self, capacity, window_pct=0.01, protected_pct=0.80):
+        self.total_cap = capacity
+        self.win_cap   = max(1, int(capacity * window_pct))
+        self.main_cap  = capacity - self.win_cap
+        self.prot_cap  = int(self.main_cap * protected_pct)
+        self.window    = OrderedDict()
+        self.probation = OrderedDict()
+        self.protected = OrderedDict()
+        self.sketch    = CountMinSketch(width=capacity, sample_size=10 * capacity)
+        self.hits = self.misses = 0
+
+    def __len__(self):
+        return len(self.window) + len(self.probation) + len(self.protected)
+
+    def access(self, key):
+        self.sketch.increment(key)
+
+        if key in self.window:
+            self.window.move_to_end(key)
+            self.hits += 1
+            return True
+        if key in self.protected:
+            self.protected.move_to_end(key)
+            self.hits += 1
+            return True
+        if key in self.probation:
+            del self.probation[key]
+            self.protected[key] = 1
+            if len(self.protected) > self.prot_cap:
+                demoted, _ = self.protected.popitem(last=False)
+                self.probation[demoted] = 1
+            self.hits += 1
+            return True
+
+        self.misses += 1
+        self.window[key] = 1
+        if len(self.window) > self.win_cap:
+            candidate, _ = self.window.popitem(last=False)
+            self._offer(candidate)
+        return False
+
+    def _offer(self, candidate):
+        if self.main_cap == 0:
+            return
+        if len(self.probation) + len(self.protected) < self.main_cap:
+            self.probation[candidate] = 1
+            return
+        victims = self.probation if self.probation else self.protected
+        victim = next(iter(victims))
+        if self.sketch.estimate(candidate) > self.sketch.estimate(victim):
+            del victims[victim]
+            self.probation[candidate] = 1
+
+    @property
+    def hit_rate(self):
+        total = self.hits + self.misses
+        return self.hits / total * 100 if total > 0 else 0.0
+
+    @property
+    def dram_reads(self):
+        return self.misses
+
+
+class ARCCache:
+    """
+    Adaptive Replacement Cache (Megiddo & Modha, FAST 2003), following the
+    paper's pseudocode. T1/T2 hold resident lines (seen once / at least
+    twice), B1/B2 are ghost lists of evicted keys (no data), and p is the
+    adaptive target size of T1. A hit in a ghost list counts as a miss.
+    """
+    name = "ARC"
+
+    def __init__(self, capacity):
+        self.cap = capacity
+        self.p = 0.0
+        self.t1, self.t2 = OrderedDict(), OrderedDict()
+        self.b1, self.b2 = OrderedDict(), OrderedDict()
+        self.hits = self.misses = 0
+
+    def __len__(self):
+        return len(self.t1) + len(self.t2)
+
+    def _replace(self, in_b2):
+        t1 = len(self.t1)
+        if self.t1 and (t1 > self.p or (in_b2 and t1 == self.p) or not self.t2):
+            k, _ = self.t1.popitem(last=False)
+            self.b1[k] = 1
+        else:
+            k, _ = self.t2.popitem(last=False)
+            self.b2[k] = 1
+
+    def access(self, key):
+        c = self.cap
+        if key in self.t1:
+            del self.t1[key]
+            self.t2[key] = 1
+            self.hits += 1
+            return True
+        if key in self.t2:
+            self.t2.move_to_end(key)
+            self.hits += 1
+            return True
+
+        self.misses += 1
+        if key in self.b1:
+            self.p = min(c, self.p + max(len(self.b2) / len(self.b1), 1))
+            if len(self) >= c:
+                self._replace(False)
+            del self.b1[key]
+            self.t2[key] = 1
+            return False
+        if key in self.b2:
+            self.p = max(0, self.p - max(len(self.b1) / len(self.b2), 1))
+            if len(self) >= c:
+                self._replace(True)
+            del self.b2[key]
+            self.t2[key] = 1
+            return False
+
+        l1 = len(self.t1) + len(self.b1)
+        if l1 >= c:
+            if len(self.t1) < c:
+                self.b1.popitem(last=False)
+                self._replace(False)
+            else:
+                self.t1.popitem(last=False)
+        else:
+            total = l1 + len(self.t2) + len(self.b2)
+            if total >= c:
+                if total >= 2 * c:
+                    self.b2.popitem(last=False)
+                if len(self) >= c:
+                    self._replace(False)
+        self.t1[key] = 1
+        return False
+
+    @property
+    def hit_rate(self):
+        total = self.hits + self.misses
+        return self.hits / total * 100 if total > 0 else 0.0
+
+    @property
+    def dram_reads(self):
+        return self.misses
+
+
 # ══════════════════════════════════════════════════════════════
 # TRACE LOADING
 # ══════════════════════════════════════════════════════════════
@@ -346,13 +559,18 @@ def load_criteo_traces(path, n_rows=None, col_indices=None):
 
 class TinyLFUPolicy(TinyLFUCache):
     """TinyLFUCache with a fixed window fraction and a stable display name."""
-    name = "TinyLFU (window=1%)"
+    name = "TinyLFU-exact (window=1%)"
 
     def __init__(self, capacity):
         super().__init__(capacity, window_pct=0.01)
 
 
-POLICIES = [LRUCache, LFUCache, LFUResetCache, TinyLFUPolicy]
+POLICIES = [LRUCache, LFUCache, LFUResetCache, TinyLFUPolicy, WTinyLFUCache, ARCCache]
+
+# Cache capacity in embedding VECTORS, one cache per table (PLAN.md P3).
+# "1k", "2k" are taken as 1000 and 2000, like 5k..100k.
+DEFAULT_CAPACITIES = [64, 128, 256, 512, 1000, 2000, 5000,
+                      10000, 20000, 50000, 100000]
 
 
 def run_one(job):
@@ -412,7 +630,8 @@ def main():
     parser.add_argument('--n_rows', type=int, default=2_000_000)
     parser.add_argument('--output', default='results')
     parser.add_argument('--capacities', nargs='+', type=int,
-                        default=[100, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000])
+                        default=DEFAULT_CAPACITIES,
+                        help='cache size in vectors, per embedding table')
     parser.add_argument('--workers', type=int, default=1,
                         help='parallel processes (use the number of cores you requested)')
     args = parser.parse_args()

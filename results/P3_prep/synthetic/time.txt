@@ -1,0 +1,23 @@
+	Command being timed: "python3 trace_sim/run_trace_sim.py --criteo_path /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/18a9478c-d6b8-4e41-8f50-06c51a4717e4/scratchpad/synth_20k.txt --n_rows 20000 --output results/P3_prep/synthetic --workers 4"
+	User time (seconds): 33.02
+	System time (seconds): 0.83
+	Percent of CPU this job got: 393%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:08.60
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 57008
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 273947
+	Voluntary context switches: 5659
+	Involuntary context switches: 245
+	Swaps: 0
+	File system inputs: 512
+	File system outputs: 40
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

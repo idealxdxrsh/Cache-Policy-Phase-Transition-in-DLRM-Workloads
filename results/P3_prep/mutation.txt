@@ -1,0 +1,13 @@
+lru_no_refresh         CAUGHT  (FAILED (failures=1))
+lfu_history_dropped    CAUGHT  (FAILED (failures=3))
+cms_no_saturate        CAUGHT  (FAILED (failures=2))
+cms_no_aging           CAUGHT  (FAILED (failures=1))
+wtlfu_admit_on_tie     CAUGHT  (FAILED (failures=1))
+wtlfu_no_promote       CAUGHT  (FAILED (failures=1))
+wtlfu_always_admit     CAUGHT  (FAILED (failures=3))
+arc_p_wrong_sign       CAUGHT  (FAILED (failures=1))
+arc_ghost_to_t1        CAUGHT  (FAILED (failures=1))
+arc_no_b2_trim         CAUGHT  (FAILED (failures=4))
+arc_t1_hit_stays       CAUGHT  (FAILED (failures=2))
+
+11/11 mutants caught

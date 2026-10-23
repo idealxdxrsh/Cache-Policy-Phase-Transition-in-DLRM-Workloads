@@ -1,0 +1,420 @@
+{
+  "64": {
+    "LRU": {
+      "hits": 200703,
+      "misses": 293507,
+      "dram_reads": 293507,
+      "hit_rate": 40.61087391999352
+    },
+    "LFU (gem5 LFURP \u2014 reset on eviction)": {
+      "hits": 246116,
+      "misses": 248094,
+      "dram_reads": 248094,
+      "hit_rate": 49.79988264098258
+    },
+    "LFU (persistent counters)": {
+      "hits": 262805,
+      "misses": 231405,
+      "dram_reads": 231405,
+      "hit_rate": 53.17678719572652
+    },
+    "TinyLFU-exact (window=1%)": {
+      "hits": 262854,
+      "misses": 231356,
+      "dram_reads": 231356,
+      "hit_rate": 53.186702009267314
+    },
+    "ARC": {
+      "hits": 241175,
+      "misses": 253035,
+      "dram_reads": 253035,
+      "hit_rate": 48.800105218429415
+    },
+    "W-TinyLFU (Count-Min, window=1%)": {
+      "hits": 247664,
+      "misses": 246546,
+      "dram_reads": 246546,
+      "hit_rate": 50.11310981161854
+    }
+  },
+  "128": {
+    "LRU": {
+      "hits": 265599,
+      "misses": 228611,
+      "dram_reads": 228611,
+      "hit_rate": 53.74213391068574
+    },
+    "LFU (persistent counters)": {
+      "hits": 313678,
+      "misses": 180532,
+      "dram_reads": 180532,
+      "hit_rate": 63.47058942554784
+    },
+    "LFU (gem5 LFURP \u2014 reset on eviction)": {
+      "hits": 300638,
+      "misses": 193572,
+      "dram_reads": 193572,
+      "hit_rate": 60.83203496489347
+    },
+    "TinyLFU-exact (window=1%)": {
+      "hits": 313668,
+      "misses": 180542,
+      "dram_reads": 180542,
+      "hit_rate": 63.46856599421299
+    },
+    "ARC": {
+      "hits": 297092,
+      "misses": 197118,
+      "dram_reads": 197118,
+      "hit_rate": 60.11452621355294
+    },
+    "W-TinyLFU (Count-Min, window=1%)": {
+      "hits": 301189,
+      "misses": 193021,
+      "dram_reads": 193021,
+      "hit_rate": 60.943526031444115
+    }
+  },
+  "256": {
+    "LRU": {
+      "hits": 322667,
+      "misses": 171543,
+      "dram_reads": 171543,
+      "hit_rate": 65.28945185245138
+    },
+    "LFU (gem5 LFURP \u2014 reset on eviction)": {
+      "hits": 346854,
+      "misses": 147356,
+      "dram_reads": 147356,
+      "hit_rate": 70.18352522207158
+    },
+    "LFU (persistent counters)": {
+      "hits": 356341,
+      "misses": 137869,
+      "dram_reads": 137869,
+      "hit_rate": 72.10315452945105
+    },
+    "TinyLFU-exact (window=1%)": {
+      "hits": 356235,
+      "misses": 137975,
+      "dram_reads": 137975,
+      "hit_rate": 72.08170615730155
+    },
+    "ARC": {
+      "hits": 345584,
+      "misses": 148626,
+      "dram_reads": 148626,
+      "hit_rate": 69.92654944254467
+    },
+    "W-TinyLFU (Count-Min, window=1%)": {
+      "hits": 346666,
+      "misses": 147544,
+      "dram_reads": 147544,
+      "hit_rate": 70.14548471297627
+    }
+  },
+  "512": {
+    "LRU": {
+      "hits": 369605,
+      "misses": 124605,
+      "dram_reads": 124605,
+      "hit_rate": 74.78703385200623
+    },
+    "LFU (gem5 LFURP \u2014 reset on eviction)": {
+      "hits": 383960,
+      "misses": 110250,
+      "dram_reads": 110250,
+      "hit_rate": 77.6916695331944
+    },
+    "LFU (persistent counters)": {
+      "hits": 388703,
+      "misses": 105507,
+      "dram_reads": 105507,
+      "hit_rate": 78.65138301531738
+    },
+    "ARC": {
+      "hits": 383386,
+      "misses": 110824,
+      "dram_reads": 110824,
+      "hit_rate": 77.57552457457356
+    },
+    "TinyLFU-exact (window=1%)": {
+      "hits": 388671,
+      "misses": 105539,
+      "dram_reads": 105539,
+      "hit_rate": 78.64490803504583
+    },
+    "W-TinyLFU (Count-Min, window=1%)": {
+      "hits": 381937,
+      "misses": 112273,
+      "dram_reads": 112273,
+      "hit_rate": 77.2823293741527
+    }
+  },
+  "1000": {
+    "LRU": {
+      "hits": 403279,
+      "misses": 90931,
+      "dram_reads": 90931,
+      "hit_rate": 81.60073652900589
+    },
+    "LFU (persistent counters)": {
+      "hits": 411696,
+      "misses": 82514,
+      "dram_reads": 82514,
+      "hit_rate": 83.30385868355557
+    },
+    "LFU (gem5 LFURP \u2014 reset on eviction)": {
+      "hits": 409797,
+      "misses": 84413,
+      "dram_reads": 84413,
+      "hit_rate": 82.9196090730661
+    },
+    "TinyLFU-exact (window=1%)": {
+      "hits": 411790,
+      "misses": 82420,
+      "dram_reads": 82420,
+      "hit_rate": 83.32287893810324
+    },
+    "ARC": {
+      "hits": 409918,
+      "misses": 84292,
+      "dram_reads": 84292,
+      "hit_rate": 82.94409259221788
+    },
+    "W-TinyLFU (Count-Min, window=1%)": {
+      "hits": 408223,
+      "misses": 85987,
+      "dram_reads": 85987,
+      "hit_rate": 82.60112098095951
+    }
+  },
+  "2000": {
+    "LRU": {
+      "hits": 425516,
+      "misses": 68694,
+      "dram_reads": 68694,
+      "hit_rate": 86.10024078832885
+    },
+    "LFU (gem5 LFURP \u2014 reset on eviction)": {
+      "hits": 426902,
+      "misses": 67308,
+      "dram_reads": 67308,
+      "hit_rate": 86.38068837134011
+    },
+    "LFU (persistent counters)": {
+      "hits": 427037,
+      "misses": 67173,
+      "dram_reads": 67173,
+      "hit_rate": 86.4080046943607
+    },
+    "ARC": {
+      "hits": 426958,
+      "misses": 67252,
+      "dram_reads": 67252,
+      "hit_rate": 86.39201958681532
+    },
+    "TinyLFU-exact (window=1%)": {
+      "hits": 426988,
+      "misses": 67222,
+      "dram_reads": 67222,
+      "hit_rate": 86.3980898808199
+    },
+    "W-TinyLFU (Count-Min, window=1%)": {
+      "hits": 426237,
+      "misses": 67973,
+      "dram_reads": 67973,
+      "hit_rate": 86.24613018757209
+    }
+  },
+  "5000": {
+    "LRU": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "LFU (persistent counters)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "LFU (gem5 LFURP \u2014 reset on eviction)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "ARC": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "TinyLFU-exact (window=1%)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "W-TinyLFU (Count-Min, window=1%)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    }
+  },
+  "10000": {
+    "LRU": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "LFU (persistent counters)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "LFU (gem5 LFURP \u2014 reset on eviction)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "ARC": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "TinyLFU-exact (window=1%)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "W-TinyLFU (Count-Min, window=1%)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    }
+  },
+  "20000": {
+    "LRU": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "LFU (persistent counters)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "LFU (gem5 LFURP \u2014 reset on eviction)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "TinyLFU-exact (window=1%)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "ARC": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "W-TinyLFU (Count-Min, window=1%)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    }
+  },
+  "50000": {
+    "LRU": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "LFU (persistent counters)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "LFU (gem5 LFURP \u2014 reset on eviction)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "TinyLFU-exact (window=1%)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "ARC": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "W-TinyLFU (Count-Min, window=1%)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    }
+  },
+  "100000": {
+    "LRU": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "LFU (persistent counters)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "LFU (gem5 LFURP \u2014 reset on eviction)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "TinyLFU-exact (window=1%)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "ARC": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    },
+    "W-TinyLFU (Count-Min, window=1%)": {
+      "hits": 433069,
+      "misses": 61141,
+      "dram_reads": 61141,
+      "hit_rate": 87.62853847554683
+    }
+  }
+}
