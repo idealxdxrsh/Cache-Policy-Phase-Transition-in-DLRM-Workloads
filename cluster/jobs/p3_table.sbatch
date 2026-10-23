@@ -15,7 +15,7 @@ T=$SLURM_ARRAY_TASK_ID
 TAG=$(printf 'table_%02d' "$T")
 TR=$W/data/p3/traces_$N_ROWS
 PARTS=$W/results/P3/rows_$N_ROWS/parts; mkdir -p "$PARTS"
-eval "$(conda shell.bash hook)"; conda activate dlrm_cache
+eval "$(conda shell.bash hook)"; conda activate /scratch/rahulkmr/Adarsh/envs/dlrm_cache
 /usr/bin/time -v python -I "$W/repo/trace_sim/run_trace_sim.py" \
     --trace_dir "$TR" --tables "$T" --belady --workers "$SLURM_CPUS_PER_TASK" \
     --output "$PARTS" --tag "$TAG" \

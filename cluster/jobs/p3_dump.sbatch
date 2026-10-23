@@ -14,7 +14,7 @@ W=/scratch/rahulkmr/Adarsh
 EXT=$W/data/criteo/extracted
 TR=$W/data/p3/traces_$N_ROWS
 OUT=$W/results/P3/rows_$N_ROWS; mkdir -p "$OUT"
-eval "$(conda shell.bash hook)"; conda activate dlrm_cache
+eval "$(conda shell.bash hook)"; conda activate /scratch/rahulkmr/Adarsh/envs/dlrm_cache
 TRAIN=$(find "$EXT" -type f \( -name 'train.txt' -o -name 'train.csv' \) | head -n 1)
 [ -n "$TRAIN" ] || { echo "no train.txt/train.csv under $EXT" | tee "$OUT/dump_error.txt"; exit 1; }
 /usr/bin/time -v python -I "$W/repo/trace_sim/run_trace_sim.py" \

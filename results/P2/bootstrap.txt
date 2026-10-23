@@ -1,0 +1,19 @@
+host node16.hpc.bits-hyderabad.ac.in
+2026-10-23T23:15:32+05:30
+kaggle.com HTTP 200
+Successfully installed attrs-26.1.0 bleach-6.4.0 certifi-2026.10.23 charset_normalizer-3.5.2 fastjsonschema-2.22.2 idna-3.20 jupyter-core-5.9.1 jupytext-1.19.6 kaggle-2.2.5 kagglesdk-0.1.38 markdown-it-py-4.2.0 mdit-py-plugins-0.6.1 mdurl-0.1.2 nbformat-5.11.1 protobuf-7.36.2 python-slugify-9.1.3 requests-2.34.2 text-unidecode-1.3 tqdm-4.70.1 traitlets-5.16.1 typing-extensions-4.16.0 urllib3-2.8.0 webencodings-0.6.1
+
+done
+#
+# To activate this environment, use
+#
+#     $ conda activate /scratch/rahulkmr/Adarsh/envs/dlrm_cache
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+
+Python 3.11.17
+numpy 2.4.6 pandas 3.1.0
+Kaggle CLI 2.2.5
+bootstrap.sh rc=0

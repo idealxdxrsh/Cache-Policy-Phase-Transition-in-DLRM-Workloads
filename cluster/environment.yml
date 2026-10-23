@@ -8,3 +8,5 @@ dependencies:
   - iverilog
   - yosys
   - pip
+  - pip:
+      - kaggle

@@ -1,0 +1,4 @@
+jobs: 412385 412386
+412385          p2_boot    PENDING      0:0   00:00:00 
+verify resubmitted with -c 4 after QOSMinCpuNotSatisfied
+Submitted batch job 412392

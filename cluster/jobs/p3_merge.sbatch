@@ -11,7 +11,7 @@ set -euo pipefail
 W=/scratch/rahulkmr/Adarsh
 : "${N_ROWS:?set N_ROWS}"
 OUT=$W/results/P3/rows_$N_ROWS
-eval "$(conda shell.bash hook)"; conda activate dlrm_cache
+eval "$(conda shell.bash hook)"; conda activate /scratch/rahulkmr/Adarsh/envs/dlrm_cache
 python -I "$W/repo/trace_sim/merge_results.py" --expect_tables 26 \
     --output "$OUT/trace_sim_results.json" "$OUT"/parts/table_*.json
 python -I "$W/repo/trace_sim/plot_trace_results.py" \
