@@ -1,0 +1,1159 @@
+{
+  "meta": {
+    "source": "/scratch/rahulkmr/Adarsh/data/criteo/extracted/train.txt",
+    "n_rows": 2000000,
+    "tables": [
+      22
+    ],
+    "capacities": [
+      64,
+      128,
+      256,
+      512,
+      1000,
+      2000,
+      5000,
+      10000,
+      20000,
+      50000,
+      100000
+    ],
+    "policies": [
+      "LRU",
+      "LFU (persistent counters)",
+      "LFU (gem5 LFURP \u2014 reset on eviction)",
+      "TinyLFU-exact (window=1%)",
+      "W-TinyLFU (Count-Min, window=1%)",
+      "ARC",
+      "Belady (MIN, offline)"
+    ],
+    "capacity_unit": "vectors, one cache per table",
+    "workers": 4,
+    "wall_seconds": {
+      "load": 0.04545998573303223,
+      "stats": 0.15942835807800293,
+      "sweep": 21.229541540145874
+    },
+    "cpu_seconds_per_policy": {
+      "LRU": 3.7329512059999996,
+      "LFU (gem5 LFURP \u2014 reset on eviction)": 3.706707282999998,
+      "LFU (persistent counters)": 3.6981160860000015,
+      "ARC": 4.581188902999998,
+      "TinyLFU-exact (window=1%)": 7.226984090999997,
+      "Belady (MIN, offline)": 15.019078475999997,
+      "W-TinyLFU (Count-Min, window=1%)": 38.040752317
+    }
+  },
+  "tables": [
+    {
+      "table": 22,
+      "column": 36,
+      "accesses": 2000000,
+      "unique": 15,
+      "zipf_alpha": 3.2911240340561534,
+      "zipf_fit_points": 15
+    }
+  ],
+  "results": {
+    "64": {
+      "LRU": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (persistent counters)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (gem5 LFURP \u2014 reset on eviction)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "TinyLFU-exact (window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "W-TinyLFU (Count-Min, window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "ARC": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "Belady (MIN, offline)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      }
+    },
+    "128": {
+      "LRU": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (persistent counters)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (gem5 LFURP \u2014 reset on eviction)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "TinyLFU-exact (window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "W-TinyLFU (Count-Min, window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "ARC": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "Belady (MIN, offline)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      }
+    },
+    "256": {
+      "LRU": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (persistent counters)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (gem5 LFURP \u2014 reset on eviction)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "TinyLFU-exact (window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "W-TinyLFU (Count-Min, window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "ARC": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "Belady (MIN, offline)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      }
+    },
+    "512": {
+      "LRU": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (persistent counters)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (gem5 LFURP \u2014 reset on eviction)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "TinyLFU-exact (window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "W-TinyLFU (Count-Min, window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "ARC": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "Belady (MIN, offline)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      }
+    },
+    "1000": {
+      "LRU": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (persistent counters)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (gem5 LFURP \u2014 reset on eviction)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "TinyLFU-exact (window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "W-TinyLFU (Count-Min, window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "ARC": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "Belady (MIN, offline)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      }
+    },
+    "2000": {
+      "LRU": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (persistent counters)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (gem5 LFURP \u2014 reset on eviction)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "TinyLFU-exact (window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "W-TinyLFU (Count-Min, window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "ARC": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "Belady (MIN, offline)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      }
+    },
+    "5000": {
+      "LRU": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (persistent counters)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (gem5 LFURP \u2014 reset on eviction)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "TinyLFU-exact (window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "W-TinyLFU (Count-Min, window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "ARC": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "Belady (MIN, offline)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      }
+    },
+    "10000": {
+      "LRU": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (persistent counters)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (gem5 LFURP \u2014 reset on eviction)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "TinyLFU-exact (window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "W-TinyLFU (Count-Min, window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "ARC": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "Belady (MIN, offline)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      }
+    },
+    "20000": {
+      "LRU": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (persistent counters)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (gem5 LFURP \u2014 reset on eviction)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "TinyLFU-exact (window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "W-TinyLFU (Count-Min, window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "ARC": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "Belady (MIN, offline)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      }
+    },
+    "50000": {
+      "LRU": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (persistent counters)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (gem5 LFURP \u2014 reset on eviction)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "TinyLFU-exact (window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "W-TinyLFU (Count-Min, window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "ARC": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "Belady (MIN, offline)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      }
+    },
+    "100000": {
+      "LRU": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (persistent counters)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "LFU (gem5 LFURP \u2014 reset on eviction)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "TinyLFU-exact (window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "W-TinyLFU (Count-Min, window=1%)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "ARC": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      },
+      "Belady (MIN, offline)": {
+        "hits": 1999985,
+        "misses": 15,
+        "dram_reads": 15,
+        "hit_rate": 99.99924999999999,
+        "per_table": [
+          {
+            "table": 22,
+            "hits": 1999985,
+            "misses": 15,
+            "hit_rate": 99.99924999999999
+          }
+        ]
+      }
+    }
+  }
+}

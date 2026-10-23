@@ -1,0 +1,6 @@
+	Command being timed: "python -I /scratch/rahulkmr/Adarsh/repo/trace_sim/run_trace_sim.py --criteo_path /scratch/rahulkmr/Adarsh/data/criteo/extracted/train.txt --n_rows 2000000 --dump_traces /scratch/rahulkmr/Adarsh/data/p3/traces_2000000"
+	User time (seconds): 15.33
+	System time (seconds): 0.42
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:17.59
+	Maximum resident set size (kbytes): 226104
+	Exit status: 0

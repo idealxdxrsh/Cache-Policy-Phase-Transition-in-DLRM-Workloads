@@ -1,0 +1,6 @@
+	Command being timed: "python -I /scratch/rahulkmr/Adarsh/repo/trace_sim/run_trace_sim.py --trace_dir /scratch/rahulkmr/Adarsh/data/p3/traces_10000000 --tables 25 --belady --workers 4 --output /scratch/rahulkmr/Adarsh/results/P3/rows_10000000/parts --tag table_25"
+	User time (seconds): 415.60
+	System time (seconds): 1.72
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:49.73
+	Maximum resident set size (kbytes): 507496
+	Exit status: 0

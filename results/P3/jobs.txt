@@ -1,2 +1,6 @@
-rows=2000000 dump=412923 array=412924 merge=412925
-rows=10000000 dump=412926 array=412927 merge=412928
+# attempt 1 (FAILED: 412923 exit 127, /usr/bin/time missing on node6; rest cancelled by dependency)
+# rows=2000000 dump=412923 array=412924 merge=412925
+# rows=10000000 dump=412926 array=412927 merge=412928
+# attempt 2 (after a7bdb14)
+rows=2000000 dump=412934 array=412935 merge=412936
+rows=10000000 dump=412937 array=412938 merge=412939

@@ -1,0 +1,8 @@
+Loading Criteo traces from: /scratch/rahulkmr/Adarsh/data/criteo/extracted/train.txt
+  Categorical columns: 14..39 (26 embedding tables)
+  Max rows: 2,000,000
+  Loaded 500,000 rows in 5.2s
+  Loaded 1,000,000 rows in 9.1s
+  Loaded 1,500,000 rows in 13.0s
+  Done: 2,000,000 rows, 46,128,690 total accesses in 16.9s
+Wrote 26 tables to /scratch/rahulkmr/Adarsh/data/p3/traces_2000000
