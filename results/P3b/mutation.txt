@@ -4,9 +4,9 @@ empty_field_as_id_0          CAUGHT  (FAILED (failures=10))
 row_limit_off_by_one         CAUGHT  (FAILED (failures=1))
 wide_id_allowed              CAUGHT  (FAILED (failures=1))
 hit_attributed_wrong_table   CAUGHT  (FAILED (failures=1))
-per_table_misses_wrong       CAUGHT  (FAILED (failures=1))
+per_table_misses_wrong       CAUGHT  (FAILED (failures=2))
 capacity_off_by_one          CAUGHT  (FAILED (failures=2))
-job_dropped                  CAUGHT  (FAILED (failures=2, errors=6))
+job_dropped                  CAUGHT  (FAILED (failures=3, errors=6))
 policy_missing               CAUGHT  (FAILED (failures=1))
 
 10/10 mutants caught

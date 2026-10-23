@@ -1,90 +1,65 @@
-test_hand_trace (test_policies.TestARC.test_hand_trace) ... ok
-test_invariants (test_policies.TestARC.test_invariants) ... ok
-test_scan_resistance (test_policies.TestARC.test_scan_resistance) ... ok
-test_capacity_never_exceeded_and_counts_add_up (test_policies.TestAllPolicies.test_capacity_never_exceeded_and_counts_add_up) ... ok
-test_default_capacities_match_plan (test_policies.TestAllPolicies.test_default_capacities_match_plan) ... ok
-test_deterministic (test_policies.TestAllPolicies.test_deterministic) ... ok
-test_mostly_monotone_in_capacity_on_zipf (test_policies.TestAllPolicies.test_mostly_monotone_in_capacity_on_zipf) ... ok
-test_policy_set (test_policies.TestAllPolicies.test_policy_set) ... ok
-test_return_value_is_hit (test_policies.TestAllPolicies.test_return_value_is_hit) ... ok
-test_single_key (test_policies.TestAllPolicies.test_single_key) ... ok
-test_unique_scan_never_hits (test_policies.TestAllPolicies.test_unique_scan_never_hits) ... ok
-test_working_set_that_fits (test_policies.TestAllPolicies.test_working_set_that_fits) ... ok
-test_cyclic_scan (test_policies.TestBelady.test_cyclic_scan) ... ok
-test_hand_trace (test_policies.TestBelady.test_hand_trace) ... ok
-test_never_worse_than_online_policies (test_policies.TestBelady.test_never_worse_than_online_policies) ... ok
-test_aging_halves (test_policies.TestCountMinSketch.test_aging_halves) ... ok
-test_never_underestimates_before_aging (test_policies.TestCountMinSketch.test_never_underestimates_before_aging) ... ok
-test_saturates_at_15 (test_policies.TestCountMinSketch.test_saturates_at_15) ... ok
-test_unseen_key_mostly_zero (test_policies.TestCountMinSketch.test_unseen_key_mostly_zero) ... ok
-test_width_rounds_to_power_of_two (test_policies.TestCountMinSketch.test_width_rounds_to_power_of_two) ... ok
-test_heap_lfu_matches_reference (test_policies.TestLFU.test_heap_lfu_matches_reference) ... ok
-test_history_vs_reset (test_policies.TestLFU.test_history_vs_reset) ... ok
-test_hand_trace (test_policies.TestLRU.test_hand_trace) ... ok
-test_array_parts_merge_equals_single_run (test_policies.TestTraceLoading.test_array_parts_merge_equals_single_run) ... ok
-test_cli_trace_dir_subset (test_policies.TestTraceLoading.test_cli_trace_dir_subset) ... ok
-test_dump_and_reload (test_policies.TestTraceLoading.test_dump_and_reload) ... ok
-test_generator_layout (test_policies.TestTraceLoading.test_generator_layout) ... ok
-test_loader_matches_direct_parse (test_policies.TestTraceLoading.test_loader_matches_direct_parse) ... ok
-test_parallel_equals_serial (test_policies.TestTraceLoading.test_parallel_equals_serial) ... Loading Criteo traces from: /tmp/tmpwgloedax/synth.txt
+............................Loading Criteo traces from: /tmp/tmpa777_5am/synth.txt
   Categorical columns: 14..39 (26 embedding tables)
   Max rows: 400
   Done: 400 rows, 9,901 total accesses in 0.0s
-Loading Criteo traces from: /tmp/tmpwgloedax/synth.txt
+Loading Criteo traces from: /tmp/tmpa777_5am/synth.txt
   Categorical columns: 14..39 (26 embedding tables)
   Done: 2,000 rows, 49,429 total accesses in 0.0s
-Loading Criteo traces from: /tmp/tmpwgloedax/synth.txt
+Loading Criteo traces from: /tmp/tmpa777_5am/synth.txt
   Categorical columns: 14..39 (26 embedding tables)
   Max rows: 300
   Done: 300 rows, 7,428 total accesses in 0.0s
-ok
-test_per_table_matches_single_table_run (test_policies.TestTraceLoading.test_per_table_matches_single_table_run) ... ok
-test_row_limit (test_policies.TestTraceLoading.test_row_limit) ... ok
-test_sweep_on_synthetic (test_policies.TestTraceLoading.test_sweep_on_synthetic) ... ok
-test_admission_rejects_colder_candidate (test_policies.TestWTinyLFU.test_admission_rejects_colder_candidate) ... ok
-test_admission_tie_keeps_victim (test_policies.TestWTinyLFU.test_admission_tie_keeps_victim) ... ok
-test_layout (test_policies.TestWTinyLFU.test_layout) ... ok
-test_scan_resistance (test_policies.TestWTinyLFU.test_scan_resistance) ... ok
-test_slru_promotion_and_demotion (test_policies.TestWTinyLFU.test_slru_promotion_and_demotion) ... ok
-test_recovers_alpha (test_policies.TestZipfFit.test_recovers_alpha) ... ok
-test_table_stats (test_policies.TestZipfFit.test_table_stats) ... ok
-test_too_few_points (test_policies.TestZipfFit.test_too_few_points) ... ok
-test_empty_fields_skipped (test_shared_cache.TestSharedLoader.test_empty_fields_skipped) ... ok
-test_order_within_row_is_table_0_to_25 (test_shared_cache.TestSharedLoader.test_order_within_row_is_table_0_to_25) ... ok
-test_per_table_counts_match_per_table_loader (test_shared_cache.TestSharedLoader.test_per_table_counts_match_per_table_loader) ... ok
-test_row_limit (test_shared_cache.TestSharedLoader.test_row_limit) ... ok
-test_row_order_and_table_qualified_keys (test_shared_cache.TestSharedLoader.test_row_order_and_table_qualified_keys) ... ok
-test_same_id_in_two_tables_is_two_keys (test_shared_cache.TestSharedLoader.test_same_id_in_two_tables_is_two_keys) ... ok
-test_wide_id_rejected (test_shared_cache.TestSharedLoader.test_wide_id_rejected) ... ok
-test_every_policy_and_capacity_present (test_shared_cache.TestSharedSimulation.test_every_policy_and_capacity_present) ... ok
-test_huge_capacity_only_compulsory_misses (test_shared_cache.TestSharedSimulation.test_huge_capacity_only_compulsory_misses) ... ok
-test_lfu_beats_lru_on_scan_mixed_shared_trace (test_shared_cache.TestSharedSimulation.test_lfu_beats_lru_on_scan_mixed_shared_trace) ... ok
-test_lru_matches_reference_total_and_per_table (test_shared_cache.TestSharedSimulation.test_lru_matches_reference_total_and_per_table) ... ok
-test_parallel_equals_serial (test_shared_cache.TestSharedSimulation.test_parallel_equals_serial) ... Loading Criteo traces from: /tmp/tmpwgloedax/synth.txt
+.......................Loading Criteo traces from: /tmp/tmpa777_5am/synth.txt
   Categorical columns: 14..39 (26 embedding tables)
   Max rows: 500
   Done: 500 rows, 12,365 total accesses in 0.0s
-Loading Criteo traces from: /tmp/tmpwgloedax/synth.txt
+Loading Criteo traces from: /tmp/tmpa777_5am/synth.txt
   Categorical columns: 14..39 (26 embedding tables)
   Max rows: 300
   Done: 300 rows, 7,428 total accesses in 0.0s
-Loading Criteo traces from: /tmp/tmpwgloedax/synth.txt
+Loading Criteo traces from: /tmp/tmpa777_5am/synth.txt
   Categorical columns: 14..39 (26 embedding tables)
   Max rows: 500
   Done: 500 rows, 12,365 total accesses in 0.0s
-Loading Criteo traces from: /tmp/tmpy7ypn5me/synth.txt
+Loading Criteo traces from: /tmp/tmpr87_yl_1/synth.txt
   Categorical columns: 14..39 (26 embedding tables)
   Done: 1,500 rows, 37,069 total accesses in 0.0s
-ok
-test_policy_list_and_capacities_match_request (test_shared_cache.TestSharedSimulation.test_policy_list_and_capacities_match_request) ... ok
-test_shared_differs_from_per_table_caches (test_shared_cache.TestSharedSimulation.test_shared_differs_from_per_table_caches) ... ok
-test_single_table_equals_per_table_simulator (test_shared_cache.TestSharedSimulation.test_single_table_equals_per_table_simulator) ... ok
-
+./home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2ihowyqw/cap512_ARC.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2ihowyqw/cap512_LFU_gem5_LFURP_reset_on_eviction.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2ihowyqw/cap512_LFU_persistent_counters.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2ihowyqw/cap512_LRU.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2ihowyqw/cap512_W_TinyLFU_Count_Min_window_1.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2ihowyqw/cap64_ARC.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2ihowyqw/cap64_LFU_gem5_LFURP_reset_on_eviction.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2ihowyqw/cap64_LFU_persistent_counters.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2ihowyqw/cap64_LRU.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2ihowyqw/cap64_W_TinyLFU_Count_Min_window_1.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+....
 ----------------------------------------------------------------------
-Ran 55 tests in 9.064s
+Ran 56 tests in 9.532s
 
 OK
-Loading Criteo traces from: /tmp/tmpuabolpv2/synth.txt
+Loading Criteo traces from: /tmp/tmprmu31bwr/synth.txt
   Categorical columns: 14..39 (26 embedding tables)
   Done: 1,500 rows, 37,069 total accesses in 0.0s
 rc=0

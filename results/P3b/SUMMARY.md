@@ -13,9 +13,9 @@ Local: Python 3.12.3, numpy 1.26.4 (`.venv`), 12 cores.
 - Output JSON: totals plus per-table hits/misses for every (policy, capacity).
 
 ## Tests
-- `tests/test_shared_cache.py`: 15 tests (row order, table qualification, empty fields, row limit, LRU vs an
+- `tests/test_shared_cache.py`: 16 tests (row order, table qualification, empty fields, row limit, LRU vs an
   independent reference incl. per-table hits, compulsory-miss-only at huge capacity, single-table run equals the
-  per-table simulator for all 5 policies, parallel == serial). Full suite: 55 tests OK (`unittest.txt`).
+  per-table simulator for all 5 policies, parallel == serial, per-result CSV parts). Full suite: 56 tests OK (`unittest.txt`).
 - Mutation: `tools/mutate_shared.py` 10/10 caught (`mutation.txt`); existing `tools/mutate_policies.py` still 16/16.
 
 ## Timing: 200k synthetic rows, 1 worker (`timing_200k/`)
@@ -29,8 +29,8 @@ Local: Python 3.12.3, numpy 1.26.4 (`.venv`), 12 cores.
   `results/P3/rows_2000000/figs/zipf_per_table.csv`), 12.9x the synthetic count, so bigger dicts may run slower than linear.
 - Memory: 142032 kB x 9.34 x 5 processes = ~6.6 GB upper estimate.
 
-## Planned job (NOT submitted; waiting for approval)
+## Job (approved with 2 h limit; each policy/capacity saved to parts/*.csv on completion)
 | job | rows | tasks | CPUs | mem | time limit | depends on |
 |---|---|---|---|---|---|---|
-| p3b_shared (`cluster/jobs/p3b_shared.sbatch`) | 2M | 1 | 4 | 16G | 01:00:00 | none |
+| p3b_shared (`cluster/jobs/p3b_shared.sbatch`) | 2M | 1 | 4 | 16G | 02:00:00 | none |
 Submit with `cluster/p3b_driver.sh` (rsync, one sbatch, no wait). No dump step: it parses train.txt itself.

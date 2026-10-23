@@ -17,6 +17,7 @@ import argparse
 import csv
 import json
 import os
+import re
 import sys
 import time
 from array import array
@@ -80,8 +81,22 @@ def run_one(job):
     return policy_cls.name, capacity, hits, cache.hits, cache.misses, time.process_time() - t0
 
 
-def run_shared(keys, per_table, capacities, workers, policies=None):
-    """Returns results[cap][policy] with totals and a per_table breakdown."""
+def write_part(part_dir, name, cap, hits, per_table):
+    """One CSV per (policy, capacity), written atomically as soon as it finishes."""
+    slug = re.sub(r'[^A-Za-z0-9]+', '_', name).strip('_')
+    path = os.path.join(part_dir, f'cap{cap}_{slug}.csv')
+    with open(path + '.tmp', 'w', newline='') as f:
+        w = csv.writer(f)
+        w.writerow(['policy', 'capacity', 'table', 'hits', 'misses'])
+        for t in range(N_TABLES):
+            w.writerow([name, cap, t, hits[t], per_table[t] - hits[t]])
+        w.writerow([name, cap, 'all', sum(hits), sum(per_table) - sum(hits)])
+    os.replace(path + '.tmp', path)
+
+
+def run_shared(keys, per_table, capacities, workers, policies=None, part_dir=None):
+    """Returns results[cap][policy] with totals and a per_table breakdown.
+    With part_dir, each (policy, capacity) is also saved to its own CSV on arrival."""
     global _KEYS
     policies = POLICIES if policies is None else policies
     _KEYS = keys
@@ -91,6 +106,8 @@ def run_shared(keys, per_table, capacities, workers, policies=None):
     def collect(out):
         name, cap, hits, h, m, sec = out
         assert sum(hits) == h and h + m == len(keys), f"{name}@{cap}: counts do not add up"
+        if part_dir:
+            write_part(part_dir, name, cap, hits, per_table)
         results[cap][name] = {
             'hits': h, 'misses': m, 'hit_rate': h / (h + m) * 100 if h + m else 0.0,
             'cpu_seconds': sec,
@@ -132,8 +149,10 @@ def main():
     print(f"Loaded {n_rows:,} rows, {len(keys):,} accesses, {unique:,} unique (table, id) keys "
           f"in {t_load:.1f}s", flush=True)
 
+    part_dir = os.path.join(args.output, 'parts')
+    os.makedirs(part_dir, exist_ok=True)
     t0 = time.time()
-    results = run_shared(keys, per_table, args.capacities, args.workers, policies)
+    results = run_shared(keys, per_table, args.capacities, args.workers, policies, part_dir)
     t_sweep = time.time() - t0
     print(f"Sweep finished in {t_sweep:.1f}s\n")
     names = [p.name for p in policies]

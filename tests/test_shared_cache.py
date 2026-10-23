@@ -178,6 +178,25 @@ class TestSharedSimulation(SyntheticCase):
                 self.assertEqual(sum(t['hits'] for t in r['per_table']), r['hits'])
                 self.assertEqual([t['hits'] + t['misses'] for t in r['per_table']], self.per_table)
 
+    def test_parts_written_per_policy_and_capacity(self):
+        import csv
+        caps = [64, 512]
+        with tempfile.TemporaryDirectory() as d:
+            res = sc.run_shared(self.keys, self.per_table, caps, 2, part_dir=d)
+            files = sorted(os.listdir(d))
+            self.assertEqual(len(files), len(caps) * len(sc.POLICIES))
+            self.assertFalse([f for f in files if f.endswith('.tmp')])
+            for fn in files:
+                rows = list(csv.DictReader(open(os.path.join(d, fn))))
+                name, cap = rows[0]['policy'], int(rows[0]['capacity'])
+                r = res[cap][name]
+                self.assertEqual([int(x['hits']) for x in rows[:26]],
+                                 [t['hits'] for t in r['per_table']])
+                self.assertEqual([int(x['misses']) for x in rows[:26]],
+                                 [t['misses'] for t in r['per_table']])
+                self.assertEqual((rows[26]['table'], int(rows[26]['hits']), int(rows[26]['misses'])),
+                                 ('all', r['hits'], r['misses']))
+
     def test_policy_list_and_capacities_match_request(self):
         self.assertEqual(sorted(p.name for p in sc.POLICIES),
                          sorted(['LRU', ts.LFUResetCache.name, ts.LFUCache.name,
