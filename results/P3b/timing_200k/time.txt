@@ -1,0 +1,6 @@
+	Command being timed: ".venv/bin/python -I trace_sim/run_shared_cache.py --criteo_path /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/32e317e8-7aef-4302-aefe-49dcee3164eb/scratchpad/synth_200k.txt --n_rows 200000 --workers 1 --output results/P3b/timing_200k --tag shared_200k_synthetic"
+	User time (seconds): 126.94
+	System time (seconds): 0.19
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:07.17
+	Maximum resident set size (kbytes): 142032
+	Exit status: 0
