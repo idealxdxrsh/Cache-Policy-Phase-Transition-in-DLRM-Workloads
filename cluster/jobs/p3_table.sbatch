@@ -16,7 +16,8 @@ TAG=$(printf 'table_%02d' "$T")
 TR=$W/data/p3/traces_$N_ROWS
 PARTS=$W/results/P3/rows_$N_ROWS/parts; mkdir -p "$PARTS"
 eval "$(conda shell.bash hook)"; conda activate /scratch/rahulkmr/Adarsh/envs/dlrm_cache
-/usr/bin/time -v python -I "$W/repo/trace_sim/run_trace_sim.py" \
+# GNU time is missing on some compute nodes (node6, job 412923: exit 127)
+python -I "$W/repo/tools/timev.py" python -I "$W/repo/trace_sim/run_trace_sim.py" \
     --trace_dir "$TR" --tables "$T" --belady --workers "$SLURM_CPUS_PER_TASK" \
     --output "$PARTS" --tag "$TAG" \
     > "$PARTS/${TAG}_log.txt" 2> "$PARTS/${TAG}_time.txt"

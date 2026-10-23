@@ -17,6 +17,7 @@ OUT=$W/results/P3/rows_$N_ROWS; mkdir -p "$OUT"
 eval "$(conda shell.bash hook)"; conda activate /scratch/rahulkmr/Adarsh/envs/dlrm_cache
 TRAIN=$(find "$EXT" -type f \( -name 'train.txt' -o -name 'train.csv' \) | head -n 1)
 [ -n "$TRAIN" ] || { echo "no train.txt/train.csv under $EXT" | tee "$OUT/dump_error.txt"; exit 1; }
-/usr/bin/time -v python -I "$W/repo/trace_sim/run_trace_sim.py" \
+# GNU time is missing on some compute nodes (node6, job 412923: exit 127)
+python -I "$W/repo/tools/timev.py" python -I "$W/repo/trace_sim/run_trace_sim.py" \
     --criteo_path "$TRAIN" --n_rows "$N_ROWS" --dump_traces "$TR" \
     > "$OUT/dump_log.txt" 2> "$OUT/dump_time.txt"
