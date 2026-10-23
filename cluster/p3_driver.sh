@@ -1,8 +1,10 @@
 #!/bin/bash
-# P3 driver (run locally; NOT yet run): sync repo, then for 2M and then 10M rows
-# submit dump -> 26-task table array -> merge, chained with afterok (the 10M
-# chain starts only after the 2M merge succeeds). Blocks on the last job with
-# sbatch --wait (no polling), then copies results back to results/P3/.
+# P3 driver (run locally): sync repo, then for 2M and then 10M rows submit
+# dump -> 26-task table array (max 6 running) -> merge, chained with afterok
+# (the 10M chain starts only after the 2M merge succeeds). The 10M dump gets a
+# 2 h limit. Submits and returns; it does not wait. When the jobs are done,
+# copy results back with:
+#   rsync -a rahulkmr@hpc.bits-hyderabad.ac.in:/scratch/rahulkmr/Adarsh/results/P3/ results/P3/
 set -euo pipefail
 H=rahulkmr@hpc.bits-hyderabad.ac.in
 W=/scratch/rahulkmr/Adarsh
@@ -16,17 +18,12 @@ dep=""
 : > $W/results/P3/jobs.txt
 for N in 2000000 10000000; do
     s="sbatch --parsable --kill-on-invalid-dep=yes --export=ALL,N_ROWS=\$N"
-    d=\$(\$s \$dep p3_dump.sbatch)
-    a=\$(\$s --dependency=afterok:\$d p3_table.sbatch)
+    if [ \$N = 10000000 ]; then dt="-t 02:00:00"; else dt=""; fi
+    d=\$(\$s \$dt \$dep p3_dump.sbatch)
+    a=\$(\$s --array=0-25%6 --dependency=afterok:\$d p3_table.sbatch)
     m=\$(\$s --dependency=afterok:\$a p3_merge.sbatch)
-    echo "rows=\$N dump=\$d array=\$a merge=\$m" >> $W/results/P3/jobs.txt
+    echo "rows=\$N dump=\$d array=\$a merge=\$m" | tee -a $W/results/P3/jobs.txt
     dep="--dependency=afterok:\$m"
 done
-sbatch --parsable --wait --kill-on-invalid-dep=yes -p compute -c 4 -t 00:05:00 -J p3_wait \
-    -o $W/logs/p3_wait_%j.out \$dep --wrap true \
-    || echo "chain failed or was cancelled (rc=\$?)" >> $W/results/P3/jobs.txt
-sacct -S today -n -X --name=p3_dump,p3_table,p3_merge -o JobID,JobName,State,ExitCode,Elapsed \
-    >> $W/results/P3/jobs.txt
+squeue -u rahulkmr -o "%.10i %.10P %.10j %.3t %.10l %.20E %r" | head -n 20
 REMOTE
-mkdir -p "$ROOT/results/P3"
-rsync -a "$H:$W/results/P3/" "$ROOT/results/P3/"
