@@ -10,3 +10,4 @@ dependencies:
   - pip
   - pip:
       - kaggle
+      - python-dotenv   # kaggle imports it; was only found in ~/.local
