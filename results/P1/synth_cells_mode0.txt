@@ -1,0 +1,2 @@
+   Number of wires:             105509
+   Number of cells:             144487

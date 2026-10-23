@@ -1,0 +1,4 @@
+FATAL: lfu_cache_controller.v:59: COUNTER_MODE=2 not supported (0 or 1; 2 is pending)
+       Time: 0  Scope: tb_lfu_cache.dut.BAD_COUNTER_MODE
+LFU Cache Controller v2 testbench  (DEPTH=256, COUNTER=6 bits, COUNTER_MODE=2)
+exit=1

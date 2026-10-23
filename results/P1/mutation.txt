@@ -1,0 +1,15 @@
+baseline mode=0: PASS
+baseline mode=1: PASS
+stale_victim_reg mode=0: KILLED | EVICT does not latch the new victim; FILL writes the previous victim slot | FAIL: not all 256 lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available; FAIL: hit rate below 70% on skewed workload
+stale_victim_reg mode=1: KILLED | EVICT does not latch the new victim; FILL writes the previous victim slot | FAIL: not all 256 lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available; FAIL: hit rate below 70% on skewed workload
+stale_stageA mode=0: KILLED | Stage A group minima never refreshed (victim from stale/reset indices) | FAIL: second access must hit; FAIL: not all 256 lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available
+stale_stageA mode=1: KILLED | Stage A group minima never refreshed (victim from stale/reset indices) | FAIL: second access must hit; FAIL: not all 256 lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available
+double_increment_hit mode=0: KILLED | hit adds 2 to the counter instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 0: slot 1 should survive
+double_increment_hit mode=1: KILLED | hit adds 2 to the counter instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 1: installed tag must continue slot count (3+1)
+double_increment_fill mode=0: survived (equivalent, expected) | mode-1 fill adds 2 to the slot count instead of 1
+double_increment_fill mode=1: KILLED | mode-1 fill adds 2 to the slot count instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 1: installed tag must continue slot count (3+1)
+install_count_2 mode=0: KILLED | mode-0 install sets the count to 2 instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 0: installed tag count must be 1
+install_count_2 mode=1: survived (equivalent, expected) | mode-0 install sets the count to 2 instead of 1
+mode0_keeps_count mode=0: KILLED | COUNTER_MODE ignored: mode 0 behaves like mode 1 | FAIL: mode 0: installed tag count must be 1; FAIL: mode 0: fresh line (count 1) should be the next victim; FAIL: mode 0: slot 1 should survive
+mode0_keeps_count mode=1: survived (equivalent, expected) | COUNTER_MODE ignored: mode 0 behaves like mode 1
+RESULT: OK (all non-equivalent mutants killed)

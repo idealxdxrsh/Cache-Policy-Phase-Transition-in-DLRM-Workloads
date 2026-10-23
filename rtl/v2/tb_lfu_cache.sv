@@ -7,7 +7,10 @@
 // ============================================================
 `timescale 1ns / 1ps
 
-module tb_lfu_cache;
+// COUNTER_MODE is set from the command line:
+//   iverilog -P tb_lfu_cache.COUNTER_MODE=1 ...
+// Pass +vcd to vvp to dump waveforms.
+module tb_lfu_cache #(parameter COUNTER_MODE = 0);
 
 localparam CACHE_DEPTH   = 256;
 localparam ADDR_WIDTH    = 20;
@@ -28,7 +31,8 @@ reg  [VECTOR_WIDTH-1:0]  fill_data  = 0;
 
 lfu_cache_controller #(
     .CACHE_DEPTH(CACHE_DEPTH), .ADDR_WIDTH(ADDR_WIDTH),
-    .VECTOR_WIDTH(VECTOR_WIDTH), .COUNTER_WIDTH(COUNTER_WIDTH)
+    .VECTOR_WIDTH(VECTOR_WIDTH), .COUNTER_WIDTH(COUNTER_WIDTH),
+    .COUNTER_MODE(COUNTER_MODE)
 ) dut (
     .clk(clk), .rst_n(rst_n),
     .req_valid(req_valid), .req_addr(req_addr),
@@ -38,8 +42,10 @@ lfu_cache_controller #(
 );
 
 initial begin
-    $dumpfile("lfu_cache_waves.vcd");
-    $dumpvars(0, tb_lfu_cache);
+    if ($test$plusargs("vcd")) begin
+        $dumpfile("lfu_cache_waves.vcd");
+        $dumpvars(0, tb_lfu_cache);
+    end
 end
 
 integer errors = 0;
@@ -105,13 +111,13 @@ function integer slot_count(input [ADDR_WIDTH-1:0] addr);
     end
 endfunction
 
-integer i, j, hits_seen;
+integer i, j, hits_seen, missing;
 reg h;
 real hit_rate;
 
 initial begin
-    $display("LFU Cache Controller v2 testbench  (DEPTH=%0d, COUNTER=%0d bits)",
-             CACHE_DEPTH, COUNTER_WIDTH);
+    $display("LFU Cache Controller v2 testbench  (DEPTH=%0d, COUNTER=%0d bits, COUNTER_MODE=%0d)",
+             CACHE_DEPTH, COUNTER_WIDTH, COUNTER_MODE);
 
     // ---- TEST 1: miss then hit, data correct -----------------
     $display("[1] miss then hit");
@@ -165,6 +171,36 @@ initial begin
     do_reset;
     for (i = 0; i < 10; i = i + 1) access(20'h12345, h);
     check(slot_count(20'h12345) == 10, "counter not incremented exactly once per access");
+
+    // ---- TEST 7: count of a newly installed tag --------------
+    // All 256 lines at count 3; slot 0 (lowest index) is the victim.
+    $display("[7] install count after eviction (mode %0d)", COUNTER_MODE);
+    do_reset;
+    for (i = 0; i < CACHE_DEPTH; i = i + 1) access(20'hD0000 + i, h);
+    for (j = 0; j < 2; j = j + 1)
+        for (i = 0; i < CACHE_DEPTH; i = i + 1) access(20'hD0000 + i, h);
+    access(20'hDEAD0, h);
+    check(h == 0, "new address must miss");
+    check(slot_count(20'hD0000) == -1, "victim was not the lowest-index min-count line");
+    missing = 0;
+    for (i = 1; i < CACHE_DEPTH; i = i + 1)
+        if (slot_count(20'hD0000 + i) != 3) missing = missing + 1;
+    check(missing == 0, "a non-victim line was lost or its count changed");
+    if (COUNTER_MODE == 0)
+        check(slot_count(20'hDEAD0) == 1, "mode 0: installed tag count must be 1");
+    else
+        check(slot_count(20'hDEAD0) == 4, "mode 1: installed tag must continue slot count (3+1)");
+    // A second new tag: mode 0 evicts the fresh line (count 1),
+    // mode 1 evicts slot 1 (count 3 < 4).
+    access(20'hBEEF0, h);
+    check(h == 0, "second new address must miss");
+    if (COUNTER_MODE == 0) begin
+        check(slot_count(20'hDEAD0) == -1, "mode 0: fresh line (count 1) should be the next victim");
+        check(slot_count(20'hD0001) == 3,  "mode 0: slot 1 should survive");
+    end else begin
+        check(slot_count(20'hDEAD0) == 4,  "mode 1: line with inherited count 4 should survive");
+        check(slot_count(20'hD0001) == -1, "mode 1: slot 1 (count 3) should be the next victim");
+    end
 
     $display("----------------------------------------------");
     if (errors == 0) $display("ALL TESTS PASSED");

@@ -2,7 +2,7 @@
 criteo/
 *.zip
 *.parquet
-lfu_sim
+lfu_sim*
 *.out
 *.err
 logs/

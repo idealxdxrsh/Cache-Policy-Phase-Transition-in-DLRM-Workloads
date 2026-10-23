@@ -14,10 +14,15 @@
 //       Stage B (combinational, EVICT cycle): min across groups
 //   - Hit detection ORs per-group first, then across groups
 //
-// Counter semantics in this version (OPEN DESIGN QUESTION):
-//   freq_cnt is stored per SLOT. It is NOT cleared on eviction;
-//   a new tag filled into a slot continues from that slot's old
-//   count (+1). This is not the same as per-ADDRESS history.
+// Counter semantics, selected by COUNTER_MODE:
+//   0 (default): count is set to 1 when a tag is installed
+//                (reset-on-eviction LFU).
+//   1          : original v2 behaviour. freq_cnt is stored per
+//                SLOT and NOT cleared on eviction; a new tag
+//                continues from the slot's old count (+1).
+//   2          : address-indexed history. NOT implemented; the
+//                scheme is pending Prof. Mane. Elaboration fails.
+//   Neither 0 nor 1 is per-ADDRESS history.
 // ============================================================
 `timescale 1ns / 1ps
 
@@ -27,6 +32,7 @@ module lfu_cache_controller #(
     parameter VECTOR_WIDTH  = 128,
     parameter COUNTER_WIDTH = 6,
     parameter GROUPS        = 16,
+    parameter COUNTER_MODE  = 0,
     parameter IDX_WIDTH     = $clog2(CACHE_DEPTH)
 )(
     input  wire                     clk,
@@ -47,6 +53,12 @@ module lfu_cache_controller #(
 
 localparam GSIZE = CACHE_DEPTH / GROUPS;
 localparam EW    = COUNTER_WIDTH + 1;      // effective-count width
+
+generate
+    if (COUNTER_MODE != 0 && COUNTER_MODE != 1) begin : BAD_COUNTER_MODE
+        initial $fatal(1, "COUNTER_MODE=%0d not supported (0 or 1; 2 is pending)", COUNTER_MODE);
+    end
+endgenerate
 
 // ---- storage ------------------------------------------------
 reg [ADDR_WIDTH-1:0]    tag_store  [0:CACHE_DEPTH-1];
@@ -188,7 +200,7 @@ always @(posedge clk or negedge rst_n) begin
             EVICT: begin
                 victim_reg                <= victim_comb;
                 valid_bits[victim_comb]   <= 1'b0;
-                // freq_cnt[victim_comb] intentionally not touched
+                // freq_cnt[victim_comb] not touched here; FILL sets it
                 fill_req                  <= 1'b1;
                 fill_addr                 <= req_addr_reg;
             end
@@ -197,7 +209,9 @@ always @(posedge clk or negedge rst_n) begin
                 tag_store[victim_reg]   <= req_addr_reg;
                 data_store[victim_reg]  <= fill_data;
                 valid_bits[victim_reg]  <= 1'b1;
-                if (freq_cnt[victim_reg] != {COUNTER_WIDTH{1'b1}})
+                if (COUNTER_MODE == 0)
+                    freq_cnt[victim_reg] <= {{(COUNTER_WIDTH-1){1'b0}}, 1'b1};
+                else if (freq_cnt[victim_reg] != {COUNTER_WIDTH{1'b1}})
                     freq_cnt[victim_reg] <= freq_cnt[victim_reg] + 1'b1;
                 resp_data  <= fill_data;
                 resp_valid <= 1'b1;
