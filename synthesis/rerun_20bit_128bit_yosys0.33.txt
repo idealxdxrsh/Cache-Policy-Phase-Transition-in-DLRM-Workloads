@@ -1,0 +1,22 @@
+
+5. Printing statistics.
+
+=== lfu_cache_controller ===
+
+   Number of wires:               8571
+   Number of wire bits:          11516
+   Number of public wires:          81
+   Number of public wire bits:    2890
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:              11331
+     $_DFFE_PN0P_                  148
+     $_DFFE_PN1P_                    1
+     $_DFFE_PP_                   2536
+     $_DFF_PN0_                      4
+     $_DFF_P_                       16
+     $_NAND_                      4820
+     $_NOR_                       2886
+     $_NOT_                        920
+

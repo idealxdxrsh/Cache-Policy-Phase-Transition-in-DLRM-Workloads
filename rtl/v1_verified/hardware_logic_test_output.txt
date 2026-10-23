@@ -1,0 +1,81 @@
+(rtl_sim) [rahulkmr@hpc01 rtl]$ vvp lfu_sim
+VCD info: dumpfile lfu_cache_waves.vcd opened for output.
+VCD warning: array word tb_lfu_cache.dut.freq_count[0] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[0] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[1] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[1] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[2] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[2] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[3] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[3] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[4] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[4] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[5] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[5] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[6] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[6] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[7] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[7] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[8] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[8] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[9] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[9] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[10] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[10] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[11] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[11] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[12] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[12] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[13] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[13] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[14] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[14] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.freq_count[15] will conflict with an escaped identifier.
+VCD warning: array word tb_lfu_cache.dut.valid_bits[15] will conflict with an escaped identifier.
+--- Starting LFU Cache Simulation ---
+
+--- PHASE 1: Cold Misses (Filling Cache) ---
+[215000] Vector Received for Addr: 0 | Data: 0
+[375000] Vector Received for Addr: 20 | Data: 20
+[535000] Vector Received for Addr: 40 | Data: 40
+[695000] Vector Received for Addr: 60 | Data: 60
+[855000] Vector Received for Addr: 80 | Data: 80
+[1015000] Vector Received for Addr: a0 | Data: a0
+[1175000] Vector Received for Addr: c0 | Data: c0
+[1335000] Vector Received for Addr: e0 | Data: e0
+[1495000] Vector Received for Addr: 100 | Data: 100
+[1655000] Vector Received for Addr: 120 | Data: 120
+[1815000] Vector Received for Addr: 140 | Data: 140
+[1975000] Vector Received for Addr: 160 | Data: 160
+[2135000] Vector Received for Addr: 180 | Data: 180
+[2295000] Vector Received for Addr: 1a0 | Data: 1a0
+[2455000] Vector Received for Addr: 1c0 | Data: 1c0
+[2615000] Vector Received for Addr: 1e0 | Data: 1e0
+
+--- PHASE 2: LFU Frequency Building ---
+[2665000] Vector Received for Addr: 0 | Data: 0
+[2715000] Vector Received for Addr: 0 | Data: 0
+[2765000] Vector Received for Addr: 0 | Data: 0
+[2815000] Vector Received for Addr: 0 | Data: 0
+[2865000] Vector Received for Addr: 0 | Data: 0
+[2915000] Vector Received for Addr: 20 | Data: 20
+[2965000] Vector Received for Addr: 20 | Data: 20
+[3015000] Vector Received for Addr: 20 | Data: 20
+[3065000] Vector Received for Addr: 40 | Data: 40
+[3115000] Vector Received for Addr: 40 | Data: 40
+[3165000] Vector Received for Addr: 40 | Data: 40
+[3215000] Vector Received for Addr: 40 | Data: 40
+[3265000] Vector Received for Addr: 40 | Data: 40
+[3315000] Vector Received for Addr: 40 | Data: 40
+[3365000] Vector Received for Addr: 40 | Data: 40
+[3415000] Vector Received for Addr: 40 | Data: 40
+[3465000] Vector Received for Addr: 40 | Data: 40
+[3515000] Vector Received for Addr: 40 | Data: 40
+
+--- PHASE 3: Forcing LFU Eviction ---
+[3675000] Vector Received for Addr: 3e7 | Data: 3e7
+
+--- PHASE 4: Verifying Hot Items Survived ---
+[3725000] Vector Received for Addr: 40 | Data: 40
+[3775000] Vector Received for Addr: 0 | Data: 0
+--- Simulation Complete ---

@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(**)", "Edit(**)",
+      "Bash(git status)", "Bash(git diff *)", "Bash(git log *)", "Bash(git add *)", "Bash(git commit *)",
+      "Bash(ssh rahulkmr@hpc.bits-hyderabad.ac.in squeue *)", "Bash(ssh rahulkmr@hpc.bits-hyderabad.ac.in sacct *)", "Bash(ssh rahulkmr@hpc.bits-hyderabad.ac.in sinfo *)", "Bash(ssh rahulkmr@hpc.bits-hyderabad.ac.in sbatch *)",
+      "Bash(ssh rahulkmr@hpc.bits-hyderabad.ac.in ls *)", "Bash(ssh rahulkmr@hpc.bits-hyderabad.ac.in head *)", "Bash(ssh rahulkmr@hpc.bits-hyderabad.ac.in tail *)", "Bash(ssh rahulkmr@hpc.bits-hyderabad.ac.in grep *)", "Bash(ssh rahulkmr@hpc.bits-hyderabad.ac.in mkdir *)",
+      "Bash(rsync *)", "Bash(iverilog *)", "Bash(vvp *)", "Bash(yosys *)", "Bash(python3 *)", "Bash(bash run_rtl.sh)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)", "Bash(sudo *)", "Bash(ssh rahulkmr@hpc.bits-hyderabad.ac.in rm *)", "Bash(ssh rahulkmr@hpc.bits-hyderabad.ac.in sudo *)", "Bash(git push *)",
+      "Bash(curl * | bash)", "Bash(wget * | sh)",
+      "Read(~/.ssh/**)", "Read(**/kaggle.json)", "Read(./.env)"
+    ]
+  }
+}

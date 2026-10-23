@@ -1,0 +1,38 @@
+gpu_profile_149046.out  prep_149038.out         profile_149042.out  run_gpu_profiler.sh
+(dlrm1) [rahulkmr@hpc01 raw]$ cat h100_output_149053.log
+Executing DLRM Profiler on H100...
+Using H100 Device: NVIDIA H100 80GB HBM3
+Warming up GPU kernels...
+Profiling GPU Hardware (H100)...
+
+--- GPU HARDWARE PROFILING RESULTS ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                2_sparse_memory_lookups         0.00%       0.000us         0.00%       0.000us       0.000us       1.617ms       569.16%       1.617ms       1.617ms             1  
+                                    1_dense_compute_mlp         0.00%       0.000us         0.00%       0.000us       0.000us     313.855us       110.49%     313.855us     313.855us             1  
+                                        model_inference         2.42%     100.089us        99.93%       4.138ms       4.138ms       0.000us         0.00%     289.407us     289.407us             1  
+                                2_sparse_memory_lookups        16.74%     693.135us        43.84%       1.815ms       1.815ms       0.000us         0.00%     238.271us     238.271us             1  
+                                    aten::embedding_bag         0.86%      35.651us        15.08%     624.350us      24.013us       0.000us         0.00%     204.065us       7.849us            26  
+                                   aten::_embedding_bag         5.90%     244.285us        14.22%     588.699us      22.642us     204.065us        71.84%     204.065us       7.849us            26  
+void at::native::(anonymous namespace)::EmbeddingBag...         0.00%       0.000us         0.00%       0.000us       0.000us     204.065us        71.84%     204.065us       7.849us            26  
+                                           aten::arange         4.07%     168.313us        16.51%     683.726us      13.149us      34.206us        12.04%      68.412us       1.316us            52  
+                                    1_dense_compute_mlp         8.43%     349.023us        53.68%       2.222ms       2.222ms       0.000us         0.00%      51.136us      51.136us             1  
+                                           aten::linear         0.75%      30.967us        41.69%       1.726ms     575.429us       0.000us         0.00%      44.224us      14.741us             3  
+                                            aten::addmm         7.90%     327.168us        37.72%       1.562ms     520.636us      38.880us        13.69%      44.224us      14.741us             3  
+void (anonymous namespace)::elementwise_kernel_with_...         0.00%       0.000us         0.00%       0.000us       0.000us      34.206us        12.04%      34.206us       1.316us            26  
+sm80_xmma_gemm_f32f32_f32f32_f32_tn_n_tilesize64x64x...         0.00%       0.000us         0.00%       0.000us       0.000us      23.680us         8.34%      23.680us      23.680us             1  
+sm80_xmma_gemm_f32f32_f32f32_f32_tn_n_tilesize32x32x...         0.00%       0.000us         0.00%       0.000us       0.000us      15.200us         5.35%      15.200us       7.600us             2  
+                                             aten::relu         0.83%      34.462us         3.10%     128.171us      42.724us       0.000us         0.00%       6.912us       2.304us             3  
+                                        aten::clamp_min         1.66%      68.703us         2.26%      93.709us      31.236us       6.912us         2.43%       6.912us       2.304us             3  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       6.912us         2.43%       6.912us       2.304us             3  
+                                Activity Buffer Request        28.34%       1.173ms        28.34%       1.173ms       1.173ms       5.344us         1.88%       5.344us       5.344us             1  
+                                                aten::t         1.66%      68.624us         3.22%     133.411us      44.470us       0.000us         0.00%       0.000us       0.000us             3  
+                                        aten::transpose         1.05%      43.635us         1.56%      64.787us      21.596us       0.000us         0.00%       0.000us       0.000us             3  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 4.140ms
+Self CUDA time total: 284.063us
+
+(dlrm1) [rahulkmr@hpc01 raw]$ 
+
+

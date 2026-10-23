@@ -1,0 +1,12 @@
+# data and build products
+criteo/
+*.zip
+*.parquet
+lfu_sim
+*.out
+*.err
+logs/
+__pycache__/
+*.pyc
+lfu_cache_synthesized.v
+lfu_cache_synthesized.json

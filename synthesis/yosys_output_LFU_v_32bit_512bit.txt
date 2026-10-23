@@ -1,0 +1,41 @@
+(rtl_sim) [rahulkmr@hpc01 rtl]$ tail -n 40 synthesis_report.log
+ABC: 
+ABC: YOSYS_ABC_DONE 
+
+3.1.2. Re-integrating ABC results.
+ABC RESULTS:              NAND cells:    14435
+ABC RESULTS:               NOR cells:     7296
+ABC RESULTS:               NOT cells:     2973
+ABC RESULTS:        internal signals:    18219
+ABC RESULTS:           input signals:     9415
+ABC RESULTS:          output signals:      596
+Removing temp directory.
+Removing global temp directory.
+Removed 0 unused cells and 28230 unused wires.
+
+4. Printing statistics.
+
+=== lfu_cache_controller ===
+
+        +----------Local Count, excluding submodules.
+        | 
+    24265 wires
+    34734 wire bits
+       81 public wires
+    10030 public wire bits
+       12 ports
+     1096 port bits
+    34153 cells
+      148   $_DFFE_PN0P_
+        1   $_DFFE_PN1P_
+     9280   $_DFFE_PP_
+        4   $_DFF_PN0_
+       16   $_DFF_P_
+    14435   $_NAND_
+     7296   $_NOR_
+     2973   $_NOT_
+
+Warnings: 4 unique messages, 4 total
+End of script. Logfile hash: 6d69430fb3, CPU: user 7.11s system 0.12s, MEM: 107.47 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/home/rahulkmr/.conda/envs/rtl_sim=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 75% 2x abc (20 sec), 9% 1x techmap (2 sec), ...

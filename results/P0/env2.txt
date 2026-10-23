@@ -1,0 +1,57 @@
+drwxrwxr-x. 2 rahulkmr rahulkmr 1024 Oct 23 18:05 /scratch/rahulkmr/Adarsh
+== cuda/nsight/conda modules
+anaconda3-2021.05-gcc-8.5.0-tzdgetu
+cuda-11.7.1-nvhpc-22.5-iwuavb6
+cuda-11.8.0-gcc-8.5.0-o55wffj
+cuda-9.2.88-gcc-8.5.0-xv6tx6x
+python-3.9.13-gcc-8.5.0-3la3cls
+python-3.9.13-gcc-8.5.0-yll4ogf
+anaconda3-2022.05-gcc-11.2.0-od5lltp
+cuda-11.6.2-gcc-11.2.0-p6gf7ah
+cuda-11.7.1-gcc-11.2.0-gypzm3r
+cuda-12.1.0-gcc-11.2.0-s5o57xp
+nvhpc-22.3-gcc-11.2.0-haau2u7
+nvhpc-22.5-gcc-11.2.0-ks76kzj
+nvhpc-22.9-gcc-11.2.0-2wu2dwj
+nvhpc-23.1-gcc-11.2.0-zdle7dn
+python-3.10.8-gcc-11.2.0-dlcmq7k
+python-3.10.8-gcc-11.2.0-wikzev7
+python-3.9.13-aocc-3.2.0-ko55sy6
+python-3.9.13-gcc-11.2.0-6dsu42h
+anaconda3-2021.05-gcc-8.5.0-tzdgetu
+cuda-11.7.1-nvhpc-22.5-iwuavb6
+cuda-11.8.0-gcc-8.5.0-o55wffj
+cuda-9.2.88-gcc-8.5.0-xv6tx6x
+python-3.9.13-gcc-8.5.0-3la3cls
+python-3.9.13-gcc-8.5.0-yll4ogf
+anaconda3-2022.05-gcc-11.2.0-od5lltp
+cuda-11.6.2-gcc-11.2.0-p6gf7ah
+cuda-11.7.1-gcc-11.2.0-gypzm3r
+cuda-12.1.0-gcc-11.2.0-s5o57xp
+nvhpc-22.3-gcc-11.2.0-haau2u7
+nvhpc-22.5-gcc-11.2.0-ks76kzj
+nvhpc-22.9-gcc-11.2.0-2wu2dwj
+nvhpc-23.1-gcc-11.2.0-zdle7dn
+python-3.10.8-gcc-11.2.0-dlcmq7k
+python-3.10.8-gcc-11.2.0-wikzev7
+python-3.9.13-aocc-3.2.0-ko55sy6
+python-3.9.13-gcc-11.2.0-6dsu42h
+anaconda3-2021.05-gcc-8.5.0-i5w2nbn
+nvhpc-22.3-gcc-8.5.0-2uzqqp2
+== conda envs
+# conda environments:
+#
+base                  *  /apps/spack/opt/spack/linux-rocky8-zen2/gcc-13.2.0/anaconda3-2023.09-0-lddgbywkc2ppokktpkst7vwhsonhff6c
+abhav                    /home/rahulkmr/.conda/envs/abhav
+ald_env                  /home/rahulkmr/.conda/envs/ald_env
+dlrm1                    /home/rahulkmr/.conda/envs/dlrm1
+dlrm_h100                /home/rahulkmr/.conda/envs/dlrm_h100
+fimgenv                  /home/rahulkmr/.conda/envs/fimgenv
+flatimgenv               /home/rahulkmr/.conda/envs/flatimgenv
+gq_env                   /home/rahulkmr/.conda/envs/gq_env
+lid_env                  /home/rahulkmr/.conda/envs/lid_env
+orbital                  /home/rahulkmr/.conda/envs/orbital
+orbital_env              /home/rahulkmr/.conda/envs/orbital_env
+rtl_sim                  /home/rahulkmr/.conda/envs/rtl_sim
+tfgpu                    /home/rahulkmr/.conda/envs/tfgpu
+

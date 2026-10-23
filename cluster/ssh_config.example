@@ -1,0 +1,15 @@
+# Append to ~/.ssh/config (in WSL if you are on Windows)
+Host sharanga
+    HostName REPLACE_WITH_SHARANGA_LOGIN_HOST
+    User rahulkmr
+    IdentityFile ~/.ssh/id_ed25519_sharanga
+    ControlMaster auto
+    ControlPath ~/.ssh/cm-%r@%h:%p
+    ControlPersist 8h
+    ServerAliveInterval 60
+
+# One-time setup
+#   ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_sharanga
+#   ssh-copy-id -i ~/.ssh/id_ed25519_sharanga.pub sharanga
+#   ssh sharanga          # log in once by hand (OTP) so ControlMaster stays open
+#   ssh -O check sharanga # should say "Master running"

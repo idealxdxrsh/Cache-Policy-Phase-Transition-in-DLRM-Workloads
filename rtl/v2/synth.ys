@@ -1,0 +1,8 @@
+# Generic Yosys synthesis of the v2 controller (no technology library).
+# Purpose: confirm the RTL is synthesizable and get a generic cell count.
+# This does NOT produce TSMC area, power or timing numbers.
+#   yosys -l synth.log synth.ys
+read_verilog -sv lfu_cache_controller.v
+synth -top lfu_cache_controller -flatten
+stat
+write_verilog -noattr lfu_cache_synthesized.v
