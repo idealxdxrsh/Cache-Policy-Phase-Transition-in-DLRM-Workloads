@@ -3,8 +3,10 @@
 // Author  : Adarsh (2023B1A31167G), BITS Pilani Goa
 //
 // STATUS: simulated with Icarus Verilog (see tb_lfu_cache.sv).
-//         NOT yet synthesized. Fmax / area figures in the docs
-//         for this version are PROJECTIONS, not measurements.
+//         Synthesized with Yosys 0.33 and OpenSTA on NanGate45,
+//         pre-layout, not TSMC; Fmax 165-215 MHz depending on
+//         depth and mode (see results/P5/SUMMARY.md); does not
+//         meet 500 MHz; no gate-level simulation.
 //
 // Changes vs v1 (rtl/v1):
 //   - CACHE_DEPTH 16 -> 256
