@@ -8,17 +8,21 @@
 //         165-215 MHz depending on depth and mode (see
 //         results/P5/SUMMARY.md); does not meet 500 MHz; no
 //         gate-level simulation.
-//         This version (P5b: Stage-B tree + address copies):
-//         same flow, NanGate45, pre-layout, not TSMC; Fmax
-//         185.2-629.2 MHz from the 1 GHz netlists; meets 500 MHz
-//         only at depth 16 (see results/P5b/SUMMARY.md); no
-//         gate-level simulation.
+//         P5b (Stage-B tree + address copies, commit 2a9f4ae):
+//         Fmax 185.2-629.2 MHz (see results/P5b/SUMMARY.md).
+//         This version (P5c: Stage-A and Stage-B trees + address
+//         copies): same flow, NanGate45, pre-layout, not TSMC;
+//         Fmax 199.4-626.1 MHz from the 1 GHz netlists; meets
+//         500 MHz only at depth 16 (see results/P5c/SUMMARY.md);
+//         no gate-level simulation.
 //
 // Changes vs v1 (rtl/v1):
 //   - CACHE_DEPTH 16 -> 256
 //   - COUNTER_WIDTH 8 -> 6 (saturates at 63)
 //   - Victim selection split in two stages:
 //       Stage A (registered, LOOKUP cycle): min of each group
+//         (P5c: balanced reduction tree per group, log2(GSIZE)
+//          levels; ties keep the lowest slot index)
 //       Stage B (combinational, EVICT cycle): min across groups
 //         (P5b: balanced reduction tree, log2(GROUPS) levels;
 //          ties keep the lower-index side, as the serial loop did)
@@ -70,8 +74,10 @@ generate
     if (COUNTER_MODE != 0 && COUNTER_MODE != 1) begin : BAD_COUNTER_MODE
         initial $fatal(1, "COUNTER_MODE=%0d not supported (0 or 1; 2 is pending)", COUNTER_MODE);
     end
-    if (GROUPS < 2 || (GROUPS & (GROUPS - 1)) != 0 || CACHE_DEPTH % GROUPS != 0) begin : BAD_GROUPS
-        initial $fatal(1, "GROUPS=%0d must be a power of two >= 2 dividing CACHE_DEPTH=%0d", GROUPS, CACHE_DEPTH);
+    if (GROUPS < 2 || (GROUPS & (GROUPS - 1)) != 0 || CACHE_DEPTH % GROUPS != 0
+        || ((CACHE_DEPTH / GROUPS) & (CACHE_DEPTH / GROUPS - 1)) != 0) begin : BAD_GROUPS
+        initial $fatal(1, "GROUPS=%0d must be a power of two >= 2 dividing CACHE_DEPTH=%0d into power-of-two groups",
+                       GROUPS, CACHE_DEPTH);
     end
 endgenerate
 
@@ -124,25 +130,40 @@ function [EW-1:0] eff;
     end
 endfunction
 
-// Stage A: registered during LOOKUP on a miss
-reg [IDX_WIDTH-1:0] stageA_min [0:GROUPS-1];
-integer sa, sm;
-reg [IDX_WIDTH-1:0] a_idx;
-reg [EW-1:0]        a_best, a_cur;
+// Stage A: registered during LOOKUP on a miss.
+// P5c: one balanced min-reduction tree per group, same heap order
+// and tie rule as Stage B: slot s of group g is leaf GSIZE-1+s; a
+// node takes the right child only if it is strictly smaller, so
+// ties resolve to the lowest slot index, like the former serial loop.
+localparam ANODES = 2*GSIZE - 1;
+reg  [IDX_WIDTH-1:0]        stageA_min [0:GROUPS-1];
+wire [GROUPS*IDX_WIDTH-1:0] stageA_comb;
+genvar s;
+generate
+    for (g = 0; g < GROUPS; g = g + 1) begin : GRP_TREE
+        wire [ANODES*EW-1:0]        a_val;
+        wire [ANODES*IDX_WIDTH-1:0] a_idx;
+        for (s = 0; s < GSIZE; s = s + 1) begin : A_LEAF
+            assign a_val[(GSIZE-1+s)*EW +: EW] = eff(valid_bits[g*GSIZE+s], freq_cnt[g*GSIZE+s]);
+            assign a_idx[(GSIZE-1+s)*IDX_WIDTH +: IDX_WIDTH] = g*GSIZE + s;
+        end
+        for (s = 0; s < GSIZE-1; s = s + 1) begin : A_NODE
+            wire [EW-1:0] a_lv = a_val[(2*s+1)*EW +: EW];
+            wire [EW-1:0] a_rv = a_val[(2*s+2)*EW +: EW];
+            wire a_take_r = a_rv < a_lv;
+            assign a_val[s*EW +: EW] = a_take_r ? a_rv : a_lv;
+            assign a_idx[s*IDX_WIDTH +: IDX_WIDTH] = a_take_r ? a_idx[(2*s+2)*IDX_WIDTH +: IDX_WIDTH]
+                                                              : a_idx[(2*s+1)*IDX_WIDTH +: IDX_WIDTH];
+        end
+        assign stageA_comb[g*IDX_WIDTH +: IDX_WIDTH] = a_idx[IDX_WIDTH-1:0];
+    end
+endgenerate
+
+integer sa;
 always @(posedge clk) begin
     if (state == LOOKUP && !hit_detected) begin
-        for (sa = 0; sa < GROUPS; sa = sa + 1) begin
-            a_idx  = sa * GSIZE;
-            a_best = eff(valid_bits[sa*GSIZE], freq_cnt[sa*GSIZE]);
-            for (sm = sa*GSIZE + 1; sm < (sa+1)*GSIZE; sm = sm + 1) begin
-                a_cur = eff(valid_bits[sm], freq_cnt[sm]);
-                if (a_cur < a_best) begin
-                    a_best = a_cur;
-                    a_idx  = sm;
-                end
-            end
-            stageA_min[sa] <= a_idx;
-        end
+        for (sa = 0; sa < GROUPS; sa = sa + 1)
+            stageA_min[sa] <= stageA_comb[sa*IDX_WIDTH +: IDX_WIDTH];
     end
 end
 

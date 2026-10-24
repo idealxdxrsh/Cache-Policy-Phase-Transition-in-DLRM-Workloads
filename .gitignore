@@ -18,3 +18,4 @@ NangateOpenCellLibrary*.lib
 results/P5/*/netlist.v
 # P5b netlists (sha256 in results/P5b/**/netlists.sha256)
 results/P5b/**/netlist.v
+results/P5c/**/netlist.v

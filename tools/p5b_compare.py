@@ -22,9 +22,9 @@ def fmax(r, f):
     return f'{1e3 / r["minp"]:.1f}' if r['minp'] else f'met (>= {f})'
 
 
-def main():
+def main(runs=RUNS):
     lib = sys.argv[1]
-    names = [n for n, _ in RUNS]
+    names = [n for n, _ in runs]
     out = []
     for f in FREQS:
         out += [f'### Netlists synthesized for {f} MHz (abc -D {1000000 // f} ps), STA at {f} MHz', '',
@@ -33,10 +33,10 @@ def main():
                 + ' | '.join(f'cells {n}' for n in names) + ' | '
                 + ' | '.join(f'area um^2 {n}' for n in names) + ' | '
                 + ' | '.join(f'flip-flops {n}' for n in names) + ' |',
-                '|' + '---|' * (2 + 5 * len(RUNS))]
+                '|' + '---|' * (2 + 5 * len(runs))]
         for d in DEPTHS:
             for m in MODES:
-                rs = [row(ROOT / p / f'd{d}_m{m}_{f}MHz', lib) for _, p in RUNS]
+                rs = [row(ROOT / p / f'd{d}_m{m}_{f}MHz', lib) for _, p in runs]
                 out.append(f'| {d} | {m} | ' + ' | '.join(f'{r["wns"]:.4f}' for r in rs) + ' | '
                            + ' | '.join(fmax(r, f) for r in rs) + ' | '
                            + ' | '.join(f'{r["cells"]:,}' for r in rs) + ' | '

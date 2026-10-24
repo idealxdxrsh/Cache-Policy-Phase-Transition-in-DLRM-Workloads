@@ -1,0 +1,14 @@
+LFU Cache Controller v2 testbench  (DEPTH=16, COUNTER=6 bits, COUNTER_MODE=0)
+[1] miss then hit
+[2] fill all 16 lines, then re-scan
+    re-scan hits: 16 / 16
+[3] hot line survives 300 unique cold accesses
+[4] counter saturates at 63
+[5] skewed workload (10 hot addrs ~80%, 300 cold ~20%)
+    accesses=2000 hits=1634 hit-rate=81.70%
+[6] counter equals number of accesses (1 fill + 9 hits = 10)
+[7] install count after eviction (mode 0)
+----------------------------------------------
+ALL TESTS PASSED
+----------------------------------------------
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/rtl/v2/tb_lfu_cache.sv:208: $finish called at 9708000 (1ps)

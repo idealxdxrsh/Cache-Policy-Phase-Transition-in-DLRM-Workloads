@@ -1,0 +1,20 @@
+Warning: Replacing memory \data_store with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5c/rtl/tree_copies.v:239
+Warning: Replacing memory \tag_store with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5c/rtl/tree_copies.v:238
+Warning: Replacing memory \freq_cnt with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5c/rtl/tree_copies.v:237
+Warning: Replacing memory \valid_bits with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5c/rtl/tree_copies.v:236
+Warning: Replacing memory \req_addr_grp with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5c/rtl/tree_copies.v:209
+Warning: Replacing memory \stageA_min with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5c/rtl/tree_copies.v:164
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFRS_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFRS_X2' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFR_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFR_X2' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFS_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFS_X2' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFF_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFF_X2' - skipping.
+	Command being timed: "yosys -q -l /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5c/tree_copies/d256_m1_1000MHz/yosys.log /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5c/tree_copies/d256_m1_1000MHz/synth.ys"
+	User time (seconds): 379.33
+	System time (seconds): 13.41
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 6:32.83
+	Maximum resident set size (kbytes): 892216
+	Exit status: 0

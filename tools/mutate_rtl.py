@@ -5,7 +5,8 @@ Each mutant is one exact text substitution in a copy of
 lfu_cache_controller.v (the original is never modified). Every mutant is
 simulated in every COUNTER_MODE. A mutant is "killed" if the testbench does
 not print ALL TESTS PASSED. Cells marked equivalent change code that the
-mode never executes, so surviving there is expected.
+mode never executes (or, for a depth, logic that is not generated at that
+depth), so surviving there is expected.
 
 With --lockstep, a mutant the testbench does not kill is also run against the
 rtl-v2-baseline tag in synthesis/p5b/tb_lockstep.sv (every port compared every
@@ -24,7 +25,8 @@ TB = ROOT / "rtl/v2/tb_lfu_cache.sv"
 LOCKSTEP_TB = ROOT / "synthesis/p5b/tb_lockstep.sv"
 MODES = (0, 1)
 
-# name -> (description, old text, new text, modes where the mutant is equivalent)
+# name -> (description, old text, new text, modes where the mutant is equivalent
+#          [, depths where it is equivalent in every mode])
 MUTANTS = {
     "stale_victim_reg": (
         "EVICT does not latch the new victim; FILL writes the previous victim slot",
@@ -86,6 +88,29 @@ MUTANTS = {
         "address copies load req_addr_reg (the previous request) instead of req_addr",
         "for (ag = 0; ag < GROUPS; ag = ag + 1) req_addr_grp[ag] <= req_addr;",
         "for (ag = 0; ag < GROUPS; ag = ag + 1) req_addr_grp[ag] <= req_addr_reg;", ()),
+    # P5c: Stage A reduction tree (one per group). At depth 16, GSIZE = 1: the tree is a single
+    # leaf with no nodes, so these mutants change no generated logic there (equivalent).
+    "a_tree_tie_right": (
+        "Stage A node takes the right child on ties (slot order differs from the serial loop)",
+        "wire a_take_r = a_rv < a_lv;", "wire a_take_r = a_rv <= a_lv;", (), (16,)),
+    "a_tree_never_right": (
+        "Stage A node always keeps the left child",
+        "wire a_take_r = a_rv < a_lv;", "wire a_take_r = 1'b0;", (), (16,)),
+    "a_tree_value_left": (
+        "Stage A node forwards the left value even when it takes the right index",
+        "assign a_val[s*EW +: EW] = a_take_r ? a_rv : a_lv;", "assign a_val[s*EW +: EW] = a_lv;", (), (16,)),
+    "a_tree_index_left": (
+        "Stage A node forwards the left index even when it takes the right value",
+        "assign a_idx[s*IDX_WIDTH +: IDX_WIDTH] = a_take_r ? a_idx[(2*s+2)*IDX_WIDTH +: IDX_WIDTH]",
+        "assign a_idx[s*IDX_WIDTH +: IDX_WIDTH] = a_take_r ? a_idx[(2*s+1)*IDX_WIDTH +: IDX_WIDTH]", (), (16,)),
+    "a_leaf_wrong_index": (
+        "Stage A leaf carries the mirrored slot's index with this slot's value",
+        "assign a_idx[(GSIZE-1+s)*IDX_WIDTH +: IDX_WIDTH] = g*GSIZE + s;",
+        "assign a_idx[(GSIZE-1+s)*IDX_WIDTH +: IDX_WIDTH] = g*GSIZE + (GSIZE-1-s);", (), (16,)),
+    "a_root_is_first_leaf": (
+        "Stage A registers the group's first slot instead of the tree root",
+        "assign stageA_comb[g*IDX_WIDTH +: IDX_WIDTH] = a_idx[IDX_WIDTH-1:0];",
+        "assign stageA_comb[g*IDX_WIDTH +: IDX_WIDTH] = a_idx[(GSIZE-1)*IDX_WIDTH +: IDX_WIDTH];", (), (16,)),
 }
 
 
@@ -136,7 +161,7 @@ def main():
                 ok, info = simulate(RTL, m, work, d)
                 lines.append(f"baseline depth={d} mode={m}: {'PASS' if ok else 'FAIL ' + info}")
                 bad |= not ok
-        for name, (desc, old, new, equiv) in MUTANTS.items():
+        for name, (desc, old, new, equiv, *eq_depths) in MUTANTS.items():
             n = src.count(old)
             if n != 1:
                 lines.append(f"{name}: target text found {n} times, mutant not applied")
@@ -147,7 +172,7 @@ def main():
             for d in args.depths:
                 for m in MODES:
                     passed, info = simulate(mpath, m, work, d)
-                    if m in equiv:
+                    if m in equiv or d in (eq_depths[0] if eq_depths else ()):
                         verdict = "survived (equivalent, expected)" if passed else "KILLED (equivalent cell)"
                     elif not passed:
                         verdict = "KILLED by testbench"
