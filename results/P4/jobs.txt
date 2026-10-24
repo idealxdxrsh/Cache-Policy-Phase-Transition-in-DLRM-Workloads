@@ -1,3 +1,7 @@
-env=413583 h100=413584 h200=NOT SUBMITTED
+# attempt 1 (2026-10-24, -c 8 in p4_profile.sbatch):
+# env=413583 h100=413584 h200=NOT SUBMITTED
 # h200 sbatch rejected: "You can only request up to 4 CPUs per H200 GPU. (8.000 cpus per card requested)"
-# h100 413584 shows MIN_MEMORY 96000M in squeue although the script asks --mem=32G
+# h100 413584 cancelled (scancel, never started) so both GPUs run with the same -c 4
+# squeue showed MIN_MEMORY 96000M for the GPU jobs although the script asks --mem=32G
+# attempt 2 (after d88244d, -c 4), same env job:
+env=413583 h100=413586 h200=413587
