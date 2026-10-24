@@ -20,7 +20,7 @@ report RTL lines.
 
 ## What the paths are (reading of the RTL)
 - Depth 16: starts at a frequency counter and ends at a valid bit, i.e. the EVICT-cycle victim selection: Stage B
-  (lines 136-147) runs a serial loop over GROUPS = 16 group minima, each step comparing `eff()` (counter + 1) and
+  (lines 136-146) runs a serial loop over GROUPS = 16 group minima, each step comparing `eff()` (counter + 1) and
   selecting the smaller; `victim_comb` then decodes the write of `valid_bits[victim_comb] <= 0` (line 204). The path
   shows this as a repeated pattern: 11 nodes with fanout >= 9 at regular intervals, each followed by a MUX2_X1 (10) or
   NOR2_X1 (3) and a chain of AOI22/OAI22 pairs (32 AOI22_X1 + 26 OAI22_X1 = 2.1316 ns of the 4.8791 ns). With depth 16
