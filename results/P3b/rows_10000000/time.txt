@@ -1,0 +1,6 @@
+	Command being timed: "python -I /scratch/rahulkmr/Adarsh/repo/trace_sim/run_shared_cache.py --criteo_path /scratch/rahulkmr/Adarsh/data/criteo/extracted/train.txt --n_rows 10000000 --workers 4 --output /scratch/rahulkmr/Adarsh/results/P3b/rows_10000000 --tag shared_cache_results"
+	User time (seconds): 5459.67
+	System time (seconds): 12.63
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 30:09.61
+	Maximum resident set size (kbytes): 2577964
+	Exit status: 0

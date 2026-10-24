@@ -1,0 +1,10 @@
+Loaded 10,000,000 rows, 231,492,097 accesses, 9,247,291 unique (table, id) keys in 132.2s
+Sweep finished in 1664.9s
+
+  capacity |            LRU | LFU (gem5 LFUR | LFU (persisten |            ARC | W-TinyLFU (Cou
+       256 |       41.2640% |       48.1592% |       38.4896% |       50.8773% |       50.9101%
+     1,000 |       53.4740% |       59.1030% |       52.9099% |       61.6774% |       61.9160%
+    10,000 |       75.0711% |       78.0735% |       78.3167% |       80.5750% |       80.6457%
+   100,000 |       90.0219% |       90.9315% |       92.3924% |       92.1847% |       91.9623%
+
+Saved: /scratch/rahulkmr/Adarsh/results/P3b/rows_10000000/shared_cache_results.json
