@@ -1,14 +1,14 @@
 # P4 summary: 26 x EmbeddingBag vs MLP on one H100 and one H200 (fp32 inference, pooling 1)
 Jobs (`sacct.txt`): env 413620 (00:45:21), H100 413621 gpunode5 (00:01:26), H200 413622 gpunode7 (00:00:59), all COMPLETED 0:0.
 Full tables: `RESULTS.md` (from `tools/p4_results.py`); raw: `h100_413621/results.csv`, `h200_413622/results.csv`.
+Model (`tools/profile_embedding.py`, same file on the cluster; `<gpu>/env.json` args: tables 26, pooling 1): 26 x `EmbeddingBag(rows, dim,
+mode='sum')` (line 54); MLP 26*dim -> 512 -> ReLU -> 256 -> ReLU -> 1 (lines 56-58); bag size 1 lookup per table per sample (`--pooling` default, line 177; offsets line 224).
 
-## Ran vs skipped (160 configs per GPU)
+## Ran vs skipped (160 configs per GPU; H200: 160 ok, 0 skipped)
 - H100: 120 ok, 40 skipped. All 40 skips are rows=1e7, dim=128 (5 patterns x 8 batches): one memory check,
   "needs 135471955968 bytes incl. margin, free 84260356096" (weights 26*1e7*128*4 B do not fit in 80 GB). Expected in PLAN.md.
-- H200: 160 ok, 0 skipped.
-- Run time vs work: profile wall 0:29.39 (H100) and 0:19.45 (H200) (`<gpu>/time.txt`). Timed iterations alone sum to
-  7.0062 s and 6.4461 s (`RESULTS.md`); the rest is warmup, index generation and model init. Each iteration is short
-  (median embedding <= 0.5063 ms), so the short total is consistent with the work, not a sign of missing configs.
+- Run time vs work: profile wall 0:29.39 (H100) and 0:19.45 (H200) (`<gpu>/time.txt`). Timed iterations sum to 7.0062 s / 6.4461 s
+  (`RESULTS.md`), rest = warmup, index gen, init; median embedding <= 0.5063 ms, so the short total fits the work.
 
 ## Versions and env (`env_install.txt`, `env_du.txt`, `<gpu>/env.json`, `<gpu>/nvidia_smi_q.txt`)
 - Both nodes: driver 580.126.20 (nvidia-smi "CUDA Version 13.0"); torch 2.14.1+cu126, torch.version.cuda 12.6,
