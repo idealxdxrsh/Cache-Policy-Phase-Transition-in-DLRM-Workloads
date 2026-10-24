@@ -19,6 +19,11 @@
   (cuDNN 674.0 MiB, cuBLAS 374.9 MiB, NCCL 276.3 MiB, cuSPARSELt 273.9 MiB, Triton 236.5 MiB, ...),
   summed from PyPI metadata: about 3.41 GiB. Installed size is not known until installed (`du -sh` is logged).
 - Installed in a CPU job (`p4_env`), refuses to run if the env dir already exists. Nothing system-wide.
+  `du -sh` of the installed env goes to `results/P4/env_du.txt`.
+- GPU job preflight (first step, `preflight.txt`): prints the nvidia-smi driver version, torch.version.cuda and
+  torch.cuda.is_available(); exits with PREFLIGHT FAIL (rc 2/3/4) if the driver cannot be read, is older than
+  525.60.13 (CUDA 12.x minor-version compatibility minimum), or CUDA is unavailable / a tiny CUDA op fails.
+  Tested locally with stub nvidia-smi/python for all of these cases.
 
 ## Script `tools/profile_embedding.py`
 - Model: 26 x `nn.EmbeddingBag(rows, dim, mode='sum')` -> concat -> MLP 26*dim-512-256-1 (ReLU). fp32,

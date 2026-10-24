@@ -17,4 +17,5 @@ $W/envs/dlrm_cache/bin/python -m venv "$ENV"
     --extra-index-url https://pypi.org/simple "torch==2.14.1+cu126" "numpy==1.26.4" \
     > "$OUT/env_install_log.txt" 2>&1
 { "$ENV/bin/python" -c "import torch, numpy; print('torch', torch.__version__, 'cuda', torch.version.cuda, 'numpy', numpy.__version__)"
-  du -sh "$ENV"; "$ENV/bin/pip" freeze; } > "$OUT/env_install.txt"
+  "$ENV/bin/pip" freeze; } > "$OUT/env_install.txt"
+du -sh "$ENV" > "$OUT/env_du.txt"
