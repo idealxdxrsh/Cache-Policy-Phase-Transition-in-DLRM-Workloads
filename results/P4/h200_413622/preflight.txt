@@ -1,0 +1,3 @@
+nvidia-smi driver_version: 580.126.20
+torch 2.14.1+cu126 torch.version.cuda 12.6 cuda_available True
+PREFLIGHT OK

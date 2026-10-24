@@ -1,0 +1,4 @@
+JobID|JobName|Partition|AllocCPUS|ReqMem|Timelimit|State|ExitCode|Elapsed|NodeList
+413620|p4_env|compute|4|8G|01:00:00|COMPLETED|0:0|00:45:21|node6
+413621|p4_profile|gpu_h100_4|4|32G|01:00:00|COMPLETED|0:0|00:01:26|gpunode5
+413622|p4_profile|gpu_h200_8|4|32G|01:00:00|COMPLETED|0:0|00:00:59|gpunode7

@@ -1,0 +1,6 @@
+	Command being timed: "/scratch/rahulkmr/Adarsh/envs/p4_torch/bin/python -I /scratch/rahulkmr/Adarsh/repo/tools/profile_embedding.py --device cuda --out /scratch/rahulkmr/Adarsh/results/P4/h100_413621 --criteo_dir /scratch/rahulkmr/Adarsh/data/p3/traces_10000000"
+	User time (seconds): 44.25
+	System time (seconds): 4.27
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:29.39
+	Maximum resident set size (kbytes): 1245020
+	Exit status: 0
