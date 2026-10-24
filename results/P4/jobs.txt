@@ -4,4 +4,9 @@
 # h100 413584 cancelled (scancel, never started) so both GPUs run with the same -c 4
 # squeue showed MIN_MEMORY 96000M for the GPU jobs although the script asks --mem=32G
 # attempt 2 (after d88244d, -c 4), same env job:
-env=413583 h100=413586 h200=413587
+# env=413583 h100=413586 h200=413587
+# 413583 FAILED exit 2 after 15:41: pip ReadTimeoutError from files.pythonhosted.org (cuDNN at 8.2 kB/s);
+# 413586 and 413587 cancelled by dependency. Partial env (60M, pip+setuptools only) moved to
+# /scratch/rahulkmr/Adarsh/envs/p4_torch.partial_2026-10-24 (not deleted).
+# attempt 3 (after 359ee58: PyTorch cu126 index only, download then offline install):
+env=413620 h100=413621 h200=413622
