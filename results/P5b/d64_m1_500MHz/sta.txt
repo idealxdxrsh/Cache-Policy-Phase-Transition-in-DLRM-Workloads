@@ -1,0 +1,132 @@
+OpenSTA 3.1.0 7b261909c1 Copyright (c) 2026, Parallax Software, Inc.
+License GPLv3: GNU GPL version 3 <http://gnu.org/licenses/gpl.html>
+
+This is free software, and you are free to change and redistribute it
+under certain conditions; type `show_copying' for details. 
+This program comes with ABSOLUTELY NO WARRANTY; for details type `show_warranty'.
+PERIOD_NS 2
+wns max -0.2950
+tns max -198.4337
+worst slack max -0.2950
+worst slack min 0.0350
+max slew
+
+Pin                                    Limit    Slew   Slack
+------------------------------------------------------------
+rst_n                                   0.20   63.24  -63.05 (VIOLATED)
+
+max capacitance
+
+Pin                                    Limit     Cap   Slack
+------------------------------------------------------------
+rst_n                                  60.65 27713.86 -27653.21 (VIOLATED)
+
+_58491_/ZN                             14.50   18.43   -3.93 (VIOLATED)
+
+_49667_/ZN                             14.50   16.94   -2.44 (VIOLATED)
+
+Startpoint: _72622_ (rising edge-triggered flip-flop clocked by clk)
+Endpoint: _74405_ (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type: max
+
+Fanout       Cap      Slew     Delay      Time   Description
+-------------------------------------------------------------------------------------
+                    0.0000    0.0000    0.0000   clock clk (rise edge)
+                              0.0000    0.0000   clock network delay (ideal)
+                    0.0000    0.0000    0.0000 ^ _72622_/CK (DFF_X1)
+     1    1.2844    0.0078    0.0844    0.0844 ^ _72622_/Q (DFF_X1)
+     7   12.1259    0.0305    0.0470    0.1314 ^ _48352_/Z (BUF_X1)
+     3    5.7416    0.0119    0.0188    0.1502 v _57875_/ZN (INV_X1)
+     7   14.8349    0.0764    0.0963    0.2465 ^ _57879_/ZN (NOR2_X1)
+     1    1.8407    0.0263    0.0342    0.2807 v _57889_/ZN (AOI22_X1)
+     5   10.3664    0.0607    0.0513    0.3319 ^ _57891_/ZN (OAI211_X1)
+     2    3.0042    0.0189    0.0248    0.3567 v _57895_/ZN (NAND2_X1)
+     3    4.9972    0.0124    0.0609    0.4177 v _57896_/ZN (OR2_X1)
+     3    4.9634    0.0124    0.0533    0.4710 v _57900_/ZN (OR2_X1)
+     3    6.3174    0.0369    0.0482    0.5192 ^ _57904_/ZN (NOR2_X1)
+     1    1.9739    0.0197    0.0458    0.5650 ^ _57953_/ZN (XNOR2_X1)
+     3    5.4971    0.0150    0.0248    0.5897 v _57954_/ZN (NAND2_X1)
+     1    2.0100    0.0310    0.0417    0.6314 ^ _57984_/ZN (OAI22_X1)
+     1    1.8300    0.0085    0.0101    0.6415 v _57985_/ZN (INV_X1)
+     4    8.1015    0.0546    0.0781    0.7196 ^ _57986_/ZN (AOI22_X1)
+    10   21.7511    0.0525    0.0797    0.7994 ^ _57987_/Z (BUF_X1)
+     1    1.8283    0.0137    0.0201    0.8195 v _58012_/ZN (NAND2_X1)
+     2    3.3439    0.0261    0.0265    0.8459 ^ _58013_/ZN (OAI21_X1)
+     2    4.3539    0.0099    0.0155    0.8614 v _58014_/ZN (INV_X1)
+     2    3.6462    0.0178    0.0420    0.9035 v _58017_/ZN (XNOR2_X1)
+     1    1.9736    0.0388    0.0687    0.9722 ^ _58029_/ZN (AOI211_X1)
+     1    1.8654    0.0116    0.0156    0.9878 v _58032_/ZN (NOR3_X1)
+     1    1.9866    0.0217    0.0366    1.0244 ^ _58033_/ZN (OAI211_X1)
+     1    1.8451    0.0116    0.0180    1.0423 v _58034_/ZN (AOI21_X1)
+     6   12.6926    0.0728    0.0966    1.1390 ^ _58038_/ZN (AOI21_X1)
+    10   21.7678    0.0526    0.0815    1.2204 ^ _58039_/Z (BUF_X1)
+     1    1.8283    0.0141    0.0201    1.2405 v _58326_/ZN (NAND2_X1)
+     3    6.0259    0.0386    0.0332    1.2737 ^ _58327_/ZN (OAI21_X1)
+     2    3.9621    0.0294    0.0519    1.3256 ^ _58330_/ZN (XNOR2_X1)
+     2    3.7395    0.0137    0.0231    1.3487 v _58336_/ZN (NAND2_X1)
+     1    1.9718    0.0167    0.0315    1.3802 ^ _58358_/ZN (NOR2_X1)
+     1    1.7566    0.0108    0.0163    1.3965 v _58365_/ZN (OAI21_X1)
+     6   13.2062    0.0752    0.0856    1.4821 ^ _58367_/ZN (AOI21_X1)
+     1    1.8300    0.0102    0.0646    1.5466 v _58964_/Z (MUX2_X1)
+     1    1.9611    0.0256    0.0474    1.5941 ^ _58965_/ZN (AOI22_X1)
+     1    1.8451    0.0088    0.0133    1.6074 v _58966_/ZN (NOR2_X1)
+     1    1.9752    0.0226    0.0405    1.6479 ^ _58970_/ZN (AOI21_X1)
+     1    1.8627    0.0110    0.0228    1.6707 v _58972_/ZN (OAI22_X1)
+     1    1.9808    0.0258    0.0430    1.7137 ^ _58974_/ZN (AOI22_X1)
+     1    1.8389    0.0116    0.0216    1.7353 v _58979_/ZN (OAI22_X1)
+     3    5.4225    0.0174    0.0249    1.7603 ^ _58982_/ZN (NAND2_X1)
+     9   18.5608    0.0375    0.0517    1.8119 v _58983_/ZN (NAND2_X1)
+     5    7.6561    0.0160    0.0732    1.8851 v _59010_/Z (MUX2_X1)
+     4    6.5542    0.0138    0.0579    1.9430 v _59169_/ZN (OR2_X1)
+     4    7.7705    0.0151    0.0641    2.0071 v _59177_/ZN (OR2_X1)
+     2    3.2382    0.0251    0.0419    2.0490 ^ _59589_/ZN (OAI21_X1)
+     5    7.2036    0.0360    0.0416    2.0906 v _59593_/ZN (NAND3_X1)
+    10   21.7830    0.0144    0.0522    2.1428 v _59594_/Z (BUF_X2)
+    10   22.4263    0.0252    0.0581    2.2009 v _59595_/Z (BUF_X1)
+     1    1.3625    0.0096    0.0531    2.2540 v _62584_/Z (MUX2_X1)
+                    0.0096    0.0000    2.2540 v _74405_/D (DFFR_X1)
+                                        2.2540   data arrival time
+
+                    0.0000    2.0000    2.0000   clock clk (rise edge)
+                              0.0000    2.0000   clock network delay (ideal)
+                              0.0000    2.0000   clock reconvergence pessimism
+                                        2.0000 ^ _74405_/CK (DFFR_X1)
+                             -0.0410    1.9590   library setup time
+                                        1.9590   data required time
+-------------------------------------------------------------------------------------
+                                        1.9590   data required time
+                                       -2.2540   data arrival time
+-------------------------------------------------------------------------------------
+                                       -0.2950   slack (VIOLATED)
+
+
+Startpoint: req_valid (input port clocked by clk)
+Endpoint: _72635_ (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type: min
+
+    Delay      Time   Description
+-------------------------------------------------------------
+   0.0000    0.0000   clock clk (rise edge)
+   0.0000    0.0000   clock network delay (ideal)
+   0.0000    0.0000 ^ input external delay
+   0.0054    0.0054 ^ req_valid (in)
+   0.0176    0.0230 v _47257_/ZN (NAND2_X1)
+   0.0179    0.0408 ^ _48387_/ZN (NAND3_X1)
+   0.0000    0.0409 ^ _72635_/D (DFFR_X1)
+             0.0409   data arrival time
+
+   0.0000    0.0000   clock clk (rise edge)
+   0.0000    0.0000   clock network delay (ideal)
+   0.0000    0.0000   clock reconvergence pessimism
+             0.0000 ^ _72635_/CK (DFFR_X1)
+   0.0058    0.0058   library hold time
+             0.0058   data required time
+-------------------------------------------------------------
+             0.0058   data required time
+            -0.0409   data arrival time
+-------------------------------------------------------------
+             0.0350   slack (MET)
+
+

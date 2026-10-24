@@ -1,0 +1,13 @@
+d=16 m=0 1000MHz: wns max -0.5850
+d=16 m=0 500MHz: wns max 0.0000
+d=16 m=1 1000MHz: wns max -0.6690
+d=16 m=1 500MHz: wns max 0.0000
+d=64 m=0 1000MHz: wns max -1.2055
+d=64 m=0 500MHz: wns max -0.4160
+d=64 m=1 1000MHz: wns max -1.2851
+d=64 m=1 500MHz: wns max -0.3516
+d=256 m=0 1000MHz: wns max -4.7719
+d=256 m=0 500MHz: wns max -3.7719
+d=256 m=1 1000MHz: wns max -4.6764
+d=256 m=1 500MHz: wns max -3.6764
+rc=0

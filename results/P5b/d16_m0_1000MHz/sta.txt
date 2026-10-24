@@ -1,0 +1,115 @@
+OpenSTA 3.1.0 7b261909c1 Copyright (c) 2026, Parallax Software, Inc.
+License GPLv3: GNU GPL version 3 <http://gnu.org/licenses/gpl.html>
+
+This is free software, and you are free to change and redistribute it
+under certain conditions; type `show_copying' for details. 
+This program comes with ABSOLUTELY NO WARRANTY; for details type `show_warranty'.
+PERIOD_NS 1
+wns max -0.5892
+tns max -69.6452
+worst slack max -0.5892
+worst slack min 0.0586
+max slew
+
+Pin                                    Limit    Slew   Slack
+------------------------------------------------------------
+rst_n                                   0.20   17.98  -17.78 (VIOLATED)
+
+max capacitance
+
+Pin                                    Limit     Cap   Slack
+------------------------------------------------------------
+rst_n                                  60.65 7877.00 -7816.35 (VIOLATED)
+
+Startpoint: _18033_ (rising edge-triggered flip-flop clocked by clk)
+Endpoint: _18051_ (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type: max
+
+Fanout       Cap      Slew     Delay      Time   Description
+-------------------------------------------------------------------------------------
+                    0.0000    0.0000    0.0000   clock clk (rise edge)
+                              0.0000    0.0000   clock network delay (ideal)
+                    0.0000    0.0000    0.0000 ^ _18033_/CK (DFFR_X1)
+     1    2.0889    0.0107    0.1006    0.1006 ^ _18033_/Q (DFFR_X1)
+     7   14.4515    0.0189    0.0357    0.1362 ^ _11539_/Z (BUF_X2)
+     2    4.0874    0.0126    0.0575    0.1937 ^ _12206_/ZN (AND4_X2)
+     4    8.2464    0.0134    0.0380    0.2317 ^ _12207_/ZN (AND2_X2)
+     1    1.8283    0.0097    0.0112    0.2429 v _12401_/ZN (NOR2_X1)
+     3    4.7399    0.0325    0.0278    0.2707 ^ _12402_/ZN (OAI21_X1)
+     2    3.9361    0.0124    0.0374    0.3081 ^ _12404_/ZN (OR2_X1)
+     1    1.8640    0.0111    0.0190    0.3271 v _12444_/ZN (NAND3_X1)
+     1    1.9943    0.0452    0.0823    0.4095 ^ _12445_/ZN (NOR4_X1)
+     5   10.3055    0.0191    0.0708    0.4803 ^ _12446_/ZN (AND4_X2)
+     6   12.8344    0.0178    0.0395    0.5197 ^ _12507_/ZN (OR2_X2)
+     2    3.6353    0.0121    0.0651    0.5848 v _12524_/Z (MUX2_X1)
+     1    1.8345    0.0378    0.0473    0.6321 ^ _12530_/ZN (AOI211_X1)
+     1    1.1927    0.0171    0.0292    0.6613 v _12531_/ZN (OAI211_X1)
+     1    3.6175    0.0085    0.0431    0.7044 v _12532_/ZN (AND3_X1)
+     1    3.7922    0.0191    0.0324    0.7368 ^ _12533_/ZN (OAI21_X2)
+     1    6.7728    0.0115    0.0212    0.7579 v _12534_/ZN (AOI21_X2)
+     9   20.8252    0.0339    0.0508    0.8087 ^ _12535_/ZN (OAI21_X4)
+     3    6.4268    0.0147    0.0726    0.8813 v _12581_/Z (MUX2_X1)
+     2    5.6662    0.0164    0.0500    0.9313 v _12582_/ZN (XNOR2_X1)
+     1    1.9718    0.0388    0.0682    0.9995 ^ _12588_/ZN (AOI211_X1)
+     1    1.7566    0.0136    0.0198    1.0193 v _12592_/ZN (OAI21_X1)
+     1    3.6387    0.0302    0.0378    1.0571 ^ _12597_/ZN (AOI21_X1)
+     2    5.5081    0.0143    0.0248    1.0818 v _12598_/ZN (OAI21_X2)
+    10   20.4512    0.0085    0.0332    1.1150 v _12599_/Z (BUF_X4)
+     2    3.6961    0.0121    0.0519    1.1670 v _12614_/Z (MUX2_X1)
+     1    1.9254    0.0254    0.0383    1.2053 ^ _12619_/ZN (AOI22_X1)
+     1    1.7566    0.0141    0.0258    1.2310 v _12620_/ZN (OAI22_X1)
+     1    1.9254    0.0224    0.0292    1.2602 ^ _12622_/ZN (AOI21_X1)
+     1    3.2743    0.0156    0.0286    1.2888 v _12623_/ZN (OAI22_X1)
+     1    6.6613    0.0321    0.0470    1.3359 ^ _12627_/ZN (AOI22_X2)
+    10   17.9108    0.0218    0.0271    1.3630 v _12629_/ZN (OAI21_X4)
+     7   13.8915    0.0353    0.0866    1.4495 ^ _12638_/Z (MUX2_X1)
+     1    1.7126    0.0179    0.0349    1.4845 v _12693_/ZN (NAND4_X1)
+     1    1.9718    0.0388    0.0427    1.5272 ^ _12694_/ZN (AOI211_X1)
+     1    1.3625    0.0164    0.0183    1.5455 v _12695_/ZN (OAI21_X1)
+                    0.0164    0.0000    1.5455 v _18051_/D (DFFR_X1)
+                                        1.5455   data arrival time
+
+                    0.0000    1.0000    1.0000   clock clk (rise edge)
+                              0.0000    1.0000   clock network delay (ideal)
+                              0.0000    1.0000   clock reconvergence pessimism
+                                        1.0000 ^ _18051_/CK (DFFR_X1)
+                             -0.0437    0.9563   library setup time
+                                        0.9563   data required time
+-------------------------------------------------------------------------------------
+                                        0.9563   data required time
+                                       -1.5455   data arrival time
+-------------------------------------------------------------------------------------
+                                       -0.5892   slack (VIOLATED)
+
+
+Startpoint: req_valid (input port clocked by clk)
+Endpoint: _18236_ (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type: min
+
+    Delay      Time   Description
+-------------------------------------------------------------
+   0.0000    0.0000   clock clk (rise edge)
+   0.0000    0.0000   clock network delay (ideal)
+   0.0000    0.0000 ^ input external delay
+   0.0055    0.0055 ^ req_valid (in)
+   0.0100    0.0155 v _14681_/ZN (INV_X1)
+   0.0222    0.0376 ^ _14756_/ZN (AOI21_X1)
+   0.0257    0.0634 ^ _14757_/ZN (OR2_X1)
+   0.0000    0.0634 ^ _18236_/D (DFFR_X1)
+             0.0634   data arrival time
+
+   0.0000    0.0000   clock clk (rise edge)
+   0.0000    0.0000   clock network delay (ideal)
+   0.0000    0.0000   clock reconvergence pessimism
+             0.0000 ^ _18236_/CK (DFFR_X1)
+   0.0048    0.0048   library hold time
+             0.0048   data required time
+-------------------------------------------------------------
+             0.0048   data required time
+            -0.0634   data arrival time
+-------------------------------------------------------------
+             0.0586   slack (MET)
+
+

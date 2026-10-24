@@ -1,0 +1,14 @@
+LFU Cache Controller v2 testbench  (DEPTH=256, COUNTER=6 bits, COUNTER_MODE=1)
+[1] miss then hit
+[2] fill all 256 lines, then re-scan
+    re-scan hits: 256 / 256
+[3] hot line survives 300 unique cold accesses
+[4] counter saturates at 63
+[5] skewed workload (10 hot addrs ~80%, 300 cold ~20%)
+    accesses=2000 hits=1932 hit-rate=96.60%
+[6] counter equals number of accesses (1 fill + 9 hits = 10)
+[7] install count after eviction (mode 1)
+----------------------------------------------
+ALL TESTS PASSED
+----------------------------------------------
+rtl/v2/tb_lfu_cache.sv:208: $finish called at 13854000 (1ps)

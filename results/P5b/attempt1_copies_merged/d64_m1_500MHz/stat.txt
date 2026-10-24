@@ -1,0 +1,57 @@
+
+10. Printing statistics.
+
+=== lfu_cache_controller ===
+
+   Number of wires:              37397
+   Number of wire bits:          48220
+   Number of public wires:         337
+   Number of public wire bits:   11154
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:              37060
+     AND2_X1                       161
+     AND2_X2                         2
+     AND3_X1                        86
+     AND4_X1                        33
+     AOI211_X1                     330
+     AOI21_X1                      546
+     AOI21_X2                        4
+     AOI221_X1                     106
+     AOI222_X1                      18
+     AOI22_X1                     4665
+     BUF_X1                       1840
+     BUF_X2                        282
+     BUF_X4                        176
+     BUF_X8                         20
+     CLKBUF_X1                    1347
+     DFFR_X1                     10099
+     DFF_X1                         32
+     INV_X1                        959
+     MUX2_X1                     10076
+     NAND2_X1                      834
+     NAND3_X1                      284
+     NAND4_X1                     1287
+     NOR2_X1                       950
+     NOR2_X2                        14
+     NOR3_X1                       219
+     NOR4_X1                       299
+     NOR4_X2                        18
+     NOR4_X4                        13
+     OAI211_X1                     203
+     OAI21_X1                      551
+     OAI221_X1                     288
+     OAI222_X1                      84
+     OAI22_X1                      389
+     OAI22_X4                        1
+     OAI33_X1                        7
+     OR2_X1                        223
+     OR2_X2                          2
+     OR3_X1                         48
+     OR4_X1                         27
+     XNOR2_X1                      227
+     XOR2_X1                       310
+
+   Chip area for module '\lfu_cache_controller': 91589.120000
+

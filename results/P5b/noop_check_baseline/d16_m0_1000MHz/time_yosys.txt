@@ -1,0 +1,19 @@
+Warning: Replacing memory \data_store with list of registers. See /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/32e317e8-7aef-4302-aefe-49dcee3164eb/scratchpad/baseline_rtl.v:186
+Warning: Replacing memory \tag_store with list of registers. See /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/32e317e8-7aef-4302-aefe-49dcee3164eb/scratchpad/baseline_rtl.v:185
+Warning: Replacing memory \freq_cnt with list of registers. See /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/32e317e8-7aef-4302-aefe-49dcee3164eb/scratchpad/baseline_rtl.v:184
+Warning: Replacing memory \valid_bits with list of registers. See /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/32e317e8-7aef-4302-aefe-49dcee3164eb/scratchpad/baseline_rtl.v:183
+Warning: Replacing memory \stageA_min with list of registers. See /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/32e317e8-7aef-4302-aefe-49dcee3164eb/scratchpad/baseline_rtl.v:127
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFRS_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFRS_X2' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFR_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFR_X2' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFS_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFS_X2' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFF_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFF_X2' - skipping.
+	Command being timed: "yosys -q -l /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5b/noop_check_baseline/d16_m0_1000MHz/yosys.log /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5b/noop_check_baseline/d16_m0_1000MHz/synth.ys"
+	User time (seconds): 9.85
+	System time (seconds): 0.85
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:10.70
+	Maximum resident set size (kbytes): 124488
+	Exit status: 0

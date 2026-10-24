@@ -1,0 +1,46 @@
+
+10. Printing statistics.
+
+=== lfu_cache_controller ===
+
+   Number of wires:              10523
+   Number of wire bits:          13860
+   Number of public wires:         127
+   Number of public wire bits:    3458
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:              10396
+     AND2_X1                        48
+     AND3_X1                        33
+     AND4_X1                        12
+     AOI211_X1                      78
+     AOI21_X1                      272
+     AOI221_X1                     193
+     AOI222_X1                     128
+     AOI22_X1                      804
+     BUF_X1                        702
+     CLKBUF_X1                     316
+     DFFR_X1                      2657
+     INV_X1                        551
+     MUX2_X1                      2566
+     NAND2_X1                      238
+     NAND3_X1                      190
+     NAND4_X1                      222
+     NOR2_X1                       268
+     NOR3_X1                        79
+     NOR4_X1                        75
+     OAI211_X1                      86
+     OAI21_X1                      336
+     OAI221_X1                     181
+     OAI222_X1                       3
+     OAI22_X1                       75
+     OAI33_X1                        4
+     OR2_X1                         82
+     OR3_X1                         22
+     OR4_X1                          8
+     XNOR2_X1                       88
+     XOR2_X1                        79
+
+   Chip area for module '\lfu_cache_controller': 24530.786000
+

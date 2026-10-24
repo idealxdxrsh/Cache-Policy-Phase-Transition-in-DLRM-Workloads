@@ -1,0 +1,14 @@
+# NanGate45 synthesis of rtl/v2 (P5). NanGate45, not TSMC. Pre-layout.
+# 64 = CACHE_DEPTH, 0 = COUNTER_MODE, 2000 = abc delay target in ps, /home/adarsh/eda/pdk/nangate45/NangateOpenCellLibrary_typical.lib = liberty
+read_liberty -lib /home/adarsh/eda/pdk/nangate45/NangateOpenCellLibrary_typical.lib
+read_verilog -sv /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/rtl/v2/lfu_cache_controller.v
+chparam -set CACHE_DEPTH 64 -set COUNTER_MODE 0 lfu_cache_controller
+synth -top lfu_cache_controller -flatten
+dfflibmap -liberty /home/adarsh/eda/pdk/nangate45/NangateOpenCellLibrary_typical.lib
+abc -liberty /home/adarsh/eda/pdk/nangate45/NangateOpenCellLibrary_typical.lib -D 2000 -constr /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/synthesis/p5/abc.constr
+opt_clean
+hilomap -hicell LOGIC1_X1 Z -locell LOGIC0_X1 Z
+opt_clean
+tee -o /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5b/d64_m0_500MHz/stat.txt stat -liberty /home/adarsh/eda/pdk/nangate45/NangateOpenCellLibrary_typical.lib
+check -assert
+write_verilog -noattr -noexpr /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5b/d64_m0_500MHz/netlist.v

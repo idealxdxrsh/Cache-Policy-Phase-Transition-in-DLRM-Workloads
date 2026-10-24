@@ -3,10 +3,16 @@
 // Author  : Adarsh (2023B1A31167G), BITS Pilani Goa
 //
 // STATUS: simulated with Icarus Verilog (see tb_lfu_cache.sv).
-//         Synthesized with Yosys 0.33 and OpenSTA on NanGate45,
-//         pre-layout, not TSMC; Fmax 165-215 MHz depending on
-//         depth and mode (see results/P5/SUMMARY.md); does not
-//         meet 500 MHz; no gate-level simulation.
+//         git tag rtl-v2-baseline: synthesized with Yosys 0.33
+//         and OpenSTA on NanGate45, pre-layout, not TSMC; Fmax
+//         165-215 MHz depending on depth and mode (see
+//         results/P5/SUMMARY.md); does not meet 500 MHz; no
+//         gate-level simulation.
+//         This version (P5b: Stage-B tree + address copies):
+//         same flow, NanGate45, pre-layout, not TSMC; Fmax
+//         185.2-629.2 MHz from the 1 GHz netlists; meets 500 MHz
+//         only at depth 16 (see results/P5b/SUMMARY.md); no
+//         gate-level simulation.
 //
 // Changes vs v1 (rtl/v1):
 //   - CACHE_DEPTH 16 -> 256
@@ -14,6 +20,10 @@
 //   - Victim selection split in two stages:
 //       Stage A (registered, LOOKUP cycle): min of each group
 //       Stage B (combinational, EVICT cycle): min across groups
+//         (P5b: balanced reduction tree, log2(GROUPS) levels;
+//          ties keep the lower-index side, as the serial loop did)
+//   - P5b: per-group registered copies of the request address
+//     drive the tag comparators and tag writes (same cycle)
 //   - Hit detection ORs per-group first, then across groups
 //
 // Counter semantics, selected by COUNTER_MODE:
@@ -60,6 +70,9 @@ generate
     if (COUNTER_MODE != 0 && COUNTER_MODE != 1) begin : BAD_COUNTER_MODE
         initial $fatal(1, "COUNTER_MODE=%0d not supported (0 or 1; 2 is pending)", COUNTER_MODE);
     end
+    if (GROUPS < 2 || (GROUPS & (GROUPS - 1)) != 0 || CACHE_DEPTH % GROUPS != 0) begin : BAD_GROUPS
+        initial $fatal(1, "GROUPS=%0d must be a power of two >= 2 dividing CACHE_DEPTH=%0d", GROUPS, CACHE_DEPTH);
+    end
 endgenerate
 
 // ---- storage ------------------------------------------------
@@ -72,6 +85,10 @@ reg                     valid_bits [0:CACHE_DEPTH-1];
 localparam IDLE = 2'b00, LOOKUP = 2'b01, EVICT = 2'b10, FILL = 2'b11;
 reg [1:0] state, next_state;
 reg [ADDR_WIDTH-1:0] req_addr_reg;
+// Per-group copies of req_addr_reg, loaded in the same cycle with the same value,
+// so each copy drives only its group's GSIZE tag comparators and tag writes.
+// keep: stops synthesis from merging the identical registers back into one.
+(* keep *) reg [ADDR_WIDTH-1:0] req_addr_grp [0:GROUPS-1];
 
 // ---- hit detection (per-group OR, then OR of groups) --------
 wire [CACHE_DEPTH-1:0] match;
@@ -80,7 +97,7 @@ wire                   hit_detected;
 genvar g;
 generate
     for (g = 0; g < CACHE_DEPTH; g = g + 1) begin : TAG_CMP
-        assign match[g] = valid_bits[g] && (tag_store[g] == req_addr_reg);
+        assign match[g] = valid_bits[g] && (tag_store[g] == req_addr_grp[g / GSIZE]);
     end
     for (g = 0; g < GROUPS; g = g + 1) begin : GRP_OR
         assign group_hit[g] = |match[g*GSIZE +: GSIZE];
@@ -129,21 +146,30 @@ always @(posedge clk) begin
     end
 end
 
-// Stage B: combinational, consumed in the EVICT cycle
-integer sb;
-reg [IDX_WIDTH-1:0] victim_comb;
-reg [EW-1:0]        b_best, b_cur;
-always @(*) begin
-    victim_comb = stageA_min[0];
-    b_best = eff(valid_bits[stageA_min[0]], freq_cnt[stageA_min[0]]);
-    for (sb = 1; sb < GROUPS; sb = sb + 1) begin
-        b_cur = eff(valid_bits[stageA_min[sb]], freq_cnt[stageA_min[sb]]);
-        if (b_cur < b_best) begin
-            b_best      = b_cur;
-            victim_comb = stageA_min[sb];
-        end
+// Stage B: combinational, consumed in the EVICT cycle.
+// Balanced min-reduction tree in heap order: node n has children
+// 2n+1 (left, lower group indices) and 2n+2 (right); group g is
+// leaf GROUPS-1+g; node 0 is the root. A node takes the right
+// child only if it is strictly smaller, so ties resolve to the
+// lowest group index, exactly like the former serial loop.
+localparam NODES = 2*GROUPS - 1;
+wire [NODES*EW-1:0]        tree_val;
+wire [NODES*IDX_WIDTH-1:0] tree_idx;
+generate
+    for (g = 0; g < GROUPS; g = g + 1) begin : TREE_LEAF
+        assign tree_val[(GROUPS-1+g)*EW +: EW] = eff(valid_bits[stageA_min[g]], freq_cnt[stageA_min[g]]);
+        assign tree_idx[(GROUPS-1+g)*IDX_WIDTH +: IDX_WIDTH] = stageA_min[g];
     end
-end
+    for (g = 0; g < GROUPS-1; g = g + 1) begin : TREE_NODE
+        wire [EW-1:0] lv = tree_val[(2*g+1)*EW +: EW];
+        wire [EW-1:0] rv = tree_val[(2*g+2)*EW +: EW];
+        wire take_r = rv < lv;
+        assign tree_val[g*EW +: EW] = take_r ? rv : lv;
+        assign tree_idx[g*IDX_WIDTH +: IDX_WIDTH] = take_r ? tree_idx[(2*g+2)*IDX_WIDTH +: IDX_WIDTH]
+                                                           : tree_idx[(2*g+1)*IDX_WIDTH +: IDX_WIDTH];
+    end
+endgenerate
+wire [IDX_WIDTH-1:0] victim_comb = tree_idx[IDX_WIDTH-1:0];
 
 reg [IDX_WIDTH-1:0] victim_reg;   // held for the FILL cycle
 
@@ -156,6 +182,14 @@ end
 always @(posedge clk or negedge rst_n) begin
     if (!rst_n)                          req_addr_reg <= {ADDR_WIDTH{1'b0}};
     else if (state == IDLE && req_valid) req_addr_reg <= req_addr;
+end
+
+integer ag;
+always @(posedge clk or negedge rst_n) begin
+    if (!rst_n)
+        for (ag = 0; ag < GROUPS; ag = ag + 1) req_addr_grp[ag] <= {ADDR_WIDTH{1'b0}};
+    else if (state == IDLE && req_valid)
+        for (ag = 0; ag < GROUPS; ag = ag + 1) req_addr_grp[ag] <= req_addr;
 end
 
 always @(*) begin
@@ -208,7 +242,8 @@ always @(posedge clk or negedge rst_n) begin
             end
 
             FILL: if (fill_valid) begin
-                tag_store[victim_reg]   <= req_addr_reg;
+                for (i = 0; i < CACHE_DEPTH; i = i + 1)
+                    if (victim_reg == i) tag_store[i] <= req_addr_grp[i / GSIZE];
                 data_store[victim_reg]  <= fill_data;
                 valid_bits[victim_reg]  <= 1'b1;
                 if (COUNTER_MODE == 0)

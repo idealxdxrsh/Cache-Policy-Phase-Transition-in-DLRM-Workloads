@@ -16,3 +16,5 @@ NangateOpenCellLibrary*.lib
 *.lib.gz
 # P5 gate-level netlists (93M; sha256 in results/P5/netlists.sha256; regenerate with synthesis/p5/run_p5.sh)
 results/P5/*/netlist.v
+# P5b netlists (sha256 in results/P5b/**/netlists.sha256)
+results/P5b/**/netlist.v

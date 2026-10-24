@@ -45,7 +45,7 @@ def main():
         run = root / name
         start, end, rows, arrival, setup, slack, period = parse(run)
         nl = run / 'netlist.v'
-        out += [f'## {name} (`results/P5/{name}/sta.txt`)', '',
+        out += [f'## {name} (`{run}/sta.txt`)', '',
                 f'- Start point: `{start[0]}` ({start[1]}), Q = `{q_name(nl, start[0])}`',
                 f'- End point: `{end[0]}` ({end[1]}), Q = `{q_name(nl, end[0])}`, path ends at its D pin',
                 f'- Cells on the path: {len(rows)} (including the start flip-flop clock-to-Q); data arrival '

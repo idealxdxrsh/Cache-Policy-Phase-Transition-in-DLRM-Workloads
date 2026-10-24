@@ -1,0 +1,9 @@
+d16_m0_1000MHz DIFFERENT
+d16_m0_500MHz DIFFERENT
+d16_m1_1000MHz DIFFERENT
+d16_m1_500MHz DIFFERENT
+d16_m0_1000MHz stat_same=yes timing_same=yes
+d16_m0_500MHz stat_same=yes timing_same=yes
+d16_m1_1000MHz stat_same=yes timing_same=yes
+d16_m1_500MHz stat_same=yes timing_same=yes
+netlist text differs only in wire names that embed the RTL source path (wires with x/no driver); cell stats and STA summary identical
