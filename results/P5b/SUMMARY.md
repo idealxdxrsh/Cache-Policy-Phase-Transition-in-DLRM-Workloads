@@ -36,5 +36,4 @@ Baseline = tag `rtl-v2-baseline` (1483717, `results/P5`); same Yosys 0.33 + NanG
 ## Flow notes
 - First run: Yosys merged the 16 identical copies back into one register despite `(* keep *)` on the reg. Kept as
   `attempt1_copies_merged/` (effectively tree only). Fix: copy keep onto the driving flip-flop cells (`synthesis/p5/synth.ys.in`).
-  On baseline RTL at depth 16, cell stats and WNS/TNS stay identical to P5 (`noop_check_baseline/compare_to_P5.txt`).
-  Netlists not committed (`netlists.sha256`). RTL header STATUS updated for this version (comment only).
+  Baseline RTL, depth 16: cell stats and WNS/TNS identical to P5 (`noop_check_baseline/`). Netlists not committed; RTL header STATUS updated (comment only).
