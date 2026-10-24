@@ -1,0 +1,3 @@
+env=413583 h100=413584 h200=NOT SUBMITTED
+# h200 sbatch rejected: "You can only request up to 4 CPUs per H200 GPU. (8.000 cpus per card requested)"
+# h100 413584 shows MIN_MEMORY 96000M in squeue although the script asks --mem=32G
