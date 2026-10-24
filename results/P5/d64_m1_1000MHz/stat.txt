@@ -1,0 +1,65 @@
+
+10. Printing statistics.
+
+=== lfu_cache_controller ===
+
+   Number of wires:              37522
+   Number of wire bits:          47660
+   Number of public wires:         318
+   Number of public wire bits:   10450
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:              37204
+     AND2_X1                       175
+     AND2_X2                         2
+     AND3_X1                        77
+     AND4_X1                        36
+     AOI211_X1                     346
+     AOI21_X1                      525
+     AOI21_X2                       12
+     AOI21_X4                        2
+     AOI221_X1                     110
+     AOI222_X1                       9
+     AOI22_X1                     4684
+     AOI22_X2                        1
+     AOI22_X4                        2
+     BUF_X1                       2103
+     BUF_X2                         69
+     BUF_X4                         50
+     BUF_X8                         36
+     CLKBUF_X1                    1380
+     DFFR_X1                     10099
+     DFF_X1                         32
+     INV_X1                        796
+     MUX2_X1                     10097
+     NAND2_X1                      946
+     NAND3_X1                      366
+     NAND4_X1                     1317
+     NOR2_X1                      1041
+     NOR2_X2                         4
+     NOR2_X4                         2
+     NOR3_X1                       160
+     NOR3_X2                         1
+     NOR4_X1                       272
+     NOR4_X2                         1
+     OAI211_X1                     230
+     OAI21_X1                      563
+     OAI21_X2                        4
+     OAI21_X4                        1
+     OAI221_X1                     304
+     OAI222_X1                      90
+     OAI22_X1                      370
+     OAI22_X2                        2
+     OAI33_X1                        6
+     OR2_X1                        261
+     OR2_X2                          1
+     OR3_X1                         62
+     OR3_X2                          1
+     OR4_X1                         26
+     OR4_X2                          2
+     XNOR2_X1                      211
+     XOR2_X1                       317
+
+   Chip area for module '\lfu_cache_controller': 91623.168000
+

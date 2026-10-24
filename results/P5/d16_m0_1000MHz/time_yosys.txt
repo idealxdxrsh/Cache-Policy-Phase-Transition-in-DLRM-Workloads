@@ -1,0 +1,19 @@
+Warning: Replacing memory \data_store with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/rtl/v2/lfu_cache_controller.v:184
+Warning: Replacing memory \tag_store with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/rtl/v2/lfu_cache_controller.v:183
+Warning: Replacing memory \freq_cnt with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/rtl/v2/lfu_cache_controller.v:182
+Warning: Replacing memory \valid_bits with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/rtl/v2/lfu_cache_controller.v:181
+Warning: Replacing memory \stageA_min with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/rtl/v2/lfu_cache_controller.v:125
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFRS_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFRS_X2' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFR_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFR_X2' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFS_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFS_X2' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFF_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFF_X2' - skipping.
+	Command being timed: "yosys -q -l /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5/d16_m0_1000MHz/yosys.log /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5/d16_m0_1000MHz/synth.ys"
+	User time (seconds): 9.68
+	System time (seconds): 0.84
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:10.55
+	Maximum resident set size (kbytes): 110008
+	Exit status: 0

@@ -1,0 +1,14 @@
+# NanGate45 synthesis of rtl/v2 (P5). NanGate45, not TSMC. Pre-layout.
+# @D@ = CACHE_DEPTH, @M@ = COUNTER_MODE, @P@ = abc delay target in ps, @LIB@ = liberty
+read_liberty -lib @LIB@
+read_verilog -sv @RTL@
+chparam -set CACHE_DEPTH @D@ -set COUNTER_MODE @M@ lfu_cache_controller
+synth -top lfu_cache_controller -flatten
+dfflibmap -liberty @LIB@
+abc -liberty @LIB@ -D @P@ -constr @CONSTR@
+opt_clean
+hilomap -hicell LOGIC1_X1 Z -locell LOGIC0_X1 Z
+opt_clean
+tee -o @OUT@/stat.txt stat -liberty @LIB@
+check -assert
+write_verilog -noattr -noexpr @OUT@/netlist.v

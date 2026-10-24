@@ -7,12 +7,11 @@
 // ============================================================
 `timescale 1ns / 1ps
 
-// COUNTER_MODE is set from the command line:
-//   iverilog -P tb_lfu_cache.COUNTER_MODE=1 ...
+// COUNTER_MODE and CACHE_DEPTH are set from the command line:
+//   iverilog -P tb_lfu_cache.COUNTER_MODE=1 -P tb_lfu_cache.CACHE_DEPTH=64 ...
 // Pass +vcd to vvp to dump waveforms.
-module tb_lfu_cache #(parameter COUNTER_MODE = 0);
+module tb_lfu_cache #(parameter COUNTER_MODE = 0, parameter CACHE_DEPTH = 256);
 
-localparam CACHE_DEPTH   = 256;
 localparam ADDR_WIDTH    = 20;
 localparam VECTOR_WIDTH  = 128;
 localparam COUNTER_WIDTH = 6;
@@ -135,7 +134,7 @@ initial begin
         hits_seen = hits_seen + h;
     end
     $display("    re-scan hits: %0d / %0d", hits_seen, CACHE_DEPTH);
-    check(hits_seen == CACHE_DEPTH, "not all 256 lines retained after filling an empty cache");
+    check(hits_seen == CACHE_DEPTH, "not all lines retained after filling an empty cache");
 
     // ---- TEST 3: hot line survives pressure ------------------
     $display("[3] hot line survives 300 unique cold accesses");
@@ -173,7 +172,7 @@ initial begin
     check(slot_count(20'h12345) == 10, "counter not incremented exactly once per access");
 
     // ---- TEST 7: count of a newly installed tag --------------
-    // All 256 lines at count 3; slot 0 (lowest index) is the victim.
+    // All CACHE_DEPTH lines at count 3; slot 0 (lowest index) is the victim.
     $display("[7] install count after eviction (mode %0d)", COUNTER_MODE);
     do_reset;
     for (i = 0; i < CACHE_DEPTH; i = i + 1) access(20'hD0000 + i, h);
