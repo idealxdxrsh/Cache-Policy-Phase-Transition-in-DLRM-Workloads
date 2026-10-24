@@ -1,0 +1,15 @@
+test_cli_tiny_cpu_all_patterns (tests.test_profile_embedding.TestEndToEnd.test_cli_tiny_cpu_all_patterns) ... ok
+test_criteo_requires_dir (tests.test_profile_embedding.TestEndToEnd.test_criteo_requires_dir) ... ok
+test_criteo_order_modulo_and_wrap (tests.test_profile_embedding.TestIndices.test_criteo_order_modulo_and_wrap) ... ok
+test_uniform_in_range (tests.test_profile_embedding.TestIndices.test_uniform_in_range) ... ok
+test_zipf_id_map_is_bijection (tests.test_profile_embedding.TestIndices.test_zipf_id_map_is_bijection) ... ok
+test_zipf_rank_distribution (tests.test_profile_embedding.TestIndices.test_zipf_rank_distribution) ... ok
+test_zipf_tables_differ_and_in_range (tests.test_profile_embedding.TestIndices.test_zipf_tables_differ_and_in_range) ... ok
+test_embed_equals_manual_pooled_sum (tests.test_profile_embedding.TestModel.test_embed_equals_manual_pooled_sum) ... ok
+test_run_config_counts (tests.test_profile_embedding.TestModel.test_run_config_counts) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 3.068s
+
+OK
+rc=0

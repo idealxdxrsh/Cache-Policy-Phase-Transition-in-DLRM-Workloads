@@ -1,0 +1,9 @@
+rows=10000 dim=16 uniform  B=   64 emb 0.5877 ms mlp 0.2804 ms
+rows=10000 dim=16 uniform  B=  256 emb 0.7446 ms mlp 0.7926 ms
+rows=10000 dim=16 zipf0.6  B=   64 emb 0.5845 ms mlp 0.2661 ms
+rows=10000 dim=16 zipf0.6  B=  256 emb 0.7489 ms mlp 0.7840 ms
+rows=10000 dim=16 zipf0.85 B=   64 emb 0.5863 ms mlp 0.2756 ms
+rows=10000 dim=16 zipf0.85 B=  256 emb 0.7792 ms mlp 0.8333 ms
+rows=10000 dim=16 zipf1.1  B=   64 emb 0.5837 ms mlp 0.2763 ms
+rows=10000 dim=16 zipf1.1  B=  256 emb 0.7281 ms mlp 0.7866 ms
+Saved: results/P4/cpu_smoke/results.csv

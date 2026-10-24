@@ -1,0 +1,9 @@
+uniform  rows=  1000000 all 8 batches: 0.48 s
+uniform  rows= 10000000 all 8 batches: 0.44 s
+zipf0.6  rows=  1000000 all 8 batches: 0.86 s
+zipf0.6  rows= 10000000 all 8 batches: 0.88 s
+zipf0.85 rows=  1000000 all 8 batches: 0.89 s
+zipf0.85 rows= 10000000 all 8 batches: 0.88 s
+zipf1.1  rows=  1000000 all 8 batches: 0.88 s
+zipf1.1  rows= 10000000 all 8 batches: 0.87 s
+total for one dim (4 synthetic patterns x 2 row sizes): 6.19 s; x2 dims = 12.38 s (local CPU, 12 cores)
