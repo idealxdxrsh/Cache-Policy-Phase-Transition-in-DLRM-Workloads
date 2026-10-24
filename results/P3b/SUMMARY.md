@@ -35,5 +35,4 @@ Jobs (`jobs.txt`): 2M 413067, 10M 413106, both COMPLETED 0:0 on `compute`, 4 CPU
 | 2M | 5:54.37 | 633444 kB | 16G, 2 h | 200k synthetic timing (`timing_200k/`) |
 | 10M | 30:09.61 | 2577964 kB | 32G, 2 h | 2M run x 5.02 accesses; estimate ~30 min |
 
-Caveats: shared "256" is one 256-entry cache, P3 "256" is 26 x 256 private entries (not comparable 1:1).
-CPU trace simulation, not gem5 or a GPU measurement; access order (row order) is a modelling choice.
+Caveats: shared "256" = one 256-entry cache vs P3 26 x 256 private (not 1:1); CPU trace sim, not gem5/GPU; row order is a modelling choice.
