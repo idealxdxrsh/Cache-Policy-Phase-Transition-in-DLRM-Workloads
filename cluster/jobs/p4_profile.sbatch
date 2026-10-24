@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #SBATCH -J p4_profile
-#SBATCH -N 1 -n 1 -c 8
+#SBATCH -N 1 -n 1 -c 4   # gpu_h200_8 allows at most 4 CPUs per H200 GPU; same on H100 for comparability
 #SBATCH --gres=gpu:1     # one GPU per job
 #SBATCH --mem=32G        # host RAM: index tensors <= 205 MB per config, weights live on the GPU
 #SBATCH -t 01:00:00      # CPU index generation measured at 12.38 s for all configs (results/P4/index_gen_timing.txt)

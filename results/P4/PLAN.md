@@ -58,7 +58,7 @@
 | # | job | partition | GPUs | CPUs | mem | time limit | depends on |
 |---|---|---|---|---|---|---|---|
 | 1 | p4_env (`cluster/jobs/p4_env.sbatch`) | compute | 0 | 4 | 8G | 01:00:00 | none |
-| 2 | p4_profile, GPU_LABEL=h100 | gpu_h100_4 | 1 | 8 | 32G | 01:00:00 | afterok 1 |
-| 3 | p4_profile, GPU_LABEL=h200 | gpu_h200_8 | 1 | 8 | 32G | 01:00:00 | afterok 2 |
+| 2 | p4_profile, GPU_LABEL=h100 | gpu_h100_4 | 1 | 4 | 32G | 01:00:00 | afterok 1 |
+| 3 | p4_profile, GPU_LABEL=h200 | gpu_h200_8 | 1 | 4 | 32G | 01:00:00 | afterok 2 |
 - At most 1 GPU at a time and at most 2 GPU-hours in total (two 1 h limits).
 - Outputs: `/scratch/rahulkmr/Adarsh/results/P4/{h100,h200}_<jobid>/`; job ids in `results/P4/jobs.txt`.
