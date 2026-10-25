@@ -1,0 +1,8 @@
+Warning: Replacing memory \data_store with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5f_gls/work/equiv/gold.v:268
+Warning: Replacing memory \tag_store with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5f_gls/work/equiv/gold.v:267
+Warning: Replacing memory \freq_cnt with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5f_gls/work/equiv/gold.v:266
+Warning: Replacing memory \valid_bits with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5f_gls/work/equiv/gold.v:265
+Warning: Replacing memory \req_addr_grp with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5f_gls/work/equiv/gold.v:238
+Warning: Replacing memory \stageA_min with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5f_gls/work/equiv/gold.v:193
+Warning: Complex async reset for dff `\IQ'.
+depth=16 run=d16_m0_1000MHz exit=0 (0 = all proven, 124 = 2 h limit hit) wall_s=466 yosys: Yosys 0.33 (git sha1 2584903a060)

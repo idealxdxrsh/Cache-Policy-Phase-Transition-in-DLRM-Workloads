@@ -68,11 +68,10 @@ equiv)
     for run in d16_m0_1000MHz d16_m1_1000MHz d16_m0_500MHz d16_m1_500MHz; do
         m=${run#d16_m}; m=${m%%_*}
         sed 's/^module lfu_cache_controller(/module gate(/' "$N/$run/netlist.v" > "$W/gate_$run.v"
-        ( t0=$(date +%s)
-          timeout 7200 yosys -q -p "read_verilog -sv $W/gold.v; read_verilog $M $W/gate_$run.v; chparam -set CACHE_DEPTH 16 -set COUNTER_MODE $m gold; hierarchy -check; proc; opt_clean; memory; flatten; async2sync; equiv_make gold gate eq; hierarchy -top eq; equiv_simple; equiv_induct; equiv_status -assert" > "$R/equiv/$run.txt" 2>&1
-          echo "depth=16 run=$run exit=$? (0 = all proven, 124 = 2 h limit hit) wall_s=$(( $(date +%s) - t0 ))" >> "$R/equiv/$run.txt" ) &
+        t0=$(date +%s)  # one at a time (memory); 2 h limit each
+        timeout 7200 yosys -q -l "$R/equiv/$run.log" -p "read_verilog -sv $W/gold.v; read_verilog $M $W/gate_$run.v; chparam -set CACHE_DEPTH 16 -set COUNTER_MODE $m gold; hierarchy -check; proc; opt_clean; memory; flatten; async2sync; equiv_make gold gate eq; hierarchy -top eq; equiv_simple; equiv_induct; equiv_status -assert" > "$R/equiv/$run.txt" 2>&1
+        echo "depth=16 run=$run exit=$? (0 = all proven, 124 = 2 h limit hit) wall_s=$(( $(date +%s) - t0 )) yosys: $(yosys -V)" >> "$R/equiv/$run.txt"
     done
-    wait
-    gzip -f "$W"/*.v ;;
+    gzip -f "$W"/*.v "$R"/equiv/*.log ;;
 *) echo "unknown step $step"; exit 2 ;;
 esac; done
