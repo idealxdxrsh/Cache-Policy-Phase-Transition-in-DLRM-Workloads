@@ -21,3 +21,6 @@ results/P5b/**/netlist.v
 results/P5c/**/netlist.v
 results/P5d/**/netlist.v
 results/P5e/**/netlist.v
+results/P5f_gls/**/netlist.v
+results/P5f_gls/models/
+results/P5f_gls/work/

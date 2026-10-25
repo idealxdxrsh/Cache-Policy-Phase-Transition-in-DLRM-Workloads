@@ -1,0 +1,12 @@
+lockstep d64_m0_1000MHz
+lockstep d64_m0_500MHz
+lockstep d64_m1_1000MHz
+lockstep d64_m1_500MHz
+lockstep d16_m0_1000MHz
+lockstep d16_m0_500MHz
+lockstep d16_m1_1000MHz
+lockstep d16_m1_500MHz
+sim d16_m0_1000MHz
+sim d16_m0_500MHz
+sim d16_m1_1000MHz
+sim d16_m1_500MHz

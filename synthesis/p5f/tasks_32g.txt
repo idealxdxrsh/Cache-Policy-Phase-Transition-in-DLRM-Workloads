@@ -1,0 +1,8 @@
+sim d256_m0_1000MHz
+sim d256_m0_500MHz
+sim d256_m1_1000MHz
+sim d256_m1_500MHz
+lockstep d256_m0_1000MHz
+lockstep d256_m0_500MHz
+lockstep d256_m1_1000MHz
+lockstep d256_m1_500MHz

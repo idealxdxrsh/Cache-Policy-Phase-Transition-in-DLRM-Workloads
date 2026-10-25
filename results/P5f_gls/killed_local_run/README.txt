@@ -1,0 +1,1 @@
+Local run of 2026-10-26 stopped by Claude Code (system low on memory) before these finished: depth-256 unit tests (empty files) and depth-64 lockstep (compiled, killed in vvp). Kept for the record; not results.

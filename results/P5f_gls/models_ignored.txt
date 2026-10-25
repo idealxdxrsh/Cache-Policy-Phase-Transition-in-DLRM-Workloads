@@ -1,0 +1,8 @@
+Ignoring cell CLKGATETST_X1 with missing function on output IQ.
+Ignoring cell CLKGATETST_X2 with missing function on output IQ.
+Ignoring cell CLKGATETST_X4 with missing function on output IQ.
+Ignoring cell CLKGATETST_X8 with missing function on output IQ.
+Ignoring cell CLKGATE_X1 with missing function on output IQ.
+Ignoring cell CLKGATE_X2 with missing function on output IQ.
+Ignoring cell CLKGATE_X4 with missing function on output IQ.
+Ignoring cell CLKGATE_X8 with missing function on output IQ.

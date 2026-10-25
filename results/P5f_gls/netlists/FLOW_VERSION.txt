@@ -1,0 +1,9 @@
+rtl: baba9e5c070a47596eeef95a1408a8dfb2593b4d (tag rtl-v2-final), rtl/v2/lfu_cache_controller.v
+flow: synthesis/p5e + synthesis/p5 at commit 37c353cb9b4879a18828d2ed02aa598c3eb8cd7b
+ABC_BUDGET_PS=141.5
+7077ca57e282e27e8dfa1f8cc573b28a08af4d7dc2e388d2c7d4b6b5b72b801c  synthesis/p5e/synth_td.ys.in
+4c460580980f92f1083d9a1945d97db60cd29c6419a3c65c3e3a94c7dfa6b2c2  synthesis/p5e/abc_td.script.in
+e0bcdf10ea9783f0684ef7055705e9499d252d1b66424abc2d7d448ac372bd4a  synthesis/p5/run_p5.sh
+ff62d04822cc2cadced3d11f83c6d6b513bb82a80fbdf9a4767c93fae036f198  synthesis/p5/abc.constr
+4d2b9114af7c350ab99ad8da9b55c1287320837d1a52a9f640d39ce3d86abadd  synthesis/p5/sta.tcl
+yosys: Yosys 0.33 (git sha1 2584903a060)
