@@ -1,0 +1,21 @@
+# P5e timing-driven variant of synthesis/p5/synth.ys.in: identical except the abc line, which runs
+# synthesis/p5e/abc_td.script.in (written per run to <out>/abc.script). NanGate45, not TSMC. Pre-layout.
+# 16 = CACHE_DEPTH, 0 = COUNTER_MODE, 1000 = abc delay target in ps, /home/adarsh/eda/pdk/nangate45/NangateOpenCellLibrary_typical.lib = liberty
+read_liberty -lib /home/adarsh/eda/pdk/nangate45/NangateOpenCellLibrary_typical.lib
+read_verilog -sv /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5d/noise/rtl/null_stageB_gt.v
+chparam -set CACHE_DEPTH 16 -set COUNTER_MODE 0 lfu_cache_controller
+# P5b: registers declared (* keep *) in the RTL (the per-group address copies) must stay separate.
+# Yosys puts keep on the wire only and opt_merge then merges identical flip-flops, so the
+# attribute is copied to the flip-flop cells that drive kept wires. No-op without kept wires.
+hierarchy -top lfu_cache_controller
+proc
+setattr -set keep 1 a:keep w:* %i %ci1:+[Q] t:$adff %i
+synth -top lfu_cache_controller -flatten
+dfflibmap -liberty /home/adarsh/eda/pdk/nangate45/NangateOpenCellLibrary_typical.lib
+abc -liberty /home/adarsh/eda/pdk/nangate45/NangateOpenCellLibrary_typical.lib -constr /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/synthesis/p5/abc.constr -script /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5e/noise/final_null_stageB_gt/d16_m0_1000MHz/abc.script
+opt_clean
+hilomap -hicell LOGIC1_X1 Z -locell LOGIC0_X1 Z
+opt_clean
+tee -o /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5e/noise/final_null_stageB_gt/d16_m0_1000MHz/stat.txt stat -liberty /home/adarsh/eda/pdk/nangate45/NangateOpenCellLibrary_typical.lib
+check -assert
+write_verilog -noattr -noexpr /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5e/noise/final_null_stageB_gt/d16_m0_1000MHz/netlist.v

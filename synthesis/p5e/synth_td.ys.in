@@ -1,0 +1,21 @@
+# P5e timing-driven variant of synthesis/p5/synth.ys.in: identical except the abc line, which runs
+# synthesis/p5e/abc_td.script.in (written per run to <out>/abc.script). NanGate45, not TSMC. Pre-layout.
+# @D@ = CACHE_DEPTH, @M@ = COUNTER_MODE, @P@ = abc delay target in ps, @LIB@ = liberty
+read_liberty -lib @LIB@
+read_verilog -sv @RTL@
+chparam -set CACHE_DEPTH @D@ -set COUNTER_MODE @M@ lfu_cache_controller
+# P5b: registers declared (* keep *) in the RTL (the per-group address copies) must stay separate.
+# Yosys puts keep on the wire only and opt_merge then merges identical flip-flops, so the
+# attribute is copied to the flip-flop cells that drive kept wires. No-op without kept wires.
+hierarchy -top lfu_cache_controller
+proc
+setattr -set keep 1 a:keep w:* %i %ci1:+[Q] t:$adff %i
+synth -top lfu_cache_controller -flatten
+dfflibmap -liberty @LIB@
+abc -liberty @LIB@ -constr @CONSTR@ -script @SCRIPT@
+opt_clean
+hilomap -hicell LOGIC1_X1 Z -locell LOGIC0_X1 Z
+opt_clean
+tee -o @OUT@/stat.txt stat -liberty @LIB@
+check -assert
+write_verilog -noattr -noexpr @OUT@/netlist.v

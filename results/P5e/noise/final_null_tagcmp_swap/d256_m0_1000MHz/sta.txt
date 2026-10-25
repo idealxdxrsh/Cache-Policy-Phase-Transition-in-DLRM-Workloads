@@ -1,0 +1,160 @@
+OpenSTA 3.1.0 7b261909c1 Copyright (c) 2026, Parallax Software, Inc.
+License GPLv3: GNU GPL version 3 <http://gnu.org/licenses/gpl.html>
+
+This is free software, and you are free to change and redistribute it
+under certain conditions; type `show_copying' for details. 
+This program comes with ABSOLUTELY NO WARRANTY; for details type `show_warranty'.
+PERIOD_NS 1
+wns max -0.8627
+tns max -1522.8140
+worst slack max -0.8627
+worst slack min 0.0396
+max slew
+
+Pin                                    Limit    Slew   Slack
+------------------------------------------------------------
+rst_n                                   0.20  244.28 -244.08 (VIOLATED)
+
+max capacitance
+
+Pin                                    Limit     Cap   Slack
+------------------------------------------------------------
+rst_n                                  60.65 107045.31 -106984.66 (VIOLATED)
+
+_177659_/ZN                            10.47   15.77   -5.30 (VIOLATED)
+
+_177578_/ZN                            10.47   14.84   -4.37 (VIOLATED)
+
+_177865_/ZN                            10.47   14.67   -4.20 (VIOLATED)
+
+_176548_/ZN                            16.02   19.99   -3.97 (VIOLATED)
+
+_177338_/ZN                            10.47   14.28   -3.81 (VIOLATED)
+
+_177568_/ZN                            10.47   14.08   -3.61 (VIOLATED)
+
+_213245_/ZN                            11.48   14.15   -2.67 (VIOLATED)
+
+_213261_/ZN                            11.48   14.15   -2.67 (VIOLATED)
+
+_213270_/ZN                            11.48   14.15   -2.67 (VIOLATED)
+
+_213312_/ZN                            11.48   14.15   -2.67 (VIOLATED)
+
+_213349_/ZN                            11.48   14.15   -2.67 (VIOLATED)
+
+_177780_/ZN                            10.47   12.97   -2.49 (VIOLATED)
+
+_206346_/ZN                            10.47   12.97   -2.49 (VIOLATED)
+
+_177455_/ZN                            10.47   12.87   -2.40 (VIOLATED)
+
+_206471_/ZN                            16.02   18.36   -2.34 (VIOLATED)
+
+_174352_/ZN                            16.02   18.36   -2.33 (VIOLATED)
+
+_177329_/ZN                            10.47   12.67   -2.20 (VIOLATED)
+
+_177626_/ZN                            10.47   12.58   -2.11 (VIOLATED)
+
+_177857_/ZN                            10.47   12.56   -2.09 (VIOLATED)
+
+_177878_/ZN                            10.47   12.53   -2.05 (VIOLATED)
+
+_203970_/ZN                            10.47   12.50   -2.03 (VIOLATED)
+
+_177666_/ZN                            10.47   12.44   -1.97 (VIOLATED)
+
+_165131_/ZN                            10.47   11.84   -1.37 (VIOLATED)
+
+_177035_/ZN                            16.02   17.35   -1.33 (VIOLATED)
+
+Startpoint: _258773_ (rising edge-triggered flip-flop clocked by clk)
+Endpoint: _259004_ (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type: max
+
+Fanout       Cap      Slew     Delay      Time   Description
+-------------------------------------------------------------------------------------
+                    0.0000    0.0000    0.0000   clock clk (rise edge)
+                              0.0000    0.0000   clock network delay (ideal)
+                    0.0000    0.0000    0.0000 ^ _258773_/CK (DFF_X1)
+     1    2.0889    0.0092    0.0862    0.0862 ^ _258773_/Q (DFF_X1)
+     4    8.7495    0.0127    0.0282    0.1144 ^ _176026_/Z (BUF_X2)
+    10   20.3352    0.0254    0.0436    0.1579 ^ _176027_/Z (BUF_X2)
+    10   21.6733    0.0522    0.0752    0.2331 ^ _176028_/Z (BUF_X1)
+    10   20.7152    0.0260    0.0510    0.2841 ^ _176029_/Z (BUF_X2)
+     1    1.8627    0.0102    0.0615    0.3457 v _204517_/Z (MUX2_X1)
+     1    1.9805    0.0257    0.0427    0.3884 ^ _204519_/ZN (AOI22_X1)
+     2    3.1581    0.0189    0.0260    0.4143 v _204524_/ZN (OAI21_X1)
+     9   18.9499    0.0954    0.1200    0.5343 ^ _204525_/ZN (NOR2_X1)
+     2    3.1460    0.0228    0.0165    0.5508 v _206836_/ZN (NOR4_X1)
+     1    1.9805    0.0451    0.0862    0.6369 ^ _206880_/ZN (NOR4_X1)
+     1    1.7840    0.0160    0.0263    0.6632 v _206883_/ZN (OAI21_X1)
+     1    6.6138    0.0813    0.1171    0.7803 ^ _206885_/ZN (AOI222_X1)
+     8   16.8828    0.0327    0.0511    0.8315 v _206886_/ZN (OAI211_X4)
+     2    3.9667    0.0124    0.0634    0.8949 v _206906_/Z (MUX2_X1)
+     1    1.8106    0.0099    0.0402    0.9351 v _206907_/ZN (XNOR2_X1)
+     1    2.9501    0.0161    0.1047    1.0397 v _206910_/ZN (OR4_X2)
+     1    2.0889    0.0369    0.0431    1.0829 ^ _206919_/ZN (AOI221_X2)
+     6   15.6335    0.0204    0.0431    1.1260 ^ _206920_/Z (BUF_X2)
+    10   21.4159    0.0149    0.0334    1.1595 ^ _206958_/Z (BUF_X4)
+     3    6.4012    0.0147    0.0701    1.2295 v _206959_/Z (MUX2_X1)
+     2    3.1133    0.0128    0.0602    1.2897 v _206963_/Z (XOR2_X1)
+     1    1.2094    0.0067    0.0378    1.3275 v _206965_/ZN (AND4_X1)
+     4   12.5271    0.0204    0.0785    1.4059 v _206971_/Z (MUX2_X1)
+     2    4.0247    0.0431    0.0716    1.4775 ^ _207466_/ZN (NOR3_X1)
+     2    3.5821    0.0172    0.0267    1.5042 v _207469_/ZN (OAI21_X1)
+     1    1.8816    0.0468    0.0603    1.5644 ^ _207473_/ZN (OAI222_X1)
+     1    3.1906    0.0185    0.0297    1.5942 v _207474_/ZN (OAI21_X1)
+     4   11.6655    0.0367    0.0349    1.6291 ^ _207509_/ZN (OAI21_X2)
+    10   50.1353    0.0172    0.0392    1.6683 ^ _207510_/Z (BUF_X8)
+     2    8.8280    0.0141    0.0218    1.6900 v _207990_/ZN (NAND2_X2)
+     7   16.5863    0.0445    0.0687    1.7588 ^ _207991_/ZN (NOR3_X4)
+    10   35.9558    0.0230    0.0461    1.8048 ^ _207992_/Z (BUF_X4)
+     1    1.3625    0.0163    0.0142    1.8190 v _207993_/ZN (AOI21_X2)
+                    0.0163    0.0000    1.8191 v _259004_/D (DFFR_X1)
+                                        1.8191   data arrival time
+
+                    0.0000    1.0000    1.0000   clock clk (rise edge)
+                              0.0000    1.0000   clock network delay (ideal)
+                              0.0000    1.0000   clock reconvergence pessimism
+                                        1.0000 ^ _259004_/CK (DFFR_X1)
+                             -0.0436    0.9564   library setup time
+                                        0.9564   data required time
+-------------------------------------------------------------------------------------
+                                        0.9564   data required time
+                                       -1.8191   data arrival time
+-------------------------------------------------------------------------------------
+                                       -0.8627   slack (VIOLATED)
+
+
+Startpoint: req_valid (input port clocked by clk)
+Endpoint: _258775_ (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type: min
+
+    Delay      Time   Description
+-------------------------------------------------------------
+   0.0000    0.0000   clock clk (rise edge)
+   0.0000    0.0000   clock network delay (ideal)
+   0.0000    0.0000 v input external delay
+   0.0040    0.0040 v req_valid (in)
+   0.0205    0.0245 ^ _158081_/ZN (NAND2_X1)
+   0.0178    0.0423 v _176038_/ZN (AOI22_X1)
+   0.0000    0.0423 v _258775_/D (DFFR_X1)
+             0.0423   data arrival time
+
+   0.0000    0.0000   clock clk (rise edge)
+   0.0000    0.0000   clock network delay (ideal)
+   0.0000    0.0000   clock reconvergence pessimism
+             0.0000 ^ _258775_/CK (DFFR_X1)
+   0.0027    0.0027   library hold time
+             0.0027   data required time
+-------------------------------------------------------------
+             0.0027   data required time
+            -0.0423   data arrival time
+-------------------------------------------------------------
+             0.0396   slack (MET)
+
+

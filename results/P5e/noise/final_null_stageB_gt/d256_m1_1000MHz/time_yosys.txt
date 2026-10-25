@@ -1,0 +1,20 @@
+Warning: Replacing memory \data_store with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5d/noise/rtl/null_stageB_gt.v:264
+Warning: Replacing memory \tag_store with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5d/noise/rtl/null_stageB_gt.v:263
+Warning: Replacing memory \freq_cnt with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5d/noise/rtl/null_stageB_gt.v:262
+Warning: Replacing memory \valid_bits with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5d/noise/rtl/null_stageB_gt.v:261
+Warning: Replacing memory \req_addr_grp with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5d/noise/rtl/null_stageB_gt.v:234
+Warning: Replacing memory \stageA_min with list of registers. See /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5d/noise/rtl/null_stageB_gt.v:189
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFRS_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFRS_X2' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFR_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFR_X2' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFS_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFFS_X2' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFF_X1' - skipping.
+Warning: Found unsupported expression 'SE*SI+D*!SE' in pin attribute of cell 'SDFF_X2' - skipping.
+	Command being timed: "yosys -q -l /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5e/noise/final_null_stageB_gt/d256_m1_1000MHz/yosys.log /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5e/noise/final_null_stageB_gt/d256_m1_1000MHz/synth.ys"
+	User time (seconds): 3480.79
+	System time (seconds): 35.94
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 58:50.04
+	Maximum resident set size (kbytes): 907824
+	Exit status: 0
