@@ -10,11 +10,15 @@
 //         gate-level simulation.
 //         P5b (Stage-B tree + address copies, commit 2a9f4ae):
 //         Fmax 185.2-629.2 MHz (see results/P5b/SUMMARY.md).
-//         This version (P5c: Stage-A and Stage-B trees + address
-//         copies): same flow, NanGate45, pre-layout, not TSMC;
-//         Fmax 199.4-626.1 MHz from the 1 GHz netlists; meets
-//         500 MHz only at depth 16 (see results/P5c/SUMMARY.md);
-//         no gate-level simulation.
+//         P5c (Stage-A tree, commit 3ebb34f): Fmax 199.4-626.1
+//         MHz (see results/P5c/SUMMARY.md).
+//         This version, git tag rtl-v2-final (P5d: hit_idx
+//         priority tree): same flow, NanGate45, pre-layout, not
+//         TSMC; Fmax 435.3-586.9 MHz from the 1 GHz netlists;
+//         the 500 MHz netlists meet 500 MHz only at depth 16;
+//         the flow alone moves Fmax by 1.96-16.62% on identical
+//         logic (see results/P5d/SUMMARY.md, NOISE.md); no
+//         gate-level simulation. No further RTL changes.
 //
 // Changes vs v1 (rtl/v1):
 //   - CACHE_DEPTH 16 -> 256
@@ -29,6 +33,8 @@
 //   - P5b: per-group registered copies of the request address
 //     drive the tag comparators and tag writes (same cycle)
 //   - Hit detection ORs per-group first, then across groups
+//   - P5d: hit index from a balanced priority tree (lowest
+//     matching slot wins, as the serial loop did)
 //
 // Counter semantics, selected by COUNTER_MODE:
 //   0 (default): count is set to 1 when a tag is installed
@@ -111,13 +117,34 @@ generate
 endgenerate
 assign hit_detected = |group_hit;
 
-integer hi;
-reg [IDX_WIDTH-1:0] hit_idx;
-always @(*) begin
-    hit_idx = {IDX_WIDTH{1'b0}};
-    for (hi = CACHE_DEPTH-1; hi >= 0; hi = hi - 1)
-        if (match[hi]) hit_idx = hi[IDX_WIDTH-1:0];
-end
+// P5d: hit_idx from a balanced priority tree (log2(CACHE_DEPTH)
+// levels) instead of a serial loop. Heap order: slot i is leaf
+// CACHE_DEPTH-1+i, node n has children 2n+1 (left, lower slots) and
+// 2n+2. A node takes the right child only if the left subtree has
+// no match and the right one has, so hit_idx is the lowest matching
+// slot, and 0 when nothing matches, exactly like the former loop.
+// It does not rely on at most one match. That invariant does hold:
+// tags are written only at reset and in FILL, valid bits are set
+// only in FILL, FILL follows only a LOOKUP miss on an address held
+// since IDLE, and there is no flush path (see results/P5d/SUMMARY.md).
+// Node values are unpacked arrays, not one flat vector: with a flat
+// vector Icarus re-evaluates every node on any change (a depth-256
+// lockstep run took 5791 s); the logic is the same either way.
+localparam HNODES = 2*CACHE_DEPTH - 1;
+wire                 h_any [0:HNODES-1];
+wire [IDX_WIDTH-1:0] h_idx [0:HNODES-1];
+generate
+    for (g = 0; g < CACHE_DEPTH; g = g + 1) begin : HIT_LEAF
+        assign h_any[CACHE_DEPTH-1+g] = match[g];
+        assign h_idx[CACHE_DEPTH-1+g] = g;
+    end
+    for (g = 0; g < CACHE_DEPTH-1; g = g + 1) begin : HIT_NODE
+        wire h_take_r = !h_any[2*g+1] && h_any[2*g+2];
+        assign h_any[g] = h_any[2*g+1] | h_any[2*g+2];
+        assign h_idx[g] = h_take_r ? h_idx[2*g+2] : h_idx[2*g+1];
+    end
+endgenerate
+wire [IDX_WIDTH-1:0] hit_idx = h_idx[0];
 
 // ---- victim selection ---------------------------------------
 // Effective count: empty slot = 0 (always preferred as victim),

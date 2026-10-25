@@ -111,6 +111,27 @@ MUTANTS = {
         "Stage A registers the group's first slot instead of the tree root",
         "assign stageA_comb[g*IDX_WIDTH +: IDX_WIDTH] = a_idx[IDX_WIDTH-1:0];",
         "assign stageA_comb[g*IDX_WIDTH +: IDX_WIDTH] = a_idx[(GSIZE-1)*IDX_WIDTH +: IDX_WIDTH];", (), (16,)),
+    # P5d: hit_idx priority tree.
+    # Equivalent in every mode: the right child wins a tie only when both subtrees match,
+    # i.e. two valid slots hold the requested tag, which the RTL never allows (invariant in
+    # results/P5d/SUMMARY.md; the lockstep counts 0 multi-match cycles). Kept to document that.
+    "hit_tree_prefer_right": (
+        "hit tree takes the right child whenever it matches (equivalent: at most one slot matches)",
+        "wire h_take_r = !h_any[2*g+1] && h_any[2*g+2];", "wire h_take_r = h_any[2*g+2];", (0, 1)),
+    "hit_tree_never_right": (
+        "hit tree always keeps the left child",
+        "wire h_take_r = !h_any[2*g+1] && h_any[2*g+2];", "wire h_take_r = 1'b0;", ()),
+    "hit_tree_any_left_only": (
+        "hit tree node ignores matches in its right subtree",
+        "assign h_any[g] = h_any[2*g+1] | h_any[2*g+2];", "assign h_any[g] = h_any[2*g+1];", ()),
+    "hit_tree_index_left": (
+        "hit tree node forwards the left index even when it takes the right child",
+        "assign h_idx[g] = h_take_r ? h_idx[2*g+2] : h_idx[2*g+1];",
+        "assign h_idx[g] = h_idx[2*g+1];", ()),
+    "hit_leaf_wrong_index": (
+        "hit tree leaf carries the mirrored slot's index",
+        "assign h_idx[CACHE_DEPTH-1+g] = g;",
+        "assign h_idx[CACHE_DEPTH-1+g] = CACHE_DEPTH-1-g;", ()),
 }
 
 

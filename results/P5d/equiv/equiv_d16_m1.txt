@@ -1,0 +1,13 @@
+Warning: Replacing memory \data_store with list of registers. See /tmp/tmp.WDAfggcZQe/gold.v:262
+Warning: Replacing memory \tag_store with list of registers. See /tmp/tmp.WDAfggcZQe/gold.v:261
+Warning: Replacing memory \freq_cnt with list of registers. See /tmp/tmp.WDAfggcZQe/gold.v:260
+Warning: Replacing memory \valid_bits with list of registers. See /tmp/tmp.WDAfggcZQe/gold.v:259
+Warning: Replacing memory \req_addr_grp with list of registers. See /tmp/tmp.WDAfggcZQe/gold.v:232
+Warning: Replacing memory \stageA_min with list of registers. See /tmp/tmp.WDAfggcZQe/gold.v:187
+Warning: Replacing memory \data_store with list of registers. See /tmp/tmp.WDAfggcZQe/gate.v:268
+Warning: Replacing memory \tag_store with list of registers. See /tmp/tmp.WDAfggcZQe/gate.v:267
+Warning: Replacing memory \freq_cnt with list of registers. See /tmp/tmp.WDAfggcZQe/gate.v:266
+Warning: Replacing memory \valid_bits with list of registers. See /tmp/tmp.WDAfggcZQe/gate.v:265
+Warning: Replacing memory \req_addr_grp with list of registers. See /tmp/tmp.WDAfggcZQe/gate.v:238
+Warning: Replacing memory \stageA_min with list of registers. See /tmp/tmp.WDAfggcZQe/gate.v:193
+depth=16 mode=1 exit=0 (0 = all proven, 124 = timeout)

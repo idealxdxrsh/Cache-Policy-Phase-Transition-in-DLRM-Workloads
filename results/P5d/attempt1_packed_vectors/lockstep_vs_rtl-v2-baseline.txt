@@ -1,0 +1,12 @@
+lockstep depth=16 mode=0 cycles=200000 responses=65436 hits=57297 fills=8139 evicts=8139 port_mismatches=0 victim_mismatches=0 lookup_hits=57298 hit_idx_mismatches=0 multi_match_cycles=0
+LOCKSTEP PASSED
+lockstep depth=16 mode=1 cycles=200002 responses=65256 hits=57090 fills=8167 evicts=8167 port_mismatches=0 victim_mismatches=0 lookup_hits=57090 hit_idx_mismatches=0 multi_match_cycles=0
+LOCKSTEP PASSED
+lockstep depth=64 mode=0 cycles=200000 responses=65291 hits=57092 fills=8199 evicts=8199 port_mismatches=0 victim_mismatches=0 lookup_hits=57092 hit_idx_mismatches=0 multi_match_cycles=0
+LOCKSTEP PASSED
+lockstep depth=64 mode=1 cycles=200000 responses=62957 hits=53588 fills=9369 evicts=9369 port_mismatches=0 victim_mismatches=0 lookup_hits=53588 hit_idx_mismatches=0 multi_match_cycles=0
+LOCKSTEP PASSED
+lockstep depth=256 mode=0 cycles=200000 responses=65318 hits=57209 fills=8109 evicts=8109 port_mismatches=0 victim_mismatches=0 lookup_hits=57210 hit_idx_mismatches=0 multi_match_cycles=0
+LOCKSTEP PASSED
+lockstep depth=256 mode=1 cycles=200000 responses=65143 hits=56927 fills=8216 evicts=8216 port_mismatches=0 victim_mismatches=0 lookup_hits=56927 hit_idx_mismatches=0 multi_match_cycles=0
+LOCKSTEP PASSED

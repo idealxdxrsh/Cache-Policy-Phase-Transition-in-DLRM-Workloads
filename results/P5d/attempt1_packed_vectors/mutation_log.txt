@@ -1,0 +1,61 @@
+stale_victim_reg depth=16 mode=0: KILLED by testbench | EVICT does not latch the new victim; FILL writes the previous victim slot | FAIL: not all lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available; FAIL: hit rate below 70% on skewed workload
+stale_victim_reg depth=16 mode=1: KILLED by testbench | EVICT does not latch the new victim; FILL writes the previous victim slot | FAIL: not all lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available; FAIL: hit rate below 70% on skewed workload
+stale_victim_reg depth=64 mode=0: KILLED by testbench | EVICT does not latch the new victim; FILL writes the previous victim slot | FAIL: not all lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available; FAIL: hit rate below 70% on skewed workload
+stale_victim_reg depth=64 mode=1: KILLED by testbench | EVICT does not latch the new victim; FILL writes the previous victim slot | FAIL: not all lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available; FAIL: hit rate below 70% on skewed workload
+stale_victim_reg depth=256 mode=0: KILLED by testbench | EVICT does not latch the new victim; FILL writes the previous victim slot | FAIL: not all lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available; FAIL: hit rate below 70% on skewed workload
+stale_victim_reg depth=256 mode=1: KILLED by testbench | EVICT does not latch the new victim; FILL writes the previous victim slot | FAIL: not all lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available; FAIL: hit rate below 70% on skewed workload
+stale_stageA depth=16 mode=0: KILLED by testbench | Stage A group minima never refreshed (victim from stale/reset indices) | FAIL: second access must hit; FAIL: not all lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available
+stale_stageA depth=16 mode=1: KILLED by testbench | Stage A group minima never refreshed (victim from stale/reset indices) | FAIL: second access must hit; FAIL: not all lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available
+stale_stageA depth=64 mode=0: KILLED by testbench | Stage A group minima never refreshed (victim from stale/reset indices) | FAIL: second access must hit; FAIL: not all lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available
+stale_stageA depth=64 mode=1: KILLED by testbench | Stage A group minima never refreshed (victim from stale/reset indices) | FAIL: second access must hit; FAIL: not all lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available
+stale_stageA depth=256 mode=0: KILLED by testbench | Stage A group minima never refreshed (victim from stale/reset indices) | FAIL: second access must hit; FAIL: not all lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available
+stale_stageA depth=256 mode=1: KILLED by testbench | Stage A group minima never refreshed (victim from stale/reset indices) | FAIL: second access must hit; FAIL: not all lines retained after filling an empty cache; FAIL: hot line was evicted while colder lines were available
+double_increment_hit depth=16 mode=0: KILLED by testbench | hit adds 2 to the counter instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 0: slot 1 should survive
+double_increment_hit depth=16 mode=1: KILLED by testbench | hit adds 2 to the counter instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 1: installed tag must continue slot count (3+1)
+double_increment_hit depth=64 mode=0: KILLED by testbench | hit adds 2 to the counter instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 0: slot 1 should survive
+double_increment_hit depth=64 mode=1: KILLED by testbench | hit adds 2 to the counter instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 1: installed tag must continue slot count (3+1)
+double_increment_hit depth=256 mode=0: KILLED by testbench | hit adds 2 to the counter instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 0: slot 1 should survive
+double_increment_hit depth=256 mode=1: KILLED by testbench | hit adds 2 to the counter instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 1: installed tag must continue slot count (3+1)
+double_increment_fill depth=16 mode=0: survived (equivalent, expected) | mode-1 fill adds 2 to the slot count instead of 1 | (no FAIL lines)
+double_increment_fill depth=16 mode=1: KILLED by testbench | mode-1 fill adds 2 to the slot count instead of 1 | FAIL: hot line was evicted while colder lines were available; FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed
+double_increment_fill depth=64 mode=0: survived (equivalent, expected) | mode-1 fill adds 2 to the slot count instead of 1 | (no FAIL lines)
+double_increment_fill depth=64 mode=1: KILLED by testbench | mode-1 fill adds 2 to the slot count instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 1: installed tag must continue slot count (3+1)
+double_increment_fill depth=256 mode=0: survived (equivalent, expected) | mode-1 fill adds 2 to the slot count instead of 1 | (no FAIL lines)
+double_increment_fill depth=256 mode=1: KILLED by testbench | mode-1 fill adds 2 to the slot count instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 1: installed tag must continue slot count (3+1)
+install_count_2 depth=16 mode=0: KILLED by testbench | mode-0 install sets the count to 2 instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 0: installed tag count must be 1
+install_count_2 depth=16 mode=1: survived (equivalent, expected) | mode-0 install sets the count to 2 instead of 1 | (no FAIL lines)
+install_count_2 depth=64 mode=0: KILLED by testbench | mode-0 install sets the count to 2 instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 0: installed tag count must be 1
+install_count_2 depth=64 mode=1: survived (equivalent, expected) | mode-0 install sets the count to 2 instead of 1 | (no FAIL lines)
+install_count_2 depth=256 mode=0: KILLED by testbench | mode-0 install sets the count to 2 instead of 1 | FAIL: counter not incremented exactly once per access; FAIL: a non-victim line was lost or its count changed; FAIL: mode 0: installed tag count must be 1
+install_count_2 depth=256 mode=1: survived (equivalent, expected) | mode-0 install sets the count to 2 instead of 1 | (no FAIL lines)
+mode0_keeps_count depth=16 mode=0: KILLED by testbench | COUNTER_MODE ignored: mode 0 behaves like mode 1 | FAIL: mode 0: installed tag count must be 1; FAIL: mode 0: fresh line (count 1) should be the next victim; FAIL: mode 0: slot 1 should survive
+mode0_keeps_count depth=16 mode=1: survived (equivalent, expected) | COUNTER_MODE ignored: mode 0 behaves like mode 1 | (no FAIL lines)
+mode0_keeps_count depth=64 mode=0: KILLED by testbench | COUNTER_MODE ignored: mode 0 behaves like mode 1 | FAIL: mode 0: installed tag count must be 1; FAIL: mode 0: fresh line (count 1) should be the next victim; FAIL: mode 0: slot 1 should survive
+mode0_keeps_count depth=64 mode=1: survived (equivalent, expected) | COUNTER_MODE ignored: mode 0 behaves like mode 1 | (no FAIL lines)
+mode0_keeps_count depth=256 mode=0: KILLED by testbench | COUNTER_MODE ignored: mode 0 behaves like mode 1 | FAIL: mode 0: installed tag count must be 1; FAIL: mode 0: fresh line (count 1) should be the next victim; FAIL: mode 0: slot 1 should survive
+mode0_keeps_count depth=256 mode=1: survived (equivalent, expected) | COUNTER_MODE ignored: mode 0 behaves like mode 1 | (no FAIL lines)
+tree_tie_right depth=16 mode=0: testbench passed; KILLED by lockstep | tree node takes the right child on ties (victim order differs from the serial loop) | lockstep depth=16 mode=0 cycles=200000 responses=65436 hits=57297 fills=8139 evicts=8139 port_mismatches=0 victim_mismatches=8139 lookup_hits=57298 hit_idx_mismatches=57298 multi_match_cycles=0
+tree_tie_right depth=16 mode=1: testbench passed; KILLED by lockstep | tree node takes the right child on ties (victim order differs from the serial loop) | lockstep depth=16 mode=1 cycles=200002 responses=65256 hits=57090 fills=8167 evicts=8167 port_mismatches=0 victim_mismatches=8167 lookup_hits=57090 hit_idx_mismatches=57090 multi_match_cycles=0
+tree_tie_right depth=64 mode=0: testbench passed; KILLED by lockstep | tree node takes the right child on ties (victim order differs from the serial loop) | lockstep depth=64 mode=0 cycles=200000 responses=65291 hits=57092 fills=8199 evicts=8199 port_mismatches=0 victim_mismatches=8199 lookup_hits=57092 hit_idx_mismatches=57092 multi_match_cycles=0
+tree_tie_right depth=64 mode=1: testbench passed; KILLED by lockstep | tree node takes the right child on ties (victim order differs from the serial loop) | lockstep depth=64 mode=1 cycles=200000 responses=62957 hits=53588 fills=9369 evicts=9369 port_mismatches=0 victim_mismatches=9369 lookup_hits=53588 hit_idx_mismatches=53588 multi_match_cycles=0
+Traceback (most recent call last):
+  File "/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tools/mutate_rtl.py", line 220, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tools/mutate_rtl.py", line 201, in main
+    ls_ok, ls_info = lockstep(mpath, m, work, d)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tools/mutate_rtl.py", line 165, in lockstep
+    out = subprocess.run(["vvp", "-n", str(exe)], capture_output=True, text=True, cwd=work, timeout=1200).stdout
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 2116, in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+  File "/usr/lib/python3.12/subprocess.py", line 1253, in _check_timeout
+    raise TimeoutExpired(
+subprocess.TimeoutExpired: Command '['vvp', '-n', '/tmp/tmpyxbaoj3l/ls']' timed out after 1200 seconds

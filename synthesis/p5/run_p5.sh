@@ -3,7 +3,7 @@
 # NanGate45, not TSMC. Pre-layout. No power step.
 #   bash synthesis/p5/run_p5.sh [depths...]     default: 16 64 256
 #   OUTDIR=results/P5b bash synthesis/p5/run_p5.sh   (default OUTDIR: results/P5)
-#   RTL=<file> overrides rtl/v2/lfu_cache_controller.v
+#   RTL=<file> overrides rtl/v2/lfu_cache_controller.v; FREQS="1000" limits the clocks (default "1000 500")
 # Liberty and sta paths: results/P5/SOURCES.md.
 set -euo pipefail
 ROOT=$(cd "$(dirname "$0")/../.." && pwd)
@@ -13,7 +13,7 @@ PY=${PY:-python3}
 DEPTHS=${*:-"16 64 256"}
 for d in $DEPTHS; do
   for m in 0 1; do
-    for f in 1000 500; do
+    for f in ${FREQS:-1000 500}; do
       p=$((1000000 / f))                     # period in ps
       out=$ROOT/${OUTDIR:-results/P5}/d${d}_m${m}_${f}MHz; mkdir -p "$out"
       sed -e "s|@D@|$d|g; s|@M@|$m|g; s|@P@|$p|g; s|@LIB@|$LIB|g; s|@OUT@|$out|g" \

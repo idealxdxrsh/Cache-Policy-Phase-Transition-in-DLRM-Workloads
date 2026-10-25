@@ -1,0 +1,7 @@
+# First run of the same check (scratchpad copies: gold = flat-vector RTL, gate = array RTL before its explanatory comment; same yosys command, timeout 1500 s). exit 124 = timeout (not proven).
+d=16 m=0 exit 0 12 lines; 
+d=16 m=1 exit 0 12 lines; 
+d=64 m=0 exit 124 12 lines; 
+d=64 m=1 exit 124 12 lines; 
+
+[exited with code 0]
