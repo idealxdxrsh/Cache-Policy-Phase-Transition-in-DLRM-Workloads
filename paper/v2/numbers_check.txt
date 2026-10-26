@@ -1,34 +1,125 @@
+rounded   main.tex:           47.7  from 47.6719, TABLES.md:195
+rounded   main.tex:           41.4  from 41.4010, TABLES.md:195
+rounded   main.tex:           48.2  from 48.1592, TABLES.md:205
+rounded   main.tex:           41.3  from 41.2640, TABLES.md:205
+rounded   main.tex:           41.0  from 41.0006, TABLES.md:195
+rounded   main.tex:           38.5  from 38.4896, TABLES.md:205
+rounded   main.tex:            636  from 636.1, TABLES.md:570
+rounded   main.tex:            603  from 603.0, TABLES.md:574
+rounded   main.tex:            557  from 556.6, TABLES.md:578
+rounded   main.tex:            214  from 213.9, TABLES.md:542
+rounded   main.tex:            199  from 199.1, TABLES.md:524
+rounded   main.tex:            199  from 199.4, TABLES.md:544
+rounded   main.tex:            188  from 188.4, TABLES.md:506
+rounded   main.tex:           67.3  from 67.3151, TABLES.md:20
+rounded   main.tex:           67.1  from 67.0796, TABLES.md:37
+rounded   main.tex:           41.4  from 41.4010, TABLES.md:195
+rounded   main.tex:           41.3  from 41.2640, TABLES.md:205
+rounded   main.tex:           70.1  from 70.0951, TABLES.md:20
+rounded   main.tex:           70.3  from 70.3276, TABLES.md:37
+rounded   main.tex:           47.7  from 47.6719, TABLES.md:195
+rounded   main.tex:           48.2  from 48.1592, TABLES.md:205
+rounded   main.tex:           71.8  from 71.8034, TABLES.md:20
+rounded   main.tex:           68.3  from 68.3280, TABLES.md:37
+rounded   main.tex:           41.0  from 41.0006, TABLES.md:195
+rounded   main.tex:           38.5  from 38.4896, TABLES.md:205
+rounded   main.tex:           69.7  from 69.7367, TABLES.md:20
+rounded   main.tex:           64.5  from 64.5267, TABLES.md:37
+rounded   main.tex:           73.3  from 73.2679, TABLES.md:20
+rounded   main.tex:           73.1  from 73.1009, TABLES.md:37
+rounded   main.tex:           51.0  from 50.9749, TABLES.md:195
+rounded   main.tex:           50.9  from 50.9101, TABLES.md:205
+rounded   main.tex:           72.6  from 72.6030, TABLES.md:20
+rounded   main.tex:           72.4  from 72.4225, TABLES.md:37
+rounded   main.tex:           50.9  from 50.9225, TABLES.md:195
+rounded   main.tex:           50.9  from 50.8773, TABLES.md:205
+rounded   main.tex:           78.7  from 78.6721, TABLES.md:20
+rounded   main.tex:           78.4  from 78.4180, TABLES.md:37
+rounded   main.tex:           0.26  from 0.2587, TABLES.md:182
+rounded   main.tex:           0.21  from 0.2061, TABLES.md:183
+rounded   main.tex:           0.59  from 0.5900, TABLES.md:184
+rounded   main.tex:           0.40  from 0.4020, TABLES.md:185
+rounded   main.tex:           71.8  from 71.8034, TABLES.md:20
+rounded   main.tex:           68.3  from 68.3280, TABLES.md:37
+rounded   main.tex:           64.5  from 64.5267, TABLES.md:37
+rounded   main.tex:           67.1  from 67.0796, TABLES.md:37
+rounded   main.tex:           78.7  from 78.6721, TABLES.md:20
+rounded   main.tex:           78.4  from 78.4180, TABLES.md:37
+rounded   main.tex:           47.7  from 47.6719, TABLES.md:195
+rounded   main.tex:           41.4  from 41.4010, TABLES.md:195
+rounded   main.tex:           48.2  from 48.1592, TABLES.md:205
+rounded   main.tex:           41.3  from 41.2640, TABLES.md:205
+rounded   main.tex:           41.0  from 41.0006, TABLES.md:195
+rounded   main.tex:           38.5  from 38.4896, TABLES.md:205
+rounded   main.tex:           52.9  from 52.9099, TABLES.md:206
+rounded   main.tex:           53.5  from 53.4740, TABLES.md:206
+rounded   main.tex:           92.6  from 92.5839, TABLES.md:198
+rounded   main.tex:           92.4  from 92.3924, TABLES.md:208
+rounded   main.tex:           20.9  from 20.9254, TABLES.md:213
+rounded   main.tex:           20.9  from 20.8538, TABLES.md:238
+rounded   main.tex:            2.5  from 2.4969, TABLES.md:220
+rounded   main.tex:            2.2  from 2.1731, TABLES.md:245
+rounded   main.tex:            4.9  from 4.9401, TABLES.md:195
+rounded   main.tex:            4.3  from 4.2999, TABLES.md:205
+rounded   main.tex:            3.9  from 3.9281, TABLES.md:218
+rounded   main.tex:            4.1  from 4.0502, TABLES.md:243
+rounded   main.tex:            8.9  from 8.9488, TABLES.md:195
+rounded   main.tex:            9.4  from 9.3535, TABLES.md:205
+rounded   main.tex:            3.6  from 3.6168, TABLES.md:219
+rounded   main.tex:            2.9  from 2.8629, TABLES.md:244
+rounded   main.tex:            7.1  from 7.0866, TABLES.md:195
+rounded   main.tex:            5.3  from 5.2841, TABLES.md:205
+rounded   main.tex:            4.5  from 4.5423, TABLES.md:221
+rounded   main.tex:            4.4  from 4.3534, TABLES.md:246
+rounded   main.tex:           11.1  from 11.0651, TABLES.md:195
+rounded   main.tex:           10.6  from 10.6280, TABLES.md:205
+rounded   main.tex:            4.6  from 4.6272, TABLES.md:217
+rounded   main.tex:            4.4  from 4.3674, TABLES.md:242
+rounded   main.tex:           11.3  from 11.2603, TABLES.md:195
+rounded   main.tex:           10.7  from 10.6552, TABLES.md:205
+rounded   main.tex:           20.9  from 20.9254, TABLES.md:213
+rounded   main.tex:           20.9  from 20.8538, TABLES.md:238
+rounded   main.tex:            2.5  from 2.4969, TABLES.md:220
+rounded   main.tex:            4.6  from 4.6272, TABLES.md:217
+rounded   main.tex:            2.2  from 2.1731, TABLES.md:245
+rounded   main.tex:            4.4  from 4.3674, TABLES.md:242
+rounded   main.tex:            4.9  from 4.9401, TABLES.md:195
+rounded   main.tex:           11.3  from 11.2603, TABLES.md:195
+rounded   main.tex:            203  from 203.1, TABLES.md:480
+rounded   main.tex:            195  from 194.7, TABLES.md:484
+rounded   main.tex:            167  from 167.4, TABLES.md:488
+rounded   main.tex:            451  from 451.2, TABLES.md:560
+rounded   main.tex:            636  from 636.1, TABLES.md:570
+rounded   main.tex:            603  from 603.0, TABLES.md:574
+rounded   main.tex:            557  from 556.6, TABLES.md:578
+rounded   main.tex:         26,744  from 26744.438, TABLES.md:570
+rounded   main.tex:            636  from 636.1, TABLES.md:570
+rounded   main.tex:         26,627  from 26626.866, TABLES.md:572
+rounded   main.tex:            660  from 659.5, TABLES.md:572
+rounded   main.tex:         94,386  from 94385.578, TABLES.md:574
+rounded   main.tex:            603  from 603.0, TABLES.md:574
+rounded   main.tex:         95,101  from 95100.852, TABLES.md:576
+rounded   main.tex:            611  from 611.2, TABLES.md:576
+rounded   main.tex:        369,530  from 369529.860, TABLES.md:578
+rounded   main.tex:            557  from 556.6, TABLES.md:578
+rounded   main.tex:        370,227  from 370226.514, TABLES.md:580
+rounded   main.tex:            542  from 542.3, TABLES.md:580
+rounded   main.tex:            542  from 542.3, TABLES.md:580
+rounded   main.tex:            660  from 659.5, TABLES.md:572
 ok        main.tex:      2,000,000  TABLES.md:8
 ok        main.tex:     10,000,000  TABLES.md:8
 ok        main.tex:     45,840,617  TABLES.md:8
 ok        main.tex:             26  TABLES.md:8
 ok        main.tex:            256  TABLES.md:20
-ok        main.tex:        71.8034  TABLES.md:20
-ok        main.tex:        67.3151  TABLES.md:20
-ok        main.tex:              2  TABLES.md:5
-ok        main.tex:        68.3280  TABLES.md:37
-ok        main.tex:        67.0796  TABLES.md:37
-ok        main.tex:             10  TABLES.md:10
 ok        main.tex:            256  TABLES.md:20
-ok        main.tex:        47.6719  TABLES.md:185
-ok        main.tex:        41.4010  TABLES.md:185
-ok        main.tex:              2  TABLES.md:5
-ok        main.tex:        48.1592  TABLES.md:195
-ok        main.tex:        41.2640  TABLES.md:195
+ok        main.tex:              2  TABLES.md:2
 ok        main.tex:             10  TABLES.md:10
-ok        main.tex:        41.0006  TABLES.md:185
-ok        main.tex:        38.4896  TABLES.md:195
 ok        main.tex:             26  TABLES.md:8
-ok        main.tex:          636.1  TABLES.md:478
-ok        main.tex:          603.0  TABLES.md:482
-ok        main.tex:          556.6  TABLES.md:486
 ok        main.tex:            16,  TABLES.md:54
 ok        main.tex:             64  TABLES.md:18
-ok        main.tex:            256  TABLES.md:20
-ok        main.tex:              0  TABLES.md:52
-ok        main.tex:           4.92  TABLES.md:381
-ok        main.tex:          16.23  TABLES.md:381
-ok        main.tex:        200,000  TABLES.md:537
+ok        main.tex:           256,  TABLES.md:20
+ok        main.tex:           4.92  TABLES.md:473
+ok        main.tex:          16.23  TABLES.md:473
 ok        main.tex:             12  TABLES.md:64
 ok        main.tex:             16  TABLES.md:54
 whitelist main.tex:           2014  year (Criteo challenge)
@@ -36,14 +127,6 @@ ok        main.tex:     45,840,617  TABLES.md:8
 ok        main.tex:             26  TABLES.md:8
 ok        main.tex:      2,000,000  TABLES.md:8
 ok        main.tex:     10,000,000  TABLES.md:8
-ok        main.tex:         1.0733  TABLES.md:54
-ok        main.tex:         4.9724  TABLES.md:57
-ok        main.tex:              2  TABLES.md:5
-ok        main.tex:         1.0759  TABLES.md:86
-ok        main.tex:         5.6033  TABLES.md:89
-ok        main.tex:             10  TABLES.md:10
-ok        main.tex:             24  TABLES.md:62
-ok        main.tex:             26  TABLES.md:8
 ok        main.tex:             26  TABLES.md:8
 ok        main.tex:             64  TABLES.md:18
 ok        main.tex:        100,000  TABLES.md:28
@@ -55,131 +138,119 @@ ok        main.tex:              0  TABLES.md:52
 ok        main.tex:             25  TABLES.md:63
 ok        main.tex:              1  TABLES.md:6
 ok        main.tex:              1  TABLES.md:6
-ok        main.tex:            255  TABLES.md:378
+ok        main.tex:            255  TABLES.md:470
 ok        main.tex:            128  TABLES.md:19
 ok        main.tex:            20,  TABLES.md:58
 ok        main.tex:              6  TABLES.md:58
-ok        main.tex:             63  TABLES.md:376
+ok        main.tex:             63  TABLES.md:468
 ok        main.tex:             16  TABLES.md:54
 ok        main.tex:            16,  TABLES.md:54
 ok        main.tex:             64  TABLES.md:18
 ok        main.tex:            256  TABLES.md:20
 ok        main.tex:              0  TABLES.md:52
 ok        main.tex:              1  TABLES.md:6
-ok        main.tex:             63  TABLES.md:376
-ok        main.tex:            255  TABLES.md:378
-ok        main.tex:           0.33  TABLES.md:380
-ok        main.tex:             45  TABLES.md:380
+ok        main.tex:             63  TABLES.md:468
+ok        main.tex:            255  TABLES.md:470
+ok        main.tex:           0.33  TABLES.md:472
 ok        main.tex:            16,  TABLES.md:54
 ok        main.tex:            64,  TABLES.md:18
 ok        main.tex:            256  TABLES.md:20
 ok        main.tex:             0,  TABLES.md:52
 ok        main.tex:              1  TABLES.md:6
 ok        main.tex:              1  TABLES.md:6
-ok        main.tex:            500  TABLES.md:389
+ok        main.tex:            500  TABLES.md:481
 ok        main.tex:              1  TABLES.md:6
-ok        main.tex:          141.5  TABLES.md:503
+ok        main.tex:          141.5  TABLES.md:607
 ok        main.tex:            16,  TABLES.md:54
 ok        main.tex:              0  TABLES.md:52
 ok        main.tex:             16  TABLES.md:54
 ok        main.tex:              8  TABLES.md:60
+ok        main.tex:           1.96  TABLES.md:473
+ok        main.tex:          16.62  TABLES.md:473
+ok        main.tex:           4.92  TABLES.md:473
+ok        main.tex:          16.23  TABLES.md:473
+ok        main.tex:            256  TABLES.md:20
+ok        main.tex:             0,  TABLES.md:52
+ok        main.tex:           7.44  TABLES.md:592
+ok        main.tex:             1,  TABLES.md:6
+ok        main.tex:           5.84  TABLES.md:593
+ok        main.tex:           1.96  TABLES.md:473
+ok        main.tex:          16.62  TABLES.md:473
 ok        main.tex:              7  TABLES.md:59
 ok        main.tex:            256  TABLES.md:20
-ok        main.tex:            256  TABLES.md:20
-ok        main.tex:             26  TABLES.md:8
-ok        main.tex:            256  TABLES.md:20
-ok        main.tex:              2  TABLES.md:5
+ok        main.tex:              2  TABLES.md:2
 ok        main.tex:             10  TABLES.md:10
-ok        main.tex:              2  TABLES.md:5
-ok        main.tex:              3  TABLES.md:8
-ok        main.tex:              4  TABLES.md:2
-ok        main.tex:              5  TABLES.md:11
-ok        main.tex:              2  TABLES.md:5
+ok        main.tex:              2  TABLES.md:2
+ok        main.tex:              3  TABLES.md:55
+ok        main.tex:              4  TABLES.md:56
+ok        main.tex:              5  TABLES.md:57
+ok        main.tex:              2  TABLES.md:2
 ok        main.tex:             10  TABLES.md:10
-ok        main.tex:              2  TABLES.md:5
+ok        main.tex:              2  TABLES.md:2
 ok        main.tex:             10  TABLES.md:10
-ok        main.tex:        67.3151  TABLES.md:20
-ok        main.tex:        67.0796  TABLES.md:37
-ok        main.tex:        41.4010  TABLES.md:185
-ok        main.tex:        41.2640  TABLES.md:195
-ok        main.tex:        70.0951  TABLES.md:20
-ok        main.tex:        70.3276  TABLES.md:37
-ok        main.tex:        47.6719  TABLES.md:185
-ok        main.tex:        48.1592  TABLES.md:195
-ok        main.tex:        71.8034  TABLES.md:20
-ok        main.tex:        68.3280  TABLES.md:37
-ok        main.tex:        41.0006  TABLES.md:185
-ok        main.tex:        38.4896  TABLES.md:195
-ok        main.tex:        69.7367  TABLES.md:20
-ok        main.tex:        64.5267  TABLES.md:37
-ok        main.tex:        73.2679  TABLES.md:20
-ok        main.tex:        73.1009  TABLES.md:37
-ok        main.tex:        50.9749  TABLES.md:185
-ok        main.tex:        50.9101  TABLES.md:195
-ok        main.tex:        72.6030  TABLES.md:20
-ok        main.tex:        72.4225  TABLES.md:37
-ok        main.tex:        50.9225  TABLES.md:185
-ok        main.tex:        50.8773  TABLES.md:195
-ok        main.tex:        78.6721  TABLES.md:20
-ok        main.tex:        78.4180  TABLES.md:37
-ok        main.tex:             79  TABLES.md:191
 ok        main.tex:            256  TABLES.md:20
 ok        main.tex:             64  TABLES.md:18
 ok        main.tex:        100,000  TABLES.md:28
-ok        main.tex:              3  TABLES.md:8
-ok        main.tex:        71.8034  TABLES.md:20
-ok        main.tex:              2  TABLES.md:5
-ok        main.tex:        68.3280  TABLES.md:37
+ok        main.tex:              2  TABLES.md:2
+ok        main.tex:        100,000  TABLES.md:28
+ok        main.tex:             64  TABLES.md:18
+ok        main.tex:         50,000  TABLES.md:27
 ok        main.tex:             10  TABLES.md:10
-ok        main.tex:             10  TABLES.md:10
-ok        main.tex:             10  TABLES.md:10
-ok        main.tex:        64.5267  TABLES.md:37
-ok        main.tex:        67.0796  TABLES.md:37
 ok        main.tex:            256  TABLES.md:20
-ok        main.tex:        78.6721  TABLES.md:20
-ok        main.tex:        78.4180  TABLES.md:37
-ok        main.tex:            256  TABLES.md:20
-ok        main.tex:              2  TABLES.md:5
+ok        main.tex:              2  TABLES.md:2
 ok        main.tex:             10  TABLES.md:10
-ok        main.tex:             2,  TABLES.md:5
-ok        main.tex:             3,  TABLES.md:8
+ok        main.tex:             10  TABLES.md:10
+ok        main.tex:             10  TABLES.md:10
+ok        main.tex:            256  TABLES.md:20
+ok        main.tex:            256  TABLES.md:20
+ok        main.tex:              2  TABLES.md:2
+ok        main.tex:             10  TABLES.md:10
+ok        main.tex:             2,  TABLES.md:2
+ok        main.tex:             3,  TABLES.md:55
 ok        main.tex:            11,  TABLES.md:63
 ok        main.tex:             15  TABLES.md:53
 ok        main.tex:             20  TABLES.md:58
 ok        main.tex:        150,000  TABLES.md:111
 ok        main.tex:             64  TABLES.md:18
-ok        main.tex:             2,  TABLES.md:5
-ok        main.tex:             3,  TABLES.md:8
+ok        main.tex:             2,  TABLES.md:2
+ok        main.tex:             3,  TABLES.md:55
 ok        main.tex:            11,  TABLES.md:63
 ok        main.tex:            15,  TABLES.md:53
 ok        main.tex:             20  TABLES.md:58
 ok        main.tex:             10  TABLES.md:10
 ok        main.tex:            256  TABLES.md:20
-ok        main.tex:        47.6719  TABLES.md:185
-ok        main.tex:        41.4010  TABLES.md:185
-ok        main.tex:              2  TABLES.md:5
-ok        main.tex:        48.1592  TABLES.md:195
-ok        main.tex:        41.2640  TABLES.md:195
+ok        main.tex:              2  TABLES.md:2
 ok        main.tex:             10  TABLES.md:10
 ok        main.tex:            256  TABLES.md:20
-ok        main.tex:        41.0006  TABLES.md:185
-ok        main.tex:        38.4896  TABLES.md:195
 ok        main.tex:          1,000  TABLES.md:22
 ok        main.tex:             10  TABLES.md:10
-ok        main.tex:        52.9099  TABLES.md:196
-ok        main.tex:        53.4740  TABLES.md:196
 ok        main.tex:         10,000  TABLES.md:25
 ok        main.tex:        100,000  TABLES.md:28
 ok        main.tex:        100,000  TABLES.md:28
-ok        main.tex:        92.5839  TABLES.md:188
-ok        main.tex:        92.3924  TABLES.md:198
 ok        main.tex:            256  TABLES.md:20
 ok        main.tex:          1,000  TABLES.md:22
 ok        main.tex:             26  TABLES.md:8
 ok        main.tex:             10  TABLES.md:10
-ok        main.tex:              2  TABLES.md:5
-ok        main.tex:             79  TABLES.md:191
-ok        main.tex:              2  TABLES.md:5
+ok        main.tex:              2  TABLES.md:2
+ok        main.tex:            256  TABLES.md:20
+ok        main.tex:              2  TABLES.md:2
+ok        main.tex:             10  TABLES.md:10
+ok        main.tex:              2  TABLES.md:2
+ok        main.tex:              3  TABLES.md:55
+ok        main.tex:              4  TABLES.md:56
+ok        main.tex:              5  TABLES.md:57
+ok        main.tex:              2  TABLES.md:2
+ok        main.tex:             10  TABLES.md:10
+ok        main.tex:              2  TABLES.md:2
+ok        main.tex:             10  TABLES.md:10
+ok        main.tex:              2  TABLES.md:2
+ok        main.tex:             10  TABLES.md:10
+ok        main.tex:              2  TABLES.md:2
+ok        main.tex:             10  TABLES.md:10
+ok        main.tex:              2  TABLES.md:2
+ok        main.tex:            256  TABLES.md:20
+ok        main.tex:             21  TABLES.md:59
+ok        main.tex:              2  TABLES.md:2
 ok        main.tex:             26  TABLES.md:8
 ok        main.tex:             10  TABLES.md:10
 ok        main.tex:              6  TABLES.md:58
@@ -188,133 +259,165 @@ ok        main.tex:              7  TABLES.md:59
 ok        main.tex:             64  TABLES.md:18
 ok        main.tex:           128,  TABLES.md:19
 ok        main.tex:             64  TABLES.md:18
-ok        main.tex:          8192,  TABLES.md:208
-ok        main.tex:             40  TABLES.md:203
-ok        main.tex:            160  TABLES.md:203
+ok        main.tex:          8192,  TABLES.md:271
+ok        main.tex:             40  TABLES.md:266
+ok        main.tex:            160  TABLES.md:266
 ok        main.tex:             10  TABLES.md:10
 ok        main.tex:              7  TABLES.md:59
 ok        main.tex:            128  TABLES.md:19
-ok        main.tex:              5  TABLES.md:11
+ok        main.tex:              5  TABLES.md:57
 ok        main.tex:             64  TABLES.md:18
-ok        main.tex:             40  TABLES.md:203
-ok        main.tex:            160  TABLES.md:203
+ok        main.tex:             40  TABLES.md:266
+ok        main.tex:            160  TABLES.md:266
 ok        main.tex:             10  TABLES.md:10
 ok        main.tex:              7  TABLES.md:59
 ok        main.tex:            128  TABLES.md:19
-ok        main.tex:              5  TABLES.md:11
+ok        main.tex:              5  TABLES.md:57
 ok        main.tex:             64  TABLES.md:18
-ok        main.tex:           1024  TABLES.md:208
+ok        main.tex:           1024  TABLES.md:271
 ok        main.tex:            512  TABLES.md:21
-ok        main.tex:           8192  TABLES.md:208
-ok        main.tex:         0.4224  TABLES.md:268
-ok        main.tex:         0.4553  TABLES.md:275
-ok        main.tex:         0.4024  TABLES.md:349
-ok        main.tex:         0.4358  TABLES.md:345
+ok        main.tex:           8192  TABLES.md:271
+ok        main.tex:         0.4224  TABLES.md:331
+ok        main.tex:         0.4553  TABLES.md:338
+ok        main.tex:         0.4024  TABLES.md:412
+ok        main.tex:         0.4358  TABLES.md:408
+ok        main.tex:             10  TABLES.md:10
+ok        main.tex:              6  TABLES.md:58
+ok        main.tex:             10  TABLES.md:10
+ok        main.tex:              7  TABLES.md:59
+ok        main.tex:           1.64  TABLES.md:431
+ok        main.tex:           1.38  TABLES.md:431
+ok        main.tex:           1.80  TABLES.md:444
+ok        main.tex:           2.07  TABLES.md:444
+ok        main.tex:           1.94  TABLES.md:435
+ok        main.tex:           2.96  TABLES.md:435
+ok        main.tex:           2.59  TABLES.md:448
+ok        main.tex:           4.31  TABLES.md:448
+ok        main.tex:            64,  TABLES.md:18
+ok        main.tex:           8.45  TABLES.md:442
+ok        main.tex:          10.17  TABLES.md:442
+ok        main.tex:           7.08  TABLES.md:455
+ok        main.tex:           9.68  TABLES.md:455
+ok        main.tex:           8192  TABLES.md:271
 ok        main.tex:             26  TABLES.md:8
 ok        main.tex:              1  TABLES.md:6
 ok        main.tex:              8  TABLES.md:60
-ok        main.tex:             37  TABLES.md:75
-ok        main.tex:          203.1  TABLES.md:388
-ok        main.tex:          194.7  TABLES.md:392
-ok        main.tex:          167.4  TABLES.md:396
 ok        main.tex:            16,  TABLES.md:54
 ok        main.tex:             64  TABLES.md:18
 ok        main.tex:            256  TABLES.md:20
 ok        main.tex:              0  TABLES.md:52
 ok        main.tex:            256  TABLES.md:20
-ok        main.tex:          451.2  TABLES.md:468
-ok        main.tex:          636.1  TABLES.md:478
-ok        main.tex:          603.0  TABLES.md:482
-ok        main.tex:          556.6  TABLES.md:486
+ok        main.tex:              2  TABLES.md:2
+ok        main.tex:            500  TABLES.md:481
+ok        main.tex:             16  TABLES.md:54
+ok        main.tex:              0  TABLES.md:52
+ok        main.tex:         11,466  TABLES.md:570
+ok        main.tex:          2,957  TABLES.md:498
+ok        main.tex:          16.23  TABLES.md:473
+ok        main.tex:             16  TABLES.md:54
+ok        main.tex:              1  TABLES.md:6
+ok        main.tex:         11,057  TABLES.md:572
+ok        main.tex:          2,957  TABLES.md:498
+ok        main.tex:           7.71  TABLES.md:630
+ok        main.tex:             64  TABLES.md:18
+ok        main.tex:              0  TABLES.md:52
+ok        main.tex:         37,939  TABLES.md:574
+ok        main.tex:         10,431  TABLES.md:502
+ok        main.tex:           6.24  TABLES.md:631
+ok        main.tex:             64  TABLES.md:18
+ok        main.tex:              1  TABLES.md:6
+ok        main.tex:         38,692  TABLES.md:576
+ok        main.tex:         10,431  TABLES.md:502
+ok        main.tex:           4.92  TABLES.md:473
+ok        main.tex:            256  TABLES.md:20
+ok        main.tex:              0  TABLES.md:52
+ok        main.tex:        149,620  TABLES.md:578
+ok        main.tex:         40,225  TABLES.md:506
+ok        main.tex:         0.0357  TABLES.md:579
+ok        main.tex:           8.53  TABLES.md:633
+ok        main.tex:            256  TABLES.md:20
+ok        main.tex:              1  TABLES.md:6
+ok        main.tex:        150,254  TABLES.md:580
+ok        main.tex:         40,225  TABLES.md:506
+ok        main.tex:         0.0015  TABLES.md:581
+ok        main.tex:           7.02  TABLES.md:634
+ok        main.tex:              1  TABLES.md:6
+ok        main.tex:            500  TABLES.md:481
+ok        main.tex:            500  TABLES.md:481
+ok        main.tex:            256  TABLES.md:20
+ok        main.tex:            500  TABLES.md:481
 ok        main.tex:              8  TABLES.md:60
-ok        main.tex:           1.96  TABLES.md:381
-ok        main.tex:          16.62  TABLES.md:381
-ok        main.tex:           4.92  TABLES.md:381
-ok        main.tex:          16.23  TABLES.md:381
-ok        main.tex:              1  TABLES.md:6
-ok        main.tex:            500  TABLES.md:389
-ok        main.tex:            500  TABLES.md:389
-ok        main.tex:              8  TABLES.md:60
-ok        main.tex:              2  TABLES.md:5
-ok        main.tex:            500  TABLES.md:389
-ok        main.tex:             16  TABLES.md:54
-ok        main.tex:              0  TABLES.md:52
-ok        main.tex:         11,466  TABLES.md:478
-ok        main.tex:          2,957  TABLES.md:406
-ok        main.tex:      26744.438  TABLES.md:478
-ok        main.tex:          636.1  TABLES.md:478
-ok        main.tex:          16.23  TABLES.md:381
-ok        main.tex:             16  TABLES.md:54
-ok        main.tex:              1  TABLES.md:6
-ok        main.tex:         11,057  TABLES.md:480
-ok        main.tex:          2,957  TABLES.md:406
-ok        main.tex:      26626.866  TABLES.md:480
-ok        main.tex:          659.5  TABLES.md:480
-ok        main.tex:           7.71  TABLES.md:526
-ok        main.tex:             64  TABLES.md:18
-ok        main.tex:              0  TABLES.md:52
-ok        main.tex:         37,939  TABLES.md:482
-ok        main.tex:         10,431  TABLES.md:410
-ok        main.tex:      94385.578  TABLES.md:482
-ok        main.tex:          603.0  TABLES.md:482
-ok        main.tex:           6.24  TABLES.md:527
-ok        main.tex:             64  TABLES.md:18
-ok        main.tex:              1  TABLES.md:6
-ok        main.tex:         38,692  TABLES.md:484
-ok        main.tex:         10,431  TABLES.md:410
-ok        main.tex:      95100.852  TABLES.md:484
-ok        main.tex:          611.2  TABLES.md:484
-ok        main.tex:           4.92  TABLES.md:381
-ok        main.tex:            256  TABLES.md:20
-ok        main.tex:              0  TABLES.md:52
-ok        main.tex:        149,620  TABLES.md:486
-ok        main.tex:         40,225  TABLES.md:414
-ok        main.tex:     369529.860  TABLES.md:486
-ok        main.tex:          556.6  TABLES.md:486
-ok        main.tex:         0.0357  TABLES.md:487
-ok        main.tex:           8.53  TABLES.md:529
-ok        main.tex:            256  TABLES.md:20
-ok        main.tex:              1  TABLES.md:6
-ok        main.tex:        150,254  TABLES.md:488
-ok        main.tex:         40,225  TABLES.md:414
-ok        main.tex:     370226.514  TABLES.md:488
-ok        main.tex:          542.3  TABLES.md:488
-ok        main.tex:         0.0015  TABLES.md:489
-ok        main.tex:           7.02  TABLES.md:530
-ok        main.tex:            500  TABLES.md:389
-ok        main.tex:            500  TABLES.md:389
-ok        main.tex:            256  TABLES.md:20
-ok        main.tex:            500  TABLES.md:389
-ok        main.tex:             37  TABLES.md:75
-ok        main.tex:            500  TABLES.md:389
-ok        main.tex:            500  TABLES.md:389
+ok        main.tex:            500  TABLES.md:481
+ok        main.tex:            500  TABLES.md:481
 ok        main.tex:             16  TABLES.md:54
 ok        main.tex:             64  TABLES.md:18
 ok        main.tex:            256  TABLES.md:20
-ok        main.tex:         0.0357  TABLES.md:487
-ok        main.tex:             0,  TABLES.md:52
-ok        main.tex:          491.2  TABLES.md:487
-ok        main.tex:         0.0015  TABLES.md:489
-ok        main.tex:             1,  TABLES.md:6
-ok        main.tex:          499.6  TABLES.md:489
-ok        main.tex:           8.53  TABLES.md:529
-ok        main.tex:           7.02  TABLES.md:530
+ok        main.tex:         0.0357  TABLES.md:579
+ok        main.tex:              0  TABLES.md:52
+ok        main.tex:         0.0015  TABLES.md:581
+ok        main.tex:              1  TABLES.md:6
+ok        main.tex:           8.53  TABLES.md:633
+ok        main.tex:           7.02  TABLES.md:634
 ok        main.tex:            256  TABLES.md:20
-ok        main.tex:            500  TABLES.md:389
-ok        main.tex:           1.52  TABLES.md:498
-ok        main.tex:           1.94  TABLES.md:499
+ok        main.tex:            500  TABLES.md:481
+ok        main.tex:           1.52  TABLES.md:602
+ok        main.tex:           1.94  TABLES.md:435
 ok        main.tex:             64  TABLES.md:18
-ok        main.tex:           2.81  TABLES.md:500
-ok        main.tex:           2.01  TABLES.md:501
+ok        main.tex:           2.81  TABLES.md:604
+ok        main.tex:           2.01  TABLES.md:605
 ok        main.tex:           256,  TABLES.md:20
 ok        main.tex:             64  TABLES.md:18
-ok        main.tex:              2  TABLES.md:5
+ok        main.tex:              2  TABLES.md:2
 ok        main.tex:              7  TABLES.md:59
 ok        main.tex:             0,  TABLES.md:52
-ok        main.tex:              3  TABLES.md:8
+ok        main.tex:              3  TABLES.md:55
 ok        main.tex:              6  TABLES.md:58
 ok        main.tex:              1  TABLES.md:6
-ok        main.tex:            113  TABLES.md:534
+ok        main.tex:        200,000  TABLES.md:641
+ok        main.tex:              1  TABLES.md:6
+ok        main.tex:            500  TABLES.md:481
+ok        main.tex:             63  TABLES.md:468
+ok        main.tex:             63  TABLES.md:468
+ok        main.tex:             16  TABLES.md:54
+ok        main.tex:              0  TABLES.md:52
+ok        main.tex:         57,297  TABLES.md:648
+ok        main.tex:          8,139  TABLES.md:648
+ok        main.tex:        199,023  TABLES.md:700
+ok        main.tex:         55,889  TABLES.md:700
+ok        main.tex:             16  TABLES.md:54
+ok        main.tex:              1  TABLES.md:6
+ok        main.tex:         57,090  TABLES.md:650
+ok        main.tex:          8,166  TABLES.md:650
+ok        main.tex:        198,775  TABLES.md:701
+ok        main.tex:         56,501  TABLES.md:701
+ok        main.tex:             64  TABLES.md:18
+ok        main.tex:              0  TABLES.md:52
+ok        main.tex:         57,092  TABLES.md:652
+ok        main.tex:          8,199  TABLES.md:652
+ok        main.tex:        196,542  TABLES.md:702
+ok        main.tex:         53,072  TABLES.md:702
+ok        main.tex:             64  TABLES.md:18
+ok        main.tex:              1  TABLES.md:6
+ok        main.tex:         53,588  TABLES.md:654
+ok        main.tex:          9,369  TABLES.md:654
+ok        main.tex:        196,366  TABLES.md:703
+ok        main.tex:         51,277  TABLES.md:703
+ok        main.tex:            256  TABLES.md:20
+ok        main.tex:              0  TABLES.md:52
+ok        main.tex:         57,209  TABLES.md:656
+ok        main.tex:          8,109  TABLES.md:656
+ok        main.tex:        187,876  TABLES.md:704
+ok        main.tex:         47,168  TABLES.md:704
+ok        main.tex:            256  TABLES.md:20
+ok        main.tex:              1  TABLES.md:6
+ok        main.tex:         56,927  TABLES.md:658
+ok        main.tex:          8,216  TABLES.md:658
+ok        main.tex:        187,614  TABLES.md:705
+ok        main.tex:         47,838  TABLES.md:705
+ok        main.tex:             16  TABLES.md:54
+ok        main.tex:              1  TABLES.md:6
+ok        main.tex:        200,002  TABLES.md:650
+ok        main.tex:            113  TABLES.md:638
 ok        main.tex:             10  TABLES.md:10
 ok        main.tex:             33  TABLES.md:71
 ok        main.tex:              7  TABLES.md:59
@@ -325,25 +428,26 @@ ok        main.tex:             16  TABLES.md:54
 ok        main.tex:            256  TABLES.md:20
 ok        main.tex:             11  TABLES.md:63
 ok        main.tex:             12  TABLES.md:64
-ok        main.tex:        200,000  TABLES.md:537
+ok        main.tex:        200,000  TABLES.md:641
 ok        main.tex:              0  TABLES.md:52
-ok        main.tex:              5  TABLES.md:11
+ok        main.tex:            63,  TABLES.md:468
+ok        main.tex:             63  TABLES.md:468
+ok        main.tex:        187,614  TABLES.md:705
+ok        main.tex:        199,023  TABLES.md:700
+ok        main.tex:         47,168  TABLES.md:704
+ok        main.tex:         56,501  TABLES.md:701
+ok        main.tex:             63  TABLES.md:468
 ok        main.tex:             16  TABLES.md:54
-ok        main.tex:              4  TABLES.md:2
-ok        main.tex:           2977  TABLES.md:584
-ok        main.tex:           2977  TABLES.md:584
-ok        main.tex:             18  TABLES.md:56
-ok        main.tex:            215  TABLES.md:540
+ok        main.tex:           2977  TABLES.md:688
+ok        main.tex:           2977  TABLES.md:688
 ok        main.tex:             16  TABLES.md:54
 ok        main.tex:      2,000,000  TABLES.md:8
 ok        main.tex:     10,000,000  TABLES.md:8
 ok        main.tex:     45,840,617  TABLES.md:8
 ok        main.tex:             26  TABLES.md:8
 ok        main.tex:             16  TABLES.md:54
-ok        main.tex:           2.81  TABLES.md:500
+ok        main.tex:           2.81  TABLES.md:604
 ok        main.tex:             64  TABLES.md:18
 ok        main.tex:             16  TABLES.md:54
-ok        main.tex:          542.3  TABLES.md:488
-ok        main.tex:          659.5  TABLES.md:480
 
-347 numbers checked against results/P7/TABLES.md; 0 missing.
+451 numbers checked against results/P7/TABLES.md (up to "## Older evidence"); 0 failed.

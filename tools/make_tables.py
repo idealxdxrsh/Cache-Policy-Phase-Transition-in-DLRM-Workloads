@@ -132,6 +132,18 @@ for n, (hm, _, _, z) in P3.items():
             W(f'| {n:,} | {c:,} | {t} | ' + ' | '.join(
                 pct(sum(hm[p, c, x][0] for x in ts), sum(hm[p, c, x][1] for x in ts)) for p in pol) + ' |')
 
+W('\n### P3 smallest LFU - LRU margin over all capacities, all 26 tables combined (percentage points)')
+W(src('results/P3/rows_*/figs/hit_rates.csv', [f'results/P3/rows_{n}/figs/hit_rates.csv' for n in P3]) +
+  ' Margin = hit % (LFU variant) - hit % (LRU) at the same capacity, rows "all".')
+W('\n| rows | LFU variant | smallest margin pp | at capacity | largest margin pp | at capacity |')
+W('|---|---|---|---|---|---|')
+for n, (hm, pol_n, caps_n, _) in P3.items():
+    for v in [q for q in pol_n if q.startswith('LFU')]:
+        mg = {c: (hm[v, c, 'all'][0] / sum(hm[v, c, 'all']) - hm['LRU', c, 'all'][0] / sum(hm['LRU', c, 'all'])) * 100
+              for c in caps_n}
+        lo, hi = min(mg, key=mg.get), max(mg, key=mg.get)
+        W(f'| {n:,} | {v} | {mg[lo]:.4f} | {lo:,} | {mg[hi]:.4f} | {hi:,} |')
+
 # ---------------------------------------------------------------- P3b
 W('\n## P3b: ONE cache shared by all 26 tables, Criteo DAC first 2M and first 10M rows')
 W('Limits: first 2M / 10M rows only; one shared cache (capacity = total vectors), not comparable 1:1 with P3\'s 26 '
@@ -141,6 +153,8 @@ for n in (2000000, 10000000):
     tot, grp = defaultdict(lambda: [0, 0]), defaultdict(lambda: [0, 0])
     for p in parts:
         for r in csv.DictReader(io.StringIO(read(p))):
+            if r['table'] == 'all':                   # each parts file also has an 'all' row; count tables once
+                continue
             k = (r['policy'], int(r['capacity']))
             tot[k][0] += int(r['hits']); tot[k][1] += int(r['misses'])
             if r['table'] in large:
@@ -153,6 +167,31 @@ for n in (2000000, 10000000):
     W('|---|' + '---|' * len(pols))
     for c in caps:
         W(f'| {c:,} | ' + ' | '.join(f'{pct(*tot[p, c])} ({pct(*grp[p, c])})' for p in pols) + ' |')
+
+W(f'\n### P3b: the large tables {", ".join(large)} inside the shared cache: share of accesses vs share of hits')
+W('Share of accesses = their accesses / all accesses; share of hits = their hits / all hits of that policy; hit rate '
+  '= their hits / their accesses. Same large-table definition as P3.')
+for n in (2000000, 10000000):
+    parts = files(f'results/P3b/rows_{n}/parts/*.csv')
+    tot, grp = defaultdict(lambda: [0, 0]), defaultdict(lambda: [0, 0])
+    for p in parts:
+        for r in csv.DictReader(io.StringIO(read(p))):
+            if r['table'] == 'all':                   # each parts file also has an 'all' row; count tables once
+                continue
+            k = (r['policy'], int(r['capacity']))
+            tot[k][0] += int(r['hits']); tot[k][1] += int(r['misses'])
+            if r['table'] in large:
+                grp[k][0] += int(r['hits']); grp[k][1] += int(r['misses'])
+    pols = list(dict.fromkeys(k[0] for k in sorted(tot, key=lambda k: k[1])))
+    caps = sorted({k[1] for k in tot})
+    acc = {sum(grp[k]) / sum(tot[k]) * 100 for k in tot}
+    assert max(acc) - min(acc) < 1e-9
+    W(f'\n#### {n:,} rows: large tables = {acc.pop():.4f}% of all accesses ({src(f"results/P3b/rows_{n}/parts/*.csv", parts)[8:-1]})')
+    W('\n| capacity | policy | share of all hits % | hit rate within the large tables % |')
+    W('|---|---|---|---|')
+    for c in caps:
+        for q in pols:
+            W(f'| {c:,} | {q} | {grp[q, c][0] / tot[q, c][0] * 100:.4f} | {pct(*grp[q, c])} |')
 
 # ---------------------------------------------------------------- P4
 W('\n## P4: 26 x EmbeddingBag + MLP, fp32 inference, one H100 (job 413621) and one H200 (job 413622)')
@@ -196,6 +235,28 @@ for gpu in ('h100_413621', 'h200_413622'):
                     v += ' L'
                 vals.append(v)
             W(f'| {int(key[0]):.0e} | {key[1]} | {key[2]} | ' + ' | '.join(vals) + ' |')
+
+W('\n### P4 sensitivity: table rows (10^6 vs 10^7) and index pattern, median embedding ms')
+W('Rows: (emb ms at 10^7 rows / emb ms at 10^6 rows - 1) over every (dim, pattern, batch) that ran at both. '
+  'Pattern spread: max / min - 1 of emb ms over the 5 index patterns, same rows/dim/batch.')
+for gpu in ('h100_413621', 'h200_413622'):
+    path = f'results/P4/{gpu}/results.csv'
+    c = {(r['rows'], r['dim'], r['pattern'], int(r['batch'])): float(r['emb_ms_median'])
+         for r in csv.DictReader(io.StringIO(read(path))) if r['status'] == 'ok'}
+    d = [(c[k] / c[('1000000',) + k[1:]] - 1) * 100 for k in c if k[0] == '10000000' and ('1000000',) + k[1:] in c]
+    W(f'\n{gpu.split("_")[0].upper()} ({src(path)[8:-1]}): 10^7 vs 10^6 rows changes median embedding ms by '
+      f'{min(d):+.2f}% to {max(d):+.2f}% ({len(d)} pairs).')
+    W('\n| batch | pattern spread, min over (rows, dim) | max over (rows, dim) | emb ms min-max over patterns and (rows, dim) |')
+    W('|---|---|---|---|')
+    for b in sorted({k[3] for k in c}):
+        sp, vals = [], []
+        for rows in ('1000000', '10000000'):
+            for dim in ('64', '128'):
+                v = [c[rows, dim, q, b] for q in ('uniform', 'zipf0.6', 'zipf0.85', 'zipf1.1', 'criteo')
+                     if (rows, dim, q, b) in c]
+                if len(v) == 5:
+                    sp.append((max(v) / min(v) - 1) * 100); vals += v
+        W(f'| {b} | {min(sp):.2f}% | {max(sp):.2f}% | {min(vals):.4f}-{max(vals):.4f} |')
 
 # ---------------------------------------------------------------- RTL and simulator parameters
 RTL, TB, SIM = 'rtl/v2/lfu_cache_controller.v', 'rtl/v2/tb_lfu_cache.sv', 'trace_sim/run_trace_sim.py'
@@ -256,6 +317,17 @@ for name, d, what in PHASES:
         fmax = f'{1e3 / (period - wns):.1f}' if wns < 0 else f'met ({f} MHz)'
         W(f'| {dd} | {m} | {f} MHz | {grab(r"Number of cells:\s+(\d+)", stat, int):,} | {ffs:,} | '
           f'{grab(r"Chip area for module .*: ([\d.]+)", stat):.3f} | {wns:.4f} | {hold:.4f} | {fmax} | {len(violators(sta))} |')
+
+W('\n### P5c: tree only vs tree + per-group address copies (copies kept), 1 GHz netlists')
+W(src('results/P5c/tree_{only,copies}/d*_m*_1000MHz/sta.txt', files('results/P5c/tree_only/d*_m*_1000MHz/sta.txt') +
+      files('results/P5c/tree_copies/d*_m*_1000MHz/sta.txt')) + ' Change = Fmax(copies) / Fmax(tree only) - 1. '
+  'Compare with the old-flow noise floor below (same flow).')
+W('\n| depth | mode | Fmax MHz tree only | Fmax MHz tree + copies | change |')
+W('|---|---|---|---|---|')
+for dd in (16, 64, 256):
+    for m in (0, 1):
+        a, b = (fmax_of(f'results/P5c/{x}/d{dd}_m{m}_1000MHz/sta.txt') for x in ('tree_only', 'tree_copies'))
+        W(f'| {dd} | {m} | {a:.1f} | {b:.1f} | {(b / a - 1) * 100:+.2f}% |')
 
 W('\n### P5d (old flow) -> P5e (timing-driven flow), same RTL rtl-v2-final, 1 GHz netlists')
 W(src('results/P5{d,e/new}/d*_m*_1000MHz/{sta,stat}.txt', files('results/P5d/d*_m*_1000MHz/sta.txt') +
@@ -357,6 +429,22 @@ W(f'\nCell models (`{G}/CELLCHECK.md`, `{G}/COVERAGE.md`, {prov([f"{G}/CELLCHECK
   f'({", ".join(re.findall(r"^\| (\w+) \|.*\| FAIL \|$", cc, re.M))}); '
   f'{grab(r"(\d+) distinct cell types", cov, int)} distinct cell types in the netlists, '
   f'"{re.search(r"Cell types without full coverage: \d+", cov).group(0)}", "{re.search(r"Scan flip-flops.*", cov).group(0)}"')
+
+cs = files('results/P7/counter_sat/d*_m*.txt')
+W('\n### Counter saturation in the lockstep stimulus (RTL only, same stimulus as the P5f lockstep)')
+W(src('results/P7/counter_sat/d*_m*.txt', cs) + ' Generated by `synthesis/p7/run_counter_sat.sh` (Icarus, local). '
+  '"stimulus identical" = responses, hits, misses and fill requests equal the P5f lockstep log of that depth/mode.')
+W('\n| depth | mode | cycles | hits | misses | counter max value | largest count reached | cycles with a line at max | '
+  'most lines at max | hit increments suppressed at max | fill increments suppressed at max | stimulus identical |')
+W('|---|---|---|---|---|---|---|---|---|---|---|---|')
+for p in sorted(cs, key=lambda p: tuple(int(x) for x in re.search(r'd(\d+)_m(\d)', p).groups())):
+    t = read(p)
+    kv = dict(re.findall(r'(\w+)=(\d+)', next(ln for ln in t.splitlines() if ln.startswith('counter_sat'))))
+    gl = dict(re.findall(r'(\w+)=(\d+)', t[t.index('gls_lockstep'):].splitlines()[0]))
+    same = all(kv[k] == gl[k] for k in ('cycles', 'responses', 'hits', 'misses', 'fill_reqs'))
+    W(f'| {kv["depth"]} | {kv["mode"]} | {kv["cycles"]} | {kv["hits"]} | {kv["misses"]} | {kv["counter_max_value"]} | '
+      f'{kv["max_reached"]} | {kv["cycles_with_a_line_at_max"]} | {kv["most_lines_at_max"]} | '
+      f'{kv["suppressed_hit_increments"]} | {kv["suppressed_fill_increments"]} | {"yes" if same else "NO"} |')
 
 # ---------------------------------------------------------------- older evidence
 W('\n## Older evidence, not reproduced in P0-P5f (values parsed from the committed files)')

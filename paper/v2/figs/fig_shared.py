@@ -11,6 +11,8 @@ for n, dashed in ((10000000, False), (2000000, True)):
     tot = defaultdict(lambda: [0, 0])
     for p in files(f'results/P3b/rows_{n}/parts/'):
         for r in rows(p):
+            if r['table'] == 'all':                   # the 'all' row repeats the per-table sums
+                continue
             k = (r['policy'], int(r['capacity']))
             tot[k][0] += int(r['hits'])
             tot[k][1] += int(r['misses'])
