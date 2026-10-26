@@ -4,12 +4,13 @@
 **Author:** Adarsh · ID: 2023B1A31167G  
 **Institution:** Dept. of Electrical & Electronics Engineering, BITS Pilani Goa Campus  
 **Infrastructure:** Sharanga HPC Cluster · NVIDIA H100 80GB HBM3 · NVIDIA H200 NVL  
-**Paper (current):** [`paper/v2/main.pdf`](paper/v2/main.pdf) (IEEEtran conference draft; source `paper/v2/main.tex`)  
-**Superseded:** old manuscript [`paper/old/ieee_final.pdf`](paper/old/ieee_final.pdf) and its  
-[synthesis report (Google Drive)](https://drive.google.com/file/d/1umN1cXv4_pNinlDdDtOwHcsdoMCzG_UN/view?usp=sharing)
+**Paper:** [`paper/v2/main.pdf`](paper/v2/main.pdf) (IEEEtran conference draft; source `paper/v2/main.tex`)  
+**Synthesis report:** [`docs/synthesis_report/synthesis_report.pdf`](docs/synthesis_report/synthesis_report.pdf)
+(NanGate45, not TSMC; pre-layout; area = sum of cell areas; no power analysis)
 
-> **Read first:** the old manuscript and its synthesis report predate the re-checks in this repository. Several of
-> their numbers are contradicted or have no source (TSMC 28nm area/power/timing, 83.74%, 5.15x, +3.00%, 160,000x, the
+> **Read first:** an earlier manuscript and an earlier Word synthesis report predate the re-checks in this repository
+> and have been withdrawn (the manuscript remains in git history, see `paper/v2/README.md`). Several of their numbers
+> are contradicted or have no source (TSMC 28nm area/power/timing, 83.74%, 5.15x, +3.00%, 160,000x, the
 > 256 kB / 512 kB gem5 runs). Each claim's status is in [`results/P7/CLAIMS.md`](results/P7/CLAIMS.md); every table is
 > in [`results/P7/TABLES.md`](results/P7/TABLES.md), generated from committed files by `tools/make_tables.py`.
 
@@ -65,8 +66,9 @@ Every value links to its results file; the limit in the last column belongs with
 ├── results/<phase>/                    # every number, with SUMMARY.md per phase; P7: TABLES.md, CLAIMS.md
 ├── criteo/                             # dataset, not tracked
 ├── paper/
-│   ├── v2/main.pdf, main.tex, figs/    # current paper; every number checked against results/P7/TABLES.md
-│   └── old/ieee_final.pdf              # superseded manuscript; see results/P7/CLAIMS.md
+│   └── v2/main.pdf, main.tex, figs/    # current paper; every number checked against results/P7/TABLES.md
+├── docs/
+│   └── synthesis_report/               # synthesis report (synthesis_report.pdf), tables generated from TABLES.md
 └── README.md
 ```
 
@@ -283,6 +285,9 @@ Longest topological path: 245 gate levels (20/128 run; `synthesis/README.md`).
 `results/P7/TABLES.md`; the summary is `results/P5e/SUMMARY.md`. **NanGate45 is an open PDK, not TSMC; all results are
 pre-layout (wire-load model, ideal clock); no power step was run.** The flow alone moves Fmax by 4.92-16.23% on
 identical logic, so smaller differences cannot be told apart from flow noise.
+
+The full write-up (flow, per-iteration results, critical paths, noise floor, verification, known issues) is the
+[synthesis report](docs/synthesis_report/synthesis_report.pdf) (`docs/synthesis_report/`).
 
 ---
 

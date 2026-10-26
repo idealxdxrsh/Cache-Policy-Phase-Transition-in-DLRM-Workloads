@@ -1,6 +1,7 @@
 # paper/v2: rewritten paper (IEEEtran conference, two-column, 10 pt)
 
-Source of truth: `results/P7/CLAIMS.md` and `results/P7/TABLES.md`. The old manuscript is in `paper/old/ieee_final.pdf`.
+Source of truth: `results/P7/CLAIMS.md` and `results/P7/TABLES.md`. The old manuscript was removed from the tree;
+it remains in git history: `git show 5d51bad:paper/old/ieee_final.pdf > ieee_final.pdf`.
 Authors: Adarsh; Pravin Mane (co-author, separate IEEE author block); affiliation from the official
 BITS Pilani pages (https://www.bits-pilani.ac.in/goa/pravin-sakharam-mane,
 https://www.bits-pilani.ac.in/goa/electrical-and-electronics-engineering/). No e-mail, no student ID, no postcode.
