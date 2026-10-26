@@ -1,34 +1,46 @@
-# Characterising the Cache-Policy Phase Transition in DLRM Workloads
-### A Hardware-Grounded LFU Controller with Persistent Saturating Counters
+# Cache Policies for DLRM Embedding Lookups
+### Trace simulation on Criteo, GPU timing, and an LFU cache controller in RTL (NanGate45, pre-layout)
 
 **Author:** Adarsh · ID: 2023B1A31167G  
 **Institution:** Dept. of Electrical & Electronics Engineering, BITS Pilani Goa Campus  
-**Infrastructure:** Sharanga HPC Cluster · NVIDIA H100 80GB HBM3  
-**Paper:** [IEEE-format manuscript (Google Drive)](https://drive.google.com/file/d/1aVhKuQW_nInPTzpIDsZzRYGjmGVRbpB3/view?usp=sharing)  
-**Synthesis Report:** [Full RTL synthesis report (Google Drive)](https://drive.google.com/file/d/1umN1cXv4_pNinlDdDtOwHcsdoMCzG_UN/view?usp=sharing)
+**Infrastructure:** Sharanga HPC Cluster · NVIDIA H100 80GB HBM3 · NVIDIA H200 NVL  
+**Paper (current):** [`paper/v2/main.pdf`](paper/v2/main.pdf) (IEEEtran conference draft; source `paper/v2/main.tex`)  
+**Superseded:** old manuscript [`paper/old/ieee_final.pdf`](paper/old/ieee_final.pdf) and its  
+[synthesis report (Google Drive)](https://drive.google.com/file/d/1umN1cXv4_pNinlDdDtOwHcsdoMCzG_UN/view?usp=sharing)
+
+> **Read first:** the old manuscript and its synthesis report predate the re-checks in this repository. Several of
+> their numbers are contradicted or have no source (TSMC 28nm area/power/timing, 83.74%, 5.15x, +3.00%, 160,000x, the
+> 256 kB / 512 kB gem5 runs). Each claim's status is in [`results/P7/CLAIMS.md`](results/P7/CLAIMS.md); every table is
+> in [`results/P7/TABLES.md`](results/P7/TABLES.md), generated from committed files by `tools/make_tables.py`.
 
 ---
 
 ## Overview
 
-Deep Learning Recommendation Models (DLRMs) are the dominant inference workload in hyperscale datacenters. This project identifies and empirically characterises a **cache-policy phase transition** in DLRM workloads: LFU replacement is suboptimal in a cold-start regime at small cache capacities, but becomes strictly superior to LRU once the cache is large enough for frequency history to converge on the Zipfian embedding access distribution.
-
-The project spans the full hardware stack — from real GPU profiling to architectural simulation to RTL synthesis and verification.
+Deep Learning Recommendation Models (DLRMs) spend part of their inference time on sparse embedding lookups. This
+project compares cache replacement policies for those lookups on real Criteo data, times embedding lookups on GPUs,
+and builds an LFU cache controller in RTL that is synthesized, timed and checked at gate level on an open PDK.
 
 ```
-H100 Profiling → Criteo Trace Analysis → gem5 Simulation → RTL Design → Yosys Synthesis (generic gates) → GTKWave Verification
+Criteo trace simulation (CPU) → GPU timing (H100, H200; no counters) → RTL (rtl/v2) → NanGate45 synthesis + OpenSTA (pre-layout) → gate-level simulation
 ```
 
 ### Key Results
 
-| Metric | Value |
-|--------|-------|
-| EmbeddingBag kernel share of GPU kernel time (H100, job 149046) | **71.8%** (204 µs of 284 µs) |
-| gem5 L2 hit rate at 2 MB, LRU → LFU | **54.31% → 55.90%** (+1.59 pp) |
-| gem5 L2 misses at 2 MB | **304,590 → 293,995** (−3.48%) |
-| Projected end-to-end speedup (Amdahl, f = 0.718, S = 1.036) | **+2.6%** |
-| RTL storage, 16 lines, 20-bit tag / 128-bit vector (Yosys, generic gates) | 2,705 flip-flops, 8,626 combinational gates |
-| RTL area, power, timing | **not yet measured** (needs a technology library and STA) |
+Every value links to its results file; the limit in the last column belongs with the number.
+
+| Result | Value | Source | Limit |
+|--------|-------|--------|-------|
+| Hit rate, one 256-vector cache per table, LRU → LFU (persistent counters) | 67.3151% → 71.8034% (2M rows); 67.0796% → 68.3280% (10M rows) | `results/P3/SUMMARY.md` | first 2M / 10M Criteo DAC rows; per-table caches; CPU trace simulation |
+| Same, W-TinyLFU (Count-Min) / Belady bound | 73.2679% / 78.6721% (2M); 73.1009% / 78.4180% (10M) | `results/P3/SUMMARY.md` | as above |
+| One cache shared by all 26 tables, 256 vectors: LRU / LFU reset-on-eviction / LFU persistent | 41.4010% / 47.6719% / 41.0006% (2M); 41.2640% / 48.1592% / 38.4896% (10M) | `results/P3b/SUMMARY.md` | first 2M / 10M rows; shared cache; access order is a modelling choice |
+| Embedding share of embedding + MLP time at batch 8192 | H100 0.4224-0.4553; H200 0.4024-0.4358 | `results/P4/SUMMARY.md` | CUDA events only, no hardware counters; small batches are launch-bound |
+| rtl-v2-final Fmax (1 GHz netlists), depth 16 / 64 / 256, mode 0 | 636.1 / 603.0 / 556.6 MHz | `results/P5e/SUMMARY.md` | NanGate45, not TSMC; pre-layout; flow noise 4.92-16.23%; no power numbers |
+| 500 MHz target | met at depths 16 and 64; depth 256 misses by 0.0357 ns (mode 0) / 0.0015 ns (mode 1) | `results/P5e/SUMMARY.md` | as above |
+| Gate-level netlists vs RTL, 12 configurations | 0 mismatching cycles in 200,000 random cycles each; 7-test testbench passes | `results/P5f_gls/SUMMARY.md` | functional, zero delay, cell models generated by Yosys from the liberty file |
+| Formal equivalence RTL vs netlist | 2,977 / 2,977 points proven, 4 netlists | `results/P5f_gls/SUMMARY.md` | depth 16 only |
+| Older evidence, not re-run: gem5 2 MB L2 misses, LRU → LFU (gem5 LFURP) | 304,590 → 293,995 (−3.48%) | `gem5/results/l*_2mb/stats.txt` | gem5 = CPU + DDR4, not a GPU; one run |
+| Older evidence, not re-run: EmbeddingBag share of GPU kernel time (H100, job 149046) | 71.8% (204.065 µs of 284.063 µs) | `profiling/gpu_profile_149046_out.txt` | launch-bound small-batch run; no counters |
 
 ---
 
@@ -37,124 +49,74 @@ H100 Profiling → Criteo Trace Analysis → gem5 Simulation → RTL Design → 
 ```
 .
 ├── rtl/
-│   ├── v1_verified/                    # design the testbench + GTKWave waveform were run on
-│   │   ├── LFU.v                       #   16 lines, 32-bit address, 512-bit data
-│   │   ├── tb_lfu_cache.sv
-│   │   └── lfu_cache_waves.vcd
-│   ├── v1_synthesized/
-│   │   └── lfu_cache_controller.v      # 16 lines, 20-bit tag, 128-bit vector (area/power figures)
-│   └── v2/                             # 256 lines, 6-bit counters, 2-stage victim select
-│       ├── lfu_cache_controller.v
-│       ├── tb_lfu_cache.sv             #   self-checking testbench
-│       ├── synth.ys                    #   generic Yosys flow
+│   ├── v1_verified/                    # first design + GTKWave waveform (FSM bug: 2 cycles per state)
+│   ├── v1_synthesized/                 # 16 lines, 20-bit tag, 128-bit vector (generic Yosys counts only)
+│   └── v2/                             # current RTL (tag rtl-v2-final): CACHE_DEPTH (default 256), 6-bit counters,
+│       ├── lfu_cache_controller.v      #   COUNTER_MODE 0/1, two-stage victim select
+│       ├── tb_lfu_cache.sv             #   self-checking testbench (7 tests)
 │       └── run_rtl.sh
-│
-├── gem5/
-│   ├── run_dlrm_baseline.py            # LRU, 2 MB L2
-│   ├── run_dlrm_cache.py               # LFU, 2 MB L2
-│   ├── run_dlrm_baseline_256k.py       # LRU, 256 kB L2
-│   ├── run_dlrm_cache_256k.py          # LFU, 256 kB L2
-│   └── results/
-│       ├── lru_2mb/stats.txt
-│       └── lfu_2mb/stats.txt           # (256 kB / 512 kB stats: see results/README.md)
-│
-├── trace_sim/
-│   ├── run_trace_sim.py                # trace-driven LRU / LFU / LFU-reset / TinyLFU simulator
-│   ├── plot_trace_results.py           # figure generator
-│   ├── submit_trace_sim.sh             # Sharanga SLURM job
-│   └── results/                        # trace_sim_results.json goes here
-│
-├── synthesis/                          # Yosys flow, logs and reruns
-├── profiling/
-│   └── gpu_profile_149046_out.txt      # raw H100 profiler output (job 149046)
-│
+├── trace_sim/                          # per-table (run_trace_sim.py) and shared-cache (run_shared_cache.py) simulators
+├── tests/                              # unit tests for the policies, shared cache and profiler
+├── tools/                              # result generators (make_tables.py, p3_*, p4_*, p5*_*), mutation scripts
+├── synthesis/                          # generic Yosys flow (old) and p5..p5f NanGate45 / gate-level drivers
+├── cluster/                            # Sharanga bootstrap, environment, sbatch jobs per phase
+├── profiling/                          # job 149046 output (old) and notes
+├── gem5/                               # 2 MB LRU / LFU run scripts and stats; 256 kB scripts (no stats)
+├── results/<phase>/                    # every number, with SUMMARY.md per phase; P7: TABLES.md, CLAIMS.md
 ├── criteo/                             # dataset, not tracked
 ├── paper/
-│   └── ieee_final.pdf
+│   ├── v2/main.pdf, main.tex, figs/    # current paper; every number checked against results/P7/TABLES.md
+│   └── old/ieee_final.pdf              # superseded manuscript; see results/P7/CLAIMS.md
 └── README.md
 ```
 
 ---
 
-## The Core Finding — Cache-Policy Phase Transition
+## What the Evidence Shows About LRU vs LFU
 
-Running 6 controlled gem5 simulations across 3 L2 cache sizes reveals a phase transition:
+The earlier "phase transition" (LFU loses below ~512 kB and wins at 2 MB, caused by counters reset on eviction)
+rested on six gem5 runs. Only the two 2 MB runs have stats files (`gem5/results/README.md`). The trace
+simulations on Criteo do not support the stated cause (`results/P7/CLAIMS.md`, rows 26-27):
 
-```
-Cache Size │ LRU Hit Rate │ LFU Hit Rate │ Δ DRAM       │ Regime
-───────────┼──────────────┼──────────────┼──────────────┼─────────────────
-256 kB     │    6.88%     │    0.61%     │ +6.73%       │ Cold-start (LRU wins)
-512 kB     │   14.88%     │    5.23%     │ +11.35%      │ Cold-start (LRU wins)
-2 MB       │   54.31%     │   55.90%     │ −3.48% ✓     │ Power-law (LFU wins)
-```
+- **Per-table caches** (`results/P3/ANALYSIS.md`, section 3): both LFU variants beat LRU on all tables combined at every
+  capacity from 64 to 100,000 vectors, at 2M and 10M rows. There is no crossover.
+- **One shared cache** (`results/P3b/SUMMARY.md`): reset-on-eviction LFU beats LRU at every capacity tested. The
+  persistent-counter LFU is the one that is below LRU at 256 vectors, and at 1,000 at 10M rows, and above it at 10,000
+  and 100,000.
 
-**Why LFU loses at small sizes:** gem5's LFURP resets frequency counters on eviction. At >90% miss rate, nearly every access triggers an eviction and counter reset — preventing frequency history from accumulating.
-
-**The hardware fix:** Persistent saturating counters in the RTL — `freq_cnt[i]` resets only when line `i` is physically evicted, never on a cache miss. This allows long-term frequency history to accumulate correctly.
-
-> **Status note:** in `rtl/v1_verified/LFU.v` and `rtl/v1_synthesized/lfu_cache_controller.v` a newly installed line starts at count 1, so per-address history across eviction is not implemented in the current RTL. The `trace_sim` LFU-persistent policy models that idealised history. Resolving this is open work.
+Limits: first 2M and 10M Criteo DAC rows only; CPU trace simulation; capacities are in vectors, not bytes.
 
 ---
 
-## RTL Design — `lfu_cache_controller.v`
+## RTL Design — `rtl/v2/lfu_cache_controller.v` (tag `rtl-v2-final`)
 
 ### Parameters
 
 ```verilog
-parameter CACHE_DEPTH  = 16;    // Number of cache lines
-parameter ADDR_WIDTH   = 20;    // Embedding address bits
-parameter VECTOR_WIDTH = 128;   // Embedding vector width (bits)
-parameter COUNTER_WIDTH = 8;    // Saturating frequency counter (0–255)
+parameter CACHE_DEPTH   = 256;  // cache lines (16, 64, 256 synthesized)
+parameter ADDR_WIDTH    = 20;   // embedding address bits
+parameter VECTOR_WIDTH  = 128;  // embedding vector width (bits)
+parameter COUNTER_WIDTH = 6;    // saturating frequency counter (0-63)
+parameter GROUPS        = 16;   // Stage A groups for victim selection
+parameter COUNTER_MODE  = 0;    // see below
 ```
 
 ### Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                  lfu_cache_controller                        │
-│                                                             │
-│  tag_store[16][20]     ← 20-bit tag per line               │
-│  data_store[16][128]   ← 128-bit embedding vector          │
-│  freq_cnt[16][8]       ← 8-bit PERSISTENT saturating ctr   │
-│  valid_bits[16]        ← valid flag                        │
-│                                                             │
-│  Hit detection:  16-way 20-bit XNOR comparator tree        │
-│  Victim select:  16-way 8-bit magnitude comparator tree     │
-│  FSM:            IDLE → LOOKUP → EVICT → FILL              │
-└─────────────────────────────────────────────────────────────┘
-```
+- Storage: tag, data, counter and valid arrays in flip-flops (no SRAM macro).
+- Hit detection: per-group tag compare from registered address copies; hit index from a balanced priority tree.
+- Victim select: Stage A (registered in LOOKUP) = minimum per group by reduction tree; Stage B (in EVICT) = minimum
+  across groups.
+- FSM: IDLE → LOOKUP → (hit: IDLE) / (miss: EVICT → FILL → IDLE on fill_valid).
 
-### FSM State Transitions
+### Counter semantics (`COUNTER_MODE`)
 
-```
-         req_valid=1
-IDLE ─────────────────► LOOKUP
- ▲                         │
- │         hit=1           │ miss=1
- └─────────────────────────┤
-                           ▼
-                         EVICT
-                           │
-                           ▼
-                          FILL ──── fill_valid=1 ────► IDLE
-```
+- **0 (default):** the count is set to 1 when a tag is installed (reset-on-eviction LFU).
+- **1:** the count belongs to the slot: a new tag continues from the slot's old count + 1.
+- **2:** per-address history. Not implemented (pending Prof. Mane); elaboration stops.
 
-### Key Design Decision — Persistent Counters
-
-> **Status note:** in `rtl/v1_verified/LFU.v` and `rtl/v1_synthesized/lfu_cache_controller.v` a newly installed line starts at count 1, so per-address history across eviction is not implemented in the current RTL. The `trace_sim` LFU-persistent policy models that idealised history. Resolving this is open work.
-
-```verilog
-// On eviction — invalidate line but PRESERVE frequency counter
-valid_bits[victim] <= 0;
-tag_store[victim]  <= 0;
-data_store[victim] <= 0;
-// freq_cnt[victim] intentionally NOT reset
-
-// On fill — counter continues accumulating from previous history
-freq_cnt[lfu_idx] <= freq_cnt[lfu_idx] + 1;  // NOT reset to 1
-```
-
-This directly addresses the counter-reset-on-eviction deficiency in gem5 LFURP.
+Neither implemented mode keeps per-address history, so the RTL does not implement "persistent" counters
+(`results/P1/SUMMARY.md`).
 
 ---
 
@@ -186,6 +148,9 @@ cd ../v2/
 bash run_rtl.sh                   # prints ALL TESTS PASSED, then a generic Yosys cell count
 ```
 
+Gate-level simulation of the NanGate45 netlists (functional, zero delay): `synthesis/p5f/run_p5f.sh` locally,
+`synthesis/p5f/submit_gls.sh` on the cluster; results in `results/P5f_gls/SUMMARY.md`.
+
 ### What to look for in GTKWave
 
 `rtl/v1_verified/lfu_cache_waves.vcd` (see `rtl/v1_verified/NOTES.md`):
@@ -198,6 +163,9 @@ bash run_rtl.sh                   # prints ALL TESTS PASSED, then a generic Yosy
 ---
 
 ## Running gem5 Simulations
+
+gem5 here is a CPU (X86TimingSimpleCPU) with DDR4, not a GPU. Only the 2 MB runs have committed stats; these runs
+were not repeated in this project.
 
 ### Prerequisites
 
@@ -243,17 +211,9 @@ grep "system.cpu.ipc" m5out/stats.txt
 
 ### Dataset
 
-The Criteo Terabyte dataset is required. It is not tracked in this repository.
-
-```bash
-# Download via Kaggle CLI
-pip install kaggle
-kaggle competitions download -c criteo-display-ad-challenge
-unzip criteo-display-ad-challenge.zip
-
-# Or if already on Sharanga:
-ls /scratch/$USER/dlrm/criteo/raw/dac/train.txt
-```
+The Criteo Display Advertising Challenge dataset (Kaggle 2014, `dac.tar.gz`, 45,840,617 rows) is used; it is not
+the Criteo Terabyte dataset and is not tracked here. Source, checksums and licence: `results/P2/SOURCE.md`. The
+download runs as a cluster job (`cluster/p2_driver.sh`).
 
 ### Run Simulation
 
@@ -281,35 +241,48 @@ python3 plot_trace_results.py \
 | Policy | Description |
 |--------|-------------|
 | LRU | Standard Least Recently Used |
-| LFU-persistent | LFU with per-address history kept after eviction (idealised model) |
-| LFU-gem5-reset | LFU that forgets an address's count on eviction (hypothesised gem5 LFURP behaviour) |
-| TinyLFU | Window-LRU admission + LFU main cache, exact counters (idealised) |
+| LFU (persistent counters) | LFU with per-address history kept after eviction (idealised model; not in the RTL) |
+| LFU (gem5 LFURP, reset on eviction) | LFU that forgets an address's count on eviction |
+| TinyLFU-exact | Window-LRU admission + LFU main cache, exact counters |
+| W-TinyLFU | Window-LRU + Count-Min sketch admission |
+| ARC | Adaptive Replacement Cache |
+| Belady | Offline optimum (upper bound) |
+
+Shared-cache variant (one cache for all 26 tables): `trace_sim/run_shared_cache.py`, results in `results/P3b/`.
 
 ---
 
-## H100 Profiling
+## GPU Profiling
 
-```bash
-cd profiling/
-sbatch run_gpu_profiler.sh        # script still to be copied from Sharanga
-```
+Current: `tools/profile_embedding.py` (26 x EmbeddingBag + MLP, CUDA events), run on one H100 and one H200 via
+`cluster/p4_driver.sh`; results in `results/P4/SUMMARY.md`. No hardware counters were available (ncu missing or
+ERR_NVGPUCTRPERM), so these timings say nothing about memory-boundedness.
 
-Raw output: `gpu_profile_149046_out.txt`. See `profiling/README.md` for what the numbers do and do not show.
+Older run: `profiling/gpu_profile_149046_out.txt` (job 149046). See `profiling/README.md` for what it does and does
+not show.
 
 ---
 
 ## Synthesis
 
 `synthesis/` holds the Yosys flow (`synth.tcl`: `synth; abc -g cmos2; stat`), your log, and reruns for both RTL
-configurations. This flow uses generic gates and no technology library.
+configurations. This flow uses generic gates and no technology library: gate counts only. Sources:
+`synthesis/yosys_output_LFU_v_32bit_512bit.txt`, `synthesis/rerun_20bit_128bit_yosys0.33.txt`, `synthesis/README.md`.
 
 | Run | Flip-flops | Combinational gates | Total cells |
 |-----|-----------:|--------------------:|------------:|
 | `LFU.v` as simulated (32-bit address, 512-bit data) | 9,449 | 24,704 | 34,153 |
 | paper configuration (20-bit tag, 128-bit vector) | 2,705 | 8,626 | 11,331 |
 
-Longest topological path: about 245 gate levels. **No area (µm²), power or Fmax has been measured.** Doing that
-needs a liberty file (NanGate45, ASAP7 or SKY130 are freely available) and OpenSTA.
+Longest topological path: 245 gate levels (20/128 run; `synthesis/README.md`).
+
+### NanGate45 (current)
+
+`rtl/v2` is synthesized with Yosys 0.33 and the NanGate45 typical liberty, and timed with OpenSTA 3.1.0, at depths
+16/64/256, COUNTER_MODE 0/1, targets 1 GHz and 500 MHz. Current flow: `synthesis/p5e/run_p5e.sh`; full tables in
+`results/P7/TABLES.md`; the summary is `results/P5e/SUMMARY.md`. **NanGate45 is an open PDK, not TSMC; all results are
+pre-layout (wire-load model, ideal clock); no power step was run.** The flow alone moves Fmax by 4.92-16.23% on
+identical logic, so smaller differences cannot be told apart from flow noise.
 
 ---
 
@@ -322,8 +295,10 @@ S  = 1.036    (gem5 2 MB L2 misses, LRU / LFU = 304,590 / 293,995)
 Speedup = 1 / [(1 − f) + f/S] = 1.0256  →  +2.6% end-to-end
 ```
 
-This is a projection that assumes the fewer L2 misses translate fully into shorter embedding time. In gem5 itself
-the IPC change at 2 MB is only +0.08% (0.2357 → 0.2359).
+Inputs: `profiling/gpu_profile_149046_out.txt` and `gem5/results/l*_2mb/stats.txt`; computed in
+`results/P7/TABLES.md`. This is a projection, not a measurement. It assumes the fewer L2 misses (gem5, CPU + DDR4)
+translate fully into shorter GPU embedding time, and f comes from a launch-bound run. The LFU stats file has no IPC,
+so no IPC change can be quoted.
 
 ---
 
@@ -343,12 +318,14 @@ PyTorch      ≥ 2.0   (for H100 profiling)
 
 ## Limitations & Future Work
 
-- **Simulation gap:** gem5 SE-mode uses a CPU and DDR4, not a GPU and HBM. The trace-driven simulation closes part of this gap for the policy comparison.
-- **Profiling:** the H100 run is launch-bound (284 µs of kernels in a 4.1 ms run). A memory-bound claim needs a larger batch and hardware counters.
-- **RTL:** `LFU.v` has a two-cycle-per-state FSM bug (counters double-count). `rtl/v2` fixes the structure and is simulated, not synthesized.
-- **Counters:** both v1 files start a newly installed line at count 1; they do not keep per-address history across eviction.
-- **Synthesis:** generic-gate counts only; no technology library, area, power or timing yet.
-- **Baselines:** the TinyLFU model uses exact counters (an upper bound); a real sketch-based TinyLFU is not implemented.
+- **Data:** trace simulations use the first 2M and 10M rows of Criteo DAC only.
+- **Simulation gap:** gem5 SE-mode uses a CPU and DDR4, not a GPU and HBM; only the 2 MB runs have stats.
+- **Profiling:** no hardware counters; small batches are launch-bound. A memory-bound claim needs counters.
+- **RTL:** no per-address counter history (COUNTER_MODE 2 pending Prof. Mane). `LFU.v` (v1) has a two-cycle-per-state
+  FSM bug.
+- **Synthesis:** NanGate45 (open PDK, not TSMC), pre-layout, no power; the depth-256 netlist misses 500 MHz by a
+  margin inside the flow noise.
+- **Verification:** gate-level simulation is functional (zero delay); formal equivalence is proven only at depth 16.
 
 ---
 
@@ -356,13 +333,12 @@ PyTorch      ≥ 2.0   (for H100 profiling)
 
 ```bibtex
 @techreport{adarsh2026dlrm,
-  title     = {Characterising the Cache-Policy Phase Transition in DLRM Workloads:
-               A Hardware-Grounded LFU Controller with Persistent Saturating Counters},
+  title     = {Cache Policies for DLRM Embedding Lookups: Trace Simulation on Criteo
+               and an LFU Cache Controller on NanGate45},
   author    = {Adarsh},
   institution = {BITS Pilani Goa Campus, Dept. of EEE},
   year      = {2026},
-  note      = {Manuscript in preparation — arXiv cs.AR submission.
-               Sharanga HPC Research.}
+  note      = {Manuscript in preparation. Sharanga HPC Research.}
 }
 ```
 
@@ -376,4 +352,4 @@ Not for redistribution without explicit written permission.
 
 ---
 
-*Sharanga HPC · NVIDIA H100 80GB HBM3 · BITS Pilani Goa · 2026*
+*Sharanga HPC · NVIDIA H100 80GB HBM3 · NVIDIA H200 NVL · BITS Pilani Goa · 2026*
