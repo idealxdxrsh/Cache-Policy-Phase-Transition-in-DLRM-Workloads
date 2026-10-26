@@ -1,5 +1,5 @@
-rtl: baba9e5c070a47596eeef95a1408a8dfb2593b4d (tag rtl-v2-final), rtl/v2/lfu_cache_controller.v
-flow: synthesis/p5e + synthesis/p5 at commit 37c353cb9b4879a18828d2ed02aa598c3eb8cd7b
+rtl: 7705a7bb5f51d14ed29bf342c614cc1c91da0f40 (tag rtl-v2-final), rtl/v2/lfu_cache_controller.v
+flow: synthesis/p5e + synthesis/p5 at commit b69a931e31be07497cffafd7ab40ab417742326d
 ABC_BUDGET_PS=141.5
 7077ca57e282e27e8dfa1f8cc573b28a08af4d7dc2e388d2c7d4b6b5b72b801c  synthesis/p5e/synth_td.ys.in
 4c460580980f92f1083d9a1945d97db60cd29c6419a3c65c3e3a94c7dfa6b2c2  synthesis/p5e/abc_td.script.in

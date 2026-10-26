@@ -14,7 +14,7 @@
 - `CLAIMS.md`:
   - Section A: 36 earlier claims. 15 CONTRADICTED, 16 UNSUPPORTED, 4 NOT RE-RUN, 1 SUPPORTED (the 3,985 ns waveform length).
   - Section B: 13 new claims, each with exact wording, evidence path and the limit to state with it. 10 SUPPORTED, 3 NOT RE-RUN.
-- `README.diff`: proposed README edits (`git apply --check` passes against README.md at b80f0ce). `README.md` here is the
+- `README.diff`: proposed README edits (`git apply --check` passes against README.md at c5511a5). `README.md` here is the
   edited copy it was made from.
 
 ## Findings worth reading before any write-up (details and paths in CLAIMS.md)

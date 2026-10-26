@@ -2,7 +2,7 @@
 
 Usage: python -I tools/p5d_compare.py <liberty>
 Columns: P5 = rtl-v2-baseline (results/P5); P5b (results/P5b); P5c = Stage A + Stage B trees + address
-copies (results/P5c/tree_copies, commit 3ebb34f); P5d = P5c + hit_idx priority tree (results/P5d, final RTL);
+copies (results/P5c/tree_copies, commit 73016e0); P5d = P5c + hit_idx priority tree (results/P5d, final RTL);
 P5d packed = the same tree written as flat vectors (results/P5d/attempt1_packed_vectors).
 Same table code as tools/p5b_compare.py; Fmax = 1 / (period - WNS) of that netlist.
 """

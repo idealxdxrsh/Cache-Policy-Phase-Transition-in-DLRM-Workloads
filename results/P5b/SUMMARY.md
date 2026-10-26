@@ -1,5 +1,5 @@
 # P5b: Stage-B reduction tree + per-group address copies — NanGate45, not TSMC; pre-layout; no power numbers
-Baseline = tag `rtl-v2-baseline` (1483717, `results/P5`); same Yosys 0.33 + NanGate45 + OpenSTA flow, local. Files: `COMPARE.md` (full before/after, incl. a tree-only column), `RESULTS.md`, `CRITICAL_PATH.md`, `lockstep.txt`, `mutation.txt`.
+Baseline = tag `rtl-v2-baseline` (0d66a3a, `results/P5`); same Yosys 0.33 + NanGate45 + OpenSTA flow, local. Files: `COMPARE.md` (full before/after, incl. a tree-only column), `RESULTS.md`, `CRITICAL_PATH.md`, `lockstep.txt`, `mutation.txt`.
 
 ## Behaviour checks (testbench unchanged, no test loosened)
 - All 7 tests pass, modes 0 and 1, depths 16/64/256 (`sim/sim_d<D>_m<M>.txt`).

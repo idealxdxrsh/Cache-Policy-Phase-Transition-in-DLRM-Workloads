@@ -1,9 +1,9 @@
 #!/bin/bash
 # P5d driver, local only (no cluster). NanGate45, not TSMC. Pre-layout. No power step.
-# hit_idx priority loop -> balanced priority tree, on top of P5c (commit 3ebb34f).
+# hit_idx priority loop -> balanced priority tree, on top of P5c (commit 73016e0).
 # Steps:
 #   sim       unmodified testbench, depths 16/64/256 x modes 0/1               -> results/P5d/sim/
-#   lockstep  vs rtl-v2-baseline, P5b (2a9f4ae), P5c (3ebb34f); also checks at
+#   lockstep  vs rtl-v2-baseline, P5b (fac3366), P5c (73016e0); also checks at
 #             most one match per cycle and compares hit_idx on every hit       -> results/P5d/lockstep_vs_<ref>.txt
 #   synth     same flow as P5/P5b/P5c, 1 GHz and 500 MHz                       -> results/P5d/d*/
 #   noise     3 logically identical rewrites of the P5d RTL (tools/p5d_null_variants.py),
@@ -25,12 +25,12 @@ sim)
     done; done ;;
 lockstep)
     pids=()
-    for ref in rtl-v2-baseline 2a9f4ae 3ebb34f; do
+    for ref in rtl-v2-baseline fac3366 73016e0; do
         REF=$ref OUT=$R/lockstep_vs_$ref.txt bash "$ROOT/synthesis/p5b/run_lockstep.sh" > /dev/null &
         pids+=($!)
     done
     for p in "${pids[@]}"; do wait "$p"; done
-    for ref in rtl-v2-baseline 2a9f4ae 3ebb34f; do
+    for ref in rtl-v2-baseline fac3366 73016e0; do
         echo "vs $ref: $(grep -c 'LOCKSTEP PASSED' "$R/lockstep_vs_$ref.txt")/6 passed"
     done ;;
 synth)

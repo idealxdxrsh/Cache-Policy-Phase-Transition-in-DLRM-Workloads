@@ -1,21 +1,21 @@
 #!/bin/bash
 # P5c driver, local only (no cluster). NanGate45, not TSMC. Pre-layout. No power step.
-# Stage-A reduction tree on top of P5b (commit 2a9f4ae), in two variants:
+# Stage-A reduction tree on top of P5b (commit fac3366), in two variants:
 #   results/P5c/rtl/tree_copies.v  Stage A tree + Stage B tree + per-group address copies
 #   results/P5c/rtl/tree_only.v    the same minus the copies (tools/p5c_strip_copies.py)
 # Steps: unmodified testbench at depths 16/64/256 x modes 0/1; lockstep of each variant
-# against rtl-v2-baseline and against P5b (2a9f4ae); synth + OpenSTA, same flow as P5/P5b.
+# against rtl-v2-baseline and against P5b (fac3366); synth + OpenSTA, same flow as P5/P5b.
 #
 # Decision rule, fixed before any P5c synthesis run: the address copies are kept only if,
 # at depth 256, tree_copies has a Fmax at least 5% above tree_only in BOTH modes, in both
 # the 1 GHz and the 500 MHz netlists. Otherwise they are reverted in rtl/v2 (they stay in
-# git history: P5b commit 0140ad1 and the P5c commit that precedes the revert).
+# git history: P5b commit 4debe84 and the P5c commit that precedes the revert).
 #
 #   bash synthesis/p5c/run_p5c.sh [sim|lockstep|synth]...   default: all three
 set -euo pipefail
 ROOT=$(cd "$(dirname "$0")/../.." && pwd)
 R=$ROOT/results/P5c
-P5B=2a9f4ae
+P5B=fac3366
 STEPS=${*:-"sim lockstep synth"}
 W=$(mktemp -d); trap 'rm -r "$W"' EXIT
 for step in $STEPS; do case $step in

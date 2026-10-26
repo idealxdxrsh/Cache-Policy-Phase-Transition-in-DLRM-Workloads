@@ -1,10 +1,16 @@
 # Push checklist for https://github.com/idealxdxrsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads
 
+> **Superseded in part (2026-10-26):** after this checklist was pushed, the history was rewritten locally to remove
+> the Claude attribution lines from commit messages. All commit IDs in this file have been translated to the new IDs
+> (see `results/COMMIT_MAP.md`); statements below that "no history was rewritten" and "no force-push is needed"
+> describe the first push only. The rewritten history needs `git push --force-with-lease` (see COMMIT_MAP.md and the
+> final commands given with it).
+
 Prepared 2026-10-26 on local branch `merge-origin-main`. **Nothing has been pushed**; no history was rewritten and
 no force-push is needed.
 
 ## 1. README
-- `results/P7/README.diff`: `git apply --check` passed and the diff was applied to `README.md` in commit 419af98.
+- `results/P7/README.diff`: `git apply --check` passed and the diff was applied to `README.md` in commit c1065e2.
   The diff still pointed to the old Google Drive manuscript, so in the same commit the paper links were changed:
   current paper `paper/v2/main.pdf`, superseded manuscript `paper/old/ieee_final.pdf` (the old synthesis report link
   is kept and labelled superseded).
@@ -44,9 +50,9 @@ Not secrets, but public once pushed: commit metadata email (above); cluster user
 - `origin/main`: one commit, 40d20a7 "Initialize README with project details and findings" (Adarsh, 2026-04-17),
   adding `readme.md` (408 lines): the old README with claims marked CONTRADICTED/UNSUPPORTED in
   `results/P7/CLAIMS.md` (83.74%, 5.15x, TSMC 28nm, +3.00%, ...). No tags on the remote.
-- Merge on new branch `merge-origin-main`: `git merge origin/main --allow-unrelated-histories` (merge commit bcaa7a6).
+- Merge on new branch `merge-origin-main`: `git merge origin/main --allow-unrelated-histories` (merge commit 7389788).
   There was no textual conflict (`readme.md` vs `README.md` are different names, but they collide on
-  case-insensitive filesystems). Resolution "keep our README": `readme.md` removed in follow-up commit 4aef0a9
+  case-insensitive filesystems). Resolution "keep our README": `readme.md` removed in follow-up commit da9adb6
   (the removal inside the merge commit failed, and the merge was not amended). Tree of `merge-origin-main` =
   tree of `master` (`git diff --stat master merge-origin-main` is empty).
 - `origin/main` is an ancestor of `merge-origin-main`, so pushing it to `main` is a fast-forward.
@@ -61,15 +67,15 @@ Not secrets, but public once pushed: commit metadata email (above); cluster user
   | `rtl/v2/tb_lfu_cache.sv`, depths 16/64/256 x modes 0/1 (Icarus 12) | 6/6 ALL TESTS PASSED |
 
 ## 4. Tags and unpushed commits
-- Local tags (both lightweight, neither on the remote): `rtl-v2-baseline` -> 1483717, `rtl-v2-final` -> baba9e5.
+- Local tags (both lightweight, neither on the remote): `rtl-v2-baseline` -> 0d66a3a, `rtl-v2-final` -> 7705a7b.
   Both are in the history of `merge-origin-main`.
-- Commits on `merge-origin-main` not on `origin/main`: 52 (all 50 local commits from 6c0def5 to 419af98, the merge
-  bcaa7a6 and 4aef0a9), plus this checklist commit. Every commit hash cited in the paper's Artifact Availability
-  paragraph (a84d9a9, c81407a, 79f9adc, daf1601, 37c353c, d7a2b54, 18b6aeb, 215d493, 2af6b00) is among them.
+- Commits on `merge-origin-main` not on `origin/main`: 52 (all 50 local commits from 379a5ce to c1065e2, the merge
+  7389788 and da9adb6), plus this checklist commit. Every commit hash cited in the paper's Artifact Availability
+  paragraph (b167b20, 35c1d7d, cc9e875, 04c34be, b69a931, 4188580, 42a8201, 02518be, afb8a0f) is among them.
 
 ## 5. Prof. Pravin Mane in the history
-- `paper/v2`: named as co-author ("Pravin Mane", own IEEE author block) since commit bbe9e23; in the current
-  `paper/v2/main.tex`, `paper/v2/README.md` and `paper/v2/main.pdf`. Commit 7e124a7 (first paper/v2) did not name
+- `paper/v2`: named as co-author ("Pravin Mane", own IEEE author block) since commit b26a522; in the current
+  `paper/v2/main.tex`, `paper/v2/README.md` and `paper/v2/main.pdf`. Commit 5d51bad (first paper/v2) did not name
   him (its only "Mane" match is "Ben Manes", a TinyLFU author in `refs.bib`).
 - Elsewhere (all versions in history): `CLAUDE.md` ("Mentor: Prof. Pravin Mane"; counter scheme pending him),
   `PLAN.md`, `README.md`, `results/P1/SUMMARY.md`, `results/P5/PLAN.md`, the header comment of `rtl/v2/lfu_cache_controller.v`

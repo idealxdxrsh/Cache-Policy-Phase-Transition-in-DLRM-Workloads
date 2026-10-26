@@ -1,5 +1,5 @@
 # P5c: Stage-A reduction tree; tree only vs tree + address copies — NanGate45, not TSMC; pre-layout; no power numbers
-Before = P5b (commit 2a9f4ae, `results/P5b`); P5 baseline = tag rtl-v2-baseline. Same Yosys 0.33 + NanGate45 + OpenSTA flow, local; driver `synthesis/p5c/run_p5c.sh`.
+Before = P5b (commit fac3366, `results/P5b`); P5 baseline = tag rtl-v2-baseline. Same Yosys 0.33 + NanGate45 + OpenSTA flow, local; driver `synthesis/p5c/run_p5c.sh`.
 Files: `COMPARE.md` (all 4 designs, both clocks), `tree_copies/RESULTS.md`, `tree_only/RESULTS.md`, `CRITICAL_PATH.md`.
 ## Behaviour checks (testbench unmodified; no cycle-timing or latency change, so no test was edited)
 - 7 tests pass at depths 16/64/256 x modes 0/1 for both variants (`sim/`) and for the final rtl/v2 (`sim_final/`).

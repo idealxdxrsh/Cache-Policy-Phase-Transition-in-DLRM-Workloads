@@ -1,5 +1,5 @@
 # P5d: hit_idx priority loop -> balanced priority tree — NanGate45, not TSMC; pre-layout; no power numbers
-Before = P5c (commit 3ebb34f, `results/P5c/tree_copies`). Same Yosys 0.33 + NanGate45 + OpenSTA flow, local; driver `synthesis/p5d/run_p5d.sh`. Files: `COMPARE.md`, `RESULTS.md`, `NOISE.md`, `CRITICAL_PATH.md`. Final RTL tagged `rtl-v2-final`.
+Before = P5c (commit 73016e0, `results/P5c/tree_copies`). Same Yosys 0.33 + NanGate45 + OpenSTA flow, local; driver `synthesis/p5d/run_p5d.sh`. Files: `COMPARE.md`, `RESULTS.md`, `NOISE.md`, `CRITICAL_PATH.md`. Final RTL tagged `rtl-v2-final`.
 ## Structure: priority tree, not one-hot AND-OR (lowest matching slot wins, 0 if none, as the loop did; RTL lines 120-147)
 - It does not rely on at most one match, but the invariant holds and is checked. Tags are written only at reset (line 267)
   and in FILL (line 294). Valid bits are cleared at reset (line 265) and for the victim in EVICT (line 286), and set only in
@@ -7,7 +7,7 @@ Before = P5c (commit 3ebb34f, `results/P5c/tree_copies`). Same Yosys 0.33 + NanG
   Lockstep checks at most one match every cycle in both designs: 0 multi-match cycles in all runs (`lockstep_vs_*.txt`).
 ## Behaviour checks (unit testbench unmodified; no cycle-timing or latency change)
 - 7 tests pass at depths 16/64/256 x modes 0/1 (`sim/`). Lockstep, 200,000 random cycles per run, vs rtl-v2-baseline,
-  P5b (2a9f4ae) and P5c (3ebb34f): 18/18 runs with 0 port, 0 victim-slot and 0 hit_idx mismatches (lockstep testbench now also compares hit_idx).
+  P5b (fac3366) and P5c (73016e0): 18/18 runs with 0 port, 0 victim-slot and 0 hit_idx mismatches (lockstep testbench now also compares hit_idx).
 - Mutation (`mutation.txt`, all depths/modes, `--lockstep`): RESULT OK; 113 killed by testbench, 10 by lockstep, 33
   equivalent. 5 new hit-tree mutants; `hit_tree_prefer_right` is equivalent (it needs two matches, which never happen).
 - Attempt 1 wrote the tree as flat vectors; it took Icarus 5791 s per depth-256 lockstep run (mutation timed out). It was moved to

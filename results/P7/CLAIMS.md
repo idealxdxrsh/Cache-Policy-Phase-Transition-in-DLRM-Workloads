@@ -6,7 +6,7 @@ experiment was not repeated in P0-P5f). `TABLES.md` = `results/P7/TABLES.md` (ge
 from committed files only).
 
 **Sources checked.** `paper/ieee_final.pdf` (sha256 45ee53ff690f5797dcd4c801ee6925d20e0da0236d352774fbccc2c22a4d28ef,
-commit 6c0def5; read with pdftotext, not modified; "p." = PDF page), `README.md` at b80f0ce ("R:" = line), and the
+commit 379a5ce; read with pdftotext, not modified; "p." = PDF page), `README.md` at c5511a5 ("R:" = line), and the
 corrections in `CLAUDE.md`. **The resume, LinkedIn text, weekly mail and project summary are not in the repository and
 were not read.** Their claims are covered only where they repeat the paper or README wording; anything they say beyond
 that is not checked here.

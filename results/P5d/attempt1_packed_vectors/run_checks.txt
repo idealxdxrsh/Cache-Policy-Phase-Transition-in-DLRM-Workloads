@@ -5,6 +5,6 @@ d=64 m=1: 0 FAIL lines; ALL TESTS PASSED
 d=256 m=0: 0 FAIL lines; ALL TESTS PASSED
 d=256 m=1: 0 FAIL lines; ALL TESTS PASSED
 vs rtl-v2-baseline: 6/6 passed
-vs 2a9f4ae: 6/6 passed
-vs 3ebb34f: 6/6 passed
+vs fac3366: 6/6 passed
+vs 73016e0: 6/6 passed
 checks_exit 0
