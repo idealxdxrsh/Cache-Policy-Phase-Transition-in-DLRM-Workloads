@@ -197,6 +197,24 @@ for gpu in ('h100_413621', 'h200_413622'):
                 vals.append(v)
             W(f'| {int(key[0]):.0e} | {key[1]} | {key[2]} | ' + ' | '.join(vals) + ' |')
 
+# ---------------------------------------------------------------- RTL and simulator parameters
+RTL, TB, SIM = 'rtl/v2/lfu_cache_controller.v', 'rtl/v2/tb_lfu_cache.sv', 'trace_sim/run_trace_sim.py'
+rtl = read(RTL)
+if git('show', f'rtl-v2-final:{RTL}') != rtl:
+    sys.exit(f'{RTL} differs from tag rtl-v2-final')
+par = dict(re.findall(r'^\s+parameter (\w+)\s*=\s*(\d+)', rtl, re.M))
+tests = sorted({int(n) for n in re.findall(r'"\[(\d+)\] ', read(TB))})
+sim_cap = sorted({int(n) for n in re.findall(r'min\((\d+), self\.', read(SIM))})
+W('\n## RTL and simulator parameters')
+W(src(f'{RTL}, {TB}, {SIM}', [RTL, TB, SIM]) + f' `{RTL}` is identical to tag rtl-v2-final.')
+W('\n| item | value |')
+W('|---|---|')
+for k, v in par.items():
+    W(f'| RTL parameter {k} (default) | {v} |')
+W(f'| RTL counter saturation value, 2^COUNTER_WIDTH - 1 | {2 ** int(par["COUNTER_WIDTH"]) - 1} |')
+W(f'| unit testbench tests | {len(tests)} ([{tests[0]}]..[{tests[-1]}]) |')
+W(f'| trace simulator LFU counter cap (`min(N, ...)` in {SIM}) | {", ".join(map(str, sim_cap))} |')
+
 # ---------------------------------------------------------------- P5 .. P5e
 W('\n## P5-P5e: rtl/v2 on NanGate45 (Yosys 0.33 + OpenSTA 3.1.0), timing and area')
 W('Limits: NanGate45 typical liberty (open PDK), NOT TSMC; pre-layout (wire-load 5K_hvratio_1_1, ideal clock, no '

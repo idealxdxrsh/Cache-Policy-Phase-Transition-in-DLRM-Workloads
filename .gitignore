@@ -24,3 +24,11 @@ results/P5e/**/netlist.v
 results/P5f_gls/**/netlist.v
 results/P5f_gls/models/
 results/P5f_gls/work/
+# LaTeX build products (paper/v2/main.pdf is committed)
+paper/**/*.aux
+paper/**/*.log
+paper/**/*.bbl
+paper/**/*.blg
+paper/**/*.fls
+paper/**/*.fdb_latexmk
+paper/**/*.synctex.gz
