@@ -5,6 +5,7 @@ Reads results/{P5,P5b,P5c/tree_copies,P5d,P5e/new}/d*_m*_1000MHz/sta.txt and the
 NOISE (same directories as tools/make_tables.py).
 """
 import re
+import sys
 
 from style import DOUBLE, plt, read, save
 
@@ -30,7 +31,10 @@ def fmax(d, depth, mode):
     return 1e3 / (period - wns)
 
 
-fig, axes = plt.subplots(1, 2, figsize=(DOUBLE, 2.5), sharey=True)
+# optional: <output pdf> <width in inches> (used by docs/synthesis_report); default = the paper figure
+OUT_PDF = sys.argv[1] if len(sys.argv) > 1 else None
+WIDTH = float(sys.argv[2]) if len(sys.argv) > 2 else DOUBLE
+fig, axes = plt.subplots(1, 2, figsize=(WIDTH, 2.5 if WIDTH == DOUBLE else 2.9), sharey=True)
 for ax, mode in zip(axes, (0, 1)):
     for d, col in (('results/P5d', '#0072B2'), ('results/P5e/new', '#D55E00')):
         lo = [min(fmax(v, n, mode) for v in NOISE[d]) for n in DEPTHS]
@@ -52,5 +56,9 @@ h, lab = axes[0].get_legend_handles_labels()
 h += [plt.Rectangle((0, 0), 1, 1, fc='#0072B2', alpha=0.15, hatch='////', ec='#0072B2', lw=0),
       plt.Rectangle((0, 0), 1, 1, fc='#D55E00', alpha=0.15, hatch='\\\\\\\\', ec='#D55E00', lw=0)]
 lab += ['noise band, old flow (8 same-logic designs)', 'noise band, timing-driven flow (8 designs)']
-fig.legend(h, lab, loc='outside upper center', ncol=4, columnspacing=1.0)
-save(fig, 'fig_fmax')
+fig.legend(h, lab, loc='outside upper center', ncol=4 if WIDTH >= DOUBLE else 3, columnspacing=1.0)
+if OUT_PDF:
+    fig.savefig(OUT_PDF)
+    print(f'wrote {OUT_PDF}')
+else:
+    save(fig, 'fig_fmax')

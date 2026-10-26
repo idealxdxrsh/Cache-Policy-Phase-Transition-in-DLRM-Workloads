@@ -306,8 +306,13 @@ for name, d, what in PHASES:
     stas = files(f'{d}/d*_m*_*MHz/sta.txt')
     W(f'\n### {name}: {what}')
     W(src(f'{d}/d*_m*_*MHz/{{sta,stat}}.txt', stas + files(f'{d}/d*_m*_*MHz/stat.txt')))
-    W('\n| depth | mode | clock target | cells | flip-flops | area um^2 | WNS ns | worst hold slack ns | Fmax MHz (pre-layout) | other slew/cap violators |')
-    W('|---|---|---|---|---|---|---|---|---|---|')
+    res = read(f'{d}/RESULTS.md')
+    share = {(int(a), int(b), int(c)): float(e) for a, b, c, e in
+             re.findall(r'^\| (\d+) \| (\d) \| (\d+) MHz \| [\d,]+ \| [\d,]+ \| [\d.]+ \| ([\d.]+) \|', res, re.M)}
+    W(f'Flip-flop area share: from `{d}/RESULTS.md` (`tools/p5_results.py`, flip-flop cell areas from the liberty file; '
+      f'only this aggregate is reproduced), {prov([f"{d}/RESULTS.md"])}.')
+    W('\n| depth | mode | clock target | cells | flip-flops | area um^2 | flip-flop area share | WNS ns | worst hold slack ns | Fmax MHz (pre-layout) | other slew/cap violators |')
+    W('|---|---|---|---|---|---|---|---|---|---|---|')
     key = lambda p: tuple(int(x) for x in re.search(r'd(\d+)_m(\d)_(\d+)MHz', p).groups())
     for s in sorted(stas, key=lambda p: (key(p)[0], key(p)[1], -key(p)[2])):
         dd, m, f = key(s)
@@ -316,7 +321,8 @@ for name, d, what in PHASES:
         ffs = sum(int(n) for n in re.findall(r'^\s+S?DFF\w*\s+(\d+)', stat, re.M))
         fmax = f'{1e3 / (period - wns):.1f}' if wns < 0 else f'met ({f} MHz)'
         W(f'| {dd} | {m} | {f} MHz | {grab(r"Number of cells:\s+(\d+)", stat, int):,} | {ffs:,} | '
-          f'{grab(r"Chip area for module .*: ([\d.]+)", stat):.3f} | {wns:.4f} | {hold:.4f} | {fmax} | {len(violators(sta))} |')
+          f'{grab(r"Chip area for module .*: ([\d.]+)", stat):.3f} | {share[dd, m, f]:.4f} | {wns:.4f} | {hold:.4f} | {fmax} | {len(violators(sta))} |')
+    W(f'\nFlip-flop area share range, {name}: {min(share.values()):.4f}-{max(share.values()):.4f}.')
 
 W('\n### P5c: tree only vs tree + per-group address copies (copies kept), 1 GHz netlists')
 W(src('results/P5c/tree_{only,copies}/d*_m*_1000MHz/sta.txt', files('results/P5c/tree_only/d*_m*_1000MHz/sta.txt') +
@@ -379,6 +385,101 @@ W(f'\nAll depths and modes: {len(re.findall(r": KILLED by testbench", mut))} mut
   f'{len(re.findall(r"; KILLED by lockstep", mut))} by the lockstep check, '
   f'{len(re.findall(r": survived \(equivalent", mut))} survived as equivalent; '
   f'"{re.search(r"^RESULT: .*", mut, re.M).group(0)}".')
+
+W('\n### Flow settings and toolchain (from the committed flow files and build record)')
+constr, sta_tcl, p5e_sh, srcs = (read(x) for x in ('synthesis/p5/abc.constr', 'synthesis/p5/sta.tcl',
+                                                   'synthesis/p5e/run_p5e.sh', 'results/P5/SOURCES.md'))
+W(src('synthesis/p5/{abc.constr,sta.tcl}, synthesis/p5e/run_p5e.sh, results/P5/SOURCES.md',
+      ['synthesis/p5/abc.constr', 'synthesis/p5/sta.tcl', 'synthesis/p5e/run_p5e.sh', 'results/P5/SOURCES.md']))
+W('\n| item | value |')
+W('|---|---|')
+W(f'| input driving cell (ABC and STA) | {grab(r"^set_driving_cell (\S+)", constr, str)} |')
+W(f'| output load (ABC and STA), fF | {grab(r"^set_load (\S+)", constr, str)} |')
+W(f'| STA wire-load model | {grab(r"set_wire_load_model -name (\S+)", sta_tcl, str)} |')
+W(f'| STA reset paths | {"set_false_path -from rst_n (recovery/removal excluded)" if "set_false_path -from [get_ports rst_n]" in sta_tcl else "not excluded"} |')
+W(f'| STA clock | ideal (no clock tree); input/output delay 0 relative to clk |')
+W(f'| timing-driven flow ABC budget, ps (ABC target = period - budget) | {grab(r"ABC_BUDGET_PS=([\d.]+)", p5e_sh, str)} |')
+W(f'| liberty corner (file header) | {grab(r"Corner \(file header\): ([^;]+);", srcs, str)} |')
+W(f'| liberty size, bytes | {grab(r"Size ([\d,]+) bytes", srcs, str)} |')
+W(f'| liberty sha256 | {grab(r"sha256 ([0-9a-f]{64})", srcs, str)} |')
+W(f'| liberty source commit (OpenROAD-flow-scripts) | {grab(r"OpenROAD-flow-scripts commit ([0-9a-f]{40})", srcs, str)} |')
+W(f'| OpenSTA commit / version | {grab(r"OpenSTA.git, commit ([0-9a-f]{40})", srcs, str)} / {grab(r"sta -version`: (\S+);", srcs, str)} |')
+W(f'| CUDD tag / commit | {grab(r"tag (\S+) = commit", srcs, str)} / {grab(r"= commit ([0-9a-f]{40})", srcs, str)} |')
+W(f'| Yosys | {grab(r"Yosys (\d+\.\d+ \(git sha1 \w+\))", srcs, str)} |')
+gl_ver = sorted({grab(r'^iverilog: Icarus Verilog version (\S+)', read(x), str) for x in files('results/P5f_gls/cluster/*/*.txt')})
+W(f'| Icarus Verilog, cluster (P5f logs) | {", ".join(gl_ver)} |')
+W(f'| Icarus Verilog, local (P5f jobs.txt) | {grab(r"Local tools: Icarus Verilog (\S+)", read("results/P5f_gls/jobs.txt"), str)} |')
+
+ROWC = re.compile(r'^\s+(\d+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+([v^])\s+(\S+)/(\w+)\s+\((\w+)\)')
+W('\n### Critical paths (worst setup path, 1 GHz netlists, mode 0): baseline P5 and final P5e, depths 16 and 256')
+W('Tool output: OpenSTA `report_checks -path_delay max` in each `sta.txt` (per-cell rows: fanout, cap, slew, delay, '
+  'arrival). Register names: from `CRITICAL_PATH.md` (written by `tools/p5_critical_path.py` from the netlist, which is '
+  'not committed). Buffers = BUF_* and CLKBUF_* cells.')
+for ph, d, cp in (('P5 baseline', 'results/P5', 'results/P5/CRITICAL_PATH.md'),
+                  ('P5e final', 'results/P5e/new', 'results/P5e/CRITICAL_PATH.md')):
+    cpt = read(cp)
+    for dd in (16, 256):
+        run = f'd{dd}_m0_1000MHz'
+        sta = read(f'{d}/{run}/sta.txt')
+        blk = sta[sta.index('Path Type: max'):]
+        blk = blk[:blk.index('data arrival time')]
+        cells = [(r.group(9), float(r.group(4))) for r in (ROWC.match(l) for l in blk.splitlines()) if r]
+        sec = cpt[cpt.index(f'## {run}'):]
+        sp = re.search(r'Start point: `([^`]+)`.*?Q = `([^`]+)`', sec).groups()
+        ep = re.search(r'End point: `([^`]+)`.*?Q = `([^`]+)`', sec).groups()
+        isbuf = [c.startswith(('BUF_', 'CLKBUF_')) for c, _ in cells]
+        runs, cur, best = [], 0, (0, 0.0)
+        acc = 0.0
+        for (c, dl), b in zip(cells, isbuf):
+            if b:
+                cur += 1; acc += dl
+                if cur > best[0]: best = (cur, acc)
+            else:
+                cur, acc = 0, 0.0
+        bt = sum(dl for (c, dl), b in zip(cells, isbuf) if b)
+        arr = grab(r'^\s+([\d.]+)\s+data arrival time', sta[sta.index('Path Type: max'):])
+        setup = grab(r'^\s+-([\d.]+)\s+\S+\s+library setup time', sta)
+        wns = grab(r'^wns max (\S+)', sta)
+        W(f'\n#### {ph}, depth {dd} (`{d}/{run}/sta.txt`, {prov([f"{d}/{run}/sta.txt"])})')
+        W(f'\n- start `{sp[0]}` (Q = `{sp[1]}`), end `{ep[0]}` (Q = `{ep[1]}`)')
+        W(f'- cells on path {len(cells)} (including the launching flip-flop); data arrival {arr} ns; setup {setup} ns; '
+          f'slack {wns} ns')
+        W(f'- buffers {sum(isbuf)}, {bt:.4f} ns; longest run of consecutive buffers {best[0]} cells, {best[1]:.4f} ns; '
+          f'non-buffer cells {sum(dl for (c, dl), b in zip(cells, isbuf) if not b):.4f} ns')
+        ct = defaultdict(lambda: [0, 0.0])
+        for c, dl in cells:
+            ct[c][0] += 1; ct[c][1] += dl
+        W('\n| cell type | count | sum of delays ns |')
+        W('|---|---|---|')
+        for c, (n, dl) in sorted(ct.items(), key=lambda kv: -kv[1][1]):
+            W(f'| {c} | {n} | {dl:.4f} |')
+
+W('\n### Multicycle cross-check: WNS without vs with the exceptions of `tools/p5e_mcp.py` (headline numbers use none)')
+mc = files('results/P5e/mcp/*/*/sta.txt')
+W(src('results/P5e/mcp/{old,new}/<run>/sta.txt vs results/P5d, results/P5e/new', mc))
+W('\n| flow | run | WNS ns without | WNS ns with | change ns |')
+W('|---|---|---|---|---|')
+dmax = {}
+for pth in sorted(mc, key=lambda p: (p.split('/')[3], tuple(int(x) for x in re.search(r'd(\d+)_m(\d)_(\d+)', p).groups()))):
+    flow, run = pth.split('/')[3], pth.split('/')[4]
+    base = {'old': 'results/P5d', 'new': 'results/P5e/new'}[flow]
+    a, b = grab(r'^wns max (\S+)', read(f'{base}/{run}/sta.txt')), grab(r'^wns max (\S+)', read(pth))
+    dmax[flow] = max(dmax.get(flow, 0), b - a)
+    W(f'| {flow} | {run} | {a:.4f} | {b:.4f} | {b - a:+.4f} |')
+W(f'\nLargest WNS change: old flow {dmax["old"]:.4f} ns, new flow {dmax["new"]:.4f} ns.')
+
+W('\n### RTL lockstep checks before gate level (each RTL version vs earlier versions, 200,000 random cycles per run)')
+lk_rtl = [f for f in files('results/P5b/lockstep.txt') + files('results/P5c/lockstep_*.txt') + files('results/P5d/lockstep_*.txt')]
+W(src('results/P5{b,c,d}/lockstep*.txt', lk_rtl))
+W('\n| file | runs | PASSED | cycles per run | port mismatches | victim mismatches | hit_idx mismatches |')
+W('|---|---|---|---|---|---|---|')
+for pth in lk_rtl:
+    t = read(pth)
+    rows = [dict(re.findall(r'(\w+)=(\d+)', l)) for l in t.splitlines() if l.startswith('lockstep depth=')]
+    cyc = sorted({r['cycles'] for r in rows})
+    W(f'| {pth} | {len(rows)} | {t.count("LOCKSTEP PASSED")} | {", ".join(cyc)} | '
+      f'{sum(int(r.get("port_mismatches", 0)) for r in rows)} | {sum(int(r.get("victim_mismatches", 0)) for r in rows)} | '
+      f'{sum(int(r["hit_idx_mismatches"]) for r in rows if "hit_idx_mismatches" in r) if any("hit_idx_mismatches" in r for r in rows) else "not recorded"} |')
 
 # ---------------------------------------------------------------- P5f
 G = 'results/P5f_gls'
