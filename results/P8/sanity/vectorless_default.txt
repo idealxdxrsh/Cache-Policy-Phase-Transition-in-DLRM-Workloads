@@ -1,0 +1,27 @@
+OpenSTA 3.1.0 7b261909c1 Copyright (c) 2026, Parallax Software, Inc.
+License GPLv3: GNU GPL version 3 <http://gnu.org/licenses/gpl.html>
+
+This is free software, and you are free to change and redistribute it
+under certain conditions; type `show_copying' for details. 
+This program comes with ABSOLUTELY NO WARRANTY; for details type `show_warranty'.
+== vectorless, OpenSTA default input activity (0.1 x clock frequency, duty 0.5)
+Group                    Internal    Switching      Leakage        Total
+                            Power        Power        Power        Power (Watts)
+------------------------------------------------------------------------
+Sequential           4.559486e-06 2.296350e-07 7.911230e-08 4.868234e-06  75.9%
+Combinational        4.738012e-07 9.974967e-07 7.176592e-08 1.543064e-06  24.1%
+Clock                0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00   0.0%
+Macro                0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00   0.0%
+Pad                  0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00   0.0%
+------------------------------------------------------------------------
+Total                5.033287e-06 1.227132e-06 1.508782e-07 6.411297e-06 100.0%
+                            78.5%        19.1%         2.4%
+     Internal    Switching      Leakage        Total
+        Power        Power        Power        Power (Watts)
+----------------------------------------------------
+ 4.559486e-06 2.296350e-07 7.911230e-08 4.868234e-06 ff\[0\]
+ 9.503130e-08 3.324989e-07 1.435318e-08 4.418834e-07 inv\[3\]
+ 9.714490e-08 2.296350e-07 1.435318e-08 3.411331e-07 inv\[0\]
+ 9.293153e-08 2.296350e-07 1.435318e-08 3.369197e-07 inv\[4\]
+ 9.523875e-08 1.028639e-07 1.435318e-08 2.124559e-07 inv\[1\]
+ 9.345474e-08 1.028639e-07 1.435318e-08 2.106719e-07 inv\[2\]
