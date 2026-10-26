@@ -48,7 +48,7 @@ that is not checked here.
 | 31 | Criteo access distribution is Zipf with alpha ~0.85 | paper p.1, p.2, p.3 Fig. 5 | CONTRADICTED | `results/P3/SUMMARY.md`; `TABLES.md` (P3 per table) | Per-table rank-frequency fits (counts >= 5) give alpha 1.0733-4.9724 at 2M and 1.0759-5.6033 at 10M (24 of 26 tables). The paper's fitting method is not on file, so the methods may differ. |
 | 32 | Top 10% of features = ~80% of accesses | paper p.2, p.3 | UNSUPPORTED | none | No results file computes it. |
 | 33 | "10 GB Criteo Terabyte dataset" | paper p.1-2, R:246 | CONTRADICTED | `results/P2/SOURCE.md` | The paper's own reference [9] and the data used here are the Criteo Display Advertising Challenge (Kaggle 2014; 45,840,617 rows), not Criteo Terabyte. The old analysis files are not committed. |
-| 34 | Profiled Meta's PyTorch DLRM on H100 | paper p.1, p.2 III.A | UNSUPPORTED | `profiling/README.md` | The profiling script is not in the repo ("still to copy"). P4 used its own 26 x EmbeddingBag + MLP model (`tools/profile_embedding.py`). |
+| 34 | Profiled Meta's PyTorch DLRM on H100 | paper p.1, p.2 III.A | UNSUPPORTED | `profiling/README.md` | The profiling script is not in the repo and was not found on Sharanga (searched 2026-10-26). P4 used its own 26 x EmbeddingBag + MLP model (`tools/profile_embedding.py`). |
 | 35 | rtl/v2 is "simulated, not synthesized"; "RTL area, power, timing not yet measured" | R:31, R:348, R:350 | CONTRADICTED (now out of date) | `results/P5e/SUMMARY.md` | v2 is synthesized on NanGate45 (pre-layout area and timing; still no power). |
 | 36 | "a real sketch-based TinyLFU is not implemented" | R:351 | CONTRADICTED (now out of date) | `results/P3/SUMMARY.md` | P3 includes W-TinyLFU with a Count-Min sketch. |
 

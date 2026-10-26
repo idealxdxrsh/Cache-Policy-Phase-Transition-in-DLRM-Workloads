@@ -18,4 +18,6 @@ memory-bound.
 To support a memory-bound claim: use a production-sized batch and table sizes, and collect hardware counters
 (Nsight Compute: dram__throughput, sm__throughput, achieved occupancy).
 
-Still to copy from Sharanga: `profile_baseline_gpu.py`, `run_gpu_profiler.sh`, `h100_trace.json`.
+Not available: `profile_baseline_gpu.py`, `run_gpu_profiler.sh` and `h100_trace.json` were searched for on Sharanga on
+2026-10-26 (home directory and `/scratch/rahulkmr`, by file name) and were not found. Job 149046 is therefore
+documented only by `gpu_profile_149046_out.txt`; the current profiling is `tools/profile_embedding.py` (`results/P4/`).
