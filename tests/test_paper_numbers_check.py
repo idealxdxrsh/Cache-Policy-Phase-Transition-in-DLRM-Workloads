@@ -9,11 +9,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 TOOL, TABLES = ROOT / 'tools/paper_numbers_check.py', ROOT / 'results/P7/TABLES.md'
 # old-paper figures marked CONTRADICTED or UNSUPPORTED in results/P7/CLAIMS.md
-PLANTED = ['83.74', '5.15', '6,791', '2.45', '1,070', '935', '160,000', '4,048', '2,730', '0.0049', '1.22',
+PLANTED = ['83.74', '5.15', '6,791', '2.45', '1,070', '935', '160,000', '4,048', '2,730', '1.22',
            '3.00', '0.61', '6.88', '14.88', '5.23', '6.27', '9.65', '0.85', '0.2359']
 # Old figures that also occur in TABLES.md as genuine, unrelated values: a value-only check cannot reject them, so
 # test_paper_text_has_no_old_figures checks that the paper does not contain them at all.
-COLLIDING = {'65': 'TABLES.md: 65 lines at counter maximum (counter saturation, depth 256 mode 0); old: -65 ps slack'}
+COLLIDING = {'65': 'TABLES.md: 65 lines at counter maximum (counter saturation, depth 256 mode 0); old: -65 ps slack',
+             '0.0049': 'TABLES.md: +0.0049 ns WNS change (multicycle cross-check, depth 256 mode 0); old: 0.0049% of HBM TDP'}
 
 
 def run(text):
@@ -49,12 +50,30 @@ class PaperNumbersCheck(unittest.TestCase):
     def test_comments_and_lengths_ignored(self):
         self.assertEqual(run('% 99999.123 in a comment\n\\includegraphics[width=0.93\\columnwidth]{x}\n')[0], 0)
 
+    DOCS = [ROOT / 'paper/v2/main.tex'] + sorted((ROOT / 'docs/synthesis_report').glob('*.tex'))
+
     def test_paper_text_has_no_old_figures(self):
         import re
-        tex = re.sub(r'(?<!\\)%.*', '', (ROOT / 'paper/v2/main.tex').read_text())
-        found = [v for v in PLANTED + list(COLLIDING)
-                 if re.search(r'(?<![\w.,])' + re.escape(v) + r'(?!\d|[.,]\d)', tex)]
-        self.assertEqual(found, [], 'old (contradicted or unsupported) figures in paper/v2/main.tex')
+        for f in self.DOCS:
+            tex = re.sub(r'(?<!\\)%.*', '', f.read_text())
+            found = [v for v in PLANTED + list(COLLIDING)
+                     if re.search(r'(?<![\w.,])' + re.escape(v) + r'(?!\d|[.,]\d)', tex)]
+            self.assertEqual(found, [], f'old (contradicted or unsupported) figures in {f.relative_to(ROOT)}')
+
+    def test_no_pre_rewrite_commit_ids(self):
+        import re
+        cmap = (ROOT / 'results/COMMIT_MAP.md').read_text()
+        old = {o for o, n in re.findall(r'^\| ([0-9a-f]{7}) \| ([0-9a-f]{7})', cmap, re.M) if o != n}
+        self.assertTrue(len(old) > 50, 'COMMIT_MAP.md not parsed')
+        for f in self.DOCS:
+            ids = set(re.findall(r'(?<![0-9a-f])[0-9a-f]{7}(?![0-9a-f])', f.read_text()))
+            self.assertEqual(sorted(ids & old), [], f'pre-rewrite commit IDs in {f.relative_to(ROOT)}')
+
+    def test_report_numbers_pass(self):
+        rep = ROOT / 'docs/synthesis_report'
+        if list(rep.glob('*.tex')):
+            p = subprocess.run([sys.executable, '-I', str(TOOL), str(rep), str(TABLES)], capture_output=True, text=True)
+            self.assertEqual(p.returncode, 0, p.stdout[-2000:])
 
 
 if __name__ == '__main__':

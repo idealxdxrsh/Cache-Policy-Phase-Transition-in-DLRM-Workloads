@@ -1,0 +1,958 @@
+ok        gen_gls.tex:             16  TABLES.md:54
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:           1000  TABLES.md:22
+ok        gen_gls.tex:         200000  TABLES.md:830
+ok        gen_gls.tex:          57297  TABLES.md:852
+ok        gen_gls.tex:           8139  TABLES.md:852
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              7  TABLES.md:59
+ok        gen_gls.tex:          53.04  TABLES.md:852
+ok        gen_gls.tex:          65392  TABLES.md:852
+ok        gen_gls.tex:             16  TABLES.md:54
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:            500  TABLES.md:482
+ok        gen_gls.tex:         200000  TABLES.md:830
+ok        gen_gls.tex:          57297  TABLES.md:852
+ok        gen_gls.tex:           8139  TABLES.md:852
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              8  TABLES.md:60
+ok        gen_gls.tex:          16.61  TABLES.md:853
+ok        gen_gls.tex:          65472  TABLES.md:853
+ok        gen_gls.tex:             16  TABLES.md:54
+ok        gen_gls.tex:              1  TABLES.md:6
+ok        gen_gls.tex:           1000  TABLES.md:22
+ok        gen_gls.tex:         200002  TABLES.md:835
+ok        gen_gls.tex:          57090  TABLES.md:854
+ok        gen_gls.tex:           8166  TABLES.md:854
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              8  TABLES.md:60
+ok        gen_gls.tex:          11.14  TABLES.md:854
+ok        gen_gls.tex:          64680  TABLES.md:854
+ok        gen_gls.tex:             16  TABLES.md:54
+ok        gen_gls.tex:              1  TABLES.md:6
+ok        gen_gls.tex:            500  TABLES.md:482
+ok        gen_gls.tex:         200002  TABLES.md:835
+ok        gen_gls.tex:          57090  TABLES.md:854
+ok        gen_gls.tex:           8166  TABLES.md:854
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              7  TABLES.md:59
+ok        gen_gls.tex:          43.67  TABLES.md:855
+ok        gen_gls.tex:          64860  TABLES.md:855
+ok        gen_gls.tex:             64  TABLES.md:18
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:           1000  TABLES.md:22
+ok        gen_gls.tex:         200000  TABLES.md:830
+ok        gen_gls.tex:          57092  TABLES.md:856
+ok        gen_gls.tex:           8199  TABLES.md:856
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:             25  TABLES.md:63
+ok        gen_gls.tex:          07.54  TABLES.md:856
+ok        gen_gls.tex:         212308  TABLES.md:856
+ok        gen_gls.tex:             64  TABLES.md:18
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:            500  TABLES.md:482
+ok        gen_gls.tex:         200000  TABLES.md:830
+ok        gen_gls.tex:          57092  TABLES.md:856
+ok        gen_gls.tex:           8199  TABLES.md:856
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:             25  TABLES.md:63
+ok        gen_gls.tex:          11.24  TABLES.md:857
+ok        gen_gls.tex:         212688  TABLES.md:857
+ok        gen_gls.tex:             64  TABLES.md:18
+ok        gen_gls.tex:              1  TABLES.md:6
+ok        gen_gls.tex:           1000  TABLES.md:22
+ok        gen_gls.tex:         200000  TABLES.md:830
+ok        gen_gls.tex:          53588  TABLES.md:858
+ok        gen_gls.tex:           9369  TABLES.md:858
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:             25  TABLES.md:63
+ok        gen_gls.tex:          21.85  TABLES.md:858
+ok        gen_gls.tex:         215572  TABLES.md:858
+ok        gen_gls.tex:             64  TABLES.md:18
+ok        gen_gls.tex:              1  TABLES.md:6
+ok        gen_gls.tex:            500  TABLES.md:482
+ok        gen_gls.tex:         200000  TABLES.md:830
+ok        gen_gls.tex:          53588  TABLES.md:858
+ok        gen_gls.tex:           9369  TABLES.md:858
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:             24  TABLES.md:62
+ok        gen_gls.tex:          32.00  TABLES.md:859
+ok        gen_gls.tex:         215580  TABLES.md:859
+ok        gen_gls.tex:            256  TABLES.md:20
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:           1000  TABLES.md:22
+ok        gen_gls.tex:         200000  TABLES.md:830
+ok        gen_gls.tex:          57209  TABLES.md:860
+ok        gen_gls.tex:           8109  TABLES.md:860
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              1  TABLES.md:6
+ok        gen_gls.tex:             37  TABLES.md:75
+ok        gen_gls.tex:          59.46  TABLES.md:860
+ok        gen_gls.tex:         819684  TABLES.md:860
+ok        gen_gls.tex:            256  TABLES.md:20
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:            500  TABLES.md:482
+ok        gen_gls.tex:         200000  TABLES.md:830
+ok        gen_gls.tex:          57209  TABLES.md:860
+ok        gen_gls.tex:           8109  TABLES.md:860
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              1  TABLES.md:6
+ok        gen_gls.tex:             39  TABLES.md:77
+ok        gen_gls.tex:          11.79  TABLES.md:861
+ok        gen_gls.tex:         819572  TABLES.md:861
+ok        gen_gls.tex:            256  TABLES.md:20
+ok        gen_gls.tex:              1  TABLES.md:6
+ok        gen_gls.tex:           1000  TABLES.md:22
+ok        gen_gls.tex:         200000  TABLES.md:830
+ok        gen_gls.tex:          56927  TABLES.md:862
+ok        gen_gls.tex:           8216  TABLES.md:862
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              1  TABLES.md:6
+ok        gen_gls.tex:             40  TABLES.md:266
+ok        gen_gls.tex:          56.35  TABLES.md:862
+ok        gen_gls.tex:         825804  TABLES.md:862
+ok        gen_gls.tex:            256  TABLES.md:20
+ok        gen_gls.tex:              1  TABLES.md:6
+ok        gen_gls.tex:            500  TABLES.md:482
+ok        gen_gls.tex:         200000  TABLES.md:830
+ok        gen_gls.tex:          56927  TABLES.md:862
+ok        gen_gls.tex:           8216  TABLES.md:862
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              0  TABLES.md:52
+ok        gen_gls.tex:              1  TABLES.md:6
+ok        gen_gls.tex:             40  TABLES.md:266
+ok        gen_gls.tex:          07.57  TABLES.md:863
+ok        gen_gls.tex:         825892  TABLES.md:863
+ok        gen_ids.tex:             16  TABLES.md:54
+rounded   gen_mcp.tex:          0.751  from 0.7505, TABLES.md:422
+rounded   gen_mcp.tex:          0.719  from 0.7187, TABLES.md:816
+rounded   gen_mcp.tex:          0.572  from 0.5720, TABLES.md:586
+rounded   gen_mcp.tex:          0.554  from 0.5540, TABLES.md:804
+rounded   gen_mcp.tex:          0.704  from 0.7040, TABLES.md:567
+rounded   gen_mcp.tex:          0.694  from 0.6936, TABLES.md:818
+rounded   gen_mcp.tex:          0.516  from 0.5162, TABLES.md:588
+rounded   gen_mcp.tex:          0.490  from 0.4903, TABLES.md:806
+rounded   gen_mcp.tex:          0.893  from 0.8925, TABLES.md:569
+rounded   gen_mcp.tex:          0.893  from 0.8925, TABLES.md:569
+rounded   gen_mcp.tex:          0.659  from 0.6585, TABLES.md:590
+rounded   gen_mcp.tex:          0.652  from 0.6524, TABLES.md:808
+rounded   gen_mcp.tex:          0.179  from 0.1794, TABLES.md:369
+rounded   gen_mcp.tex:          0.179  from 0.1794, TABLES.md:369
+rounded   gen_mcp.tex:          1.124  from 1.1236, TABLES.md:571
+rounded   gen_mcp.tex:          1.096  from 1.0964, TABLES.md:822
+rounded   gen_mcp.tex:          0.636  from 0.6360, TABLES.md:592
+rounded   gen_mcp.tex:          0.635  from 0.6345, TABLES.md:810
+rounded   gen_mcp.tex:          0.340  from 0.3400, TABLES.md:572
+rounded   gen_mcp.tex:          0.277  from 0.2772, TABLES.md:821
+rounded   gen_mcp.tex:          1.216  from 1.2161, TABLES.md:573
+rounded   gen_mcp.tex:          1.216  from 1.2161, TABLES.md:573
+rounded   gen_mcp.tex:          0.797  from 0.7967, TABLES.md:594
+rounded   gen_mcp.tex:          0.792  from 0.7918, TABLES.md:338
+rounded   gen_mcp.tex:          0.343  from 0.3432, TABLES.md:574
+rounded   gen_mcp.tex:          0.343  from 0.3432, TABLES.md:574
+rounded   gen_mcp.tex:          0.036  from 0.0357, TABLES.md:595
+rounded   gen_mcp.tex:          0.036  from 0.0357, TABLES.md:595
+rounded   gen_mcp.tex:          1.297  from 1.2972, TABLES.md:575
+rounded   gen_mcp.tex:          1.291  from 1.2911, TABLES.md:826
+rounded   gen_mcp.tex:          0.844  from 0.8440, TABLES.md:596
+rounded   gen_mcp.tex:          0.844  from 0.8440, TABLES.md:596
+rounded   gen_mcp.tex:          0.337  from 0.3366, TABLES.md:576
+rounded   gen_mcp.tex:          0.326  from 0.3262, TABLES.md:825
+rounded   gen_mcp.tex:          0.002  from 0.0015, TABLES.md:597
+rounded   gen_mcp.tex:          0.063  from 0.0628, TABLES.md:821
+rounded   gen_mcp.tex:          0.026  from 0.0259, TABLES.md:806
+ok        gen_mcp.tex:              4  TABLES.md:56
+ok        gen_mcp.tex:              5  TABLES.md:57
+ok        gen_mcp.tex:              6  TABLES.md:58
+ok        gen_mcp.tex:              7  TABLES.md:59
+ok        gen_mcp.tex:             16  TABLES.md:54
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:           1000  TABLES.md:22
+ok        gen_mcp.tex:             16  TABLES.md:54
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:            500  TABLES.md:482
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:             16  TABLES.md:54
+ok        gen_mcp.tex:              1  TABLES.md:6
+ok        gen_mcp.tex:           1000  TABLES.md:22
+ok        gen_mcp.tex:             16  TABLES.md:54
+ok        gen_mcp.tex:              1  TABLES.md:6
+ok        gen_mcp.tex:            500  TABLES.md:482
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:             64  TABLES.md:18
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:           1000  TABLES.md:22
+ok        gen_mcp.tex:             64  TABLES.md:18
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:            500  TABLES.md:482
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:             64  TABLES.md:18
+ok        gen_mcp.tex:              1  TABLES.md:6
+ok        gen_mcp.tex:           1000  TABLES.md:22
+ok        gen_mcp.tex:             64  TABLES.md:18
+ok        gen_mcp.tex:              1  TABLES.md:6
+ok        gen_mcp.tex:            500  TABLES.md:482
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:            256  TABLES.md:20
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:           1000  TABLES.md:22
+ok        gen_mcp.tex:            256  TABLES.md:20
+ok        gen_mcp.tex:              0  TABLES.md:52
+ok        gen_mcp.tex:            500  TABLES.md:482
+ok        gen_mcp.tex:            256  TABLES.md:20
+ok        gen_mcp.tex:              1  TABLES.md:6
+ok        gen_mcp.tex:           1000  TABLES.md:22
+ok        gen_mcp.tex:            256  TABLES.md:20
+ok        gen_mcp.tex:              1  TABLES.md:6
+ok        gen_mcp.tex:            500  TABLES.md:482
+ok        gen_mcp.tex:         0.0001  TABLES.md:813
+rounded   gen_noise.tex:            561  from 560.7, TABLES.md:635
+rounded   gen_noise.tex:            623  from 623.0, TABLES.md:635
+rounded   gen_noise.tex:            636  from 636.1, TABLES.md:586
+rounded   gen_noise.tex:            739  from 739.4, TABLES.md:647
+rounded   gen_noise.tex:            563  from 563.1, TABLES.md:636
+rounded   gen_noise.tex:            621  from 620.5, TABLES.md:636
+rounded   gen_noise.tex:            642  from 642.2, TABLES.md:648
+rounded   gen_noise.tex:            692  from 691.8, TABLES.md:648
+rounded   gen_noise.tex:            528  from 528.4, TABLES.md:569
+rounded   gen_noise.tex:            539  from 538.8, TABLES.md:637
+rounded   gen_noise.tex:            603  from 603.0, TABLES.md:590
+rounded   gen_noise.tex:            641  from 640.6, TABLES.md:649
+rounded   gen_noise.tex:            471  from 470.9, TABLES.md:571
+rounded   gen_noise.tex:            549  from 549.1, TABLES.md:638
+rounded   gen_noise.tex:            591  from 591.4, TABLES.md:650
+rounded   gen_noise.tex:            621  from 620.5, TABLES.md:636
+rounded   gen_noise.tex:            398  from 397.9, TABLES.md:639
+rounded   gen_noise.tex:            452  from 451.8, TABLES.md:639
+rounded   gen_noise.tex:            513  from 512.8, TABLES.md:651
+rounded   gen_noise.tex:            557  from 556.6, TABLES.md:594
+rounded   gen_noise.tex:            409  from 409.0, TABLES.md:640
+rounded   gen_noise.tex:            435  from 435.3, TABLES.md:575
+rounded   gen_noise.tex:            520  from 520.4, TABLES.md:652
+rounded   gen_noise.tex:            557  from 556.9, TABLES.md:652
+ok        gen_noise.tex:              3  TABLES.md:55
+ok        gen_noise.tex:              4  TABLES.md:56
+ok        gen_noise.tex:              5  TABLES.md:57
+ok        gen_noise.tex:              6  TABLES.md:58
+ok        gen_noise.tex:             16  TABLES.md:54
+ok        gen_noise.tex:              0  TABLES.md:52
+ok        gen_noise.tex:          11.12  TABLES.md:635
+ok        gen_noise.tex:          16.23  TABLES.md:473
+ok        gen_noise.tex:             16  TABLES.md:54
+ok        gen_noise.tex:              1  TABLES.md:6
+ok        gen_noise.tex:          10.20  TABLES.md:636
+ok        gen_noise.tex:           7.71  TABLES.md:648
+ok        gen_noise.tex:             64  TABLES.md:18
+ok        gen_noise.tex:              0  TABLES.md:52
+ok        gen_noise.tex:           1.96  TABLES.md:473
+ok        gen_noise.tex:           6.24  TABLES.md:649
+ok        gen_noise.tex:             64  TABLES.md:18
+ok        gen_noise.tex:              1  TABLES.md:6
+ok        gen_noise.tex:          16.62  TABLES.md:473
+ok        gen_noise.tex:           4.92  TABLES.md:473
+ok        gen_noise.tex:            256  TABLES.md:20
+ok        gen_noise.tex:              0  TABLES.md:52
+ok        gen_noise.tex:          13.54  TABLES.md:639
+ok        gen_noise.tex:           8.53  TABLES.md:651
+ok        gen_noise.tex:            256  TABLES.md:20
+ok        gen_noise.tex:              1  TABLES.md:6
+ok        gen_noise.tex:           6.42  TABLES.md:640
+ok        gen_noise.tex:           7.02  TABLES.md:652
+rounded   gen_paths.tex:          4.879  from 4.8791, TABLES.md:685
+rounded   gen_paths.tex:          3.923  from 3.9226, TABLES.md:481
+rounded   gen_paths.tex:          0.486  from 0.4855, TABLES.md:686
+rounded   gen_paths.tex:          0.036  from 0.0355, TABLES.md:686
+rounded   gen_paths.tex:          4.393  from 4.3934, TABLES.md:686
+rounded   gen_paths.tex:          1.407  from 1.4065, TABLES.md:690
+rounded   gen_paths.tex:          0.725  from 0.7251, TABLES.md:691
+rounded   gen_paths.tex:          0.644  from 0.6435, TABLES.md:692
+rounded   gen_paths.tex:          0.351  from 0.3507, TABLES.md:693
+rounded   gen_paths.tex:          0.247  from 0.2468, TABLES.md:694
+rounded   gen_paths.tex:          0.219  from 0.2193, TABLES.md:695
+rounded   gen_paths.tex:          5.934  from 5.9343, TABLES.md:719
+rounded   gen_paths.tex:          4.975  from 4.9752, TABLES.md:489
+rounded   gen_paths.tex:          4.358  from 4.3580, TABLES.md:720
+rounded   gen_paths.tex:          3.933  from 3.9331, TABLES.md:720
+rounded   gen_paths.tex:          1.576  from 1.5760, TABLES.md:720
+rounded   gen_paths.tex:          4.268  from 4.2683, TABLES.md:724
+rounded   gen_paths.tex:          0.472  from 0.4722, TABLES.md:725
+rounded   gen_paths.tex:          0.189  from 0.1885, TABLES.md:726
+rounded   gen_paths.tex:          0.135  from 0.1347, TABLES.md:727
+rounded   gen_paths.tex:          0.123  from 0.1226, TABLES.md:728
+rounded   gen_paths.tex:          0.121  from 0.1213, TABLES.md:370
+rounded   gen_paths.tex:          1.537  from 1.5368, TABLES.md:745
+rounded   gen_paths.tex:          0.572  from 0.572, TABLES.md:745
+rounded   gen_paths.tex:          0.145  from 0.1451, TABLES.md:396
+rounded   gen_paths.tex:          0.046  from 0.0464, TABLES.md:746
+rounded   gen_paths.tex:          1.392  from 1.3920, TABLES.md:746
+rounded   gen_paths.tex:          0.229  from 0.2293, TABLES.md:750
+rounded   gen_paths.tex:          0.176  from 0.1756, TABLES.md:354
+rounded   gen_paths.tex:          0.137  from 0.1371, TABLES.md:752
+rounded   gen_paths.tex:          0.128  from 0.1276, TABLES.md:753
+rounded   gen_paths.tex:          0.098  from 0.0983, TABLES.md:625
+rounded   gen_paths.tex:          0.093  from 0.0926, TABLES.md:755
+rounded   gen_paths.tex:          1.760  from 1.7598, TABLES.md:775
+rounded   gen_paths.tex:          0.797  from 0.7967, TABLES.md:594
+rounded   gen_paths.tex:          0.207  from 0.2072, TABLES.md:776
+rounded   gen_paths.tex:          0.067  from 0.0672, TABLES.md:393
+rounded   gen_paths.tex:          1.553  from 1.5526, TABLES.md:776
+rounded   gen_paths.tex:          0.282  from 0.2824, TABLES.md:780
+rounded   gen_paths.tex:          0.222  from 0.2217, TABLES.md:781
+rounded   gen_paths.tex:          0.207  from 0.2072, TABLES.md:776
+rounded   gen_paths.tex:          0.154  from 0.1542, TABLES.md:783
+rounded   gen_paths.tex:          0.118  from 0.1180, TABLES.md:308
+rounded   gen_paths.tex:          0.112  from 0.1120, TABLES.md:785
+rounded   gen_results.tex:         23,689  from 23688.630, TABLES.md:481
+rounded   gen_results.tex:          0.597  from 0.5967, TABLES.md:481
+rounded   gen_results.tex:            203  from 203.1, TABLES.md:481
+rounded   gen_results.tex:          3.923  from 3.9226, TABLES.md:481
+rounded   gen_results.tex:          2.923  from 2.9226, TABLES.md:482
+rounded   gen_results.tex:         24,643  from 24643.038, TABLES.md:483
+rounded   gen_results.tex:          0.574  from 0.5736, TABLES.md:483
+rounded   gen_results.tex:            215  from 215.1, TABLES.md:483
+rounded   gen_results.tex:          3.649  from 3.6487, TABLES.md:483
+rounded   gen_results.tex:          2.649  from 2.6487, TABLES.md:484
+rounded   gen_results.tex:         90,869  from 90869.324, TABLES.md:485
+rounded   gen_results.tex:          0.593  from 0.5928, TABLES.md:485
+rounded   gen_results.tex:            195  from 194.7, TABLES.md:485
+rounded   gen_results.tex:          4.136  from 4.1363, TABLES.md:485
+rounded   gen_results.tex:          3.136  from 3.1363, TABLES.md:486
+rounded   gen_results.tex:         91,623  from 91623.168, TABLES.md:487
+rounded   gen_results.tex:          0.588  from 0.5880, TABLES.md:487
+rounded   gen_results.tex:            191  from 190.5, TABLES.md:487
+rounded   gen_results.tex:          4.249  from 4.2487, TABLES.md:487
+rounded   gen_results.tex:          3.249  from 3.2487, TABLES.md:488
+rounded   gen_results.tex:        358,573  from 358573.054, TABLES.md:489
+rounded   gen_results.tex:          0.592  from 0.5922, TABLES.md:489
+rounded   gen_results.tex:            167  from 167.4, TABLES.md:489
+rounded   gen_results.tex:          4.975  from 4.9752, TABLES.md:489
+rounded   gen_results.tex:          3.975  from 3.9752, TABLES.md:490
+rounded   gen_results.tex:        364,405  from 364404.838, TABLES.md:491
+rounded   gen_results.tex:          0.583  from 0.5827, TABLES.md:491
+rounded   gen_results.tex:            165  from 165.3, TABLES.md:491
+rounded   gen_results.tex:          5.048  from 5.0483, TABLES.md:491
+rounded   gen_results.tex:          4.048  from 4.0483, TABLES.md:492
+rounded   gen_results.tex:          0.574  from 0.5736, TABLES.md:483
+rounded   gen_results.tex:          0.597  from 0.5967, TABLES.md:481
+rounded   gen_results.tex:         25,879  from 25879.140, TABLES.md:502
+rounded   gen_results.tex:          0.608  from 0.6079, TABLES.md:502
+rounded   gen_results.tex:            629  from 629.2, TABLES.md:502
+rounded   gen_results.tex:          0.589  from 0.5892, TABLES.md:502
+rounded   gen_results.tex:         26,137  from 26137.160, TABLES.md:504
+rounded   gen_results.tex:          0.602  from 0.6019, TABLES.md:504
+rounded   gen_results.tex:            624  from 624.4, TABLES.md:504
+rounded   gen_results.tex:          0.602  from 0.6015, TABLES.md:504
+rounded   gen_results.tex:         96,163  from 96163.256, TABLES.md:506
+rounded   gen_results.tex:          0.577  from 0.5768, TABLES.md:506
+rounded   gen_results.tex:            476  from 476.1, TABLES.md:506
+rounded   gen_results.tex:          1.100  from 1.1004, TABLES.md:506
+rounded   gen_results.tex:          0.272  from 0.2720, TABLES.md:507
+rounded   gen_results.tex:         97,302  from 97302.268, TABLES.md:508
+rounded   gen_results.tex:          0.570  from 0.5701, TABLES.md:508
+rounded   gen_results.tex:            473  from 472.6, TABLES.md:508
+rounded   gen_results.tex:          1.116  from 1.1159, TABLES.md:508
+rounded   gen_results.tex:          0.295  from 0.2950, TABLES.md:509
+rounded   gen_results.tex:        359,160  from 359159.584, TABLES.md:510
+rounded   gen_results.tex:          0.596  from 0.5957, TABLES.md:510
+rounded   gen_results.tex:            188  from 188.4, TABLES.md:510
+rounded   gen_results.tex:          4.307  from 4.3074, TABLES.md:510
+rounded   gen_results.tex:          3.307  from 3.3074, TABLES.md:511
+rounded   gen_results.tex:        362,078  from 362078.136, TABLES.md:512
+rounded   gen_results.tex:          0.591  from 0.5909, TABLES.md:512
+rounded   gen_results.tex:            185  from 185.2, TABLES.md:512
+rounded   gen_results.tex:          4.400  from 4.3997, TABLES.md:512
+rounded   gen_results.tex:          3.400  from 3.3997, TABLES.md:513
+rounded   gen_results.tex:          0.570  from 0.5701, TABLES.md:508
+rounded   gen_results.tex:          0.609  from 0.6094, TABLES.md:503
+rounded   gen_results.tex:         26,364  from 26363.792, TABLES.md:544
+rounded   gen_results.tex:          0.597  from 0.5967, TABLES.md:481
+rounded   gen_results.tex:            626  from 626.1, TABLES.md:544
+rounded   gen_results.tex:          0.597  from 0.5973, TABLES.md:544
+rounded   gen_results.tex:         26,634  from 26634.048, TABLES.md:546
+rounded   gen_results.tex:          0.591  from 0.5906, TABLES.md:546
+rounded   gen_results.tex:            612  from 611.6, TABLES.md:546
+rounded   gen_results.tex:          0.635  from 0.6351, TABLES.md:546
+rounded   gen_results.tex:         96,531  from 96531.400, TABLES.md:548
+rounded   gen_results.tex:          0.575  from 0.5746, TABLES.md:548
+rounded   gen_results.tex:            486  from 486.4, TABLES.md:548
+rounded   gen_results.tex:          1.056  from 1.0561, TABLES.md:548
+rounded   gen_results.tex:          0.308  from 0.3076, TABLES.md:549
+rounded   gen_results.tex:         96,896  from 96895.820, TABLES.md:550
+rounded   gen_results.tex:          0.572  from 0.5724, TABLES.md:550
+rounded   gen_results.tex:            439  from 439.3, TABLES.md:550
+rounded   gen_results.tex:          1.276  from 1.2762, TABLES.md:550
+rounded   gen_results.tex:          0.349  from 0.3492, TABLES.md:551
+rounded   gen_results.tex:        359,697  from 359696.904, TABLES.md:552
+rounded   gen_results.tex:          0.595  from 0.5948, TABLES.md:552
+rounded   gen_results.tex:            214  from 213.9, TABLES.md:552
+rounded   gen_results.tex:          3.674  from 3.6744, TABLES.md:552
+rounded   gen_results.tex:          2.674  from 2.6744, TABLES.md:553
+rounded   gen_results.tex:        361,999  from 361999.400, TABLES.md:554
+rounded   gen_results.tex:          0.591  from 0.5910, TABLES.md:554
+rounded   gen_results.tex:            199  from 199.4, TABLES.md:554
+rounded   gen_results.tex:          4.014  from 4.0142, TABLES.md:554
+rounded   gen_results.tex:          3.014  from 3.0142, TABLES.md:555
+rounded   gen_results.tex:          0.572  from 0.5724, TABLES.md:550
+rounded   gen_results.tex:          0.598  from 0.5982, TABLES.md:545
+rounded   gen_results.tex:         26,733  from 26733.266, TABLES.md:565
+rounded   gen_results.tex:          0.589  from 0.5885, TABLES.md:527
+rounded   gen_results.tex:            571  from 571.3, TABLES.md:565
+rounded   gen_results.tex:          0.751  from 0.7505, TABLES.md:422
+rounded   gen_results.tex:         26,875  from 26875.310, TABLES.md:567
+rounded   gen_results.tex:          0.585  from 0.5853, TABLES.md:567
+rounded   gen_results.tex:            587  from 586.9, TABLES.md:567
+rounded   gen_results.tex:          0.704  from 0.7040, TABLES.md:567
+rounded   gen_results.tex:         92,970  from 92969.660, TABLES.md:569
+rounded   gen_results.tex:          0.597  from 0.5966, TABLES.md:569
+rounded   gen_results.tex:            528  from 528.4, TABLES.md:569
+rounded   gen_results.tex:          0.893  from 0.8925, TABLES.md:569
+rounded   gen_results.tex:          0.179  from 0.1794, TABLES.md:369
+rounded   gen_results.tex:         93,294  from 93294.180, TABLES.md:571
+rounded   gen_results.tex:          0.595  from 0.5945, TABLES.md:571
+rounded   gen_results.tex:            471  from 470.9, TABLES.md:571
+rounded   gen_results.tex:          1.124  from 1.1236, TABLES.md:571
+rounded   gen_results.tex:          0.340  from 0.3400, TABLES.md:572
+rounded   gen_results.tex:        359,442  from 359441.544, TABLES.md:573
+rounded   gen_results.tex:          0.595  from 0.5952, TABLES.md:573
+rounded   gen_results.tex:            451  from 451.2, TABLES.md:573
+rounded   gen_results.tex:          1.216  from 1.2161, TABLES.md:573
+rounded   gen_results.tex:          0.343  from 0.3432, TABLES.md:574
+rounded   gen_results.tex:        362,935  from 362935.454, TABLES.md:575
+rounded   gen_results.tex:          0.590  from 0.5895, TABLES.md:575
+rounded   gen_results.tex:            435  from 435.3, TABLES.md:575
+rounded   gen_results.tex:          1.297  from 1.2972, TABLES.md:575
+rounded   gen_results.tex:          0.337  from 0.3366, TABLES.md:576
+rounded   gen_results.tex:          0.585  from 0.5853, TABLES.md:567
+rounded   gen_results.tex:          0.597  from 0.5971, TABLES.md:570
+rounded   gen_results.tex:         26,744  from 26744.438, TABLES.md:586
+rounded   gen_results.tex:          0.588  from 0.5882, TABLES.md:586
+rounded   gen_results.tex:            636  from 636.1, TABLES.md:586
+rounded   gen_results.tex:          0.572  from 0.5720, TABLES.md:586
+rounded   gen_results.tex:         26,627  from 26626.866, TABLES.md:588
+rounded   gen_results.tex:          0.591  from 0.5908, TABLES.md:588
+rounded   gen_results.tex:            660  from 659.5, TABLES.md:588
+rounded   gen_results.tex:          0.516  from 0.5162, TABLES.md:588
+rounded   gen_results.tex:         94,386  from 94385.578, TABLES.md:590
+rounded   gen_results.tex:          0.588  from 0.5877, TABLES.md:590
+rounded   gen_results.tex:            603  from 603.0, TABLES.md:590
+rounded   gen_results.tex:          0.659  from 0.6585, TABLES.md:590
+rounded   gen_results.tex:         95,101  from 95100.852, TABLES.md:592
+rounded   gen_results.tex:          0.583  from 0.5832, TABLES.md:592
+rounded   gen_results.tex:            611  from 611.2, TABLES.md:592
+rounded   gen_results.tex:          0.636  from 0.6360, TABLES.md:592
+rounded   gen_results.tex:        369,530  from 369529.860, TABLES.md:594
+rounded   gen_results.tex:          0.579  from 0.5790, TABLES.md:594
+rounded   gen_results.tex:            557  from 556.6, TABLES.md:594
+rounded   gen_results.tex:          0.797  from 0.7967, TABLES.md:594
+rounded   gen_results.tex:          0.036  from 0.0357, TABLES.md:595
+rounded   gen_results.tex:        370,227  from 370226.514, TABLES.md:596
+rounded   gen_results.tex:          0.578  from 0.5779, TABLES.md:596
+rounded   gen_results.tex:            542  from 542.3, TABLES.md:596
+rounded   gen_results.tex:          0.844  from 0.8440, TABLES.md:596
+rounded   gen_results.tex:          0.002  from 0.0015, TABLES.md:597
+rounded   gen_results.tex:          0.578  from 0.5779, TABLES.md:596
+rounded   gen_results.tex:          0.593  from 0.5929, TABLES.md:589
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:            500  TABLES.md:482
+ok        gen_results.tex:              2  TABLES.md:10
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:            500  TABLES.md:482
+ok        gen_results.tex:             16  TABLES.md:54
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:          9,399  TABLES.md:481
+ok        gen_results.tex:          2,657  TABLES.md:481
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:             16  TABLES.md:54
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:         10,467  TABLES.md:483
+ok        gen_results.tex:          2,657  TABLES.md:481
+ok        gen_results.tex:              2  TABLES.md:10
+ok        gen_results.tex:              2  TABLES.md:10
+ok        gen_results.tex:             64  TABLES.md:18
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:         36,605  TABLES.md:485
+ok        gen_results.tex:         10,131  TABLES.md:485
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:             64  TABLES.md:18
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:         37,204  TABLES.md:487
+ok        gen_results.tex:         10,131  TABLES.md:485
+ok        gen_results.tex:              2  TABLES.md:10
+ok        gen_results.tex:              2  TABLES.md:10
+ok        gen_results.tex:            256  TABLES.md:20
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:        143,139  TABLES.md:489
+ok        gen_results.tex:         39,925  TABLES.md:489
+ok        gen_results.tex:             18  TABLES.md:56
+ok        gen_results.tex:             18  TABLES.md:56
+ok        gen_results.tex:            256  TABLES.md:20
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:        144,521  TABLES.md:491
+ok        gen_results.tex:         39,925  TABLES.md:489
+ok        gen_results.tex:            130  TABLES.md:491
+ok        gen_results.tex:            130  TABLES.md:491
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:            500  TABLES.md:482
+ok        gen_results.tex:              2  TABLES.md:10
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:            500  TABLES.md:482
+ok        gen_results.tex:             16  TABLES.md:54
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:         10,381  TABLES.md:502
+ok        gen_results.tex:          2,957  TABLES.md:502
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:             16  TABLES.md:54
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:         10,690  TABLES.md:504
+ok        gen_results.tex:          2,957  TABLES.md:502
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:             64  TABLES.md:18
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:         40,818  TABLES.md:506
+ok        gen_results.tex:         10,431  TABLES.md:506
+ok        gen_results.tex:             17  TABLES.md:55
+ok        gen_results.tex:             19  TABLES.md:57
+ok        gen_results.tex:             64  TABLES.md:18
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:         41,303  TABLES.md:508
+ok        gen_results.tex:         10,431  TABLES.md:506
+ok        gen_results.tex:              2  TABLES.md:10
+ok        gen_results.tex:              2  TABLES.md:10
+ok        gen_results.tex:            256  TABLES.md:20
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:        143,583  TABLES.md:510
+ok        gen_results.tex:         40,225  TABLES.md:510
+ok        gen_results.tex:             64  TABLES.md:18
+ok        gen_results.tex:             64  TABLES.md:18
+ok        gen_results.tex:            256  TABLES.md:20
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:        147,232  TABLES.md:512
+ok        gen_results.tex:         40,225  TABLES.md:510
+ok        gen_results.tex:             83  TABLES.md:512
+ok        gen_results.tex:             83  TABLES.md:512
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:            500  TABLES.md:482
+ok        gen_results.tex:              2  TABLES.md:10
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:            500  TABLES.md:482
+ok        gen_results.tex:             16  TABLES.md:54
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:         10,834  TABLES.md:544
+ok        gen_results.tex:          2,957  TABLES.md:502
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:             16  TABLES.md:54
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:         11,242  TABLES.md:546
+ok        gen_results.tex:          2,957  TABLES.md:502
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:             64  TABLES.md:18
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:         41,192  TABLES.md:548
+ok        gen_results.tex:         10,431  TABLES.md:506
+ok        gen_results.tex:              8  TABLES.md:60
+ok        gen_results.tex:              7  TABLES.md:59
+ok        gen_results.tex:             64  TABLES.md:18
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:         40,434  TABLES.md:550
+ok        gen_results.tex:         10,431  TABLES.md:506
+ok        gen_results.tex:              9  TABLES.md:61
+ok        gen_results.tex:              5  TABLES.md:57
+ok        gen_results.tex:            256  TABLES.md:20
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:        144,237  TABLES.md:552
+ok        gen_results.tex:         40,225  TABLES.md:510
+ok        gen_results.tex:            118  TABLES.md:552
+ok        gen_results.tex:            118  TABLES.md:552
+ok        gen_results.tex:            256  TABLES.md:20
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:        146,419  TABLES.md:554
+ok        gen_results.tex:         40,225  TABLES.md:510
+ok        gen_results.tex:             48  TABLES.md:554
+ok        gen_results.tex:             48  TABLES.md:554
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:            500  TABLES.md:482
+ok        gen_results.tex:              2  TABLES.md:10
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:            500  TABLES.md:482
+ok        gen_results.tex:             16  TABLES.md:54
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:         11,529  TABLES.md:565
+ok        gen_results.tex:          2,957  TABLES.md:502
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:             16  TABLES.md:54
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:         11,661  TABLES.md:567
+ok        gen_results.tex:          2,957  TABLES.md:502
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:             64  TABLES.md:18
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:         37,720  TABLES.md:569
+ok        gen_results.tex:         10,431  TABLES.md:506
+ok        gen_results.tex:              2  TABLES.md:10
+ok        gen_results.tex:              3  TABLES.md:55
+ok        gen_results.tex:             64  TABLES.md:18
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:         37,901  TABLES.md:571
+ok        gen_results.tex:         10,431  TABLES.md:506
+ok        gen_results.tex:              3  TABLES.md:55
+ok        gen_results.tex:              3  TABLES.md:55
+ok        gen_results.tex:            256  TABLES.md:20
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:        143,761  TABLES.md:573
+ok        gen_results.tex:         40,225  TABLES.md:510
+ok        gen_results.tex:            120  TABLES.md:266
+ok        gen_results.tex:            120  TABLES.md:266
+ok        gen_results.tex:            256  TABLES.md:20
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:        145,730  TABLES.md:575
+ok        gen_results.tex:         40,225  TABLES.md:510
+ok        gen_results.tex:            108  TABLES.md:575
+ok        gen_results.tex:            131  TABLES.md:576
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:            500  TABLES.md:482
+ok        gen_results.tex:              2  TABLES.md:10
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:            500  TABLES.md:482
+ok        gen_results.tex:             16  TABLES.md:54
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:         11,466  TABLES.md:586
+ok        gen_results.tex:          2,957  TABLES.md:502
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:              3  TABLES.md:55
+ok        gen_results.tex:             16  TABLES.md:54
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:         11,057  TABLES.md:588
+ok        gen_results.tex:          2,957  TABLES.md:502
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:             64  TABLES.md:18
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:         37,939  TABLES.md:590
+ok        gen_results.tex:         10,431  TABLES.md:506
+ok        gen_results.tex:              7  TABLES.md:59
+ok        gen_results.tex:              9  TABLES.md:61
+ok        gen_results.tex:             64  TABLES.md:18
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:         38,692  TABLES.md:592
+ok        gen_results.tex:         10,431  TABLES.md:506
+ok        gen_results.tex:              6  TABLES.md:58
+ok        gen_results.tex:              8  TABLES.md:60
+ok        gen_results.tex:            256  TABLES.md:20
+ok        gen_results.tex:              0  TABLES.md:52
+ok        gen_results.tex:        149,620  TABLES.md:594
+ok        gen_results.tex:         40,225  TABLES.md:510
+ok        gen_results.tex:             61  TABLES.md:594
+ok        gen_results.tex:            100  TABLES.md:11
+ok        gen_results.tex:            256  TABLES.md:20
+ok        gen_results.tex:              1  TABLES.md:6
+ok        gen_results.tex:        150,254  TABLES.md:596
+ok        gen_results.tex:         40,225  TABLES.md:510
+ok        gen_results.tex:             19  TABLES.md:57
+ok        gen_results.tex:             23  TABLES.md:61
+ok        gen_unit.tex:             16  TABLES.md:54
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:           1000  TABLES.md:22
+ok        gen_unit.tex:           5.14  TABLES.md:870
+ok        gen_unit.tex:          32.94  TABLES.md:870
+ok        gen_unit.tex:             16  TABLES.md:54
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:            500  TABLES.md:482
+ok        gen_unit.tex:           3.32  TABLES.md:871
+ok        gen_unit.tex:          30.20  TABLES.md:871
+ok        gen_unit.tex:             16  TABLES.md:54
+ok        gen_unit.tex:              1  TABLES.md:6
+ok        gen_unit.tex:           1000  TABLES.md:22
+ok        gen_unit.tex:           3.58  TABLES.md:872
+ok        gen_unit.tex:          28.74  TABLES.md:872
+ok        gen_unit.tex:             16  TABLES.md:54
+ok        gen_unit.tex:              1  TABLES.md:6
+ok        gen_unit.tex:            500  TABLES.md:482
+ok        gen_unit.tex:           3.63  TABLES.md:873
+ok        gen_unit.tex:          29.21  TABLES.md:873
+ok        gen_unit.tex:             64  TABLES.md:18
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:           1000  TABLES.md:22
+ok        gen_unit.tex:          73.16  TABLES.md:874
+ok        gen_unit.tex:          96.20  TABLES.md:874
+ok        gen_unit.tex:             64  TABLES.md:18
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:            500  TABLES.md:482
+ok        gen_unit.tex:          57.07  TABLES.md:875
+ok        gen_unit.tex:          98.71  TABLES.md:875
+ok        gen_unit.tex:             64  TABLES.md:18
+ok        gen_unit.tex:              1  TABLES.md:6
+ok        gen_unit.tex:           1000  TABLES.md:22
+ok        gen_unit.tex:          54.71  TABLES.md:876
+ok        gen_unit.tex:         112.18  TABLES.md:876
+ok        gen_unit.tex:             64  TABLES.md:18
+ok        gen_unit.tex:              1  TABLES.md:6
+ok        gen_unit.tex:            500  TABLES.md:482
+ok        gen_unit.tex:          56.23  TABLES.md:877
+ok        gen_unit.tex:         113.59  TABLES.md:877
+ok        gen_unit.tex:             16  TABLES.md:54
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:           1000  TABLES.md:22
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:          01.92  TABLES.md:878
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:          11.67  TABLES.md:878
+ok        gen_unit.tex:             16  TABLES.md:54
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:            500  TABLES.md:482
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:          02.03  TABLES.md:879
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:          11.81  TABLES.md:879
+ok        gen_unit.tex:             16  TABLES.md:54
+ok        gen_unit.tex:              1  TABLES.md:6
+ok        gen_unit.tex:           1000  TABLES.md:22
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:          01.93  TABLES.md:880
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:          11.98  TABLES.md:880
+ok        gen_unit.tex:             16  TABLES.md:54
+ok        gen_unit.tex:              1  TABLES.md:6
+ok        gen_unit.tex:            500  TABLES.md:482
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:          02.01  TABLES.md:881
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:          11.93  TABLES.md:881
+ok        gen_unit.tex:            256  TABLES.md:20
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:           1000  TABLES.md:22
+ok        gen_unit.tex:             13  TABLES.md:65
+ok        gen_unit.tex:          03.75  TABLES.md:882
+ok        gen_unit.tex:              7  TABLES.md:59
+ok        gen_unit.tex:          02.92  TABLES.md:882
+ok        gen_unit.tex:            256  TABLES.md:20
+ok        gen_unit.tex:              0  TABLES.md:52
+ok        gen_unit.tex:            500  TABLES.md:482
+ok        gen_unit.tex:             13  TABLES.md:65
+ok        gen_unit.tex:          09.11  TABLES.md:883
+ok        gen_unit.tex:              6  TABLES.md:58
+ok        gen_unit.tex:          57.05  TABLES.md:883
+ok        gen_unit.tex:            256  TABLES.md:20
+ok        gen_unit.tex:              1  TABLES.md:6
+ok        gen_unit.tex:           1000  TABLES.md:22
+ok        gen_unit.tex:              9  TABLES.md:61
+ok        gen_unit.tex:          45.77  TABLES.md:884
+ok        gen_unit.tex:              6  TABLES.md:58
+ok        gen_unit.tex:          41.02  TABLES.md:884
+ok        gen_unit.tex:            256  TABLES.md:20
+ok        gen_unit.tex:              1  TABLES.md:6
+ok        gen_unit.tex:            500  TABLES.md:482
+ok        gen_unit.tex:              9  TABLES.md:61
+ok        gen_unit.tex:          40.19  TABLES.md:885
+ok        gen_unit.tex:              6  TABLES.md:58
+ok        gen_unit.tex:          39.94  TABLES.md:885
+rounded   synthesis_report.tex:            636  from 636.1, TABLES.md:586
+rounded   synthesis_report.tex:            603  from 603.0, TABLES.md:590
+rounded   synthesis_report.tex:            557  from 556.6, TABLES.md:594
+rounded   synthesis_report.tex:            660  from 659.5, TABLES.md:588
+rounded   synthesis_report.tex:            611  from 611.2, TABLES.md:592
+rounded   synthesis_report.tex:            542  from 542.3, TABLES.md:596
+rounded   synthesis_report.tex:          0.036  from 0.0357, TABLES.md:595
+rounded   synthesis_report.tex:          0.002  from 0.0015, TABLES.md:597
+ok        synthesis_report.tex:             28  TABLES.md:66
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:           1.96  TABLES.md:473
+ok        synthesis_report.tex:          16.62  TABLES.md:473
+ok        synthesis_report.tex:           4.92  TABLES.md:473
+ok        synthesis_report.tex:          16.23  TABLES.md:473
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:             20  TABLES.md:58
+ok        synthesis_report.tex:            128  TABLES.md:19
+ok        synthesis_report.tex:              6  TABLES.md:58
+ok        synthesis_report.tex:             63  TABLES.md:468
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:            16,  TABLES.md:54
+ok        synthesis_report.tex:             64  TABLES.md:18
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:             0,  TABLES.md:52
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:              2  TABLES.md:10
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:           0.33  TABLES.md:472
+ok        synthesis_report.tex:           0.33  TABLES.md:472
+ok        synthesis_report.tex:            3.1  TABLES.md:472
+ok        synthesis_report.tex:             25  TABLES.md:63
+ok        synthesis_report.tex:            1.1  TABLES.md:669
+ok        synthesis_report.tex:      6,692,032  TABLES.md:670
+ok        synthesis_report.tex:           12.0  TABLES.md:677
+ok        synthesis_report.tex:           11.0  TABLES.md:676
+ok        synthesis_report.tex:          141.5  TABLES.md:625
+ok        synthesis_report.tex:          141.5  TABLES.md:625
+ok        synthesis_report.tex:         0.0983  TABLES.md:625
+ok        synthesis_report.tex:         0.0432  TABLES.md:625
+ok        synthesis_report.tex:            16,  TABLES.md:54
+ok        synthesis_report.tex:             0,  TABLES.md:52
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:       3.795620  TABLES.md:664
+ok        synthesis_report.tex:              5  TABLES.md:57
+ok        synthesis_report.tex:              0  TABLES.md:52
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:              0  TABLES.md:52
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:            500  TABLES.md:482
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:            500  TABLES.md:482
+ok        synthesis_report.tex:            500  TABLES.md:482
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:            500  TABLES.md:482
+ok        synthesis_report.tex:              3  TABLES.md:55
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:            500  TABLES.md:482
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:              8  TABLES.md:60
+ok        synthesis_report.tex:            16,  TABLES.md:54
+ok        synthesis_report.tex:             64  TABLES.md:18
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:             0,  TABLES.md:52
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:            500  TABLES.md:482
+ok        synthesis_report.tex:            500  TABLES.md:482
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:             64  TABLES.md:18
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:              0  TABLES.md:52
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:           8.53  TABLES.md:651
+ok        synthesis_report.tex:           7.02  TABLES.md:652
+ok        synthesis_report.tex:            500  TABLES.md:482
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:             0,  TABLES.md:52
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:             52  TABLES.md:720
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:              7  TABLES.md:59
+ok        synthesis_report.tex:        200,000  TABLES.md:830
+ok        synthesis_report.tex:              0  TABLES.md:52
+ok        synthesis_report.tex:              0  TABLES.md:52
+ok        synthesis_report.tex:              0  TABLES.md:52
+ok        synthesis_report.tex:            113  TABLES.md:656
+ok        synthesis_report.tex:             10  TABLES.md:10
+ok        synthesis_report.tex:             33  TABLES.md:71
+ok        synthesis_report.tex:             84  TABLES.md:897
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:             84  TABLES.md:897
+ok        synthesis_report.tex:           11.0  TABLES.md:676
+ok        synthesis_report.tex:             12  TABLES.md:64
+ok        synthesis_report.tex:        200,000  TABLES.md:830
+ok        synthesis_report.tex:              0  TABLES.md:52
+ok        synthesis_report.tex:             12  TABLES.md:64
+ok        synthesis_report.tex:             63  TABLES.md:468
+ok        synthesis_report.tex:              7  TABLES.md:59
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:             64  TABLES.md:18
+ok        synthesis_report.tex:           12.0  TABLES.md:677
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:           11.0  TABLES.md:676
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:             16  TABLES.md:54
+ok        synthesis_report.tex:           2977  TABLES.md:892
+ok        synthesis_report.tex:           2977  TABLES.md:892
+ok        synthesis_report.tex:            463  TABLES.md:893
+ok        synthesis_report.tex:            698  TABLES.md:894
+ok        synthesis_report.tex:             64  TABLES.md:18
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:            16,  TABLES.md:54
+ok        synthesis_report.tex:              0  TABLES.md:52
+ok        synthesis_report.tex:           1.52  TABLES.md:620
+ok        synthesis_report.tex:           1.94  TABLES.md:435
+ok        synthesis_report.tex:             64  TABLES.md:18
+ok        synthesis_report.tex:           2.81  TABLES.md:622
+ok        synthesis_report.tex:           2.01  TABLES.md:623
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:              0  TABLES.md:52
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:             64  TABLES.md:18
+ok        synthesis_report.tex:              2  TABLES.md:10
+ok        synthesis_report.tex:              7  TABLES.md:59
+ok        synthesis_report.tex:              3  TABLES.md:55
+ok        synthesis_report.tex:              6  TABLES.md:58
+ok        synthesis_report.tex:           256,  TABLES.md:20
+ok        synthesis_report.tex:            120  TABLES.md:266
+ok        synthesis_report.tex:             61  TABLES.md:594
+ok        synthesis_report.tex:            108  TABLES.md:575
+ok        synthesis_report.tex:             19  TABLES.md:57
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:            500  TABLES.md:482
+ok        synthesis_report.tex:              2  TABLES.md:10
+ok        synthesis_report.tex:              2  TABLES.md:10
+ok        synthesis_report.tex:              3  TABLES.md:55
+ok        synthesis_report.tex:            256  TABLES.md:20
+ok        synthesis_report.tex:            500  TABLES.md:482
+ok        synthesis_report.tex:         0.0357  TABLES.md:595
+ok        synthesis_report.tex:              0  TABLES.md:52
+ok        synthesis_report.tex:         0.0001  TABLES.md:813
+ok        synthesis_report.tex:              1  TABLES.md:6
+ok        synthesis_report.tex:            255  TABLES.md:470
+ok        synthesis_report.tex:             63  TABLES.md:468
+
+956 numbers checked against results/P7/TABLES.md (up to "## Older evidence"); 0 failed.

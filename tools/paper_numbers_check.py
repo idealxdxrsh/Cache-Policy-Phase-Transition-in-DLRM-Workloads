@@ -1,6 +1,7 @@
 """Check that every number in the paper's .tex files comes from results/P7/TABLES.md (or a short whitelist).
 
-Usage: python3 -I tools/paper_numbers_check.py [paper dir, default paper/v2] [tables, default results/P7/TABLES.md]
+Usage: python3 -I tools/paper_numbers_check.py [tex dir, default paper/v2] [tables, default results/P7/TABLES.md]
+       (also used for docs/synthesis_report: python3 -I tools/paper_numbers_check.py docs/synthesis_report)
 Exit 1 if any number fails. Prints every number with the TABLES.md line it matched, so each match can be audited.
 Tested by tests/test_paper_numbers_check.py (planted old-paper figures must fail).
 
@@ -12,7 +13,8 @@ Two forms are accepted in the .tex:
 
 What counts as a number in the .tex: a digit sequence (thousands commas allowed, optional decimals) that is not glued
 to a letter or underscore on its left (H100, P5e, NanGate45, d16_m0 are names). Removed before scanning: comments;
-tikzpicture environments; optional [...] arguments; the arguments of layout/reference commands (label, ref, cite,
+tikzpicture environments; verbatim environments (shell commands, not results); option lists after
+\\begin{env} (layout and colours); optional [...] arguments; the arguments of layout/reference commands (label, ref, cite,
 includegraphics, usepackage, url, ...); tabular column specs; lengths such as 0.5\\columnwidth or 3pt. Signs are
 ignored (-0.0357 matches 0.0357).
 TABLES.md values: digit sequences not glued to a letter (zipf0.85 is a name), up to the heading "## Older evidence":
@@ -58,6 +60,8 @@ def index(tables):
 def clean(tex):
     tex = re.sub(r'(?<!\\)%.*', '', tex)
     tex = re.sub(r'\\begin\{tikzpicture\}.*?\\end\{tikzpicture\}', ' ', tex, flags=re.S)
+    tex = re.sub(r'\\begin\{verbatim\}.*?\\end\{verbatim\}', ' ', tex, flags=re.S)
+    tex = re.sub(r'(\\begin\{[A-Za-z*]+\})\[(?:[^\[\]{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\]', r'\1', tex)  # environment options
     tex = tex.replace('{,}', ',').replace('\\,', ' ').replace('$', ' ')
     tex = re.sub(r'(\\begin\{tabular\*?\})(\{[^}]*\})?\{[^{}]*(\{[^{}]*\}[^{}]*)*\}', r'\1', tex)
     for _ in range(3):

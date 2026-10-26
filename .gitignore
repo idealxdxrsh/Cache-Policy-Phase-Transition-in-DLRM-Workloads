@@ -32,3 +32,11 @@ paper/**/*.blg
 paper/**/*.fls
 paper/**/*.fdb_latexmk
 paper/**/*.synctex.gz
+# LaTeX build products (docs/**/<name>.pdf is committed)
+docs/**/*.aux
+docs/**/*.log
+docs/**/*.toc
+docs/**/*.out
+docs/**/*.fls
+docs/**/*.fdb_latexmk
+docs/**/*.synctex.gz
