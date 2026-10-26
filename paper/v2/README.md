@@ -43,7 +43,7 @@ check: an old figure that equals a genuine TABLES.md value (65) cannot be reject
 that main.tex contains none of the old figures.
 
 ## Checks done for this version
-- `latexmk -pdf`: no errors, no overfull or underfull boxes (`main.log`).
+- `latexmk -pdf`: no errors, no overfull boxes (`main.log`).
 - `pdffonts main.pdf`: every font embedded, no Type 3.
 - Every page rendered to PNG and inspected; 6 pages; abstract 198 words.
 - `tools/paper_numbers_check.py`: 451 numbers, 0 failed (108 rounded with `\rnd`; one whitelisted year, 2014).
