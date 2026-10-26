@@ -14,6 +14,7 @@ Hard rules
 3. Label honestly: gem5 = CPU + DDR4 (not a GPU); Yosys without liberty = gate counts only; open PDK != TSMC.
 4. Ask before: deleting, system-wide installs, git push, >1 GPU or >2h GPU, running unknown downloaded scripts.
 5. Secrets (Kaggle token, ssh keys) are never read, printed or committed.
+6. Never add Co-Authored-By or Claude-Session lines, or any Claude attribution, to commit messages or PR descriptions.
 
 Keep usage low
 - Do not poll. Use `sbatch --dependency=afterok` chains.
