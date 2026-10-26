@@ -1,0 +1,4 @@
+# RTL-only counter-saturation run, depth 64 mode 1 (rtl/v2 at rtl-v2-final-8-g7e124a7, Icarus Verilog version 12.0 (stable) ())
+counter_sat depth=64 mode=1 cycles=200000 responses=62957 hits=53588 misses=9369 fill_reqs=9369 counter_max_value=63 max_reached=63 cycles_with_a_line_at_max=196366 most_lines_at_max=64 suppressed_hit_increments=51277 suppressed_fill_increments=7648
+vvp exit=0 wall_s=26
+P5f lockstep (cluster, Icarus 11): gls_lockstep depth=64 mode=1 cycles=200000 responses=62957 hits=53588 misses=9369 fill_reqs=9369 mismatching_cycles=0 hit_flag=0 resp_valid=0 resp_data=0 fill_req=0 fill_addr=0 x_cycles_netlist=0 x_cycles_rtl=0
