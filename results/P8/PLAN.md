@@ -144,3 +144,29 @@ seed 1):
    cycles as P5f. OK?
 4. Window: 20,000 warm-up + 10,000 recorded cycles for every configuration. OK?
 5. Vectorless: rst_n held inactive (activity 0). OK?
+
+## 11. Answers received (2026-10-26) and the key-count check — STOPPED here, nothing run or submitted
+Answers: (1) power at 500 MHz with the 500 MHz netlists (depth 256 meets 500 MHz only within noise, not
+demonstrated); no 1 GHz operating point; dynamic energy per cycle and leakage power reported separately for every
+configuration. (3) handshake OK. (4) 20,000 warm-up + 10,000 recorded cycles at depths 16 and 64; depth 256: pilot
+first, then a warm-up of about 100,000 cycles if it fits 4 h; report the window's hit rate and position in the trace
+and say plainly if it differs a lot from 47.7% (P3b shared cache, LFU reset on eviction, 256 entries, 2M rows).
+(5) OK. Fill data: to be stated in every table, with the note that real embedding data is not random.
+
+**Key count (answer 2): the first 2,000,000 rows have 2,293,344 distinct (table, value) keys** in 46,128,690 accesses
+(`results/P3b/rows_2000000/shared_cache_results.json`, meta `unique_keys`, same order and skip rules as section 5).
+2^20 = 1,048,576, so the full 2M-row key set does not fit the 20-bit request address. Per the instruction, nothing was
+run and no stream was built. Mapping options for your decision:
+- **A (proposed): dense IDs over the replayed segment only.** Only R accesses are replayed (W + N cycles at about 3
+  cycles per request; R is far below 2^20 in every configuration), so the segment has at most R distinct keys and each
+  gets its own address in order of first appearance: no wrapping, the reuse pattern of the segment is exact. The
+  segment is a contiguous slice of the 2M-row stream; its start (row and access offset) is a parameter and is reported.
+  Caveat: a slice of tens of thousands of accesses is not the whole 2M-row trace, so its hit rate is not expected to
+  match the 47.7% computed over all 46,128,690 accesses; the report will say how far it is.
+- **B: hash or fold all keys into 20 bits.** 2,293,344 keys onto 1,048,576 addresses forces aliasing (distinct keys
+  sharing an address), which changes the reuse pattern. Not proposed.
+- **C: keep the 1,048,576 most frequent keys and send the rest to a reserved address range that never repeats.** No
+  aliasing, but rare keys are rewritten as always-new; more code and a distorted tail. Not proposed.
+- Not possible without new synthesis: a wider address (ADDR_WIDTH is fixed at 20 in the netlists).
+Also to decide with A: the slice start. Proposed: two slices per configuration if time allows, one at the start of the
+trace (access 0, cold start) and one in the middle (from the first access of row 1,000,000), both reported.
