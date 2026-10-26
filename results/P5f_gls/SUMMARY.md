@@ -10,7 +10,6 @@ flow synthesis/p5e + synthesis/p5 at 37c353c, ABC_BUDGET_PS=141.5 (netlists/FLOW
 - Signal mapping: lockstep compares hit_flag, resp_valid, resp_data, fill_req, fill_addr every cycle after reset with !==;
   miss = resp_valid && !hit_flag. X check: XOR reduction === 1'bx on all outputs of both designs, every cycle
   ($isunknown gave false X reports in local Icarus 12 once the progress display was added; replaced, see tb comment).
-
 ## Unit tests (unmodified rtl/v2/tb_lfu_cache.sv via wrapper): 16/16 ALL TESTS PASSED
 | runs | where, tool | compile | run | peak RSS compile / run | file |
 |---|---|---|---|---|---|
@@ -19,7 +18,6 @@ flow synthesis/p5e + synthesis/p5 at 37c353c, ABC_BUDGET_PS=141.5 (netlists/FLOW
 | d16 x4 | cluster node6, Icarus 11.0 | 1.92-2.03 s | 11.67-11.98 s | 162104-165040 / 64680-65576 kB | cluster/sim/d16_*.txt |
 | d256 x4 | cluster node12/22, Icarus 11.0 | 9:40.19-13:09.11 | 6:39.94-7:02.92 | 2125460-2144960 / 814884-823308 kB | cluster/sim/d256_*.txt |
 Cross-check: the d16 netlists pass the unit tests under both Icarus 12.0 (local) and 11.0 (cluster).
-
 ## Lockstep RTL vs netlist (cluster, Icarus 11.0): 12/12 GLS LOCKSTEP PASSED, all complete (none partial, none hit 2 h)
 Every run: mismatching cycles 0 on all 5 signals, X cycles 0 (netlist and RTL), 20 progress lines, last "cycles compared 200000".
 | run | cycles | responses | hits | misses | fill_reqs | vvp run | peak RSS run |
@@ -32,12 +30,10 @@ Every run: mismatching cycles 0 on all 5 signals, X cycles 0 (netlist and RTL), 
 | d256_m1 (1000, 500 MHz) | 200000 | 65143 | 56927 | 8216 | 8216 | 1:40:56.35, 1:40:07.57 | 825804, 825892 kB |
 200002: the stimulus loop checks the count only between fill handshakes, so it can overrun by a few cycles (all compared).
 Files: cluster/lockstep/<run>.txt. Mismatches found in this phase: none.
-
 ## Equivalence, depth 16 (local, Yosys 0.33, one at a time, 2 h limit): 4/4 exit 0
 equiv_simple proved 0, equiv_induct proved 2977/2977 $equiv cells, 0 unproven; wall 463/466 s (m0), 697/698 s (m1)
 (equiv/<run>.txt, .log.gz). Caveats: async2sync (async reset treated as sync); induction assumes matched registers start equal.
-
-## Cluster jobs (jobs.txt, cluster/sacct.txt, cluster/slurm/)
+## Cluster jobs (jobs.txt, cluster/sacct.txt; slurm .out files were empty, not committed)
 416160 gls256 (32G) and 416161 gls_small (8G), all 20 tasks COMPLETED 0:0. sacct MaxRSS: 416160 2352460-2393668 K,
 416161 179924-655972 K. Elapsed max 01:54:36 (416160_7). The 32G request was far above the 2393668 K peak.
 Killed local run: the first local sim/lockstep batch was stopped for low memory; partial outputs in killed_local_run/ (README).
