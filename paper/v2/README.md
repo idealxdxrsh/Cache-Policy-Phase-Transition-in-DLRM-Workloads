@@ -1,7 +1,7 @@
 # paper/v2: rewritten paper (IEEEtran conference, two-column, 10 pt)
 
 Source of truth: `results/P7/CLAIMS.md` and `results/P7/TABLES.md`. The old manuscript is in `paper/old/ieee_final.pdf`.
-Authors: "Adarsh [YOUR FULL NAME]" (placeholder for the full name) and Pravin Mane; affiliation from the official
+Authors: Adarsh and Pravin Mane; affiliation from the official
 BITS Pilani pages (https://www.bits-pilani.ac.in/goa/pravin-sakharam-mane,
 https://www.bits-pilani.ac.in/goa/electrical-and-electronics-engineering/). No e-mail, no student ID, no postcode.
 
