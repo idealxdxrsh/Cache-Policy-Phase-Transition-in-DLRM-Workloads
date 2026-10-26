@@ -95,6 +95,10 @@ def p3_load(n):
 
 
 P3 = {n: p3_load(n) for n in (2000000, 10000000)}
+W('## Dataset (P2): Criteo Display Advertising Challenge `train.txt`')
+W(src('results/P2/SUMMARY.md', ['results/P2/SUMMARY.md']))
+W(f'\nRows in the file: {grab(r"^- Rows: (\d+)", read("results/P2/SUMMARY.md"), int):,}. P3 and P3b use the first '
+  '2,000,000 and the first 10,000,000 of them; 26 categorical columns = 26 tables.\n')
 W('## P3: trace simulation, one private cache per table (26 caches), Criteo DAC first 2M and first 10M rows')
 W('Limits: first 2,000,000 / 10,000,000 rows of Criteo DAC `train.txt` only; one private cache per table, capacity in '
   'vectors per table; CPU trace simulation (not gem5, not a GPU). Hit % = hits / (hits + misses) x 100.')
@@ -155,10 +159,17 @@ W('\n## P4: 26 x EmbeddingBag + MLP, fp32 inference, one H100 (job 413621) and o
 W('Limits: CUDA-event timings only; NO hardware counters (ncu missing / ERR_NVGPUCTRPERM), so nothing here shows '
   'memory-boundedness, stalls or DRAM traffic. Many small-batch cells are launch-bound (see `results/P4/SUMMARY.md`), '
   'where the embedding share is a share of launch time. Synthetic index patterns plus Criteo-hashed ids; bag size 1.')
+LB_TOL = grab(r'^LB_TOL = ([\d.]+)', read('tools/p4_results.py'))
 for gpu in ('h100_413621', 'h200_413622'):
     path = f'results/P4/{gpu}/results.csv'
     rows = list(csv.DictReader(io.StringIO(read(path))))
     batches = sorted({int(r['batch']) for r in rows})
+    st = defaultdict(int)
+    for r in rows:
+        st[r['status']] += 1
+    W(f'\n{gpu.split("_")[0].upper()} ({src(path)[8:-1]}): {len(rows)} configurations, ' +
+      ', '.join(f'{v} {k}' for k, v in sorted(st.items())) + '; skip reasons: ' +
+      ('; '.join(sorted({r["note"] for r in rows if r["status"] != "ok"})) or 'none') + '.')
     for col, lab, fmt in (('emb_ms_median', 'embedding median ms (26 tables)', '{:.4f}'),
                           ('mlp_ms_median', 'MLP median ms', '{:.4f}'),
                           ('emb_share_median', 'embedding share, median emb / (emb + MLP)', '{:.4f}')):
@@ -167,12 +178,23 @@ for gpu in ('h100_413621', 'h200_413622'):
         W('\n| rows | dim | pattern | ' + ' | '.join(f'B={b}' for b in batches) + ' |')
         W('|---|---|---|' + '---|' * len(batches))
         cell = {(r['rows'], r['dim'], r['pattern'], int(r['batch'])): r for r in rows}
+        if col == 'emb_share_median':
+            W(f'"L" = launch-bound: CPU wall per iteration <= {LB_TOL} x the batch-64 CPU wall of the same rows/dim/pattern '
+              f'(criterion `LB_TOL = {LB_TOL}` in `tools/p4_results.py`, i.e. within {(LB_TOL - 1) * 100:.0f}%).')
         for key in sorted({(r['rows'], r['dim'], r['pattern']) for r in rows},
                           key=lambda k: (int(k[0]), int(k[1]), k[2])):
             vals = []
             for b in batches:
                 r = cell.get((*key, b))
-                vals.append('-' if r is None else r['status'] if r['status'] != 'ok' else fmt.format(float(r[col])))
+                if r is None or r['status'] != 'ok':
+                    vals.append('-' if r is None else r['status'])
+                    continue
+                v = fmt.format(float(r[col]))
+                b64 = cell.get((*key, 64))
+                if col == 'emb_share_median' and b64 and b64['status'] == 'ok' and \
+                        float(r['cpu_wall_ms_per_iter']) <= LB_TOL * float(b64['cpu_wall_ms_per_iter']):
+                    v += ' L'
+                vals.append(v)
             W(f'| {int(key[0]):.0e} | {key[1]} | {key[2]} | ' + ' | '.join(vals) + ' |')
 
 # ---------------------------------------------------------------- P5 .. P5e
@@ -188,12 +210,25 @@ PHASES = [('P5', 'results/P5', 'rtl-v2-baseline, first flow'),
           ('P5c tree + copies', 'results/P5c/tree_copies', 'Stage-A tree + copies (kept)'),
           ('P5d', 'results/P5d', 'hit_idx priority tree = rtl-v2-final, old flow'),
           ('P5e', 'results/P5e/new', 'rtl-v2-final, timing-driven ABC flow (current numbers)')]
+
+
+def violators(sta):                           # distinct pins/nets with max slew/cap/fanout VIOLATED, rst_n excluded
+    return {ln.split()[0] for ln in sta.splitlines()
+            if ln.rstrip().endswith('(VIOLATED)') and 'slack' not in ln and ln.split()[0] != 'rst_n'}
+
+
+def fmax_of(path):                            # Fmax MHz of one sta.txt (None if met)
+    sta = read(path)
+    period, wns = grab(r'^PERIOD_NS (\S+)', sta), grab(r'^wns max (\S+)', sta)
+    return 1e3 / (period - wns) if wns < 0 else None
+
+
 for name, d, what in PHASES:
     stas = files(f'{d}/d*_m*_*MHz/sta.txt')
     W(f'\n### {name}: {what}')
     W(src(f'{d}/d*_m*_*MHz/{{sta,stat}}.txt', stas + files(f'{d}/d*_m*_*MHz/stat.txt')))
-    W('\n| depth | mode | clock target | cells | flip-flops | area um^2 | WNS ns | worst hold slack ns | Fmax MHz (pre-layout) |')
-    W('|---|---|---|---|---|---|---|---|---|')
+    W('\n| depth | mode | clock target | cells | flip-flops | area um^2 | WNS ns | worst hold slack ns | Fmax MHz (pre-layout) | other slew/cap violators |')
+    W('|---|---|---|---|---|---|---|---|---|---|')
     key = lambda p: tuple(int(x) for x in re.search(r'd(\d+)_m(\d)_(\d+)MHz', p).groups())
     for s in sorted(stas, key=lambda p: (key(p)[0], key(p)[1], -key(p)[2])):
         dd, m, f = key(s)
@@ -202,7 +237,58 @@ for name, d, what in PHASES:
         ffs = sum(int(n) for n in re.findall(r'^\s+S?DFF\w*\s+(\d+)', stat, re.M))
         fmax = f'{1e3 / (period - wns):.1f}' if wns < 0 else f'met ({f} MHz)'
         W(f'| {dd} | {m} | {f} MHz | {grab(r"Number of cells:\s+(\d+)", stat, int):,} | {ffs:,} | '
-          f'{grab(r"Chip area for module .*: ([\d.]+)", stat):.3f} | {wns:.4f} | {hold:.4f} | {fmax} |')
+          f'{grab(r"Chip area for module .*: ([\d.]+)", stat):.3f} | {wns:.4f} | {hold:.4f} | {fmax} | {len(violators(sta))} |')
+
+W('\n### P5d (old flow) -> P5e (timing-driven flow), same RTL rtl-v2-final, 1 GHz netlists')
+W(src('results/P5{d,e/new}/d*_m*_1000MHz/{sta,stat}.txt', files('results/P5d/d*_m*_1000MHz/sta.txt') +
+      files('results/P5e/new/d*_m*_1000MHz/sta.txt')))
+W('\n| depth | mode | Fmax MHz P5d -> P5e | area um^2 P5d -> P5e | area change | other slew/cap violators P5d -> P5e |')
+W('|---|---|---|---|---|---|')
+for dd in (16, 64, 256):
+    for m in (0, 1):
+        a, b = (f'{x}/d{dd}_m{m}_1000MHz' for x in ('results/P5d', 'results/P5e/new'))
+        ar = [grab(r"Chip area for module .*: ([\d.]+)", read(f'{x}/stat.txt')) for x in (a, b)]
+        vi = [len(violators(read(f'{x}/sta.txt'))) for x in (a, b)]
+        W(f'| {dd} | {m} | {fmax_of(a + "/sta.txt"):.1f} -> {fmax_of(b + "/sta.txt"):.1f} | {ar[0]:.3f} -> {ar[1]:.3f} | '
+          f'{(ar[1] / ar[0] - 1) * 100:+.2f}% | {vi[0]} -> {vi[1]} |')
+ref = read('results/P5d/d16_m0_1000MHz/sta.txt')
+clkq = float(next(ln.split()[3] for ln in ref[ref.index('Path Type: max'):].splitlines() if '/Q (' in ln))
+setup = grab(r'^\s+-([\d.]+)\s+\S+\s+library setup time', ref)
+W(f'\nP5e ABC target margin (`results/P5d/d16_m0_1000MHz/sta.txt`, worst path of the P5d depth-16 mode-0 1 GHz run): '
+  f'clk->Q {clkq} ns + setup {setup} ns = {(clkq + setup) * 1e3:.1f} ps; ABC target = period - {(clkq + setup) * 1e3:.1f} ps. '
+  'The P5e script was chosen on one pilot (depth 16, mode 0) with no ablation (`results/P5e/SUMMARY.md`).')
+
+W('\n### Flow noise floor: Fmax MHz of 8 same-logic designs, 1 GHz netlists')
+W('Designs: final RTL, the flat-vector ("packed") form of the same hit tree, and 3 one-line rewrites of each '
+  '(`tools/p5d_null_variants.py`). Spread = max / min - 1. Any spread is flow variation, not a design effect.')
+NOISE = {'old flow (P5d)': [('final', 'results/P5d'), ('final null_tagcmp_swap', 'results/P5d/noise/null_tagcmp_swap'),
+                            ('final null_hitor_swap', 'results/P5d/noise/null_hitor_swap'),
+                            ('final null_stageB_gt', 'results/P5d/noise/null_stageB_gt'),
+                            ('packed', 'results/P5d/attempt1_packed_vectors')] +
+         [(f'packed {v}', f'results/P5d/attempt1_packed_vectors/noise/{v}') for v in
+          ('null_tagcmp_swap', 'null_hitor_swap', 'null_stageB_gt')],
+         'P5e flow': [('final', 'results/P5e/new')] +
+         [(f'final {v}', f'results/P5e/noise/final_{v}') for v in ('null_tagcmp_swap', 'null_hitor_swap', 'null_stageB_gt')] +
+         [('packed', 'results/P5e/noise/packed')] +
+         [(f'packed {v}', f'results/P5e/noise/packed_{v}') for v in ('null_tagcmp_swap', 'null_hitor_swap', 'null_stageB_gt')]}
+for flow, var in NOISE.items():
+    paths = [f'{d}/d{dd}_m{m}_1000MHz/sta.txt' for _, d in var for dd in (16, 64, 256) for m in (0, 1)]
+    W(f'\n#### {flow}')
+    W(src(f'{len(var)} design directories, d*_m*_1000MHz/sta.txt', paths))
+    W('\n| depth | mode | ' + ' | '.join(n for n, _ in var) + ' | min | max | spread |')
+    W('|---|---|' + '---|' * (len(var) + 3))
+    for dd in (16, 64, 256):
+        for m in (0, 1):
+            v = [fmax_of(f'{d}/d{dd}_m{m}_1000MHz/sta.txt') for _, d in var]
+            W(f'| {dd} | {m} | ' + ' | '.join(f'{x:.1f}' for x in v) +
+              f' | {min(v):.1f} | {max(v):.1f} | {(max(v) / min(v) - 1) * 100:.2f}% |')
+
+mut = read('results/P5d/mutation.txt')
+W(f'\n### Mutation check of the final RTL (`results/P5d/mutation.txt`, {prov(["results/P5d/mutation.txt"])})')
+W(f'\nAll depths and modes: {len(re.findall(r": KILLED by testbench", mut))} mutant runs killed by the unit testbench, '
+  f'{len(re.findall(r"; KILLED by lockstep", mut))} by the lockstep check, '
+  f'{len(re.findall(r": survived \(equivalent", mut))} survived as equivalent; '
+  f'"{re.search(r"^RESULT: .*", mut, re.M).group(0)}".')
 
 # ---------------------------------------------------------------- P5f
 G = 'results/P5f_gls'
