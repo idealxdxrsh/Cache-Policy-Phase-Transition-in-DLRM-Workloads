@@ -1,4 +1,14 @@
-P9 cluster jobs: PREPARED, NOT SUBMITTED (waiting for the user's OK). Submit with: bash cluster/p9_driver.sh
+P9 cluster jobs: SUBMITTED 2026-10-27 after the user's OK, with bash cluster/p9_driver.sh (code at commit a674254)
+  419424  set A, 2,000,000 rows    16G 1:00  no dependency
+  419425  set A, 10,000,000 rows   32G 2:00  afterok:419424, --kill-on-invalid-dep=yes
+  419426  set B, 2,000,000 rows    16G 1:00  no dependency
+  419427  set B, 10,000,000 rows   32G 2:00  afterok:419426, --kill-on-invalid-dep=yes
+Set A also runs tools/p9_check_p3b.py: LFUResetCache must equal the committed P3b JSON exactly (hits and misses per
+table at all 4 capacities, stream totals); output $OUT/p3b_check.txt; a mismatch fails the job, cancelling the
+afterok 10M job. P3b's 41.4010% (256, 2M) is LRU, which set A does not rerun; 47.6719% is LFUResetCache (checked).
+Squeue at submission: 419424 PD (None), 419426 PD (Priority), 419425 and 419427 PD (Dependency).
+Outputs on the cluster: /scratch/rahulkmr/Adarsh/results/P9/rows_<N>_set<A|B>/ (log.txt, time.txt, parts/,
+shared_cache_results.json, p3b_check.txt for set A). Not yet copied back.
 Script: cluster/jobs/p9_shared.sbatch (trace_sim/run_shared_cache.py, P3b stream and order, 256/1000/10000/100000
 entries). Partition compute, 4 CPUs per job (compute QOS minimum), no GPU.
 
