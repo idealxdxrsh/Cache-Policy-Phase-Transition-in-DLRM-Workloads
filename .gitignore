@@ -48,3 +48,6 @@ results/P9/rtl/*.hits.gz
 # P10 lockstep work files and hit logs (sha256 in results/P10/rtl/*.txt; regenerate with rtl/v3/run_p10.sh all)
 results/P10/work/
 results/P10/rtl/*.hits.gz
+# P11 netlists (sha256 in results/P11/synth/netlists.sha256; regenerate with cluster/p11_driver.sh synth)
+results/P11/**/netlist.v
+results/P11/cluster/gls/work/
