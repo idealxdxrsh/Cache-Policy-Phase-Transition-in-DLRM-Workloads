@@ -29,3 +29,9 @@ python -I "$W/repo/tools/timev.py" python -I "$W/repo/trace_sim/run_shared_cache
     --criteo_path "$TRAIN" --n_rows "$N_ROWS" --workers "$SLURM_CPUS_PER_TASK" \
     --output "$OUT" --tag shared_cache_results --policies "${POL[@]}" \
     > "$OUT/log.txt" 2> "$OUT/time.txt"
+# Set A: LFUResetCache must reproduce P3b exactly (tools/p9_check_p3b.py); on a mismatch this job fails, so the
+# afterok 10M job is cancelled (--kill-on-invalid-dep=yes in cluster/p9_driver.sh).
+if [ "$SET" = A ]; then
+    python -I "$W/repo/tools/p9_check_p3b.py" "$OUT/shared_cache_results.json" \
+        "$W/repo/p3b_ref/rows_$N_ROWS/shared_cache_results.json" > "$OUT/p3b_check.txt"
+fi
