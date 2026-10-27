@@ -1,0 +1,6 @@
+strash; &get -n; &fraig -x; &put; scorr; dc2; strash; &get -n; &dch -f; &nf -D 858.5; &put
+&get -n; &st; &syn2; &if -g -K 6; &synch2; &nf -D 858.5; &put
+&get -n; &st; &syn2; &if -g -K 6; &synch2; &nf -D 858.5; &put
+&get -n; &st; &syn2; &if -g -K 6; &synch2; &nf -D 858.5; &put
+topo; buffer -c -p; topo; upsize -c -D 858.5; dnsize -c -D 858.5
+stime -c -p

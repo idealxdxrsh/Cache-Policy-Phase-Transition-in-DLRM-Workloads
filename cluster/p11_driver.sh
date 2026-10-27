@@ -8,7 +8,7 @@
 #            1000/500 MHz -> results/P11/synth/. Local because Yosys 0.33, OpenSTA 3.1.0 and the liberty (used
 #            locally only, results/P5/SOURCES.md) are local; the cluster has Yosys 0.62 and no OpenSTA.
 #   report   tools/p11_synth_report.py -> results/P11/SYNTH.md (v3 vs rtl-v2-final, results/P5e/new)
-#   mutate   LOCAL: tools/mutate_rtl.py --v3 at depths 16/64/256 -> results/P11/mutation.txt
+#   mutate   LOCAL: tools/mutate_rtl.py --v3 --lockstep (mode 1 only) at depths 16/64/256 -> results/P11/mutation.txt
 #   gls      stage the 12 v3 netlists, P5f's cell models, rtl/v3, the testbench and the two slices on the cluster,
 #            check their sha256 there, submit the lockstep arrays: depth 16, then 64 afterok, then 256 afterok
 #   wait     one sbatch --wait job that starts after every P11 job has ended (afterany); blocks, no polling
@@ -56,10 +56,9 @@ synth)
     (cd "$R/synth" && sha256sum d*/netlist.v > netlists.sha256)
     sort -o "$R/run_synth.txt" "$R/run_synth.txt" ;;
 report)
-    python3 -I "$ROOT/tools/p5_results.py" "$R/synth" "$LIB" "P11 results (rtl/v3, P5e flow)" > /dev/null
-    python3 -I "$ROOT/tools/p11_synth_report.py" > "$R/SYNTH.md" ;;
+    python3 -I "$ROOT/tools/p11_synth_report.py" "$LIB" > "$R/SYNTH.md" ;;
 mutate)
-    python3 -I "$ROOT/tools/mutate_rtl.py" --v3 --depths 16 64 256 --out "$R/mutation.txt" > "$R/mutation_log.txt" 2>&1 ;;
+    python3 -I "$ROOT/tools/mutate_rtl.py" --v3 --lockstep --depths 16 64 256 --out "$R/mutation.txt" > "$R/mutation_log.txt" 2>&1 ;;
 gls)
     $SSH "mkdir -p $G/netlists $G/models $G/rtl $G/tb $G/tools $G/stim $G/slurm $G/results"
     for r in $RUNS; do $SSH "mkdir -p $G/netlists/$r"; rsync -a "$R/synth/$r/netlist.v" "$H:$G/netlists/$r/"; done

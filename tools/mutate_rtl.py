@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Mutation check for rtl/v2: the testbench must FAIL on broken RTL copies.
+"""Mutation check for rtl/v2 (or rtl/v3 with --v3): the testbench must FAIL on broken RTL copies.
 
 Each mutant is one exact text substitution in a copy of
 lfu_cache_controller.v (the original is never modified). Every mutant is
@@ -13,7 +13,13 @@ rtl-v2-baseline tag in synthesis/p5b/tb_lockstep.sv (every port compared every
 cycle, plus the victim slot in every EVICT cycle); it is then reported as
 "KILLED by lockstep" or "SURVIVED". The testbench verdict is always shown.
 
-    python3 tools/mutate_rtl.py [--out results/P1/mutation.txt] [--depths 16 64 256] [--lockstep]
+    python3 tools/mutate_rtl.py [--out results/P1/mutation.txt] [--depths 16 64 256] [--lockstep] [--v3]
+
+--v3 (P11): mutate rtl/v3/lfu_cache_controller.v under rtl/v3/tb_lfu_cache.sv (TESTS 1-8). The v2 mutants are
+applied with the v3 key width (`*EW +: EW]` -> `*KW +: KW]`; the tree leaf value is `{eff(...), wrap}`), and the
+V3_MUTANTS below (Rotate-victim, COUNTER_MODE 0 only, so equivalent in mode 1) are added. --lockstep compares
+against rtl-v2-baseline; with --v3 it is used in mode 1 only (v3 mode 1 is the v2 logic; v3 mode 0 has a different
+tie rule, so a mode-0 survivor is reported as SURVIVED).
 Exit status is non-zero if the unmutated RTL fails or any non-equivalent
 mutant survives.
 """
@@ -135,6 +141,47 @@ MUTANTS = {
 }
 
 
+# P11: rtl/v3 Rotate-victim mutants. Mode 1 never uses ptr or the wrap bit (ROTATE = 0), so all are
+# equivalent there. At depth 16, GSIZE = 1: Stage A has no nodes, so its wrap bit changes no logic.
+V3_MUTANTS = {
+    "rot_disabled": (
+        "Rotate-victim off: mode 0 falls back to the v2 lowest-index rule",
+        "localparam ROTATE = (COUNTER_MODE == 0);", "localparam ROTATE = 0;", (1,)),
+    "rot_ptr_no_increment": (
+        "ptr loads the victim itself instead of victim + 1",
+        "ptr <= victim_reg + 1'b1;", "ptr <= victim_reg;", (1,)),
+    "rot_ptr_never_loaded": (
+        "ptr is never loaded in FILL (stays 0: v2 rule with a wider key)",
+        "if (ROTATE)\n                    ptr <= victim_reg + 1'b1;",
+        "if (1'b0)\n                    ptr <= victim_reg + 1'b1;", (1,)),
+    "rot_ptr_no_reset": (
+        "ptr is not reset (X until the first FILL)",
+        "        ptr        <= {IDX_WIDTH{1'b0}};\n", "", (1,)),
+    "rot_stageA_no_wrap": (
+        "Stage A leaves ignore the wrap bit",
+        "ROTATE && (g*GSIZE + s < ptr)", "1'b0", (1,), (16,)),
+    "rot_stageB_no_wrap": (
+        "Stage B leaves ignore the wrap bit",
+        "ROTATE && (stageA_min[g] < ptr)", "1'b0", (1,)),
+    "rot_stageA_le": (
+        "Stage A wrap = (slot <= ptr): the slot at ptr counts as wrapped",
+        "(g*GSIZE + s < ptr)", "(g*GSIZE + s <= ptr)", (1,), (16,)),
+    "rot_stageB_le": (
+        "Stage B wrap = (slot <= ptr): the slot at ptr counts as wrapped",
+        "(stageA_min[g] < ptr)", "(stageA_min[g] <= ptr)", (1,)),
+    # Equivalent in every mode: mode 0 already loads ptr in FILL, and mode 1 never reads ptr (wrap is
+    # ROTATE && ..., ROTATE = 0). Kept to document that.
+    "rot_ptr_loaded_in_mode1": (
+        "ptr also loads in mode 1 (equivalent: mode 1 never reads ptr)",
+        "if (ROTATE)\n                    ptr <=", "if (1'b1)\n                    ptr <=", (0, 1)),
+}
+
+
+def v3_text(s):
+    """A v2 mutant's text in rtl/v3 form: 8-bit key, tree leaf value {eff(...), wrap}."""
+    return s.replace('*EW +: EW] = eff(', '*KW +: KW] = {eff(').replace('*EW +: EW]', '*KW +: KW]')
+
+
 def simulate(rtl_path, mode, work, depth=256):
     exe = work / f"sim_m{mode}"
     c = subprocess.run(["iverilog", "-g2012", f"-Ptb_lfu_cache.COUNTER_MODE={mode}",
@@ -172,7 +219,14 @@ def main():
     ap.add_argument("--out", default=str(ROOT / "results/P1/mutation.txt"))
     ap.add_argument("--depths", nargs="+", type=int, default=[256])
     ap.add_argument("--lockstep", action="store_true")
+    ap.add_argument("--v3", action="store_true")
     args = ap.parse_args()
+    global RTL, TB
+    mutants = MUTANTS
+    if args.v3:
+        RTL, TB = ROOT / "rtl/v3/lfu_cache_controller.v", ROOT / "rtl/v3/tb_lfu_cache.sv"
+        mutants = {k: (v[0], v3_text(v[1]), v3_text(v[2]), *v[3:]) for k, v in MUTANTS.items()}
+        mutants.update(V3_MUTANTS)
     src = RTL.read_text()
     lines, bad = [], False
     with tempfile.TemporaryDirectory() as td:
@@ -182,7 +236,7 @@ def main():
                 ok, info = simulate(RTL, m, work, d)
                 lines.append(f"baseline depth={d} mode={m}: {'PASS' if ok else 'FAIL ' + info}")
                 bad |= not ok
-        for name, (desc, old, new, equiv, *eq_depths) in MUTANTS.items():
+        for name, (desc, old, new, equiv, *eq_depths) in mutants.items():
             n = src.count(old)
             if n != 1:
                 lines.append(f"{name}: target text found {n} times, mutant not applied")
@@ -197,14 +251,14 @@ def main():
                         verdict = "survived (equivalent, expected)" if passed else "KILLED (equivalent cell)"
                     elif not passed:
                         verdict = "KILLED by testbench"
-                    elif args.lockstep:
+                    elif args.lockstep and not (args.v3 and m == 0):
                         ls_ok, ls_info = lockstep(mpath, m, work, d)
                         verdict = ("testbench passed; SURVIVED lockstep" if ls_ok
                                    else "testbench passed; KILLED by lockstep")
                         info = ls_info
                         bad |= ls_ok
                     else:
-                        verdict = "SURVIVED (testbench gap)"
+                        verdict = "SURVIVED (testbench gap" + ("; no lockstep reference for v3 mode 0)" if args.lockstep else ")")
                         bad = True
                     lines.append(f"{name} depth={d} mode={m}: {verdict} | {desc}" +
                                  ("" if passed and not args.lockstep else f" | {info}"))

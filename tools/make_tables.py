@@ -643,6 +643,15 @@ else:
         p3 = files(f'results/P3b/rows_{n}/parts/*.csv')
         ref, ta, tb = totals(p3), totals(pa), totals(pb)
         caps = sorted({k[1] for k in ref})
+        p11 = files(f'results/P11/cluster/rows_{n}/parts/*.csv')
+        t11 = totals(p11)
+        caps11 = sorted({k[1] for k in t11 if k[1] not in caps})       # P11 part A: 16, 64 (256 = check only)
+        NR = 'not run'
+        p11_note = (src(f'results/P11/cluster/rows_{n}/parts/*.csv', p11) + f' P11 rows ({", ".join(f"{c:,}" for c in caps11)} '
+                    'entries) are from P11 part A (LRU, LFU-reset (oldest), RTL-exact m0, Rotate-victim m0 only; other '
+                    f'columns not run). Its 256-entry run equals P3b / P9 exactly: `results/P11/cluster/rows_{n}/ref_check.txt` '
+                    f'says `{grab(r"^(P11_REF_CHECK \w+)", read(f"results/P11/cluster/rows_{n}/ref_check.txt"), str)}`.'
+                    if p11 else 'P11 part A (16, 64 entries): not run.')
         chk = read(f'results/P9/cluster/rows_{n}_setA/p3b_check.txt')
         W(f'\n#### {n:,} rows: total hit %')
         W(src(f'results/P3b/rows_{n}/parts/*.csv', p3) + ' ' + src(f'results/P9/cluster/rows_{n}_setA/parts/*.csv', pa)
@@ -652,13 +661,19 @@ else:
         W(f'Rerun totals equal P3b at all capacities (parts files): {"yes" if same else "NO"}.')
         W('\n| entries | ' + ' | '.join(SHORT.get(p, p) for p in P3B_POL + A_POL) + ' |')
         W('|---|' + '---|' * (len(P3B_POL) + len(A_POL)))
+        for c in caps11:
+            W(f'| {c:,} (P11) | ' + ' | '.join(pct(*t11[p, c]) if (p, c) in t11 else NR for p in P3B_POL + A_POL) + ' |')
         for c in caps:
             W(f'| {c:,} | ' + ' | '.join(pct(*ref[p, c]) for p in P3B_POL) + ' | ' + ' | '.join(pct(*ta[p, c]) for p in A_POL) + ' |')
+        W(p11_note)
         W(f'\n#### {n:,} rows: RTL-exact vs LRU, and the gap decomposition (hits)')
         W('gap = LFU-reset (oldest) - RTL-exact mode 0; tie = oldest - lowest-slot; sat = oldest - 6-bit; '
           'interaction = gap - tie - sat. Sign of "vs LRU": + = more hits than LRU.')
         W('\n| entries | LRU hits | RTL-exact m0 vs LRU | RTL-exact m1 vs LRU | gap | tie | sat | interaction | m1 - m0 | lowest-slot 6-bit = m0 |')
         W('|---|---|---|---|---|---|---|---|---|---|')
+        for c in caps11:
+            W(f'| {c:,} (P11) | {t11["LRU", c][0]:,} | {t11["RTL-exact mode 0", c][0] - t11["LRU", c][0]:+,} | {NR} | '
+              f'{t11[OLD, c][0] - t11["RTL-exact mode 0", c][0]:,} | {NR} | {NR} | {NR} | {NR} | {NR} |')
         for c in caps:
             h = {p: ref[p, c][0] for p in P3B_POL}
             h.update({p: ta[p, c][0] for p in A_POL})
@@ -672,6 +687,14 @@ else:
         W('\n| entries | LRU | LFU-reset (oldest) | RTL-exact m0 | RTL-exact m1 | ' + ' | '.join(CP) + ' | '
           + ' | '.join(f'recovered % {p}' for p in CP) + ' | ' + ' | '.join(f'{p} - oldest (hits)' for p in CP[::2]) + ' |')
         W('|---|---|---|---|---|' + '---|' * (2 * len(CP) + 3))
+        for c in caps11:
+            g = t11[OLD, c][0] - t11['RTL-exact mode 0', c][0]
+            rv = t11['Rotate-victim mode 0', c][0]
+            W(f'| {c:,} (P11) | {pct(*t11["LRU", c])} | {pct(*t11[OLD, c])} | {pct(*t11["RTL-exact mode 0", c])} | {NR} | '
+              + ' | '.join(pct(*t11[p, c]) if (p, c) in t11 else NR for p in CP) + ' | '
+              + ' | '.join((f'{(rv - t11["RTL-exact mode 0", c][0]) / g * 100:.1f}' if g > 0 else 'n/a') if p == 'Rotate-victim mode 0'
+                           else NR for p in CP) + ' | '
+              + ' | '.join(f'{t11[p, c][0] - t11[OLD, c][0]:+,}' if (p, c) in t11 else NR for p in CP[::2]) + ' |')
         for c in caps:
             rec = []
             for p in CP:
@@ -681,6 +704,63 @@ else:
             W(f'| {c:,} | {pct(*ref["LRU", c])} | {pct(*ref[OLD, c])} | {pct(*ta["RTL-exact mode 0", c])} | '
               f'{pct(*ta["RTL-exact mode 1", c])} | ' + ' | '.join(pct(*tb[p, c]) for p in CP) + ' | ' + ' | '.join(rec) + ' | '
               + ' | '.join(f'{tb[p, c][0] - ref[OLD, c][0]:+,}' for p in CP[::2]) + ' |')
+
+# ---------------------------------------------------------------- P10 / P11
+W('\n## P10 / P11: rtl/v3 = rtl-v2-final + Rotate-victim tie-break in COUNTER_MODE 0')
+LS = json.loads(read('results/P10/lockstep.json'))
+W('\n### P10 lockstep, rtl/v3 RTL (Icarus) vs trace simulator, all 200,000 requests of each slice, cold start')
+W(src('results/P10/lockstep.json', ['results/P10/lockstep.json']) + ' Mode 0 model: Rotate-victim mode 0; mode 1 model: '
+  'RTL-exact mode 1, and the v3 mode-1 hit log must equal P9\'s rtl-v2-final log. v2-rule hits = RTL-exact mode 0 on the same requests.')
+W('\n| depth | mode | slice | RTL hits | RTL misses | model hits | model misses | mismatches | v2-rule hits (m0) / equals P9 v2 log (m1) |')
+W('|---|---|---|---|---|---|---|---|---|')
+for r in LS['runs']:
+    W(f'| {r["depth"]} | {r["mode"]} | {r["slice"]} | {r["rtl_hits"]:,} | {r["rtl_misses"]:,} | {r["sim"]["hits"]:,} | '
+      f'{r["sim"]["misses"]:,} | {r["sim"]["mismatches"]} | '
+      + (f'{r["v2_rule_hits"]:,}' if r['mode'] == 0 else ('yes' if r['equals_p9_v2_log'] else 'NO')) + ' |')
+W('\n### P11 full traces (P3b stream), shared cache: v2 rule (RTL-exact m0) vs v3 rule (Rotate-victim m0), total hit %')
+OLD = 'LFU (gem5 LFURP — reset on eviction)'
+V4 = ['LRU', OLD, 'RTL-exact mode 0', 'Rotate-victim mode 0']
+for n in (2000000, 10000000):
+    p11 = files(f'results/P11/cluster/rows_{n}/parts/*.csv')
+    p3, pa, pb = (files(f'results/P3b/rows_{n}/parts/cap256_*.csv'), files(f'results/P9/cluster/rows_{n}_setA/parts/cap256_*.csv'),
+                  files(f'results/P9/cluster/rows_{n}_setB/parts/cap256_*.csv'))
+    if not p11:
+        W(f'\n{n:,} rows: not run (P11 part A).')
+        continue
+    t = {}
+    for pth in p11 + p3 + pa + pb:
+        for r in csv.DictReader(io.StringIO(read(pth))):
+            if r['table'] == 'all' and r['policy'] in V4:
+                t.setdefault((r['policy'], int(r['capacity'])), (int(r['hits']), int(r['misses'])))
+    W(f'\n#### {n:,} rows')
+    W(src(f'results/P11/cluster/rows_{n}/parts/*.csv', p11) + ' 256 entries: P3b (LRU, LFU-reset) and P9 (RTL-exact m0 set A, '
+      'Rotate-victim m0 set B) parts files; P11 reran 256 and `ref_check.txt` compares them exactly.')
+    W('\n| entries | LRU | LFU-reset (oldest) | RTL-exact m0 (v2 rule) | Rotate-victim m0 (v3 rule) | v3 - v2 (hits) | v3 - LRU (hits) | v3 - oldest (hits) |')
+    W('|---|---|---|---|---|---|---|---|')
+    for c in sorted({k[1] for k in t}):
+        h = {p: t[p, c][0] for p in V4}
+        W(f'| {c:,} | ' + ' | '.join(pct(*t[p, c]) for p in V4) + f' | {h["Rotate-victim mode 0"] - h["RTL-exact mode 0"]:+,} | '
+          f'{h["Rotate-victim mode 0"] - h["LRU"]:+,} | {h["Rotate-victim mode 0"] - h[OLD]:+,} |')
+W('\n### P11 synthesis of rtl/v3 (P5e flow), gate-level lockstep, mutation')
+if 'results/P11/SYNTH.md' in FILES:
+    sy = read('results/P11/SYNTH.md')
+    W(src('results/P11/SYNTH.md', ['results/P11/SYNTH.md']) + ' Tables copied from that file (generated by `tools/p11_synth_report.py`).')
+    W('\n' + '\n'.join(ln for ln in sy.splitlines() if ln.startswith('|') or ln.startswith('## ')))
+else:
+    W('Synthesis: not run.')
+if 'results/P11/gls.json' in FILES:
+    G = json.loads(read('results/P11/gls.json'))
+    W('\n' + src('results/P11/gls.json', ['results/P11/gls.json']) + f' Gate-level lockstep (zero delay) vs v3 RTL, both slices: '
+      f'{sum(r["pass"] for r in G)}/{len(G)} runs pass; mismatching cycles total {sum(r.get("mismatching_cycles", 0) or 0 for r in G)}.')
+else:
+    W('\nGate-level lockstep: not run.')
+if 'results/P11/mutation.txt' in FILES:
+    mt = read('results/P11/mutation.txt')
+    W('\n' + src('results/P11/mutation.txt', ['results/P11/mutation.txt']) + ' `tools/mutate_rtl.py --v3 --lockstep`: '
+      f'{mt.count("KILLED by testbench")} killed by the testbench, {mt.count("KILLED by lockstep")} by lockstep (mode 1, vs '
+      f'rtl-v2-baseline), {mt.count("SURVIVED")} survived, '
+      f'{mt.count("survived (equivalent, expected)")} equivalent cells survived as expected, '
+      f'{mt.count("KILLED (equivalent cell)")} equivalent cells killed; `{grab(r"^(RESULT: .*)$", mt, str)}`.')
 
 # ---------------------------------------------------------------- older evidence
 W('\n## Older evidence, not reproduced in P0-P5f (values parsed from the committed files)')
