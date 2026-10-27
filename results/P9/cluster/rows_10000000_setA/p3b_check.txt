@@ -1,0 +1,9 @@
+meta n_rows: equal (10000000 vs P3b 10000000)
+meta accesses: equal (231492097 vs P3b 231492097)
+meta unique_keys: equal (9247291 vs P3b 9247291)
+meta accesses_per_table: equal
+capacity 256: P9 48.1592% (111484752 hits) vs P3b 48.1592% (111484752 hits); per table equal: MATCH
+capacity 1000: P9 59.1030% (136818786 hits) vs P3b 59.1030% (136818786 hits); per table equal: MATCH
+capacity 10000: P9 78.0735% (180733875 hits) vs P3b 78.0735% (180733875 hits); per table equal: MATCH
+capacity 100000: P9 90.9315% (210499182 hits) vs P3b 90.9315% (210499182 hits); per table equal: MATCH
+P3B_CHECK PASS

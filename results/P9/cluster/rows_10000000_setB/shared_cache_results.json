@@ -1,0 +1,4004 @@
+{
+  "meta": {
+    "source": "/scratch/rahulkmr/Adarsh/data/criteo/extracted/train.txt",
+    "n_rows": 10000000,
+    "accesses": 231492097,
+    "unique_keys": 9247291,
+    "accesses_per_table": [
+      10000000,
+      10000000,
+      9654961,
+      9654961,
+      10000000,
+      8719851,
+      10000000,
+      10000000,
+      10000000,
+      10000000,
+      10000000,
+      9654961,
+      10000000,
+      10000000,
+      10000000,
+      9654961,
+      10000000,
+      10000000,
+      5611526,
+      5611526,
+      9654961,
+      2396376,
+      10000000,
+      9654961,
+      5611526,
+      5611526
+    ],
+    "capacities": [
+      256,
+      1000,
+      10000,
+      100000
+    ],
+    "policies": [
+      "Rotate-victim mode 0",
+      "Rotate-victim mode 1",
+      "Rotate-step mode 0",
+      "Rotate-step mode 1",
+      "Young-bit mode 0",
+      "Young-bit mode 1"
+    ],
+    "capacity_unit": "vectors, ONE cache shared by all 26 tables",
+    "order": "file row order; within a row tables 0..25; empty/non-hex fields skipped",
+    "key": "table << 32 | id",
+    "workers": 4,
+    "wall_seconds": {
+      "load": 126.23397326469421,
+      "sweep": 1332.9698367118835
+    }
+  },
+  "results": {
+    "256": {
+      "Rotate-step mode 0": {
+        "hits": 111591727,
+        "misses": 119900370,
+        "hit_rate": 48.2054154099265,
+        "cpu_seconds": 153.169710445,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 8706147,
+            "misses": 1293853,
+            "hit_rate": 87.06147
+          },
+          {
+            "table": 1,
+            "hits": 4809753,
+            "misses": 5190247,
+            "hit_rate": 48.09753
+          },
+          {
+            "table": 2,
+            "hits": 700518,
+            "misses": 8954443,
+            "hit_rate": 7.25552387006017
+          },
+          {
+            "table": 3,
+            "hits": 1404852,
+            "misses": 8250109,
+            "hit_rate": 14.550571462691565
+          },
+          {
+            "table": 4,
+            "hits": 9557015,
+            "misses": 442985,
+            "hit_rate": 95.57015
+          },
+          {
+            "table": 5,
+            "hits": 8521424,
+            "misses": 198427,
+            "hit_rate": 97.72442212602027
+          },
+          {
+            "table": 6,
+            "hits": 316363,
+            "misses": 9683637,
+            "hit_rate": 3.16363
+          },
+          {
+            "table": 7,
+            "hits": 9381947,
+            "misses": 618053,
+            "hit_rate": 93.81947000000001
+          },
+          {
+            "table": 8,
+            "hits": 9998389,
+            "misses": 1611,
+            "hit_rate": 99.98389
+          },
+          {
+            "table": 9,
+            "hits": 2455509,
+            "misses": 7544491,
+            "hit_rate": 24.55509
+          },
+          {
+            "table": 10,
+            "hits": 716419,
+            "misses": 9283581,
+            "hit_rate": 7.16419
+          },
+          {
+            "table": 11,
+            "hits": 699408,
+            "misses": 8955553,
+            "hit_rate": 7.244027189752502
+          },
+          {
+            "table": 12,
+            "hits": 1251913,
+            "misses": 8748087,
+            "hit_rate": 12.51913
+          },
+          {
+            "table": 13,
+            "hits": 9584755,
+            "misses": 415245,
+            "hit_rate": 95.84755
+          },
+          {
+            "table": 14,
+            "hits": 500211,
+            "misses": 9499789,
+            "hit_rate": 5.00211
+          },
+          {
+            "table": 15,
+            "hits": 793289,
+            "misses": 8861672,
+            "hit_rate": 8.216387409540028
+          },
+          {
+            "table": 16,
+            "hits": 9999645,
+            "misses": 355,
+            "hit_rate": 99.99645000000001
+          },
+          {
+            "table": 17,
+            "hits": 2169749,
+            "misses": 7830251,
+            "hit_rate": 21.69749
+          },
+          {
+            "table": 18,
+            "hits": 3533651,
+            "misses": 2077875,
+            "hit_rate": 62.97130228034228
+          },
+          {
+            "table": 19,
+            "hits": 5611523,
+            "misses": 3,
+            "hit_rate": 99.99994653860644
+          },
+          {
+            "table": 20,
+            "hits": 788539,
+            "misses": 8866422,
+            "hit_rate": 8.167189903718928
+          },
+          {
+            "table": 21,
+            "hits": 2223765,
+            "misses": 172611,
+            "hit_rate": 92.79699846768621
+          },
+          {
+            "table": 22,
+            "hits": 9720417,
+            "misses": 279583,
+            "hit_rate": 97.20417
+          },
+          {
+            "table": 23,
+            "hits": 2752553,
+            "misses": 6902408,
+            "hit_rate": 28.50920889271329
+          },
+          {
+            "table": 24,
+            "hits": 4387064,
+            "misses": 1224462,
+            "hit_rate": 78.17951836986944
+          },
+          {
+            "table": 25,
+            "hits": 1006909,
+            "misses": 4604617,
+            "hit_rate": 17.94358611187046
+          }
+        ]
+      },
+      "Rotate-victim mode 0": {
+        "hits": 111484752,
+        "misses": 120007345,
+        "hit_rate": 48.1592043291223,
+        "cpu_seconds": 156.23884457399998,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 8793272,
+            "misses": 1206728,
+            "hit_rate": 87.93272
+          },
+          {
+            "table": 1,
+            "hits": 4709447,
+            "misses": 5290553,
+            "hit_rate": 47.09447
+          },
+          {
+            "table": 2,
+            "hits": 791236,
+            "misses": 8863725,
+            "hit_rate": 8.195123729655666
+          },
+          {
+            "table": 3,
+            "hits": 1293733,
+            "misses": 8361228,
+            "hit_rate": 13.39967090493685
+          },
+          {
+            "table": 4,
+            "hits": 9467620,
+            "misses": 532380,
+            "hit_rate": 94.6762
+          },
+          {
+            "table": 5,
+            "hits": 8716027,
+            "misses": 3824,
+            "hit_rate": 99.95614603965136
+          },
+          {
+            "table": 6,
+            "hits": 320767,
+            "misses": 9679233,
+            "hit_rate": 3.20767
+          },
+          {
+            "table": 7,
+            "hits": 8989612,
+            "misses": 1010388,
+            "hit_rate": 89.89612
+          },
+          {
+            "table": 8,
+            "hits": 9998388,
+            "misses": 1612,
+            "hit_rate": 99.98388
+          },
+          {
+            "table": 9,
+            "hits": 2346167,
+            "misses": 7653833,
+            "hit_rate": 23.46167
+          },
+          {
+            "table": 10,
+            "hits": 1045038,
+            "misses": 8954962,
+            "hit_rate": 10.45038
+          },
+          {
+            "table": 11,
+            "hits": 792561,
+            "misses": 8862400,
+            "hit_rate": 8.208847244437342
+          },
+          {
+            "table": 12,
+            "hits": 1356277,
+            "misses": 8643723,
+            "hit_rate": 13.562769999999999
+          },
+          {
+            "table": 13,
+            "hits": 9344952,
+            "misses": 655048,
+            "hit_rate": 93.44951999999999
+          },
+          {
+            "table": 14,
+            "hits": 628214,
+            "misses": 9371786,
+            "hit_rate": 6.28214
+          },
+          {
+            "table": 15,
+            "hits": 845281,
+            "misses": 8809680,
+            "hit_rate": 8.754887772203327
+          },
+          {
+            "table": 16,
+            "hits": 9999644,
+            "misses": 356,
+            "hit_rate": 99.99643999999999
+          },
+          {
+            "table": 17,
+            "hits": 1794930,
+            "misses": 8205070,
+            "hit_rate": 17.9493
+          },
+          {
+            "table": 18,
+            "hits": 3737299,
+            "misses": 1874227,
+            "hit_rate": 66.60040423941723
+          },
+          {
+            "table": 19,
+            "hits": 5611523,
+            "misses": 3,
+            "hit_rate": 99.99994653860644
+          },
+          {
+            "table": 20,
+            "hits": 792561,
+            "misses": 8862400,
+            "hit_rate": 8.208847244437342
+          },
+          {
+            "table": 21,
+            "hits": 2223765,
+            "misses": 172611,
+            "hit_rate": 92.79699846768621
+          },
+          {
+            "table": 22,
+            "hits": 9804339,
+            "misses": 195661,
+            "hit_rate": 98.04339
+          },
+          {
+            "table": 23,
+            "hits": 3008751,
+            "misses": 6646210,
+            "hit_rate": 31.16274628141947
+          },
+          {
+            "table": 24,
+            "hits": 4139311,
+            "misses": 1472215,
+            "hit_rate": 73.76444482303032
+          },
+          {
+            "table": 25,
+            "hits": 934037,
+            "misses": 4677489,
+            "hit_rate": 16.64497322118796
+          }
+        ]
+      },
+      "Rotate-victim mode 1": {
+        "hits": 82098325,
+        "misses": 149393772,
+        "hit_rate": 35.46485001602452,
+        "cpu_seconds": 409.654275821,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 6727852,
+            "misses": 3272148,
+            "hit_rate": 67.27852
+          },
+          {
+            "table": 1,
+            "hits": 2459110,
+            "misses": 7540890,
+            "hit_rate": 24.591099999999997
+          },
+          {
+            "table": 2,
+            "hits": 270363,
+            "misses": 9384598,
+            "hit_rate": 2.8002495297495247
+          },
+          {
+            "table": 3,
+            "hits": 588472,
+            "misses": 9066489,
+            "hit_rate": 6.095022030643107
+          },
+          {
+            "table": 4,
+            "hits": 7828676,
+            "misses": 2171324,
+            "hit_rate": 78.28676
+          },
+          {
+            "table": 5,
+            "hits": 6741956,
+            "misses": 1977895,
+            "hit_rate": 77.31733030759355
+          },
+          {
+            "table": 6,
+            "hits": 266537,
+            "misses": 9733463,
+            "hit_rate": 2.66537
+          },
+          {
+            "table": 7,
+            "hits": 7386130,
+            "misses": 2613870,
+            "hit_rate": 73.8613
+          },
+          {
+            "table": 8,
+            "hits": 9056295,
+            "misses": 943705,
+            "hit_rate": 90.56295
+          },
+          {
+            "table": 9,
+            "hits": 1863518,
+            "misses": 8136482,
+            "hit_rate": 18.635180000000002
+          },
+          {
+            "table": 10,
+            "hits": 509073,
+            "misses": 9490927,
+            "hit_rate": 5.090730000000001
+          },
+          {
+            "table": 11,
+            "hits": 354601,
+            "misses": 9300360,
+            "hit_rate": 3.672733634035394
+          },
+          {
+            "table": 12,
+            "hits": 607543,
+            "misses": 9392457,
+            "hit_rate": 6.07543
+          },
+          {
+            "table": 13,
+            "hits": 7428964,
+            "misses": 2571036,
+            "hit_rate": 74.28964
+          },
+          {
+            "table": 14,
+            "hits": 446044,
+            "misses": 9553956,
+            "hit_rate": 4.46044
+          },
+          {
+            "table": 15,
+            "hits": 394080,
+            "misses": 9260881,
+            "hit_rate": 4.081632230311443
+          },
+          {
+            "table": 16,
+            "hits": 7094234,
+            "misses": 2905766,
+            "hit_rate": 70.94234
+          },
+          {
+            "table": 17,
+            "hits": 1052037,
+            "misses": 8947963,
+            "hit_rate": 10.52037
+          },
+          {
+            "table": 18,
+            "hits": 3064171,
+            "misses": 2547355,
+            "hit_rate": 54.604950596326205
+          },
+          {
+            "table": 19,
+            "hits": 4245777,
+            "misses": 1365749,
+            "hit_rate": 75.66171839888116
+          },
+          {
+            "table": 20,
+            "hits": 374047,
+            "misses": 9280914,
+            "hit_rate": 3.8741430441821567
+          },
+          {
+            "table": 21,
+            "hits": 1474262,
+            "misses": 922114,
+            "hit_rate": 61.52047925701142
+          },
+          {
+            "table": 22,
+            "hits": 7221467,
+            "misses": 2778533,
+            "hit_rate": 72.21467
+          },
+          {
+            "table": 23,
+            "hits": 1340346,
+            "misses": 8314615,
+            "hit_rate": 13.88245897627137
+          },
+          {
+            "table": 24,
+            "hits": 2872677,
+            "misses": 2738849,
+            "hit_rate": 51.19243856305754
+          },
+          {
+            "table": 25,
+            "hits": 430093,
+            "misses": 5181433,
+            "hit_rate": 7.664457047868975
+          }
+        ]
+      },
+      "Young-bit mode 1": {
+        "hits": 82098306,
+        "misses": 149393791,
+        "hit_rate": 35.46484180840091,
+        "cpu_seconds": 255.77251598900003,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 6727852,
+            "misses": 3272148,
+            "hit_rate": 67.27852
+          },
+          {
+            "table": 1,
+            "hits": 2459109,
+            "misses": 7540891,
+            "hit_rate": 24.591089999999998
+          },
+          {
+            "table": 2,
+            "hits": 270362,
+            "misses": 9384599,
+            "hit_rate": 2.800239172379878
+          },
+          {
+            "table": 3,
+            "hits": 588472,
+            "misses": 9066489,
+            "hit_rate": 6.095022030643107
+          },
+          {
+            "table": 4,
+            "hits": 7828675,
+            "misses": 2171325,
+            "hit_rate": 78.28675000000001
+          },
+          {
+            "table": 5,
+            "hits": 6741956,
+            "misses": 1977895,
+            "hit_rate": 77.31733030759355
+          },
+          {
+            "table": 6,
+            "hits": 266537,
+            "misses": 9733463,
+            "hit_rate": 2.66537
+          },
+          {
+            "table": 7,
+            "hits": 7386130,
+            "misses": 2613870,
+            "hit_rate": 73.8613
+          },
+          {
+            "table": 8,
+            "hits": 9056295,
+            "misses": 943705,
+            "hit_rate": 90.56295
+          },
+          {
+            "table": 9,
+            "hits": 1863519,
+            "misses": 8136481,
+            "hit_rate": 18.635189999999998
+          },
+          {
+            "table": 10,
+            "hits": 509073,
+            "misses": 9490927,
+            "hit_rate": 5.090730000000001
+          },
+          {
+            "table": 11,
+            "hits": 354600,
+            "misses": 9300361,
+            "hit_rate": 3.672723276665747
+          },
+          {
+            "table": 12,
+            "hits": 607543,
+            "misses": 9392457,
+            "hit_rate": 6.07543
+          },
+          {
+            "table": 13,
+            "hits": 7428965,
+            "misses": 2571035,
+            "hit_rate": 74.28965
+          },
+          {
+            "table": 14,
+            "hits": 446044,
+            "misses": 9553956,
+            "hit_rate": 4.46044
+          },
+          {
+            "table": 15,
+            "hits": 394079,
+            "misses": 9260882,
+            "hit_rate": 4.081621872941796
+          },
+          {
+            "table": 16,
+            "hits": 7094232,
+            "misses": 2905768,
+            "hit_rate": 70.94232000000001
+          },
+          {
+            "table": 17,
+            "hits": 1052034,
+            "misses": 8947966,
+            "hit_rate": 10.520340000000001
+          },
+          {
+            "table": 18,
+            "hits": 3064170,
+            "misses": 2547356,
+            "hit_rate": 54.604932775861684
+          },
+          {
+            "table": 19,
+            "hits": 4245777,
+            "misses": 1365749,
+            "hit_rate": 75.66171839888116
+          },
+          {
+            "table": 20,
+            "hits": 374046,
+            "misses": 9280915,
+            "hit_rate": 3.87413268681251
+          },
+          {
+            "table": 21,
+            "hits": 1474262,
+            "misses": 922114,
+            "hit_rate": 61.52047925701142
+          },
+          {
+            "table": 22,
+            "hits": 7221464,
+            "misses": 2778536,
+            "hit_rate": 72.21464
+          },
+          {
+            "table": 23,
+            "hits": 1340344,
+            "misses": 8314617,
+            "hit_rate": 13.882438261532076
+          },
+          {
+            "table": 24,
+            "hits": 2872674,
+            "misses": 2738852,
+            "hit_rate": 51.19238510166397
+          },
+          {
+            "table": 25,
+            "hits": 430092,
+            "misses": 5181434,
+            "hit_rate": 7.664439227404453
+          }
+        ]
+      },
+      "Rotate-step mode 1": {
+        "hits": 82098277,
+        "misses": 149393820,
+        "hit_rate": 35.464829280975415,
+        "cpu_seconds": 417.251057025,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 6727845,
+            "misses": 3272155,
+            "hit_rate": 67.27845
+          },
+          {
+            "table": 1,
+            "hits": 2459095,
+            "misses": 7540905,
+            "hit_rate": 24.59095
+          },
+          {
+            "table": 2,
+            "hits": 270359,
+            "misses": 9384602,
+            "hit_rate": 2.8002081002709382
+          },
+          {
+            "table": 3,
+            "hits": 588475,
+            "misses": 9066486,
+            "hit_rate": 6.095053102752046
+          },
+          {
+            "table": 4,
+            "hits": 7828676,
+            "misses": 2171324,
+            "hit_rate": 78.28676
+          },
+          {
+            "table": 5,
+            "hits": 6741961,
+            "misses": 1977890,
+            "hit_rate": 77.31738764802289
+          },
+          {
+            "table": 6,
+            "hits": 266540,
+            "misses": 9733460,
+            "hit_rate": 2.6654
+          },
+          {
+            "table": 7,
+            "hits": 7386129,
+            "misses": 2613871,
+            "hit_rate": 73.86129
+          },
+          {
+            "table": 8,
+            "hits": 9056296,
+            "misses": 943704,
+            "hit_rate": 90.56296
+          },
+          {
+            "table": 9,
+            "hits": 1863520,
+            "misses": 8136480,
+            "hit_rate": 18.635199999999998
+          },
+          {
+            "table": 10,
+            "hits": 509080,
+            "misses": 9490920,
+            "hit_rate": 5.0908
+          },
+          {
+            "table": 11,
+            "hits": 354595,
+            "misses": 9300366,
+            "hit_rate": 3.672671489817515
+          },
+          {
+            "table": 12,
+            "hits": 607549,
+            "misses": 9392451,
+            "hit_rate": 6.07549
+          },
+          {
+            "table": 13,
+            "hits": 7428960,
+            "misses": 2571040,
+            "hit_rate": 74.28960000000001
+          },
+          {
+            "table": 14,
+            "hits": 446043,
+            "misses": 9553957,
+            "hit_rate": 4.46043
+          },
+          {
+            "table": 15,
+            "hits": 394075,
+            "misses": 9260886,
+            "hit_rate": 4.081580443463211
+          },
+          {
+            "table": 16,
+            "hits": 7094240,
+            "misses": 2905760,
+            "hit_rate": 70.9424
+          },
+          {
+            "table": 17,
+            "hits": 1052021,
+            "misses": 8947979,
+            "hit_rate": 10.52021
+          },
+          {
+            "table": 18,
+            "hits": 3064168,
+            "misses": 2547358,
+            "hit_rate": 54.60489713493264
+          },
+          {
+            "table": 19,
+            "hits": 4245777,
+            "misses": 1365749,
+            "hit_rate": 75.66171839888116
+          },
+          {
+            "table": 20,
+            "hits": 374043,
+            "misses": 9280918,
+            "hit_rate": 3.8741016147035707
+          },
+          {
+            "table": 21,
+            "hits": 1474263,
+            "misses": 922113,
+            "hit_rate": 61.520520986689895
+          },
+          {
+            "table": 22,
+            "hits": 7221465,
+            "misses": 2778535,
+            "hit_rate": 72.21465
+          },
+          {
+            "table": 23,
+            "hits": 1340341,
+            "misses": 8314620,
+            "hit_rate": 13.882407189423137
+          },
+          {
+            "table": 24,
+            "hits": 2872671,
+            "misses": 2738855,
+            "hit_rate": 51.1923316402704
+          },
+          {
+            "table": 25,
+            "hits": 430090,
+            "misses": 5181436,
+            "hit_rate": 7.664403586475407
+          }
+        ]
+      },
+      "Young-bit mode 0": {
+        "hits": 111484752,
+        "misses": 120007345,
+        "hit_rate": 48.1592043291223,
+        "cpu_seconds": 278.277352529,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 8793272,
+            "misses": 1206728,
+            "hit_rate": 87.93272
+          },
+          {
+            "table": 1,
+            "hits": 4709447,
+            "misses": 5290553,
+            "hit_rate": 47.09447
+          },
+          {
+            "table": 2,
+            "hits": 791236,
+            "misses": 8863725,
+            "hit_rate": 8.195123729655666
+          },
+          {
+            "table": 3,
+            "hits": 1293733,
+            "misses": 8361228,
+            "hit_rate": 13.39967090493685
+          },
+          {
+            "table": 4,
+            "hits": 9467620,
+            "misses": 532380,
+            "hit_rate": 94.6762
+          },
+          {
+            "table": 5,
+            "hits": 8716027,
+            "misses": 3824,
+            "hit_rate": 99.95614603965136
+          },
+          {
+            "table": 6,
+            "hits": 320767,
+            "misses": 9679233,
+            "hit_rate": 3.20767
+          },
+          {
+            "table": 7,
+            "hits": 8989612,
+            "misses": 1010388,
+            "hit_rate": 89.89612
+          },
+          {
+            "table": 8,
+            "hits": 9998388,
+            "misses": 1612,
+            "hit_rate": 99.98388
+          },
+          {
+            "table": 9,
+            "hits": 2346167,
+            "misses": 7653833,
+            "hit_rate": 23.46167
+          },
+          {
+            "table": 10,
+            "hits": 1045038,
+            "misses": 8954962,
+            "hit_rate": 10.45038
+          },
+          {
+            "table": 11,
+            "hits": 792561,
+            "misses": 8862400,
+            "hit_rate": 8.208847244437342
+          },
+          {
+            "table": 12,
+            "hits": 1356277,
+            "misses": 8643723,
+            "hit_rate": 13.562769999999999
+          },
+          {
+            "table": 13,
+            "hits": 9344952,
+            "misses": 655048,
+            "hit_rate": 93.44951999999999
+          },
+          {
+            "table": 14,
+            "hits": 628214,
+            "misses": 9371786,
+            "hit_rate": 6.28214
+          },
+          {
+            "table": 15,
+            "hits": 845281,
+            "misses": 8809680,
+            "hit_rate": 8.754887772203327
+          },
+          {
+            "table": 16,
+            "hits": 9999644,
+            "misses": 356,
+            "hit_rate": 99.99643999999999
+          },
+          {
+            "table": 17,
+            "hits": 1794930,
+            "misses": 8205070,
+            "hit_rate": 17.9493
+          },
+          {
+            "table": 18,
+            "hits": 3737299,
+            "misses": 1874227,
+            "hit_rate": 66.60040423941723
+          },
+          {
+            "table": 19,
+            "hits": 5611523,
+            "misses": 3,
+            "hit_rate": 99.99994653860644
+          },
+          {
+            "table": 20,
+            "hits": 792561,
+            "misses": 8862400,
+            "hit_rate": 8.208847244437342
+          },
+          {
+            "table": 21,
+            "hits": 2223765,
+            "misses": 172611,
+            "hit_rate": 92.79699846768621
+          },
+          {
+            "table": 22,
+            "hits": 9804339,
+            "misses": 195661,
+            "hit_rate": 98.04339
+          },
+          {
+            "table": 23,
+            "hits": 3008751,
+            "misses": 6646210,
+            "hit_rate": 31.16274628141947
+          },
+          {
+            "table": 24,
+            "hits": 4139311,
+            "misses": 1472215,
+            "hit_rate": 73.76444482303032
+          },
+          {
+            "table": 25,
+            "hits": 934037,
+            "misses": 4677489,
+            "hit_rate": 16.64497322118796
+          }
+        ]
+      }
+    },
+    "1000": {
+      "Rotate-victim mode 0": {
+        "hits": 136818786,
+        "misses": 94673311,
+        "hit_rate": 59.10300514492294,
+        "cpu_seconds": 139.47103459600004,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9537987,
+            "misses": 462013,
+            "hit_rate": 95.37987
+          },
+          {
+            "table": 1,
+            "hits": 7687309,
+            "misses": 2312691,
+            "hit_rate": 76.87309
+          },
+          {
+            "table": 2,
+            "hits": 1346095,
+            "misses": 8308866,
+            "hit_rate": 13.94200349436937
+          },
+          {
+            "table": 3,
+            "hits": 2396875,
+            "misses": 7258086,
+            "hit_rate": 24.825320371568566
+          },
+          {
+            "table": 4,
+            "hits": 9811620,
+            "misses": 188380,
+            "hit_rate": 98.11619999999999
+          },
+          {
+            "table": 5,
+            "hits": 8716060,
+            "misses": 3791,
+            "hit_rate": 99.95652448648492
+          },
+          {
+            "table": 6,
+            "hits": 1669580,
+            "misses": 8330420,
+            "hit_rate": 16.6958
+          },
+          {
+            "table": 7,
+            "hits": 9676159,
+            "misses": 323841,
+            "hit_rate": 96.76159
+          },
+          {
+            "table": 8,
+            "hits": 9998390,
+            "misses": 1610,
+            "hit_rate": 99.9839
+          },
+          {
+            "table": 9,
+            "hits": 3210828,
+            "misses": 6789172,
+            "hit_rate": 32.10828
+          },
+          {
+            "table": 10,
+            "hits": 2733060,
+            "misses": 7266940,
+            "hit_rate": 27.3306
+          },
+          {
+            "table": 11,
+            "hits": 1640694,
+            "misses": 8014267,
+            "hit_rate": 16.993274234872622
+          },
+          {
+            "table": 12,
+            "hits": 3293731,
+            "misses": 6706269,
+            "hit_rate": 32.93731
+          },
+          {
+            "table": 13,
+            "hits": 9850533,
+            "misses": 149467,
+            "hit_rate": 98.50533
+          },
+          {
+            "table": 14,
+            "hits": 2826908,
+            "misses": 7173092,
+            "hit_rate": 28.269080000000002
+          },
+          {
+            "table": 15,
+            "hits": 1965522,
+            "misses": 7689439,
+            "hit_rate": 20.357637902421356
+          },
+          {
+            "table": 16,
+            "hits": 9999657,
+            "misses": 343,
+            "hit_rate": 99.99656999999999
+          },
+          {
+            "table": 17,
+            "hits": 5038451,
+            "misses": 4961549,
+            "hit_rate": 50.384510000000006
+          },
+          {
+            "table": 18,
+            "hits": 4235345,
+            "misses": 1376181,
+            "hit_rate": 75.4758153129826
+          },
+          {
+            "table": 19,
+            "hits": 5611523,
+            "misses": 3,
+            "hit_rate": 99.99994653860644
+          },
+          {
+            "table": 20,
+            "hits": 1750087,
+            "misses": 7904874,
+            "hit_rate": 18.126297972617394
+          },
+          {
+            "table": 21,
+            "hits": 2351201,
+            "misses": 45175,
+            "hit_rate": 98.11486177461299
+          },
+          {
+            "table": 22,
+            "hits": 9985210,
+            "misses": 14790,
+            "hit_rate": 99.8521
+          },
+          {
+            "table": 23,
+            "hits": 4336579,
+            "misses": 5318382,
+            "hit_rate": 44.91555170445536
+          },
+          {
+            "table": 24,
+            "hits": 5465952,
+            "misses": 145574,
+            "hit_rate": 97.40580369760382
+          },
+          {
+            "table": 25,
+            "hits": 1683430,
+            "misses": 3928096,
+            "hit_rate": 29.999504591086275
+          }
+        ]
+      },
+      "Rotate-step mode 0": {
+        "hits": 137305888,
+        "misses": 94186209,
+        "hit_rate": 59.31342355933646,
+        "cpu_seconds": 136.43696736500004,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9440621,
+            "misses": 559379,
+            "hit_rate": 94.40621
+          },
+          {
+            "table": 1,
+            "hits": 7673320,
+            "misses": 2326680,
+            "hit_rate": 76.7332
+          },
+          {
+            "table": 2,
+            "hits": 1464313,
+            "misses": 8190648,
+            "hit_rate": 15.166431019244925
+          },
+          {
+            "table": 3,
+            "hits": 2428783,
+            "misses": 7226178,
+            "hit_rate": 25.155803322250602
+          },
+          {
+            "table": 4,
+            "hits": 9822154,
+            "misses": 177846,
+            "hit_rate": 98.22153999999999
+          },
+          {
+            "table": 5,
+            "hits": 8716060,
+            "misses": 3791,
+            "hit_rate": 99.95652448648492
+          },
+          {
+            "table": 6,
+            "hits": 1551845,
+            "misses": 8448155,
+            "hit_rate": 15.51845
+          },
+          {
+            "table": 7,
+            "hits": 9657529,
+            "misses": 342471,
+            "hit_rate": 96.57529
+          },
+          {
+            "table": 8,
+            "hits": 9998390,
+            "misses": 1610,
+            "hit_rate": 99.9839
+          },
+          {
+            "table": 9,
+            "hits": 3157972,
+            "misses": 6842028,
+            "hit_rate": 31.579720000000002
+          },
+          {
+            "table": 10,
+            "hits": 2692783,
+            "misses": 7307217,
+            "hit_rate": 26.927830000000004
+          },
+          {
+            "table": 11,
+            "hits": 1693201,
+            "misses": 7961760,
+            "hit_rate": 17.537108642903892
+          },
+          {
+            "table": 12,
+            "hits": 3410767,
+            "misses": 6589233,
+            "hit_rate": 34.10767
+          },
+          {
+            "table": 13,
+            "hits": 9861125,
+            "misses": 138875,
+            "hit_rate": 98.61125
+          },
+          {
+            "table": 14,
+            "hits": 2812397,
+            "misses": 7187603,
+            "hit_rate": 28.12397
+          },
+          {
+            "table": 15,
+            "hits": 2004086,
+            "misses": 7650875,
+            "hit_rate": 20.757059505470814
+          },
+          {
+            "table": 16,
+            "hits": 9999657,
+            "misses": 343,
+            "hit_rate": 99.99656999999999
+          },
+          {
+            "table": 17,
+            "hits": 5320853,
+            "misses": 4679147,
+            "hit_rate": 53.208529999999996
+          },
+          {
+            "table": 18,
+            "hits": 4193169,
+            "misses": 1418357,
+            "hit_rate": 74.72421940128228
+          },
+          {
+            "table": 19,
+            "hits": 5611523,
+            "misses": 3,
+            "hit_rate": 99.99994653860644
+          },
+          {
+            "table": 20,
+            "hits": 1757141,
+            "misses": 7897820,
+            "hit_rate": 18.19935885810414
+          },
+          {
+            "table": 21,
+            "hits": 2351190,
+            "misses": 45186,
+            "hit_rate": 98.11440274814971
+          },
+          {
+            "table": 22,
+            "hits": 9997336,
+            "misses": 2664,
+            "hit_rate": 99.97336
+          },
+          {
+            "table": 23,
+            "hits": 4447333,
+            "misses": 5207628,
+            "hit_rate": 46.06267182228908
+          },
+          {
+            "table": 24,
+            "hits": 5495060,
+            "misses": 116466,
+            "hit_rate": 97.92452177892432
+          },
+          {
+            "table": 25,
+            "hits": 1747280,
+            "misses": 3864246,
+            "hit_rate": 31.137341250846916
+          }
+        ]
+      },
+      "Young-bit mode 1": {
+        "hits": 114052844,
+        "misses": 117439253,
+        "hit_rate": 49.268569198714374,
+        "cpu_seconds": 220.55118508400005,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 8412035,
+            "misses": 1587965,
+            "hit_rate": 84.12035
+          },
+          {
+            "table": 1,
+            "hits": 5101015,
+            "misses": 4898985,
+            "hit_rate": 51.010149999999996
+          },
+          {
+            "table": 2,
+            "hits": 886231,
+            "misses": 8768730,
+            "hit_rate": 9.179022059229446
+          },
+          {
+            "table": 3,
+            "hits": 1634367,
+            "misses": 8020594,
+            "hit_rate": 16.927743157118915
+          },
+          {
+            "table": 4,
+            "hits": 9107047,
+            "misses": 892953,
+            "hit_rate": 91.07047
+          },
+          {
+            "table": 5,
+            "hits": 8139487,
+            "misses": 580364,
+            "hit_rate": 93.34433581491244
+          },
+          {
+            "table": 6,
+            "hits": 989274,
+            "misses": 9010726,
+            "hit_rate": 9.89274
+          },
+          {
+            "table": 7,
+            "hits": 8846210,
+            "misses": 1153790,
+            "hit_rate": 88.46209999999999
+          },
+          {
+            "table": 8,
+            "hits": 9775993,
+            "misses": 224007,
+            "hit_rate": 97.75993
+          },
+          {
+            "table": 9,
+            "hits": 2650361,
+            "misses": 7349639,
+            "hit_rate": 26.50361
+          },
+          {
+            "table": 10,
+            "hits": 1654842,
+            "misses": 8345158,
+            "hit_rate": 16.54842
+          },
+          {
+            "table": 11,
+            "hits": 1079940,
+            "misses": 8575021,
+            "hit_rate": 11.185337776092519
+          },
+          {
+            "table": 12,
+            "hits": 1927576,
+            "misses": 8072424,
+            "hit_rate": 19.275760000000002
+          },
+          {
+            "table": 13,
+            "hits": 9066147,
+            "misses": 933853,
+            "hit_rate": 90.66147
+          },
+          {
+            "table": 14,
+            "hits": 1621729,
+            "misses": 8378271,
+            "hit_rate": 16.217290000000002
+          },
+          {
+            "table": 15,
+            "hits": 1221818,
+            "misses": 8433143,
+            "hit_rate": 12.654820666805385
+          },
+          {
+            "table": 16,
+            "hits": 9110328,
+            "misses": 889672,
+            "hit_rate": 91.10328
+          },
+          {
+            "table": 17,
+            "hits": 2951321,
+            "misses": 7048679,
+            "hit_rate": 29.51321
+          },
+          {
+            "table": 18,
+            "hits": 3724172,
+            "misses": 1887354,
+            "hit_rate": 66.36647500163058
+          },
+          {
+            "table": 19,
+            "hits": 5278398,
+            "misses": 333128,
+            "hit_rate": 94.06350429455375
+          },
+          {
+            "table": 20,
+            "hits": 1148016,
+            "misses": 8506945,
+            "hit_rate": 11.890426072150886
+          },
+          {
+            "table": 21,
+            "hits": 2068042,
+            "misses": 328334,
+            "hit_rate": 86.29872774556246
+          },
+          {
+            "table": 22,
+            "hits": 9091913,
+            "misses": 908087,
+            "hit_rate": 90.91913000000001
+          },
+          {
+            "table": 23,
+            "hits": 2978860,
+            "misses": 6676101,
+            "hit_rate": 30.853154145314516
+          },
+          {
+            "table": 24,
+            "hits": 4455682,
+            "misses": 1155844,
+            "hit_rate": 79.4023230044733
+          },
+          {
+            "table": 25,
+            "hits": 1132040,
+            "misses": 4479486,
+            "hit_rate": 20.173478658033485
+          }
+        ]
+      },
+      "Rotate-victim mode 1": {
+        "hits": 114052905,
+        "misses": 117439192,
+        "hit_rate": 49.26859554950595,
+        "cpu_seconds": 363.135991507,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 8412040,
+            "misses": 1587960,
+            "hit_rate": 84.12039999999999
+          },
+          {
+            "table": 1,
+            "hits": 5101021,
+            "misses": 4898979,
+            "hit_rate": 51.01021
+          },
+          {
+            "table": 2,
+            "hits": 886233,
+            "misses": 8768728,
+            "hit_rate": 9.17904277396874
+          },
+          {
+            "table": 3,
+            "hits": 1634372,
+            "misses": 8020589,
+            "hit_rate": 16.927794943967147
+          },
+          {
+            "table": 4,
+            "hits": 9107051,
+            "misses": 892949,
+            "hit_rate": 91.07051
+          },
+          {
+            "table": 5,
+            "hits": 8139487,
+            "misses": 580364,
+            "hit_rate": 93.34433581491244
+          },
+          {
+            "table": 6,
+            "hits": 989277,
+            "misses": 9010723,
+            "hit_rate": 9.892769999999999
+          },
+          {
+            "table": 7,
+            "hits": 8846210,
+            "misses": 1153790,
+            "hit_rate": 88.46209999999999
+          },
+          {
+            "table": 8,
+            "hits": 9775993,
+            "misses": 224007,
+            "hit_rate": 97.75993
+          },
+          {
+            "table": 9,
+            "hits": 2650363,
+            "misses": 7349637,
+            "hit_rate": 26.50363
+          },
+          {
+            "table": 10,
+            "hits": 1654844,
+            "misses": 8345156,
+            "hit_rate": 16.54844
+          },
+          {
+            "table": 11,
+            "hits": 1079941,
+            "misses": 8575020,
+            "hit_rate": 11.185348133462165
+          },
+          {
+            "table": 12,
+            "hits": 1927582,
+            "misses": 8072418,
+            "hit_rate": 19.27582
+          },
+          {
+            "table": 13,
+            "hits": 9066146,
+            "misses": 933854,
+            "hit_rate": 90.66146
+          },
+          {
+            "table": 14,
+            "hits": 1621733,
+            "misses": 8378267,
+            "hit_rate": 16.21733
+          },
+          {
+            "table": 15,
+            "hits": 1221821,
+            "misses": 8433140,
+            "hit_rate": 12.654851738914328
+          },
+          {
+            "table": 16,
+            "hits": 9110328,
+            "misses": 889672,
+            "hit_rate": 91.10328
+          },
+          {
+            "table": 17,
+            "hits": 2951329,
+            "misses": 7048671,
+            "hit_rate": 29.513289999999998
+          },
+          {
+            "table": 18,
+            "hits": 3724174,
+            "misses": 1887352,
+            "hit_rate": 66.36651064255962
+          },
+          {
+            "table": 19,
+            "hits": 5278398,
+            "misses": 333128,
+            "hit_rate": 94.06350429455375
+          },
+          {
+            "table": 20,
+            "hits": 1148016,
+            "misses": 8506945,
+            "hit_rate": 11.890426072150886
+          },
+          {
+            "table": 21,
+            "hits": 2068042,
+            "misses": 328334,
+            "hit_rate": 86.29872774556246
+          },
+          {
+            "table": 22,
+            "hits": 9091912,
+            "misses": 908088,
+            "hit_rate": 90.91911999999999
+          },
+          {
+            "table": 23,
+            "hits": 2978861,
+            "misses": 6676100,
+            "hit_rate": 30.853164502684166
+          },
+          {
+            "table": 24,
+            "hits": 4455686,
+            "misses": 1155840,
+            "hit_rate": 79.40239428633137
+          },
+          {
+            "table": 25,
+            "hits": 1132045,
+            "misses": 4479481,
+            "hit_rate": 20.173567760356097
+          }
+        ]
+      },
+      "Rotate-step mode 1": {
+        "hits": 114052844,
+        "misses": 117439253,
+        "hit_rate": 49.268569198714374,
+        "cpu_seconds": 370.534363514,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 8412035,
+            "misses": 1587965,
+            "hit_rate": 84.12035
+          },
+          {
+            "table": 1,
+            "hits": 5101021,
+            "misses": 4898979,
+            "hit_rate": 51.01021
+          },
+          {
+            "table": 2,
+            "hits": 886240,
+            "misses": 8768721,
+            "hit_rate": 9.179115275556265
+          },
+          {
+            "table": 3,
+            "hits": 1634370,
+            "misses": 8020591,
+            "hit_rate": 16.927774229227854
+          },
+          {
+            "table": 4,
+            "hits": 9107051,
+            "misses": 892949,
+            "hit_rate": 91.07051
+          },
+          {
+            "table": 5,
+            "hits": 8139485,
+            "misses": 580366,
+            "hit_rate": 93.3443128787407
+          },
+          {
+            "table": 6,
+            "hits": 989273,
+            "misses": 9010727,
+            "hit_rate": 9.89273
+          },
+          {
+            "table": 7,
+            "hits": 8846214,
+            "misses": 1153786,
+            "hit_rate": 88.46214
+          },
+          {
+            "table": 8,
+            "hits": 9775995,
+            "misses": 224005,
+            "hit_rate": 97.75994999999999
+          },
+          {
+            "table": 9,
+            "hits": 2650346,
+            "misses": 7349654,
+            "hit_rate": 26.50346
+          },
+          {
+            "table": 10,
+            "hits": 1654814,
+            "misses": 8345186,
+            "hit_rate": 16.54814
+          },
+          {
+            "table": 11,
+            "hits": 1079945,
+            "misses": 8575016,
+            "hit_rate": 11.18538956294075
+          },
+          {
+            "table": 12,
+            "hits": 1927548,
+            "misses": 8072452,
+            "hit_rate": 19.27548
+          },
+          {
+            "table": 13,
+            "hits": 9066142,
+            "misses": 933858,
+            "hit_rate": 90.66142
+          },
+          {
+            "table": 14,
+            "hits": 1621749,
+            "misses": 8378251,
+            "hit_rate": 16.21749
+          },
+          {
+            "table": 15,
+            "hits": 1221821,
+            "misses": 8433140,
+            "hit_rate": 12.654851738914328
+          },
+          {
+            "table": 16,
+            "hits": 9110331,
+            "misses": 889669,
+            "hit_rate": 91.10331000000001
+          },
+          {
+            "table": 17,
+            "hits": 2951327,
+            "misses": 7048673,
+            "hit_rate": 29.513270000000002
+          },
+          {
+            "table": 18,
+            "hits": 3724175,
+            "misses": 1887351,
+            "hit_rate": 66.36652846302414
+          },
+          {
+            "table": 19,
+            "hits": 5278397,
+            "misses": 333129,
+            "hit_rate": 94.06348647408922
+          },
+          {
+            "table": 20,
+            "hits": 1148019,
+            "misses": 8506942,
+            "hit_rate": 11.890457144259827
+          },
+          {
+            "table": 21,
+            "hits": 2068049,
+            "misses": 328327,
+            "hit_rate": 86.29901985331183
+          },
+          {
+            "table": 22,
+            "hits": 9091913,
+            "misses": 908087,
+            "hit_rate": 90.91913000000001
+          },
+          {
+            "table": 23,
+            "hits": 2978865,
+            "misses": 6676096,
+            "hit_rate": 30.85320593216275
+          },
+          {
+            "table": 24,
+            "hits": 4455680,
+            "misses": 1155846,
+            "hit_rate": 79.40228736354425
+          },
+          {
+            "table": 25,
+            "hits": 1132039,
+            "misses": 4479487,
+            "hit_rate": 20.17346083756896
+          }
+        ]
+      },
+      "Young-bit mode 0": {
+        "hits": 136816325,
+        "misses": 94675772,
+        "hit_rate": 59.101942041675834,
+        "cpu_seconds": 260.179044405,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9537987,
+            "misses": 462013,
+            "hit_rate": 95.37987
+          },
+          {
+            "table": 1,
+            "hits": 7687309,
+            "misses": 2312691,
+            "hit_rate": 76.87309
+          },
+          {
+            "table": 2,
+            "hits": 1345789,
+            "misses": 8309172,
+            "hit_rate": 13.938834139257528
+          },
+          {
+            "table": 3,
+            "hits": 2396875,
+            "misses": 7258086,
+            "hit_rate": 24.825320371568566
+          },
+          {
+            "table": 4,
+            "hits": 9811620,
+            "misses": 188380,
+            "hit_rate": 98.11619999999999
+          },
+          {
+            "table": 5,
+            "hits": 8716060,
+            "misses": 3791,
+            "hit_rate": 99.95652448648492
+          },
+          {
+            "table": 6,
+            "hits": 1667371,
+            "misses": 8332629,
+            "hit_rate": 16.67371
+          },
+          {
+            "table": 7,
+            "hits": 9676159,
+            "misses": 323841,
+            "hit_rate": 96.76159
+          },
+          {
+            "table": 8,
+            "hits": 9998390,
+            "misses": 1610,
+            "hit_rate": 99.9839
+          },
+          {
+            "table": 9,
+            "hits": 3210813,
+            "misses": 6789187,
+            "hit_rate": 32.10813
+          },
+          {
+            "table": 10,
+            "hits": 2733060,
+            "misses": 7266940,
+            "hit_rate": 27.3306
+          },
+          {
+            "table": 11,
+            "hits": 1640714,
+            "misses": 8014247,
+            "hit_rate": 16.99348138226555
+          },
+          {
+            "table": 12,
+            "hits": 3293731,
+            "misses": 6706269,
+            "hit_rate": 32.93731
+          },
+          {
+            "table": 13,
+            "hits": 9850533,
+            "misses": 149467,
+            "hit_rate": 98.50533
+          },
+          {
+            "table": 14,
+            "hits": 2826908,
+            "misses": 7173092,
+            "hit_rate": 28.269080000000002
+          },
+          {
+            "table": 15,
+            "hits": 1965522,
+            "misses": 7689439,
+            "hit_rate": 20.357637902421356
+          },
+          {
+            "table": 16,
+            "hits": 9999657,
+            "misses": 343,
+            "hit_rate": 99.99656999999999
+          },
+          {
+            "table": 17,
+            "hits": 5038451,
+            "misses": 4961549,
+            "hit_rate": 50.384510000000006
+          },
+          {
+            "table": 18,
+            "hits": 4235345,
+            "misses": 1376181,
+            "hit_rate": 75.4758153129826
+          },
+          {
+            "table": 19,
+            "hits": 5611523,
+            "misses": 3,
+            "hit_rate": 99.99994653860644
+          },
+          {
+            "table": 20,
+            "hits": 1750136,
+            "misses": 7904825,
+            "hit_rate": 18.126805483730074
+          },
+          {
+            "table": 21,
+            "hits": 2351201,
+            "misses": 45175,
+            "hit_rate": 98.11486177461299
+          },
+          {
+            "table": 22,
+            "hits": 9985210,
+            "misses": 14790,
+            "hit_rate": 99.8521
+          },
+          {
+            "table": 23,
+            "hits": 4336579,
+            "misses": 5318382,
+            "hit_rate": 44.91555170445536
+          },
+          {
+            "table": 24,
+            "hits": 5465952,
+            "misses": 145574,
+            "hit_rate": 97.40580369760382
+          },
+          {
+            "table": 25,
+            "hits": 1683430,
+            "misses": 3928096,
+            "hit_rate": 29.999504591086275
+          }
+        ]
+      }
+    },
+    "10000": {
+      "Rotate-victim mode 0": {
+        "hits": 180734793,
+        "misses": 50757304,
+        "hit_rate": 78.07385018418145,
+        "cpu_seconds": 108.891882054,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9853174,
+            "misses": 146826,
+            "hit_rate": 98.53174
+          },
+          {
+            "table": 1,
+            "hits": 9629546,
+            "misses": 370454,
+            "hit_rate": 96.29546
+          },
+          {
+            "table": 2,
+            "hits": 3312834,
+            "misses": 6342127,
+            "hit_rate": 34.312246315650576
+          },
+          {
+            "table": 3,
+            "hits": 4945791,
+            "misses": 4709170,
+            "hit_rate": 51.22538558156786
+          },
+          {
+            "table": 4,
+            "hits": 9956598,
+            "misses": 43402,
+            "hit_rate": 99.56598
+          },
+          {
+            "table": 5,
+            "hits": 8717715,
+            "misses": 2136,
+            "hit_rate": 99.97550416859187
+          },
+          {
+            "table": 6,
+            "hits": 6086932,
+            "misses": 3913068,
+            "hit_rate": 60.86932
+          },
+          {
+            "table": 7,
+            "hits": 9917245,
+            "misses": 82755,
+            "hit_rate": 99.17245
+          },
+          {
+            "table": 8,
+            "hits": 9999997,
+            "misses": 3,
+            "hit_rate": 99.99997
+          },
+          {
+            "table": 9,
+            "hits": 6213341,
+            "misses": 3786659,
+            "hit_rate": 62.13341
+          },
+          {
+            "table": 10,
+            "hits": 7556189,
+            "misses": 2443811,
+            "hit_rate": 75.56189
+          },
+          {
+            "table": 11,
+            "hits": 3688659,
+            "misses": 5966302,
+            "hit_rate": 38.204804763064296
+          },
+          {
+            "table": 12,
+            "hits": 8072470,
+            "misses": 1927530,
+            "hit_rate": 80.7247
+          },
+          {
+            "table": 13,
+            "hits": 9996218,
+            "misses": 3782,
+            "hit_rate": 99.96218
+          },
+          {
+            "table": 14,
+            "hits": 7570532,
+            "misses": 2429468,
+            "hit_rate": 75.70532
+          },
+          {
+            "table": 15,
+            "hits": 4236834,
+            "misses": 5418127,
+            "hit_rate": 43.88245586906048
+          },
+          {
+            "table": 16,
+            "hits": 9999657,
+            "misses": 343,
+            "hit_rate": 99.99656999999999
+          },
+          {
+            "table": 17,
+            "hits": 8622299,
+            "misses": 1377701,
+            "hit_rate": 86.22299
+          },
+          {
+            "table": 18,
+            "hits": 5051128,
+            "misses": 560398,
+            "hit_rate": 90.01344732252868
+          },
+          {
+            "table": 19,
+            "hits": 5611523,
+            "misses": 3,
+            "hit_rate": 99.99994653860644
+          },
+          {
+            "table": 20,
+            "hits": 3919186,
+            "misses": 5735775,
+            "hit_rate": 40.592458115573955
+          },
+          {
+            "table": 21,
+            "hits": 2392968,
+            "misses": 3408,
+            "hit_rate": 99.85778525573616
+          },
+          {
+            "table": 22,
+            "hits": 9997349,
+            "misses": 2651,
+            "hit_rate": 99.97349
+          },
+          {
+            "table": 23,
+            "hits": 6502166,
+            "misses": 3152795,
+            "hit_rate": 67.34533676521323
+          },
+          {
+            "table": 24,
+            "hits": 5603711,
+            "misses": 7815,
+            "hit_rate": 99.86073306975678
+          },
+          {
+            "table": 25,
+            "hits": 3280731,
+            "misses": 2330795,
+            "hit_rate": 58.46415039331547
+          }
+        ]
+      },
+      "Rotate-step mode 0": {
+        "hits": 181598339,
+        "misses": 49893758,
+        "hit_rate": 78.44688494916524,
+        "cpu_seconds": 111.68923838700005,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9855314,
+            "misses": 144686,
+            "hit_rate": 98.55314
+          },
+          {
+            "table": 1,
+            "hits": 9656394,
+            "misses": 343606,
+            "hit_rate": 96.56394
+          },
+          {
+            "table": 2,
+            "hits": 3357373,
+            "misses": 6297588,
+            "hit_rate": 34.77355320233816
+          },
+          {
+            "table": 3,
+            "hits": 4963034,
+            "misses": 4691927,
+            "hit_rate": 51.40397770638327
+          },
+          {
+            "table": 4,
+            "hits": 9961255,
+            "misses": 38745,
+            "hit_rate": 99.61255
+          },
+          {
+            "table": 5,
+            "hits": 8716061,
+            "misses": 3790,
+            "hit_rate": 99.95653595457078
+          },
+          {
+            "table": 6,
+            "hits": 6245107,
+            "misses": 3754893,
+            "hit_rate": 62.451069999999994
+          },
+          {
+            "table": 7,
+            "hits": 9923583,
+            "misses": 76417,
+            "hit_rate": 99.23583
+          },
+          {
+            "table": 8,
+            "hits": 9999997,
+            "misses": 3,
+            "hit_rate": 99.99997
+          },
+          {
+            "table": 9,
+            "hits": 6328123,
+            "misses": 3671877,
+            "hit_rate": 63.28123
+          },
+          {
+            "table": 10,
+            "hits": 7740068,
+            "misses": 2259932,
+            "hit_rate": 77.40068
+          },
+          {
+            "table": 11,
+            "hits": 3703729,
+            "misses": 5951232,
+            "hit_rate": 38.36089032363776
+          },
+          {
+            "table": 12,
+            "hits": 8129155,
+            "misses": 1870845,
+            "hit_rate": 81.29155
+          },
+          {
+            "table": 13,
+            "hits": 9996216,
+            "misses": 3784,
+            "hit_rate": 99.96216
+          },
+          {
+            "table": 14,
+            "hits": 7615100,
+            "misses": 2384900,
+            "hit_rate": 76.151
+          },
+          {
+            "table": 15,
+            "hits": 4312056,
+            "misses": 5342905,
+            "hit_rate": 44.66155792861307
+          },
+          {
+            "table": 16,
+            "hits": 9999657,
+            "misses": 343,
+            "hit_rate": 99.99656999999999
+          },
+          {
+            "table": 17,
+            "hits": 8706565,
+            "misses": 1293435,
+            "hit_rate": 87.06565
+          },
+          {
+            "table": 18,
+            "hits": 5046274,
+            "misses": 565252,
+            "hit_rate": 89.92694678773653
+          },
+          {
+            "table": 19,
+            "hits": 5611523,
+            "misses": 3,
+            "hit_rate": 99.99994653860644
+          },
+          {
+            "table": 20,
+            "hits": 3940072,
+            "misses": 5714889,
+            "hit_rate": 40.80878213801174
+          },
+          {
+            "table": 21,
+            "hits": 2392969,
+            "misses": 3407,
+            "hit_rate": 99.85782698541465
+          },
+          {
+            "table": 22,
+            "hits": 9997349,
+            "misses": 2651,
+            "hit_rate": 99.97349
+          },
+          {
+            "table": 23,
+            "hits": 6515198,
+            "misses": 3139763,
+            "hit_rate": 67.48031400644705
+          },
+          {
+            "table": 24,
+            "hits": 5604900,
+            "misses": 6626,
+            "hit_rate": 99.88192160207402
+          },
+          {
+            "table": 25,
+            "hits": 3281267,
+            "misses": 2330259,
+            "hit_rate": 58.473702162299524
+          }
+        ]
+      },
+      "Rotate-victim mode 1": {
+        "hits": 165260935,
+        "misses": 66231162,
+        "hit_rate": 71.38945006835374,
+        "cpu_seconds": 253.31682429300008,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9605820,
+            "misses": 394180,
+            "hit_rate": 96.0582
+          },
+          {
+            "table": 1,
+            "hits": 8774175,
+            "misses": 1225825,
+            "hit_rate": 87.74175
+          },
+          {
+            "table": 2,
+            "hits": 2864215,
+            "misses": 6790746,
+            "hit_rate": 29.665733502186075
+          },
+          {
+            "table": 3,
+            "hits": 4277059,
+            "misses": 5377902,
+            "hit_rate": 44.29908106309285
+          },
+          {
+            "table": 4,
+            "hits": 9836563,
+            "misses": 163437,
+            "hit_rate": 98.36563000000001
+          },
+          {
+            "table": 5,
+            "hits": 8677710,
+            "misses": 42141,
+            "hit_rate": 99.51672339355339
+          },
+          {
+            "table": 6,
+            "hits": 4447841,
+            "misses": 5552159,
+            "hit_rate": 44.478410000000004
+          },
+          {
+            "table": 7,
+            "hits": 9757975,
+            "misses": 242025,
+            "hit_rate": 97.57975
+          },
+          {
+            "table": 8,
+            "hits": 9985588,
+            "misses": 14412,
+            "hit_rate": 99.85588
+          },
+          {
+            "table": 9,
+            "hits": 5086145,
+            "misses": 4913855,
+            "hit_rate": 50.86145
+          },
+          {
+            "table": 10,
+            "hits": 5733402,
+            "misses": 4266598,
+            "hit_rate": 57.334019999999995
+          },
+          {
+            "table": 11,
+            "hits": 3202266,
+            "misses": 6452695,
+            "hit_rate": 33.16705266857111
+          },
+          {
+            "table": 12,
+            "hits": 6187010,
+            "misses": 3812990,
+            "hit_rate": 61.870099999999994
+          },
+          {
+            "table": 13,
+            "hits": 9890738,
+            "misses": 109262,
+            "hit_rate": 98.90738
+          },
+          {
+            "table": 14,
+            "hits": 5963042,
+            "misses": 4036958,
+            "hit_rate": 59.630419999999994
+          },
+          {
+            "table": 15,
+            "hits": 3637349,
+            "misses": 6017612,
+            "hit_rate": 37.67336812649994
+          },
+          {
+            "table": 16,
+            "hits": 9941084,
+            "misses": 58916,
+            "hit_rate": 99.41084000000001
+          },
+          {
+            "table": 17,
+            "hits": 7341788,
+            "misses": 2658212,
+            "hit_rate": 73.41788
+          },
+          {
+            "table": 18,
+            "hits": 4666873,
+            "misses": 944653,
+            "hit_rate": 83.16584472744134
+          },
+          {
+            "table": 19,
+            "hits": 5591834,
+            "misses": 19692,
+            "hit_rate": 99.64907941262324
+          },
+          {
+            "table": 20,
+            "hits": 3399350,
+            "misses": 6255611,
+            "hit_rate": 35.20832450799128
+          },
+          {
+            "table": 21,
+            "hits": 2361737,
+            "misses": 34639,
+            "hit_rate": 98.55452566709064
+          },
+          {
+            "table": 22,
+            "hits": 9923970,
+            "misses": 76030,
+            "hit_rate": 99.2397
+          },
+          {
+            "table": 23,
+            "hits": 5852902,
+            "misses": 3802059,
+            "hit_rate": 60.62066951901722
+          },
+          {
+            "table": 24,
+            "hits": 5453207,
+            "misses": 158319,
+            "hit_rate": 97.17868187726476
+          },
+          {
+            "table": 25,
+            "hits": 2801292,
+            "misses": 2810234,
+            "hit_rate": 49.920324703119974
+          }
+        ]
+      },
+      "Rotate-step mode 1": {
+        "hits": 165259364,
+        "misses": 66232733,
+        "hit_rate": 71.38877142747556,
+        "cpu_seconds": 260.53355100199997,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9605827,
+            "misses": 394173,
+            "hit_rate": 96.05827000000001
+          },
+          {
+            "table": 1,
+            "hits": 8774148,
+            "misses": 1225852,
+            "hit_rate": 87.74148000000001
+          },
+          {
+            "table": 2,
+            "hits": 2864116,
+            "misses": 6790845,
+            "hit_rate": 29.664708122591072
+          },
+          {
+            "table": 3,
+            "hits": 4276965,
+            "misses": 5377996,
+            "hit_rate": 44.298107470346075
+          },
+          {
+            "table": 4,
+            "hits": 9836561,
+            "misses": 163439,
+            "hit_rate": 98.36561
+          },
+          {
+            "table": 5,
+            "hits": 8677710,
+            "misses": 42141,
+            "hit_rate": 99.51672339355339
+          },
+          {
+            "table": 6,
+            "hits": 4447733,
+            "misses": 5552267,
+            "hit_rate": 44.477329999999995
+          },
+          {
+            "table": 7,
+            "hits": 9757987,
+            "misses": 242013,
+            "hit_rate": 97.57987
+          },
+          {
+            "table": 8,
+            "hits": 9985590,
+            "misses": 14410,
+            "hit_rate": 99.85589999999999
+          },
+          {
+            "table": 9,
+            "hits": 5085972,
+            "misses": 4914028,
+            "hit_rate": 50.859719999999996
+          },
+          {
+            "table": 10,
+            "hits": 5733240,
+            "misses": 4266760,
+            "hit_rate": 57.33239999999999
+          },
+          {
+            "table": 11,
+            "hits": 3202168,
+            "misses": 6452793,
+            "hit_rate": 33.16603764634575
+          },
+          {
+            "table": 12,
+            "hits": 6186841,
+            "misses": 3813159,
+            "hit_rate": 61.86841
+          },
+          {
+            "table": 13,
+            "hits": 9890744,
+            "misses": 109256,
+            "hit_rate": 98.90744000000001
+          },
+          {
+            "table": 14,
+            "hits": 5962866,
+            "misses": 4037134,
+            "hit_rate": 59.628659999999996
+          },
+          {
+            "table": 15,
+            "hits": 3637240,
+            "misses": 6017721,
+            "hit_rate": 37.67223917320847
+          },
+          {
+            "table": 16,
+            "hits": 9941088,
+            "misses": 58912,
+            "hit_rate": 99.41088
+          },
+          {
+            "table": 17,
+            "hits": 7341656,
+            "misses": 2658344,
+            "hit_rate": 73.41656
+          },
+          {
+            "table": 18,
+            "hits": 4666863,
+            "misses": 944663,
+            "hit_rate": 83.16566652279612
+          },
+          {
+            "table": 19,
+            "hits": 5591837,
+            "misses": 19689,
+            "hit_rate": 99.6491328740168
+          },
+          {
+            "table": 20,
+            "hits": 3399240,
+            "misses": 6255721,
+            "hit_rate": 35.20718519733016
+          },
+          {
+            "table": 21,
+            "hits": 2361742,
+            "misses": 34634,
+            "hit_rate": 98.55473431548305
+          },
+          {
+            "table": 22,
+            "hits": 9923980,
+            "misses": 76020,
+            "hit_rate": 99.2398
+          },
+          {
+            "table": 23,
+            "hits": 5852808,
+            "misses": 3802153,
+            "hit_rate": 60.619695926270445
+          },
+          {
+            "table": 24,
+            "hits": 5453222,
+            "misses": 158304,
+            "hit_rate": 97.1789491842326
+          },
+          {
+            "table": 25,
+            "hits": 2801220,
+            "misses": 2810306,
+            "hit_rate": 49.91904162967435
+          }
+        ]
+      },
+      "Young-bit mode 0": {
+        "hits": 180719725,
+        "misses": 50772372,
+        "hit_rate": 78.0673411066815,
+        "cpu_seconds": 186.546815025,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9853174,
+            "misses": 146826,
+            "hit_rate": 98.53174
+          },
+          {
+            "table": 1,
+            "hits": 9629546,
+            "misses": 370454,
+            "hit_rate": 96.29546
+          },
+          {
+            "table": 2,
+            "hits": 3312306,
+            "misses": 6342655,
+            "hit_rate": 34.3067776244772
+          },
+          {
+            "table": 3,
+            "hits": 4945785,
+            "misses": 4709176,
+            "hit_rate": 51.22532343734998
+          },
+          {
+            "table": 4,
+            "hits": 9956598,
+            "misses": 43402,
+            "hit_rate": 99.56598
+          },
+          {
+            "table": 5,
+            "hits": 8717715,
+            "misses": 2136,
+            "hit_rate": 99.97550416859187
+          },
+          {
+            "table": 6,
+            "hits": 6081087,
+            "misses": 3918913,
+            "hit_rate": 60.810869999999994
+          },
+          {
+            "table": 7,
+            "hits": 9917245,
+            "misses": 82755,
+            "hit_rate": 99.17245
+          },
+          {
+            "table": 8,
+            "hits": 9999997,
+            "misses": 3,
+            "hit_rate": 99.99997
+          },
+          {
+            "table": 9,
+            "hits": 6210486,
+            "misses": 3789514,
+            "hit_rate": 62.104859999999995
+          },
+          {
+            "table": 10,
+            "hits": 7556189,
+            "misses": 2443811,
+            "hit_rate": 75.56189
+          },
+          {
+            "table": 11,
+            "hits": 3688711,
+            "misses": 5966250,
+            "hit_rate": 38.205343346285915
+          },
+          {
+            "table": 12,
+            "hits": 8072470,
+            "misses": 1927530,
+            "hit_rate": 80.7247
+          },
+          {
+            "table": 13,
+            "hits": 9996218,
+            "misses": 3782,
+            "hit_rate": 99.96218
+          },
+          {
+            "table": 14,
+            "hits": 7570165,
+            "misses": 2429835,
+            "hit_rate": 75.70165
+          },
+          {
+            "table": 15,
+            "hits": 4236856,
+            "misses": 5418105,
+            "hit_rate": 43.8826837311927
+          },
+          {
+            "table": 16,
+            "hits": 9999657,
+            "misses": 343,
+            "hit_rate": 99.99656999999999
+          },
+          {
+            "table": 17,
+            "hits": 8622296,
+            "misses": 1377704,
+            "hit_rate": 86.22296
+          },
+          {
+            "table": 18,
+            "hits": 5051128,
+            "misses": 560398,
+            "hit_rate": 90.01344732252868
+          },
+          {
+            "table": 19,
+            "hits": 5611523,
+            "misses": 3,
+            "hit_rate": 99.99994653860644
+          },
+          {
+            "table": 20,
+            "hits": 3919227,
+            "misses": 5735734,
+            "hit_rate": 40.59288276772946
+          },
+          {
+            "table": 21,
+            "hits": 2392968,
+            "misses": 3408,
+            "hit_rate": 99.85778525573616
+          },
+          {
+            "table": 22,
+            "hits": 9997349,
+            "misses": 2651,
+            "hit_rate": 99.97349
+          },
+          {
+            "table": 23,
+            "hits": 6502124,
+            "misses": 3152837,
+            "hit_rate": 67.34490175568808
+          },
+          {
+            "table": 24,
+            "hits": 5603711,
+            "misses": 7815,
+            "hit_rate": 99.86073306975678
+          },
+          {
+            "table": 25,
+            "hits": 3275194,
+            "misses": 2336332,
+            "hit_rate": 58.36547848125447
+          }
+        ]
+      },
+      "Young-bit mode 1": {
+        "hits": 165260054,
+        "misses": 66232043,
+        "hit_rate": 71.38906949380652,
+        "cpu_seconds": 170.75479597799995,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9605825,
+            "misses": 394175,
+            "hit_rate": 96.05825
+          },
+          {
+            "table": 1,
+            "hits": 8774147,
+            "misses": 1225853,
+            "hit_rate": 87.74146999999999
+          },
+          {
+            "table": 2,
+            "hits": 2864157,
+            "misses": 6790804,
+            "hit_rate": 29.665132774746578
+          },
+          {
+            "table": 3,
+            "hits": 4277015,
+            "misses": 5377946,
+            "hit_rate": 44.2986253388284
+          },
+          {
+            "table": 4,
+            "hits": 9836559,
+            "misses": 163441,
+            "hit_rate": 98.36559
+          },
+          {
+            "table": 5,
+            "hits": 8677705,
+            "misses": 42146,
+            "hit_rate": 99.51666605312407
+          },
+          {
+            "table": 6,
+            "hits": 4447740,
+            "misses": 5552260,
+            "hit_rate": 44.4774
+          },
+          {
+            "table": 7,
+            "hits": 9757970,
+            "misses": 242030,
+            "hit_rate": 97.5797
+          },
+          {
+            "table": 8,
+            "hits": 9985588,
+            "misses": 14412,
+            "hit_rate": 99.85588
+          },
+          {
+            "table": 9,
+            "hits": 5086062,
+            "misses": 4913938,
+            "hit_rate": 50.86062
+          },
+          {
+            "table": 10,
+            "hits": 5733290,
+            "misses": 4266710,
+            "hit_rate": 57.332899999999995
+          },
+          {
+            "table": 11,
+            "hits": 3202214,
+            "misses": 6452747,
+            "hit_rate": 33.16651408534949
+          },
+          {
+            "table": 12,
+            "hits": 6186902,
+            "misses": 3813098,
+            "hit_rate": 61.86902
+          },
+          {
+            "table": 13,
+            "hits": 9890735,
+            "misses": 109265,
+            "hit_rate": 98.90735000000001
+          },
+          {
+            "table": 14,
+            "hits": 5962957,
+            "misses": 4037043,
+            "hit_rate": 59.62957
+          },
+          {
+            "table": 15,
+            "hits": 3637295,
+            "misses": 6017666,
+            "hit_rate": 37.672808828539026
+          },
+          {
+            "table": 16,
+            "hits": 9941083,
+            "misses": 58917,
+            "hit_rate": 99.41082999999999
+          },
+          {
+            "table": 17,
+            "hits": 7341775,
+            "misses": 2658225,
+            "hit_rate": 73.41775
+          },
+          {
+            "table": 18,
+            "hits": 4666850,
+            "misses": 944676,
+            "hit_rate": 83.16543485675733
+          },
+          {
+            "table": 19,
+            "hits": 5591834,
+            "misses": 19692,
+            "hit_rate": 99.64907941262324
+          },
+          {
+            "table": 20,
+            "hits": 3399303,
+            "misses": 6255658,
+            "hit_rate": 35.2078377116179
+          },
+          {
+            "table": 21,
+            "hits": 2361739,
+            "misses": 34637,
+            "hit_rate": 98.5546091264476
+          },
+          {
+            "table": 22,
+            "hits": 9923973,
+            "misses": 76027,
+            "hit_rate": 99.23973000000001
+          },
+          {
+            "table": 23,
+            "hits": 5852867,
+            "misses": 3802094,
+            "hit_rate": 60.62030701107959
+          },
+          {
+            "table": 24,
+            "hits": 5453203,
+            "misses": 158323,
+            "hit_rate": 97.17861059540667
+          },
+          {
+            "table": 25,
+            "hits": 2801266,
+            "misses": 2810260,
+            "hit_rate": 49.91986137104239
+          }
+        ]
+      }
+    },
+    "100000": {
+      "Rotate-victim mode 0": {
+        "hits": 210499230,
+        "misses": 20992867,
+        "hit_rate": 90.93149732882674,
+        "cpu_seconds": 107.3980757710001,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9967240,
+            "misses": 32760,
+            "hit_rate": 99.67240000000001
+          },
+          {
+            "table": 1,
+            "hits": 9996460,
+            "misses": 3540,
+            "hit_rate": 99.9646
+          },
+          {
+            "table": 2,
+            "hits": 5242644,
+            "misses": 4412317,
+            "hit_rate": 54.30000183325443
+          },
+          {
+            "table": 3,
+            "hits": 7472583,
+            "misses": 2182378,
+            "hit_rate": 77.39630434550693
+          },
+          {
+            "table": 4,
+            "hits": 9993634,
+            "misses": 6366,
+            "hit_rate": 99.93634
+          },
+          {
+            "table": 5,
+            "hits": 8719777,
+            "misses": 74,
+            "hit_rate": 99.99915136164597
+          },
+          {
+            "table": 6,
+            "hits": 9680444,
+            "misses": 319556,
+            "hit_rate": 96.80444
+          },
+          {
+            "table": 7,
+            "hits": 9986072,
+            "misses": 13928,
+            "hit_rate": 99.86072
+          },
+          {
+            "table": 8,
+            "hits": 9999997,
+            "misses": 3,
+            "hit_rate": 99.99997
+          },
+          {
+            "table": 9,
+            "hits": 9234360,
+            "misses": 765640,
+            "hit_rate": 92.34360000000001
+          },
+          {
+            "table": 10,
+            "hits": 9861499,
+            "misses": 138501,
+            "hit_rate": 98.61499
+          },
+          {
+            "table": 11,
+            "hits": 5644543,
+            "misses": 4010418,
+            "hit_rate": 58.46261833683223
+          },
+          {
+            "table": 12,
+            "hits": 9913264,
+            "misses": 86736,
+            "hit_rate": 99.13264000000001
+          },
+          {
+            "table": 13,
+            "hits": 9999971,
+            "misses": 29,
+            "hit_rate": 99.99971
+          },
+          {
+            "table": 14,
+            "hits": 9715572,
+            "misses": 284428,
+            "hit_rate": 97.15572
+          },
+          {
+            "table": 15,
+            "hits": 6388689,
+            "misses": 3266272,
+            "hit_rate": 66.17001352983198
+          },
+          {
+            "table": 16,
+            "hits": 9999990,
+            "misses": 10,
+            "hit_rate": 99.9999
+          },
+          {
+            "table": 17,
+            "hits": 9877380,
+            "misses": 122620,
+            "hit_rate": 98.7738
+          },
+          {
+            "table": 18,
+            "hits": 5572895,
+            "misses": 38631,
+            "hit_rate": 99.3115776350319
+          },
+          {
+            "table": 19,
+            "hits": 5611523,
+            "misses": 3,
+            "hit_rate": 99.99994653860644
+          },
+          {
+            "table": 20,
+            "hits": 5951204,
+            "misses": 3703757,
+            "hit_rate": 61.63881967001213
+          },
+          {
+            "table": 21,
+            "hits": 2396259,
+            "misses": 117,
+            "hit_rate": 99.9951176276177
+          },
+          {
+            "table": 22,
+            "hits": 9999958,
+            "misses": 42,
+            "hit_rate": 99.99958
+          },
+          {
+            "table": 23,
+            "hits": 8756788,
+            "misses": 898173,
+            "hit_rate": 90.69729023245148
+          },
+          {
+            "table": 24,
+            "hits": 5610750,
+            "misses": 776,
+            "hit_rate": 99.98617131953054
+          },
+          {
+            "table": 25,
+            "hits": 4905734,
+            "misses": 705792,
+            "hit_rate": 87.42245870374654
+          }
+        ]
+      },
+      "Rotate-step mode 0": {
+        "hits": 211142522,
+        "misses": 20349575,
+        "hit_rate": 91.20938672908562,
+        "cpu_seconds": 114.00197306699988,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9969429,
+            "misses": 30571,
+            "hit_rate": 99.69429
+          },
+          {
+            "table": 1,
+            "hits": 9997717,
+            "misses": 2283,
+            "hit_rate": 99.97717
+          },
+          {
+            "table": 2,
+            "hits": 5310190,
+            "misses": 4344771,
+            "hit_rate": 54.99960072340012
+          },
+          {
+            "table": 3,
+            "hits": 7532396,
+            "misses": 2122565,
+            "hit_rate": 78.0158096961759
+          },
+          {
+            "table": 4,
+            "hits": 9994072,
+            "misses": 5928,
+            "hit_rate": 99.94072
+          },
+          {
+            "table": 5,
+            "hits": 8719692,
+            "misses": 159,
+            "hit_rate": 99.99817657434743
+          },
+          {
+            "table": 6,
+            "hits": 9719141,
+            "misses": 280859,
+            "hit_rate": 97.19141
+          },
+          {
+            "table": 7,
+            "hits": 9987055,
+            "misses": 12945,
+            "hit_rate": 99.87055000000001
+          },
+          {
+            "table": 8,
+            "hits": 9999997,
+            "misses": 3,
+            "hit_rate": 99.99997
+          },
+          {
+            "table": 9,
+            "hits": 9286152,
+            "misses": 713848,
+            "hit_rate": 92.86152
+          },
+          {
+            "table": 10,
+            "hits": 9885857,
+            "misses": 114143,
+            "hit_rate": 98.85857
+          },
+          {
+            "table": 11,
+            "hits": 5719262,
+            "misses": 3935699,
+            "hit_rate": 59.23651063945261
+          },
+          {
+            "table": 12,
+            "hits": 9937209,
+            "misses": 62791,
+            "hit_rate": 99.37209
+          },
+          {
+            "table": 13,
+            "hits": 9999972,
+            "misses": 28,
+            "hit_rate": 99.99972
+          },
+          {
+            "table": 14,
+            "hits": 9765656,
+            "misses": 234344,
+            "hit_rate": 97.65656
+          },
+          {
+            "table": 15,
+            "hits": 6460486,
+            "misses": 3194475,
+            "hit_rate": 66.91364159834514
+          },
+          {
+            "table": 16,
+            "hits": 9999990,
+            "misses": 10,
+            "hit_rate": 99.9999
+          },
+          {
+            "table": 17,
+            "hits": 9892799,
+            "misses": 107201,
+            "hit_rate": 98.92799
+          },
+          {
+            "table": 18,
+            "hits": 5577909,
+            "misses": 33617,
+            "hit_rate": 99.40092944414764
+          },
+          {
+            "table": 19,
+            "hits": 5611523,
+            "misses": 3,
+            "hit_rate": 99.99994653860644
+          },
+          {
+            "table": 20,
+            "hits": 6018834,
+            "misses": 3636127,
+            "hit_rate": 62.339288579208144
+          },
+          {
+            "table": 21,
+            "hits": 2396240,
+            "misses": 136,
+            "hit_rate": 99.99432476372657
+          },
+          {
+            "table": 22,
+            "hits": 9999958,
+            "misses": 42,
+            "hit_rate": 99.99958
+          },
+          {
+            "table": 23,
+            "hits": 8806106,
+            "misses": 848855,
+            "hit_rate": 91.20809498867992
+          },
+          {
+            "table": 24,
+            "hits": 5610859,
+            "misses": 667,
+            "hit_rate": 99.98811375016349
+          },
+          {
+            "table": 25,
+            "hits": 4944021,
+            "misses": 667505,
+            "hit_rate": 88.10475082891891
+          }
+        ]
+      },
+      "Rotate-victim mode 1": {
+        "hits": 204322208,
+        "misses": 27169889,
+        "hit_rate": 88.26314619284823,
+        "cpu_seconds": 194.6156535780001,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9926082,
+            "misses": 73918,
+            "hit_rate": 99.26082000000001
+          },
+          {
+            "table": 1,
+            "hits": 9900747,
+            "misses": 99253,
+            "hit_rate": 99.00747
+          },
+          {
+            "table": 2,
+            "hits": 5004292,
+            "misses": 4650669,
+            "hit_rate": 51.83130206326053
+          },
+          {
+            "table": 3,
+            "hits": 6946923,
+            "misses": 2708038,
+            "hit_rate": 71.95184941710278
+          },
+          {
+            "table": 4,
+            "hits": 9978714,
+            "misses": 21286,
+            "hit_rate": 99.78714
+          },
+          {
+            "table": 5,
+            "hits": 8717541,
+            "misses": 2310,
+            "hit_rate": 99.97350872165131
+          },
+          {
+            "table": 6,
+            "hits": 8815452,
+            "misses": 1184548,
+            "hit_rate": 88.15452
+          },
+          {
+            "table": 7,
+            "hits": 9962744,
+            "misses": 37256,
+            "hit_rate": 99.62744
+          },
+          {
+            "table": 8,
+            "hits": 9999319,
+            "misses": 681,
+            "hit_rate": 99.99319
+          },
+          {
+            "table": 9,
+            "hits": 8463249,
+            "misses": 1536751,
+            "hit_rate": 84.63249
+          },
+          {
+            "table": 10,
+            "hits": 9354225,
+            "misses": 645775,
+            "hit_rate": 93.54225000000001
+          },
+          {
+            "table": 11,
+            "hits": 5402398,
+            "misses": 4252563,
+            "hit_rate": 55.95463306376898
+          },
+          {
+            "table": 12,
+            "hits": 9494045,
+            "misses": 505955,
+            "hit_rate": 94.94045
+          },
+          {
+            "table": 13,
+            "hits": 9994312,
+            "misses": 5688,
+            "hit_rate": 99.94312
+          },
+          {
+            "table": 14,
+            "hits": 9248969,
+            "misses": 751031,
+            "hit_rate": 92.48969
+          },
+          {
+            "table": 15,
+            "hits": 6018763,
+            "misses": 3636198,
+            "hit_rate": 62.33855320596323
+          },
+          {
+            "table": 16,
+            "hits": 9997734,
+            "misses": 2266,
+            "hit_rate": 99.97734
+          },
+          {
+            "table": 17,
+            "hits": 9608898,
+            "misses": 391102,
+            "hit_rate": 96.08898
+          },
+          {
+            "table": 18,
+            "hits": 5422335,
+            "misses": 189191,
+            "hit_rate": 96.62852849652661
+          },
+          {
+            "table": 19,
+            "hits": 5610812,
+            "misses": 714,
+            "hit_rate": 99.98727618833094
+          },
+          {
+            "table": 20,
+            "hits": 5668158,
+            "misses": 3986803,
+            "hit_rate": 58.70720762103544
+          },
+          {
+            "table": 21,
+            "hits": 2394433,
+            "misses": 1943,
+            "hit_rate": 99.91891923471108
+          },
+          {
+            "table": 22,
+            "hits": 9996740,
+            "misses": 3260,
+            "hit_rate": 99.9674
+          },
+          {
+            "table": 23,
+            "hits": 8257370,
+            "misses": 1397591,
+            "hit_rate": 85.52463339831202
+          },
+          {
+            "table": 24,
+            "hits": 5601406,
+            "misses": 10120,
+            "hit_rate": 99.81965689903247
+          },
+          {
+            "table": 25,
+            "hits": 4536547,
+            "misses": 1074979,
+            "hit_rate": 80.84337486808401
+          }
+        ]
+      },
+      "Young-bit mode 0": {
+        "hits": 210498672,
+        "misses": 20993425,
+        "hit_rate": 90.93125628388083,
+        "cpu_seconds": 140.75758506600005,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9967240,
+            "misses": 32760,
+            "hit_rate": 99.67240000000001
+          },
+          {
+            "table": 1,
+            "hits": 9996460,
+            "misses": 3540,
+            "hit_rate": 99.9646
+          },
+          {
+            "table": 2,
+            "hits": 5242634,
+            "misses": 4412327,
+            "hit_rate": 54.29989825955796
+          },
+          {
+            "table": 3,
+            "hits": 7472575,
+            "misses": 2182386,
+            "hit_rate": 77.39622148654976
+          },
+          {
+            "table": 4,
+            "hits": 9993634,
+            "misses": 6366,
+            "hit_rate": 99.93634
+          },
+          {
+            "table": 5,
+            "hits": 8719777,
+            "misses": 74,
+            "hit_rate": 99.99915136164597
+          },
+          {
+            "table": 6,
+            "hits": 9680364,
+            "misses": 319636,
+            "hit_rate": 96.80364
+          },
+          {
+            "table": 7,
+            "hits": 9986072,
+            "misses": 13928,
+            "hit_rate": 99.86072
+          },
+          {
+            "table": 8,
+            "hits": 9999997,
+            "misses": 3,
+            "hit_rate": 99.99997
+          },
+          {
+            "table": 9,
+            "hits": 9233870,
+            "misses": 766130,
+            "hit_rate": 92.33869999999999
+          },
+          {
+            "table": 10,
+            "hits": 9861499,
+            "misses": 138501,
+            "hit_rate": 98.61499
+          },
+          {
+            "table": 11,
+            "hits": 5644536,
+            "misses": 4010425,
+            "hit_rate": 58.4625458352447
+          },
+          {
+            "table": 12,
+            "hits": 9913264,
+            "misses": 86736,
+            "hit_rate": 99.13264000000001
+          },
+          {
+            "table": 13,
+            "hits": 9999971,
+            "misses": 29,
+            "hit_rate": 99.99971
+          },
+          {
+            "table": 14,
+            "hits": 9715572,
+            "misses": 284428,
+            "hit_rate": 97.15572
+          },
+          {
+            "table": 15,
+            "hits": 6388688,
+            "misses": 3266273,
+            "hit_rate": 66.17000317246232
+          },
+          {
+            "table": 16,
+            "hits": 9999990,
+            "misses": 10,
+            "hit_rate": 99.9999
+          },
+          {
+            "table": 17,
+            "hits": 9877380,
+            "misses": 122620,
+            "hit_rate": 98.7738
+          },
+          {
+            "table": 18,
+            "hits": 5572895,
+            "misses": 38631,
+            "hit_rate": 99.3115776350319
+          },
+          {
+            "table": 19,
+            "hits": 5611523,
+            "misses": 3,
+            "hit_rate": 99.99994653860644
+          },
+          {
+            "table": 20,
+            "hits": 5951203,
+            "misses": 3703758,
+            "hit_rate": 61.638809312642486
+          },
+          {
+            "table": 21,
+            "hits": 2396259,
+            "misses": 117,
+            "hit_rate": 99.9951176276177
+          },
+          {
+            "table": 22,
+            "hits": 9999958,
+            "misses": 42,
+            "hit_rate": 99.99958
+          },
+          {
+            "table": 23,
+            "hits": 8756788,
+            "misses": 898173,
+            "hit_rate": 90.69729023245148
+          },
+          {
+            "table": 24,
+            "hits": 5610750,
+            "misses": 776,
+            "hit_rate": 99.98617131953054
+          },
+          {
+            "table": 25,
+            "hits": 4905773,
+            "misses": 705753,
+            "hit_rate": 87.42315370186292
+          }
+        ]
+      },
+      "Rotate-step mode 1": {
+        "hits": 204305265,
+        "misses": 27186832,
+        "hit_rate": 88.25582715249239,
+        "cpu_seconds": 198.32343988599996,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9926011,
+            "misses": 73989,
+            "hit_rate": 99.26011
+          },
+          {
+            "table": 1,
+            "hits": 9900742,
+            "misses": 99258,
+            "hit_rate": 99.00742
+          },
+          {
+            "table": 2,
+            "hits": 5002522,
+            "misses": 4652439,
+            "hit_rate": 51.812969518986144
+          },
+          {
+            "table": 3,
+            "hits": 6944945,
+            "misses": 2710016,
+            "hit_rate": 71.9313625399419
+          },
+          {
+            "table": 4,
+            "hits": 9978694,
+            "misses": 21306,
+            "hit_rate": 99.78694
+          },
+          {
+            "table": 5,
+            "hits": 8717543,
+            "misses": 2308,
+            "hit_rate": 99.97353165782306
+          },
+          {
+            "table": 6,
+            "hits": 8814082,
+            "misses": 1185918,
+            "hit_rate": 88.14081999999999
+          },
+          {
+            "table": 7,
+            "hits": 9962701,
+            "misses": 37299,
+            "hit_rate": 99.62701
+          },
+          {
+            "table": 8,
+            "hits": 9999320,
+            "misses": 680,
+            "hit_rate": 99.9932
+          },
+          {
+            "table": 9,
+            "hits": 8461316,
+            "misses": 1538684,
+            "hit_rate": 84.61316
+          },
+          {
+            "table": 10,
+            "hits": 9353861,
+            "misses": 646139,
+            "hit_rate": 93.53861
+          },
+          {
+            "table": 11,
+            "hits": 5400621,
+            "misses": 4254340,
+            "hit_rate": 55.93622801790706
+          },
+          {
+            "table": 12,
+            "hits": 9493794,
+            "misses": 506206,
+            "hit_rate": 94.93794
+          },
+          {
+            "table": 13,
+            "hits": 9994314,
+            "misses": 5686,
+            "hit_rate": 99.94314
+          },
+          {
+            "table": 14,
+            "hits": 9248367,
+            "misses": 751633,
+            "hit_rate": 92.48366999999999
+          },
+          {
+            "table": 15,
+            "hits": 6016812,
+            "misses": 3638149,
+            "hit_rate": 62.31834597778282
+          },
+          {
+            "table": 16,
+            "hits": 9997734,
+            "misses": 2266,
+            "hit_rate": 99.97734
+          },
+          {
+            "table": 17,
+            "hits": 9608607,
+            "misses": 391393,
+            "hit_rate": 96.08607
+          },
+          {
+            "table": 18,
+            "hits": 5422138,
+            "misses": 189388,
+            "hit_rate": 96.62501786501568
+          },
+          {
+            "table": 19,
+            "hits": 5610812,
+            "misses": 714,
+            "hit_rate": 99.98727618833094
+          },
+          {
+            "table": 20,
+            "hits": 5666282,
+            "misses": 3988679,
+            "hit_rate": 58.68777719557852
+          },
+          {
+            "table": 21,
+            "hits": 2394435,
+            "misses": 1941,
+            "hit_rate": 99.91900269406804
+          },
+          {
+            "table": 22,
+            "hits": 9996740,
+            "misses": 3260,
+            "hit_rate": 99.9674
+          },
+          {
+            "table": 23,
+            "hits": 8256028,
+            "misses": 1398933,
+            "hit_rate": 85.51073380824636
+          },
+          {
+            "table": 24,
+            "hits": 5601407,
+            "misses": 10119,
+            "hit_rate": 99.81967471949697
+          },
+          {
+            "table": 25,
+            "hits": 4535437,
+            "misses": 1076089,
+            "hit_rate": 80.82359415246405
+          }
+        ]
+      },
+      "Young-bit mode 1": {
+        "hits": 204315350,
+        "misses": 27176747,
+        "hit_rate": 88.26018367270655,
+        "cpu_seconds": 143.3718242739999,
+        "per_table": [
+          {
+            "table": 0,
+            "hits": 9926054,
+            "misses": 73946,
+            "hit_rate": 99.26053999999999
+          },
+          {
+            "table": 1,
+            "hits": 9900729,
+            "misses": 99271,
+            "hit_rate": 99.00729
+          },
+          {
+            "table": 2,
+            "hits": 5003663,
+            "misses": 4651298,
+            "hit_rate": 51.82478727775286
+          },
+          {
+            "table": 3,
+            "hits": 6946121,
+            "misses": 2708840,
+            "hit_rate": 71.94354280664625
+          },
+          {
+            "table": 4,
+            "hits": 9978704,
+            "misses": 21296,
+            "hit_rate": 99.78704
+          },
+          {
+            "table": 5,
+            "hits": 8717541,
+            "misses": 2310,
+            "hit_rate": 99.97350872165131
+          },
+          {
+            "table": 6,
+            "hits": 8814783,
+            "misses": 1185217,
+            "hit_rate": 88.14783
+          },
+          {
+            "table": 7,
+            "hits": 9962740,
+            "misses": 37260,
+            "hit_rate": 99.6274
+          },
+          {
+            "table": 8,
+            "hits": 9999319,
+            "misses": 681,
+            "hit_rate": 99.99319
+          },
+          {
+            "table": 9,
+            "hits": 8462607,
+            "misses": 1537393,
+            "hit_rate": 84.62607
+          },
+          {
+            "table": 10,
+            "hits": 9353979,
+            "misses": 646021,
+            "hit_rate": 93.53979
+          },
+          {
+            "table": 11,
+            "hits": 5401739,
+            "misses": 4253222,
+            "hit_rate": 55.9478075571719
+          },
+          {
+            "table": 12,
+            "hits": 9493879,
+            "misses": 506121,
+            "hit_rate": 94.93879
+          },
+          {
+            "table": 13,
+            "hits": 9994312,
+            "misses": 5688,
+            "hit_rate": 99.94312
+          },
+          {
+            "table": 14,
+            "hits": 9248643,
+            "misses": 751357,
+            "hit_rate": 92.48643
+          },
+          {
+            "table": 15,
+            "hits": 6018024,
+            "misses": 3636937,
+            "hit_rate": 62.33089910979444
+          },
+          {
+            "table": 16,
+            "hits": 9997734,
+            "misses": 2266,
+            "hit_rate": 99.97734
+          },
+          {
+            "table": 17,
+            "hits": 9608764,
+            "misses": 391236,
+            "hit_rate": 96.08764
+          },
+          {
+            "table": 18,
+            "hits": 5422253,
+            "misses": 189273,
+            "hit_rate": 96.62706721843577
+          },
+          {
+            "table": 19,
+            "hits": 5610812,
+            "misses": 714,
+            "hit_rate": 99.98727618833094
+          },
+          {
+            "table": 20,
+            "hits": 5667459,
+            "misses": 3987502,
+            "hit_rate": 58.69996781965251
+          },
+          {
+            "table": 21,
+            "hits": 2394435,
+            "misses": 1941,
+            "hit_rate": 99.91900269406804
+          },
+          {
+            "table": 22,
+            "hits": 9996740,
+            "misses": 3260,
+            "hit_rate": 99.9674
+          },
+          {
+            "table": 23,
+            "hits": 8256816,
+            "misses": 1398145,
+            "hit_rate": 85.51889541552782
+          },
+          {
+            "table": 24,
+            "hits": 5601402,
+            "misses": 10124,
+            "hit_rate": 99.81958561717437
+          },
+          {
+            "table": 25,
+            "hits": 4536098,
+            "misses": 1075428,
+            "hit_rate": 80.83537347951342
+          }
+        ]
+      }
+    }
+  }
+}

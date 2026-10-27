@@ -1,0 +1,10 @@
+Loaded 2,000,000 rows, 46,128,690 accesses, 2,293,344 unique (table, id) keys in 25.6s
+Sweep finished in 297.4s
+
+  capacity | Rotate-victim  | Rotate-victim  | Rotate-step mo | Rotate-step mo | Young-bit mode | Young-bit mode
+       256 |       47.6719% |       35.5568% |       47.6670% |       35.5567% |       47.6719% |       35.5568%
+     1,000 |       58.4477% |       49.4707% |       58.8394% |       49.4706% |       58.4476% |       49.4706%
+    10,000 |       77.9677% |       71.8884% |       78.3310% |       71.8852% |       77.9630% |       71.8865%
+   100,000 |       91.6117% |       90.8820% |       91.7569% |       90.8455% |       91.6117% |       90.8670%
+
+Saved: /scratch/rahulkmr/Adarsh/results/P9/rows_2000000_setB/shared_cache_results.json

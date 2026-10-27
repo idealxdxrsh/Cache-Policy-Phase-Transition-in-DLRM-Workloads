@@ -1,0 +1,10 @@
+Loaded 2,000,000 rows, 46,128,690 accesses, 2,293,344 unique (table, id) keys in 25.7s
+Sweep finished in 185.8s
+
+  capacity | LFU (gem5 LFUR | RTL-exact mode | RTL-exact mode | LFU-reset lowe | LFU-reset 6-bi | LFU-reset lowe
+       256 |       47.6719% |       39.3685% |       43.0680% |       39.3685% |       47.6719% |       39.3685%
+     1,000 |       58.4477% |       50.5128% |       53.1589% |       50.5128% |       58.4477% |       50.5128%
+    10,000 |       77.9677% |       72.6211% |       74.2149% |       72.6211% |       77.9677% |       72.6211%
+   100,000 |       91.6117% |       88.6136% |       91.2062% |       88.6136% |       91.6117% |       88.6136%
+
+Saved: /scratch/rahulkmr/Adarsh/results/P9/rows_2000000_setA/shared_cache_results.json

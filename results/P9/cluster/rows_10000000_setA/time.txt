@@ -1,0 +1,6 @@
+	Command being timed: "python -I /scratch/rahulkmr/Adarsh/repo/trace_sim/run_shared_cache.py --criteo_path /scratch/rahulkmr/Adarsh/data/criteo/extracted/train.txt --n_rows 10000000 --workers 4 --output /scratch/rahulkmr/Adarsh/results/P9/rows_10000000_setA --tag shared_cache_results --policies LFU (gem5 LFURP — reset on eviction) RTL-exact mode 0 RTL-exact mode 1 LFU-reset lowest-slot LFU-reset 6-bit LFU-reset lowest-slot 6-bit"
+	User time (seconds): 3717.55
+	System time (seconds): 15.44
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 17:52.49
+	Maximum resident set size (kbytes): 2380696
+	Exit status: 0
