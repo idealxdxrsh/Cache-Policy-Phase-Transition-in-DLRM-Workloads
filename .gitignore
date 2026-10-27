@@ -45,3 +45,6 @@ results/P8/work/
 results/P8/stimulus/*.hex
 results/P9/work/
 results/P9/rtl/*.hits.gz
+# P10 lockstep work files and hit logs (sha256 in results/P10/rtl/*.txt; regenerate with rtl/v3/run_p10.sh all)
+results/P10/work/
+results/P10/rtl/*.hits.gz

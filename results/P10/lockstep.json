@@ -1,0 +1,283 @@
+{
+ "runs": [
+  {
+   "run": "d16_m0_row0_full",
+   "depth": 16,
+   "mode": 0,
+   "slice": "row0",
+   "requests": 200000,
+   "rtl_hits": 17035,
+   "rtl_misses": 182965,
+   "indices_consecutive": true,
+   "addresses_equal_slice": true,
+   "summary_line": "p8_power depth=16 mode=0 stim=1 warm=20000 win=10000 cycles=1040651 requests=200000 responses=200000 hits=17035 misses=182965 win_requests=1853 win_responses=1852 win_hits=65 win_misses=1787 win_first_req=3696 win_last_req=5548 winreq_responses=1853 winreq_hits=65 t_begin_ps=0 t_end_ps=60005000 x_cycles=0",
+   "model": "Rotate-victim mode 0",
+   "sim": {
+    "hits": 17035,
+    "misses": 182965,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "v2_rule_hits": 19946,
+   "pass": true
+  },
+  {
+   "run": "d16_m0_row1M_full",
+   "depth": 16,
+   "mode": 0,
+   "slice": "row1M",
+   "requests": 200000,
+   "rtl_hits": 5217,
+   "rtl_misses": 194783,
+   "indices_consecutive": true,
+   "addresses_equal_slice": true,
+   "summary_line": "p8_power depth=16 mode=0 stim=1 warm=20000 win=10000 cycles=1081895 requests=200000 responses=200000 hits=5217 misses=194783 win_requests=1837 win_responses=1838 win_hits=41 win_misses=1797 win_first_req=3691 win_last_req=5527 winreq_responses=1837 winreq_hits=41 t_begin_ps=0 t_end_ps=60005000 x_cycles=0",
+   "model": "Rotate-victim mode 0",
+   "sim": {
+    "hits": 5217,
+    "misses": 194783,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "v2_rule_hits": 18254,
+   "pass": true
+  },
+  {
+   "run": "d64_m0_row0_full",
+   "depth": 64,
+   "mode": 0,
+   "slice": "row0",
+   "requests": 200000,
+   "rtl_hits": 80697,
+   "rtl_misses": 119303,
+   "indices_consecutive": true,
+   "addresses_equal_slice": true,
+   "summary_line": "p8_power depth=64 mode=0 stim=1 warm=20000 win=10000 cycles=817581 requests=200000 responses=200000 hits=80697 misses=119303 win_requests=2453 win_responses=2452 win_hits=1014 win_misses=1438 win_first_req=4809 win_last_req=7261 winreq_responses=2453 winreq_hits=1014 t_begin_ps=0 t_end_ps=60005000 x_cycles=0",
+   "model": "Rotate-victim mode 0",
+   "sim": {
+    "hits": 80697,
+    "misses": 119303,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "v2_rule_hits": 54737,
+   "pass": true
+  },
+  {
+   "run": "d64_m0_row1M_full",
+   "depth": 64,
+   "mode": 0,
+   "slice": "row1M",
+   "requests": 200000,
+   "rtl_hits": 77528,
+   "rtl_misses": 122472,
+   "indices_consecutive": true,
+   "addresses_equal_slice": true,
+   "summary_line": "p8_power depth=64 mode=0 stim=1 warm=20000 win=10000 cycles=828704 requests=200000 responses=200000 hits=77528 misses=122472 win_requests=2365 win_responses=2366 win_hits=882 win_misses=1484 win_first_req=4710 win_last_req=7074 winreq_responses=2365 winreq_hits=881 t_begin_ps=0 t_end_ps=60005000 x_cycles=0",
+   "model": "Rotate-victim mode 0",
+   "sim": {
+    "hits": 77528,
+    "misses": 122472,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "v2_rule_hits": 53788,
+   "pass": true
+  },
+  {
+   "run": "d256_m0_row0_full",
+   "depth": 256,
+   "mode": 0,
+   "slice": "row0",
+   "requests": 200000,
+   "rtl_hits": 103382,
+   "rtl_misses": 96618,
+   "indices_consecutive": true,
+   "addresses_equal_slice": true,
+   "summary_line": "p8_power depth=256 mode=0 stim=1 warm=100000 win=10000 cycles=738077 requests=200000 responses=200000 hits=103382 misses=96618 win_requests=2730 win_responses=2730 win_hits=1438 win_misses=1292 win_first_req=27084 win_last_req=29813 winreq_responses=2730 winreq_hits=1437 t_begin_ps=0 t_end_ps=220005000 x_cycles=0",
+   "model": "Rotate-victim mode 0",
+   "sim": {
+    "hits": 103382,
+    "misses": 96618,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "v2_rule_hits": 81221,
+   "pass": true
+  },
+  {
+   "run": "d256_m0_row1M_full",
+   "depth": 256,
+   "mode": 0,
+   "slice": "row1M",
+   "requests": 200000,
+   "rtl_hits": 101867,
+   "rtl_misses": 98133,
+   "indices_consecutive": true,
+   "addresses_equal_slice": true,
+   "summary_line": "p8_power depth=256 mode=0 stim=1 warm=100000 win=10000 cycles=743408 requests=200000 responses=200000 hits=101867 misses=98133 win_requests=2662 win_responses=2663 win_hits=1336 win_misses=1327 win_first_req=26550 win_last_req=29211 winreq_responses=2662 winreq_hits=1335 t_begin_ps=0 t_end_ps=220005000 x_cycles=0",
+   "model": "Rotate-victim mode 0",
+   "sim": {
+    "hits": 101867,
+    "misses": 98133,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "v2_rule_hits": 83219,
+   "pass": true
+  },
+  {
+   "run": "d16_m1_row0_full",
+   "depth": 16,
+   "mode": 1,
+   "slice": "row0",
+   "requests": 200000,
+   "rtl_hits": 30018,
+   "rtl_misses": 169982,
+   "indices_consecutive": true,
+   "addresses_equal_slice": true,
+   "summary_line": "p8_power depth=16 mode=1 stim=1 warm=20000 win=10000 cycles=995124 requests=200000 responses=200000 hits=30018 misses=169982 win_requests=2021 win_responses=2020 win_hits=336 win_misses=1684 win_first_req=3925 win_last_req=5945 winreq_responses=2021 winreq_hits=337 t_begin_ps=0 t_end_ps=60005000 x_cycles=0",
+   "model": "RTL-exact mode 1",
+   "sim": {
+    "hits": 30018,
+    "misses": 169982,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "equals_p9_v2_log": true,
+   "pass": true
+  },
+  {
+   "run": "d16_m1_row1M_full",
+   "depth": 16,
+   "mode": 1,
+   "slice": "row1M",
+   "requests": 200000,
+   "rtl_hits": 26350,
+   "rtl_misses": 173650,
+   "indices_consecutive": true,
+   "addresses_equal_slice": true,
+   "summary_line": "p8_power depth=16 mode=1 stim=1 warm=20000 win=10000 cycles=1007916 requests=200000 responses=200000 hits=26350 misses=173650 win_requests=1979 win_responses=1979 win_hits=268 win_misses=1711 win_first_req=3914 win_last_req=5892 winreq_responses=1979 winreq_hits=268 t_begin_ps=0 t_end_ps=60005000 x_cycles=0",
+   "model": "RTL-exact mode 1",
+   "sim": {
+    "hits": 26350,
+    "misses": 173650,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "equals_p9_v2_log": true,
+   "pass": true
+  },
+  {
+   "run": "d64_m1_row0_full",
+   "depth": 64,
+   "mode": 1,
+   "slice": "row0",
+   "requests": 200000,
+   "rtl_hits": 61252,
+   "rtl_misses": 138748,
+   "indices_consecutive": true,
+   "addresses_equal_slice": true,
+   "summary_line": "p8_power depth=64 mode=1 stim=1 warm=20000 win=10000 cycles=885966 requests=200000 responses=200000 hits=61252 misses=138748 win_requests=2246 win_responses=2246 win_hits=694 win_misses=1552 win_first_req=4484 win_last_req=6729 winreq_responses=2246 winreq_hits=694 t_begin_ps=0 t_end_ps=60005000 x_cycles=0",
+   "model": "RTL-exact mode 1",
+   "sim": {
+    "hits": 61252,
+    "misses": 138748,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "equals_p9_v2_log": true,
+   "pass": true
+  },
+  {
+   "run": "d64_m1_row1M_full",
+   "depth": 64,
+   "mode": 1,
+   "slice": "row1M",
+   "requests": 200000,
+   "rtl_hits": 59978,
+   "rtl_misses": 140022,
+   "indices_consecutive": true,
+   "addresses_equal_slice": true,
+   "summary_line": "p8_power depth=64 mode=1 stim=1 warm=20000 win=10000 cycles=890436 requests=200000 responses=200000 hits=59978 misses=140022 win_requests=2223 win_responses=2224 win_hits=659 win_misses=1565 win_first_req=4451 win_last_req=6673 winreq_responses=2223 winreq_hits=659 t_begin_ps=0 t_end_ps=60005000 x_cycles=0",
+   "model": "RTL-exact mode 1",
+   "sim": {
+    "hits": 59978,
+    "misses": 140022,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "equals_p9_v2_log": true,
+   "pass": true
+  },
+  {
+   "run": "d256_m1_row0_full",
+   "depth": 256,
+   "mode": 1,
+   "slice": "row0",
+   "requests": 200000,
+   "rtl_hits": 91192,
+   "rtl_misses": 108808,
+   "indices_consecutive": true,
+   "addresses_equal_slice": true,
+   "summary_line": "p8_power depth=256 mode=1 stim=1 warm=100000 win=10000 cycles=780964 requests=200000 responses=200000 hits=91192 misses=108808 win_requests=2556 win_responses=2557 win_hits=1175 win_misses=1382 win_first_req=25937 win_last_req=28492 winreq_responses=2556 winreq_hits=1175 t_begin_ps=0 t_end_ps=220005000 x_cycles=0",
+   "model": "RTL-exact mode 1",
+   "sim": {
+    "hits": 91192,
+    "misses": 108808,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "equals_p9_v2_log": true,
+   "pass": true
+  },
+  {
+   "run": "d256_m1_row1M_full",
+   "depth": 256,
+   "mode": 1,
+   "slice": "row1M",
+   "requests": 200000,
+   "rtl_hits": 86439,
+   "rtl_misses": 113561,
+   "indices_consecutive": true,
+   "addresses_equal_slice": true,
+   "summary_line": "p8_power depth=256 mode=1 stim=1 warm=100000 win=10000 cycles=797684 requests=200000 responses=200000 hits=86439 misses=113561 win_requests=2470 win_responses=2470 win_hits=1051 win_misses=1419 win_first_req=25242 win_last_req=27711 winreq_responses=2470 winreq_hits=1051 t_begin_ps=0 t_end_ps=220005000 x_cycles=0",
+   "model": "RTL-exact mode 1",
+   "sim": {
+    "hits": 86439,
+    "misses": 113561,
+    "mismatches": 0,
+    "first_mismatch": null
+   },
+   "equals_p9_v2_log": true,
+   "pass": true
+  }
+ ],
+ "tb8_model_victims": {
+  "16": [
+   2,
+   3,
+   5,
+   15,
+   2,
+   3
+  ],
+  "64": [
+   2,
+   3,
+   5,
+   63,
+   2,
+   3
+  ],
+  "256": [
+   2,
+   3,
+   5,
+   255,
+   2,
+   3
+  ]
+ },
+ "tb8_model_equals_tb": true
+}

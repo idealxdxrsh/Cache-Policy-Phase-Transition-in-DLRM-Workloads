@@ -1,0 +1,24 @@
+DEPTH=16 COUNTER_MODE=0: ALL TESTS PASSED
+DEPTH=16 COUNTER_MODE=1: ALL TESTS PASSED
+DEPTH=64 COUNTER_MODE=0: ALL TESTS PASSED
+DEPTH=64 COUNTER_MODE=1: ALL TESTS PASSED
+DEPTH=256 COUNTER_MODE=0: ALL TESTS PASSED
+DEPTH=256 COUNTER_MODE=1: ALL TESTS PASSED
+no_rotate (v2 rule: ROTATE = 0): caught; 265 failed checks, 10 in TEST 8
+ptr_no_increment (ptr <= victim_reg): caught; 270 failed checks, 12 in TEST 8
+stageB_no_wrap (Stage B leaf wrap = 0): caught; 7 failed checks, 7 in TEST 8
+d16_m0_row0_full     requests=200000 rtl hits/misses=17035/182965 Rotate-victim mode 0 hits/misses=17035/182965 mismatches=0 first=None addresses_ok=True v2_rule_hits=19946 pass=True
+d16_m0_row1M_full    requests=200000 rtl hits/misses=5217/194783 Rotate-victim mode 0 hits/misses=5217/194783 mismatches=0 first=None addresses_ok=True v2_rule_hits=18254 pass=True
+d64_m0_row0_full     requests=200000 rtl hits/misses=80697/119303 Rotate-victim mode 0 hits/misses=80697/119303 mismatches=0 first=None addresses_ok=True v2_rule_hits=54737 pass=True
+d64_m0_row1M_full    requests=200000 rtl hits/misses=77528/122472 Rotate-victim mode 0 hits/misses=77528/122472 mismatches=0 first=None addresses_ok=True v2_rule_hits=53788 pass=True
+d256_m0_row0_full    requests=200000 rtl hits/misses=103382/96618 Rotate-victim mode 0 hits/misses=103382/96618 mismatches=0 first=None addresses_ok=True v2_rule_hits=81221 pass=True
+d256_m0_row1M_full   requests=200000 rtl hits/misses=101867/98133 Rotate-victim mode 0 hits/misses=101867/98133 mismatches=0 first=None addresses_ok=True v2_rule_hits=83219 pass=True
+d16_m1_row0_full     requests=200000 rtl hits/misses=30018/169982 RTL-exact mode 1 hits/misses=30018/169982 mismatches=0 first=None addresses_ok=True equals_p9_v2_log=True pass=True
+d16_m1_row1M_full    requests=200000 rtl hits/misses=26350/173650 RTL-exact mode 1 hits/misses=26350/173650 mismatches=0 first=None addresses_ok=True equals_p9_v2_log=True pass=True
+d64_m1_row0_full     requests=200000 rtl hits/misses=61252/138748 RTL-exact mode 1 hits/misses=61252/138748 mismatches=0 first=None addresses_ok=True equals_p9_v2_log=True pass=True
+d64_m1_row1M_full    requests=200000 rtl hits/misses=59978/140022 RTL-exact mode 1 hits/misses=59978/140022 mismatches=0 first=None addresses_ok=True equals_p9_v2_log=True pass=True
+d256_m1_row0_full    requests=200000 rtl hits/misses=91192/108808 RTL-exact mode 1 hits/misses=91192/108808 mismatches=0 first=None addresses_ok=True equals_p9_v2_log=True pass=True
+d256_m1_row1M_full   requests=200000 rtl hits/misses=86439/113561 RTL-exact mode 1 hits/misses=86439/113561 mismatches=0 first=None addresses_ok=True equals_p9_v2_log=True pass=True
+TEST 8 through the simulator: {16: [2, 3, 5, 15, 2, 3], 64: [2, 3, 5, 63, 2, 3], 256: [2, 3, 5, 255, 2, 3]} equals tb expectation: True
+12/12 runs pass
+exit=0

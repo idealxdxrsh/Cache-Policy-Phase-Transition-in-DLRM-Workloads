@@ -1,0 +1,3 @@
+no_rotate (v2 rule: ROTATE = 0): caught; 265 failed checks, 10 in TEST 8
+ptr_no_increment (ptr <= victim_reg): caught; 270 failed checks, 12 in TEST 8
+stageB_no_wrap (Stage B leaf wrap = 0): caught; 7 failed checks, 7 in TEST 8
