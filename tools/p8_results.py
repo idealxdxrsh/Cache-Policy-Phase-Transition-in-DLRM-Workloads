@@ -100,7 +100,12 @@ def main():
                                          n=', '.join(f'{x:,}' for x in n)), '',
                 'Zero delay: no glitches, so combinational switching and internal power are lower bounds for this '
                 'activity. Hit rate = hits / responses in the recorded window; a slice\'s window hit rate is not a '
-                'steady-state value.', '']
+                'steady-state value.', '',
+                '**Caveat (results/P8/ANALYSIS.md):** OpenSTA weights the flip-flops\' clock-pin internal power by state '
+                'probabilities that treat Q and QN as independent, so Sequential internal power here falls for every '
+                'flip-flop that changes state in the window. The depth-64 mode-0 vs mode-1 gap (one slot rewritten vs 47) '
+                'is that artifact, not a mode effect; ANALYSIS.md gives exact-state recomputed values. Runs with a suffix '
+                '_s2/_s3 use stimulus seeds 2 and 3 (no suffix: seed 1).', '']
         out += table(vb)
         out += ['', '### Runs', '', '| run | warm-up cycles | recorded cycles | responses (all) | hits (all) | '
                 'window responses | window hits | requests (trace) | window requests (first-last index) | VCD raw / gzip MB | '

@@ -8,6 +8,9 @@
 #        STIM random|criteo; MODEL gl (netlist, VCD + power) | rtl (RTL, counts only, no VCD) | glnovcd (timing pilot)
 #        SLICE row0|row1M (criteo only; results/P8/stimulus/<SLICE>.hex + .json from tools/p8_stream.py)
 #   bash synthesis/p8/run_p8.sh pilot                      # depth 16 mode 0 random: gl with and without VCD
+#   bash synthesis/p8/run_p8.sh inst RUN                   # per-instance power of an existing gl run (VCD in work/)
+#   bash synthesis/p8/run_p8.sh clockonly D M              # flip-flop clock-pin power alone (all data activity 0)
+# SEED=<n> (env, default 1): stimulus and fill-data seed; runs with SEED != 1 get the suffix _s<n>.
 set -uo pipefail
 ROOT=$(cd "$(dirname "$0")/../.." && pwd)
 # Overridable for the cluster (synthesis/p8/gls_task.sh): P8_OUT, P8_NETLISTS, P8_MODELS, P8_STIMULUS; NOPOWER=1 skips
@@ -20,6 +23,7 @@ PY=${PY:-python3}
 TV="$PY -I $ROOT/tools/timev.py"
 mkdir -p "$R"
 
+SEED=${SEED:-1}
 power() {   # power <netlist> <out> [vcd t0 t1]
     NETLIST=$1 PERIOD_NS=2.0 VCD=${3:-} VCD_T0=${4:-0} VCD_T1=${5:-0} \
         $TV "$STA" -no_init -exit "$ROOT/synthesis/p8/power.tcl" > "$2" 2> "${2%.txt}_time.txt"
@@ -28,9 +32,10 @@ power() {   # power <netlist> <out> [vcd t0 t1]
 sim() {     # sim D M STIM WARM WIN MODEL SLICE
     local d=$1 m=$2 stim=$3 warm=$4 win=$5 model=${6:-gl} slice=${7:-}
     local run=d${d}_m${m}_${stim}${slice:+_$slice}_${model}_w${warm}_n${win}
+    [ "$SEED" != 1 ] && run=${run}_s$SEED
     local w=$R/work/$run o=$R/sim/$run.txt; mkdir -p "$w" "$R/sim"
     local net=$N/d${d}_m${m}_500MHz/netlist.v src par=(-Ptb_power.CACHE_DEPTH=$d -Ptb_power.COUNTER_MODE=$m
-          -Ptb_power.WARM=$warm -Ptb_power.WIN=$win -Ptb_power.STIM=$([ "$stim" = random ] && echo 0 || echo 1))
+          -Ptb_power.WARM=$warm -Ptb_power.WIN=$win -Ptb_power.SEED=$SEED -Ptb_power.STIM=$([ "$stim" = random ] && echo 0 || echo 1))
     local plus=()
     if [ "$stim" = criteo ]; then
         local tf=$S/$slice.hex
@@ -43,7 +48,7 @@ sim() {     # sim D M STIM WARM WIN MODEL SLICE
         src=("$M" "$w/netlist_gl.v" "$ROOT/synthesis/p8/tb_power.sv")
     fi
     {
-    echo "# P8 $run: zero-delay simulation, 500 MHz clock (2 ns), $model; fill data random (seed 1; real embedding data is not random)"
+    echo "# P8 $run: zero-delay simulation, 500 MHz clock (2 ns), $model; fill data random (seed $SEED; real embedding data is not random)"
     echo "netlist: $([ "$model" = rtl ] && echo "RTL rtl/v2 (rtl-v2-final)" || echo "$net sha256 $(sha256sum "$net" | cut -c1-64)")"
     echo "iverilog: $(iverilog -V 2>&1 | head -n 1)"
     $TV iverilog -g2012 "${par[@]}" -o "$w/sim.vvp" "${src[@]}" > "$w/iverilog.txt" 2> "$w/compile_time.txt"
@@ -76,6 +81,15 @@ vectorless)
         power "$N/d${d}_m${m}_500MHz/netlist.v" "$R/power/d${d}_m${m}_vectorless.txt"
     done; done ;;
 sim) shift; sim "$@" ;;
+inst)
+    run=$2; d=$(echo "$run" | sed -E 's/^d([0-9]+)_m([0-9]).*/\1/'); m=$(echo "$run" | sed -E 's/^d([0-9]+)_m([0-9]).*/\2/')
+    vv=$R/work/$run/vvp.txt; mkdir -p "$R/inst"
+    INST_OUT=$R/work/$run/inst.txt power "$N/d${d}_m${m}_500MHz/netlist.v" "$R/work/$run/power_inst.txt" \
+        "$R/work/$run/act.vcd.gz" "$(grep -oP 't_begin_ps=\K\d+' "$vv")" "$(grep -oP 't_end_ps=\K\d+' "$vv")"
+    gzip -f "$R/work/$run/inst.txt" ;;
+clockonly)
+    mkdir -p "$R/power"
+    CLOCK_ONLY=1 power "$N/d$2_m$3_500MHz/netlist.v" "$R/power/d$2_m$3_clockonly.txt" ;;
 pilot)
     sim 16 0 random 20000 10000 glnovcd
     sim 16 0 random 20000 10000 gl ;;

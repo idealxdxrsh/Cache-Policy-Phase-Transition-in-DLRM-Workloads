@@ -25,12 +25,18 @@ Label: NanGate45, typical corner, pre-layout, no clock tree, no extracted parasi
 
 Zero delay: no glitches, so combinational switching and internal power are lower bounds for this activity. Hit rate = hits / responses in the recorded window; a slice's window hit rate is not a steady-state value.
 
+**Caveat (results/P8/ANALYSIS.md):** OpenSTA weights the flip-flops' clock-pin internal power by state probabilities that treat Q and QN as independent, so Sequential internal power here falls for every flip-flop that changes state in the window. The depth-64 mode-0 vs mode-1 gap (one slot rewritten vs 47) is that artifact, not a mode effect; ANALYSIS.md gives exact-state recomputed values. Runs with a suffix _s2/_s3 use stimulus seeds 2 and 3 (no suffix: seed 1).
+
 | depth | mode | stimulus | Seq int/sw/leak mW | Comb int/sw/leak mW | Clock mW | total mW | dynamic energy per cycle pJ | leakage mW | hit rate (window) | annotated pins (unannotated) |
 |---|---|---|---|---|---|---|---|---|---|---|
 | 16 | 0 | random | 10.1304/0.0558/0.2613 | 0.4727/0.6891/0.2325 | 0.0000 | 11.8418 | 22.696 | 0.4938 | 2851/3262 = 87.4% | 45887 (0) |
 | 16 | 1 | random | 10.1837/0.0557/0.2614 | 0.3723/0.5768/0.2284 | 0.0000 | 11.6784 | 22.377 | 0.4898 | 2908/3293 = 88.3% | 45243 (0) |
 | 64 | 0 | random | 36.5639/0.0462/0.9226 | 0.6399/0.9153/0.7793 | 0.0000 | 39.8673 | 76.330 | 1.7022 | 2806/3226 = 87.0% | 156585 (0) |
+| 64 | 0 | random | 36.5537/0.0473/0.9226 | 0.6431/0.9271/0.7807 | 0.0000 | 39.8747 | 76.342 | 1.7036 | 2796/3227 = 86.6% | 156585 (0) |
+| 64 | 0 | random | 36.5643/0.0479/0.9227 | 0.6478/0.9375/0.7802 | 0.0000 | 39.9007 | 76.395 | 1.7032 | 2818/3249 = 86.7% | 156585 (0) |
 | 64 | 1 | random | 27.6420/0.0468/0.9201 | 0.6679/0.9367/0.8038 | 0.0000 | 31.0174 | 58.587 | 1.7240 | 2851/3262 = 87.4% | 159130 (0) |
+| 64 | 1 | random | 27.5391/0.0471/0.9202 | 0.6676/0.9377/0.8047 | 0.0000 | 30.9165 | 58.383 | 1.7251 | 2833/3248 = 87.2% | 159130 (0) |
+| 64 | 1 | random | 27.6231/0.0478/0.9198 | 0.6626/0.9359/0.8041 | 0.0000 | 30.9935 | 58.539 | 1.7241 | 2893/3288 = 88.0% | 159130 (0) |
 
 ### Runs
 
@@ -39,4 +45,8 @@ Zero delay: no glitches, so combinational switching and internal power are lower
 | d16_m0_random_gl_w20000_n10000 | 20000 | 10000 | 9783 | 8543 | 3262 | 2851 | n/a | n/a | 104.0 / 51.4 | 2:03.93 | 70996 |
 | d16_m1_random_gl_w20000_n10000 | 20000 | 10000 | 9761 | 8521 | 3293 | 2908 | n/a | n/a | 89.0 / 40.5 | 2:02.06 | 70420 |
 | d64_m0_random_gl_w20000_n10000 | 20000 | 10000 | 9695 | 8417 | 3226 | 2806 | n/a | n/a | 181.0 / 92.1 | 4:46.06 | 220920 |
+| d64_m0_random_gl_w20000_n10000_s2 | 20000 | 10000 | 9717 | 8452 | 3227 | 2796 | n/a | n/a | 185.1 / 94.1 | 5:29.62 | 220924 |
+| d64_m0_random_gl_w20000_n10000_s3 | 20000 | 10000 | 9823 | 8590 | 3249 | 2818 | n/a | n/a | 188.8 / 96.5 | 5:28.35 | 221032 |
 | d64_m1_random_gl_w20000_n10000 | 20000 | 10000 | 9766 | 8527 | 3262 | 2851 | n/a | n/a | 191.2 / 97.8 | 4:50.31 | 223876 |
+| d64_m1_random_gl_w20000_n10000_s2 | 20000 | 10000 | 9806 | 8571 | 3248 | 2833 | n/a | n/a | 197.1 / 101.2 | 5:42.13 | 223900 |
+| d64_m1_random_gl_w20000_n10000_s3 | 20000 | 10000 | 9807 | 8594 | 3288 | 2893 | n/a | n/a | 195.8 / 100.4 | 5:41.39 | 224012 |
