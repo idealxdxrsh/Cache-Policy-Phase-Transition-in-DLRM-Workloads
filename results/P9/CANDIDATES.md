@@ -36,4 +36,6 @@ Under mode 1 a fair tie-break raises the counts of all slots together, so freque
 mode-0 combinations are worth a synthesis run. At 16 entries every rule except R2 gives fewer hits than RTL-exact
 mode 0 (17,035 vs 19,946 on row0), and so does LFU-reset (oldest). There a row's 26 tables cycle through 16 entries:
 LRU gets 151 hits, and the RTL's habit of re-evicting the newest line keeps older lines resident.
-Full-trace numbers for the rules come from cluster job set B (`results/P9/jobs/sizing.json`), not yet submitted.
+Full traces (cluster set B, jobs 419426/419427; `results/P9/cluster/rows_<N>_setB/parts/*.csv`, tables in SUMMARY.md
+section 6 and TABLES.md): with mode 0, R1 and R3 recover 99.9-100.0% of the gap at all 4 sizes on 2M and 10M rows, and
+R2 recovers 99.9-110.7% (above LFU-reset (oldest) at 7 of 8 points). With mode 1 all three stay below RTL-exact mode 1.

@@ -8,7 +8,9 @@ table at all 4 capacities, stream totals); output $OUT/p3b_check.txt; a mismatch
 afterok 10M job. P3b's 41.4010% (256, 2M) is LRU, which set A does not rerun; 47.6719% is LFUResetCache (checked).
 Squeue at submission: 419424 PD (None), 419426 PD (Priority), 419425 and 419427 PD (Dependency).
 Outputs on the cluster: /scratch/rahulkmr/Adarsh/results/P9/rows_<N>_set<A|B>/ (log.txt, time.txt, parts/,
-shared_cache_results.json, p3b_check.txt for set A). Not yet copied back.
+shared_cache_results.json, p3b_check.txt for set A).
+RESULT 2026-10-28: sacct: 419424-419427 all COMPLETED, exit 0:0 (elapsed 00:03:39, 00:17:55, 00:05:31, 00:24:36).
+Copied back to results/P9/cluster/ with the rsync line in cluster/p9_driver.sh. p3b_check.txt: P3B_CHECK PASS at 2M and 10M.
 Script: cluster/jobs/p9_shared.sbatch (trace_sim/run_shared_cache.py, P3b stream and order, 256/1000/10000/100000
 entries). Partition compute, 4 CPUs per job (compute QOS minimum), no GPU.
 

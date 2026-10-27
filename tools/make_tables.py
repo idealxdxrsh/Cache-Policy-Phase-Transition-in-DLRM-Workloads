@@ -620,25 +620,67 @@ mt = read('results/P9/mutation.txt')
 W(f'\nTests: `tests/test_rtl_exact.py`; mutation check `tools/mutate_rtl_exact.py`: '
   f'{grab(r"^(\d+/\d+) mutants caught", mt, str)} mutants caught ({src("results/P9/mutation.txt", ["results/P9/mutation.txt"])[8:-1]}).')
 FT = files('results/P9/cluster/rows_*_set*/parts/*.csv')
-W('\n### P9 full traces (P3b stream), shared cache, total hit %')
+W('\n### P9 full traces (P3b stream), shared cache')
 if not FT:
     W('Not run: the cluster jobs (`cluster/p9_driver.sh`) have not been submitted.')
 else:
-    for n in (2000000, 10000000):
-        parts = [p for p in FT if f'/rows_{n}_set' in p]
-        tot = {}
-        for p in parts:
+    OLD = 'LFU (gem5 LFURP — reset on eviction)'
+    P3B_POL = ['LRU', 'ARC', OLD, 'LFU (persistent counters)', 'W-TinyLFU (Count-Min, window=1%)']
+    A_POL = ['RTL-exact mode 0', 'RTL-exact mode 1', 'LFU-reset lowest-slot', 'LFU-reset 6-bit', 'LFU-reset lowest-slot 6-bit']
+    SHORT = {OLD: 'LFU-reset (oldest)', 'LFU (persistent counters)': 'LFU persistent',
+             'W-TinyLFU (Count-Min, window=1%)': 'W-TinyLFU'}
+
+    def totals(paths):
+        t = {}
+        for p in paths:
             for r in csv.DictReader(io.StringIO(read(p))):
                 if r['table'] == 'all':
-                    tot[r['policy'], int(r['capacity'])] = (int(r['hits']), int(r['misses']))
-        pols = list(dict.fromkeys(k[0] for k in sorted(tot, key=lambda k: k[1])))
-        W(f'\n#### {n:,} rows')
-        W(src(f'results/P9/cluster/rows_{n}_set*/parts/*.csv', parts) if parts else 'No parts files.')
-        if parts:
-            W('\n| capacity | ' + ' | '.join(pols) + ' |')
-            W('|---|' + '---|' * len(pols))
-            for c in sorted({k[1] for k in tot}):
-                W(f'| {c:,} | ' + ' | '.join(pct(*tot[p, c]) if (p, c) in tot else '-' for p in pols) + ' |')
+                    t[r['policy'], int(r['capacity'])] = (int(r['hits']), int(r['misses']))
+        return t
+
+    for n in (2000000, 10000000):
+        pa, pb = files(f'results/P9/cluster/rows_{n}_setA/parts/*.csv'), files(f'results/P9/cluster/rows_{n}_setB/parts/*.csv')
+        p3 = files(f'results/P3b/rows_{n}/parts/*.csv')
+        ref, ta, tb = totals(p3), totals(pa), totals(pb)
+        caps = sorted({k[1] for k in ref})
+        chk = read(f'results/P9/cluster/rows_{n}_setA/p3b_check.txt')
+        W(f'\n#### {n:,} rows: total hit %')
+        W(src(f'results/P3b/rows_{n}/parts/*.csv', p3) + ' ' + src(f'results/P9/cluster/rows_{n}_setA/parts/*.csv', pa)
+          + f' P9 set A reran LFU-reset (oldest): `results/P9/cluster/rows_{n}_setA/p3b_check.txt` says '
+          f'`{grab(r"^(P3B_CHECK \w+)", chk, str)}`; the LFU-reset column is P3b\'s and equals the rerun in every per-table count.')
+        same = all(ta[OLD, c] == ref[OLD, c] for c in caps)
+        W(f'Rerun totals equal P3b at all capacities (parts files): {"yes" if same else "NO"}.')
+        W('\n| entries | ' + ' | '.join(SHORT.get(p, p) for p in P3B_POL + A_POL) + ' |')
+        W('|---|' + '---|' * (len(P3B_POL) + len(A_POL)))
+        for c in caps:
+            W(f'| {c:,} | ' + ' | '.join(pct(*ref[p, c]) for p in P3B_POL) + ' | ' + ' | '.join(pct(*ta[p, c]) for p in A_POL) + ' |')
+        W(f'\n#### {n:,} rows: RTL-exact vs LRU, and the gap decomposition (hits)')
+        W('gap = LFU-reset (oldest) - RTL-exact mode 0; tie = oldest - lowest-slot; sat = oldest - 6-bit; '
+          'interaction = gap - tie - sat. Sign of "vs LRU": + = more hits than LRU.')
+        W('\n| entries | LRU hits | RTL-exact m0 vs LRU | RTL-exact m1 vs LRU | gap | tie | sat | interaction | m1 - m0 | lowest-slot 6-bit = m0 |')
+        W('|---|---|---|---|---|---|---|---|---|---|')
+        for c in caps:
+            h = {p: ref[p, c][0] for p in P3B_POL}
+            h.update({p: ta[p, c][0] for p in A_POL})
+            gap, tie, sat = h[OLD] - h['RTL-exact mode 0'], h[OLD] - h['LFU-reset lowest-slot'], h[OLD] - h['LFU-reset 6-bit']
+            W(f'| {c:,} | {h["LRU"]:,} | {h["RTL-exact mode 0"] - h["LRU"]:+,} | {h["RTL-exact mode 1"] - h["LRU"]:+,} | {gap:,} | '
+              f'{tie:,} | {sat:,} | {gap - tie - sat:,} | {h["RTL-exact mode 1"] - h["RTL-exact mode 0"]:+,} | '
+              f'{"yes" if ta["LFU-reset lowest-slot 6-bit", c] == ta["RTL-exact mode 0", c] else "NO"} |')
+        W(f'\n#### {n:,} rows: candidate tie-break rules (simulated only; not in the RTL), total hit %')
+        W(src(f'results/P9/cluster/rows_{n}_setB/parts/*.csv', pb) + ' Recovered % = (rule - RTL-exact of the same mode) / '
+          '(LFU-reset (oldest) - RTL-exact of the same mode) x 100, from hits; n/a where that gap is <= 0.')
+        W('\n| entries | LRU | LFU-reset (oldest) | RTL-exact m0 | RTL-exact m1 | ' + ' | '.join(CP) + ' | '
+          + ' | '.join(f'recovered % {p}' for p in CP) + ' | ' + ' | '.join(f'{p} - oldest (hits)' for p in CP[::2]) + ' |')
+        W('|---|---|---|---|---|' + '---|' * (2 * len(CP) + 3))
+        for c in caps:
+            rec = []
+            for p in CP:
+                base = ta[f'RTL-exact mode {p[-1]}', c][0]
+                g = ref[OLD, c][0] - base
+                rec.append(f'{(tb[p, c][0] - base) / g * 100:.1f}' if g > 0 else 'n/a')
+            W(f'| {c:,} | {pct(*ref["LRU", c])} | {pct(*ref[OLD, c])} | {pct(*ta["RTL-exact mode 0", c])} | '
+              f'{pct(*ta["RTL-exact mode 1", c])} | ' + ' | '.join(pct(*tb[p, c]) for p in CP) + ' | ' + ' | '.join(rec) + ' | '
+              + ' | '.join(f'{tb[p, c][0] - ref[OLD, c][0]:+,}' for p in CP[::2]) + ' |')
 
 # ---------------------------------------------------------------- older evidence
 W('\n## Older evidence, not reproduced in P0-P5f (values parsed from the committed files)')
