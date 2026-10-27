@@ -1,0 +1,6 @@
+	Command being timed: "/home/adarsh/eda/bin/sta -no_init -exit /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/synthesis/p8/power.tcl"
+	User time (seconds): 54.75
+	System time (seconds): 0.53
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:55.31
+	Maximum resident set size (kbytes): 810824
+	Exit status: 0

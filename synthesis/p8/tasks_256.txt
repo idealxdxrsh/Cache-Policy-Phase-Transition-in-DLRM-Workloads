@@ -1,0 +1,10 @@
+256 0 random 100000 10000 gl
+256 1 random 100000 10000 gl
+256 0 criteo 100000 10000 gl row0
+256 1 criteo 100000 10000 gl row0
+256 0 criteo 100000 10000 gl row1M
+256 1 criteo 100000 10000 gl row1M
+256 0 criteo 100000 10000 rtl row0
+256 1 criteo 100000 10000 rtl row0
+256 0 criteo 100000 10000 rtl row1M
+256 1 criteo 100000 10000 rtl row1M

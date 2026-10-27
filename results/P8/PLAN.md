@@ -1,4 +1,4 @@
-# P8 plan: power analysis of the final controller (rtl-v2-final, P5e netlists) — NOT RUN YET, awaiting OK
+# P8 plan: power analysis of the final controller (rtl-v2-final, P5e netlists) — partly run (section 12); cluster jobs awaiting OK
 
 Every power number this phase produces will carry the label:
 **"NanGate45, typical corner, pre-layout, no clock tree, no extracted parasitics, flip-flop storage, activity from
@@ -170,3 +170,28 @@ run and no stream was built. Mapping options for your decision:
 - Not possible without new synthesis: a wider address (ADDR_WIDTH is fixed at 20 in the netlists).
 Also to decide with A: the slice start. Proposed: two slices per configuration if time allows, one at the start of the
 trace (access 0, cold start) and one in the middle (from the first access of row 1,000,000), both reported.
+
+## 12. Decisions and local runs (2026-10-27); cluster jobs NOT submitted, awaiting OK
+Option A chosen: keys numbered in order of first appearance inside each slice; slices of 200,000 accesses from
+access 0 (row0) and from the first access of row 1,000,000 (row1M), every configuration (`tools/p8_stream.py`).
+Per slice: trace-simulator LRU and LFU (reset on eviction), 256 entries, cold start, same requests, vs the RTL hits
+from a zero-delay RTL run, which is checked against the netlist run (`tools/p8_compare.py`).
+- Activity format: VCD (not SAIF). OpenSTA's SAIF reader needs per-instance pin names and its lexer does not accept
+  the netlist's escaped instance names; the VCD reader maps them (section 3 sanity check, within 1 ppm). The VCD is
+  streamed through a fifo into gzip -1 and only the recorded window is dumped; read with -begin_time/-end_time
+  (end minus 1 ps, so the X values $dumpoff writes are excluded).
+- Done locally: vectorless, 6 configurations; random stimulus, depths 16 and 64, modes 0 and 1, 20,000 + 10,000
+  cycles; all pins annotated, x_cycles 0. Results: `results/P8/RESULTS.md` (from `results/P8/power/`, `results/P8/sim/`).
+- Pilot (depth 16, mode 0, random, 30,000 cycles): `results/P8/sim/d16_m0_random_glnovcd_w20000_n10000.txt` vs
+  `results/P8/sim/d16_m0_random_gl_w20000_n10000.txt` (writing the VCD adds the difference between their run lines).
+  Depth 256 with 100,000 warm-up + 10,000 recorded cycles: P5f measured 1:37:59 for 200,000 lockstep cycles at depth
+  256 on the cluster, so 110,000 cycles of the netlist alone are expected well inside 4 h (expectation, not a
+  measurement). Decision: 100,000 warm-up cycles at depth 256.
+- Pending: Criteo slices at depths 16 and 64 (need the stream from p8_stream); depth-256 power is computed locally
+  from the VCDs copied back (OpenSTA is not installed on the cluster).
+
+Final job list (from `/scratch/rahulkmr/Adarsh/p8`, after rsync of the code tree to `p8/code`; `synthesis/p8/submit_p8.sh`):
+| job | what | partition | CPUs | memory | time limit | dependency |
+|---|---|---|---|---|---|---|
+| p8_stream | build row0/row1M slices + P3b cross-check (`cluster/jobs/p8_stream.sbatch`) | compute | 1 | 8 GB | 1 h | none |
+| p8_gls256 | array 1-10, at most 4 at once (`synthesis/p8/tasks_256.txt`): depth 256, modes 0/1 x {random gl, row0 gl, row1M gl, row0 rtl, row1M rtl}, 100,000 + 10,000 cycles, VCD for gl | compute | 4 | 8 GB | 4 h per task | afterok:p8_stream |

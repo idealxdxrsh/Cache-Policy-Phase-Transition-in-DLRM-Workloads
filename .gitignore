@@ -40,3 +40,5 @@ docs/**/*.out
 docs/**/*.fls
 docs/**/*.fdb_latexmk
 docs/**/*.synctex.gz
+# P8 simulation work files (VCDs, compiled sims)
+results/P8/work/

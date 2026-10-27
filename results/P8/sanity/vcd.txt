@@ -4,7 +4,7 @@ License GPLv3: GNU GPL version 3 <http://gnu.org/licenses/gpl.html>
 This is free software, and you are free to change and redistribute it
 under certain conditions; type `show_copying' for details. 
 This program comes with ABSOLUTELY NO WARRANTY; for details type `show_warranty'.
-== read_vcd -scope tb/dut inv_power.vcd.gz
+== read_vcd -scope tb/dut -begin_time 10250 -end_time 1010249 inv_power.vcd.gz
 Annotated 19 pin activities.
 vcd            19
 unannotated     1
@@ -33,20 +33,20 @@ Unannotated pins:
 Group                    Internal    Switching      Leakage        Total
                             Power        Power        Power        Power (Watts)
 ------------------------------------------------------------------------
-Sequential           1.296746e-05 2.297498e-06 7.911230e-08 1.534407e-05  50.9%
-Combinational        4.740381e-06 9.979954e-06 7.176592e-08 1.479210e-05  49.1%
+Sequential           1.296280e-05 2.296352e-06 7.911231e-08 1.533827e-05  50.9%
+Combinational        4.738017e-06 9.974978e-06 7.176592e-08 1.478476e-05  49.1%
 Clock                0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00   0.0%
 Macro                0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00   0.0%
 Pad                  0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00   0.0%
 ------------------------------------------------------------------------
-Total                1.770784e-05 1.227745e-05 1.508782e-07 3.013617e-05 100.0%
+Total                1.770082e-05 1.227133e-05 1.508782e-07 3.012303e-05 100.0%
                             58.8%        40.7%         0.5%
      Internal    Switching      Leakage        Total
         Power        Power        Power        Power (Watts)
 ----------------------------------------------------
- 1.296746e-05 2.297498e-06 7.911230e-08 1.534407e-05 ff\[0\]
- 9.507881e-07 3.326651e-06 1.435318e-08 4.291793e-06 inv\[3\]
- 9.719347e-07 2.297498e-06 1.435318e-08 3.283786e-06 inv\[0\]
- 9.297800e-07 2.297498e-06 1.435318e-08 3.241631e-06 inv\[4\]
- 9.528637e-07 1.029154e-06 1.435318e-08 1.996370e-06 inv\[1\]
- 9.350147e-07 1.029154e-06 1.435318e-08 1.978521e-06 inv\[2\]
+ 1.296280e-05 2.296352e-06 7.911231e-08 1.533827e-05 ff\[0\]
+ 9.503139e-07 3.324993e-06 1.435319e-08 4.289660e-06 inv\[3\]
+ 9.714499e-07 2.296352e-06 1.435319e-08 3.282156e-06 inv\[0\]
+ 9.293163e-07 2.296352e-06 1.435318e-08 3.240022e-06 inv\[4\]
+ 9.523885e-07 1.028640e-06 1.435319e-08 1.995382e-06 inv\[1\]
+ 9.345484e-07 1.028640e-06 1.435318e-08 1.977542e-06 inv\[2\]

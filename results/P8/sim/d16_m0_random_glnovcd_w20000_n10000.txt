@@ -1,0 +1,6 @@
+# P8 d16_m0_random_glnovcd_w20000_n10000: zero-delay simulation, 500 MHz clock (2 ns), glnovcd; fill data random (seed 1; real embedding data is not random)
+netlist: /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5f_gls/netlists/d16_m0_500MHz/netlist.v sha256 da822426a344b2fee2a33301c51004d9d75ebe8cd815d99e77c19f2fd31511aa
+iverilog: Icarus Verilog version 12.0 (stable) ()
+compile: 0:01.74 166116 
+run: 1:39.07 69264 
+p8_power depth=16 mode=0 stim=0 warm=20000 win=10000 cycles=30000 requests=0 responses=9783 hits=8543 misses=1240 win_requests=0 win_responses=3262 win_hits=2851 win_misses=411 win_first_req=-1 win_last_req=-1 t_begin_ps=0 t_end_ps=60005000 x_cycles=0
