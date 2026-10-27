@@ -547,6 +547,99 @@ for p in sorted(cs, key=lambda p: tuple(int(x) for x in re.search(r'd(\d+)_m(\d)
       f'{kv["max_reached"]} | {kv["cycles_with_a_line_at_max"]} | {kv["most_lines_at_max"]} | '
       f'{kv["suppressed_hit_increments"]} | {kv["suppressed_fill_increments"]} | {"yes" if same else "NO"} |')
 
+# ---------------------------------------------------------------- P9
+import json                                   # noqa: E402
+
+W('\n## P9: RTL-exact policy (rtl-v2-final as a trace-simulator policy), LFU-reset ablations, tie-break candidates')
+W('Limits: the slices are 200,000 consecutive accesses of the P3b stream (P8 files `results/P8/stimulus/*.hex`), '
+  'replayed from a cold start; a slice hit count is not a steady-state value. RTL hit flags come from zero-delay '
+  'RTL simulation (Icarus), not from the netlist. The candidate tie-break rules exist only in the trace simulator.')
+V = json.loads(read('results/P9/validate/validate.json'))
+W('\n### P9 RTL hit_flag vs RTL-exact, request by request')
+W(src('results/P9/validate/validate.json', ['results/P9/validate/validate.json']) + ' p8budget = the cycle budget of '
+  'the P8 run (its summary line must equal P8\'s); full = all 200,000 requests of the slice. Mismatches = requests '
+  'whose hit/miss differs from the RTL\'s hit_flag.')
+W('\n| depth | mode | slice | run | requests | RTL hits | RTL-exact hits | structural model hits | mismatches (RTL-exact / structural) | P8 summary line identical |')
+W('|---|---|---|---|---|---|---|---|---|---|')
+for r in V:
+    W(f'| {r["depth"]} | {r["mode"]} | {r["slice"]} | {r["kind"]} | {r["requests"]:,} | {r["rtl_hits"]:,} | '
+      f'{r["fast_hits"]:,} | {r["structural_hits"]:,} | {r["fast_mismatches"]} / {r["structural_mismatches"]} | '
+      f'{({True: "yes", False: "NO"}[r["p8_line_identical"]]) if "p8_line_identical" in r else "n/a"} |')
+W(f'\nRuns with zero mismatches in both models: {sum(r["fast_mismatches"] == 0 == r["structural_mismatches"] for r in V)}'
+  f' of {len(V)}; requests compared: {sum(r["requests"] for r in V):,}.')
+
+SL = json.loads(read('results/P9/slices/slices.json'))
+P9_POL = ['LRU', 'LFU-reset (oldest)', 'LFU-reset lowest-slot', 'LFU-reset 6-bit', 'LFU-reset lowest-slot 6-bit',
+          'RTL-exact mode 0', 'RTL-exact mode 1']
+DEC = ['gap_oldest_minus_rtl_m0', 'tie_alone', 'saturation_alone', 'interaction', 'mode1_minus_mode0']
+W('\n### P9 hits on the full slices (200,000 requests each, cold start) and the gap decomposition')
+W(src('results/P9/slices/slices.json', ['results/P9/slices/slices.json']) + ' LFU-reset (oldest) = '
+  '`run_trace_sim.LFUResetCache` (ties: earliest install; counters to 255). gap = oldest - RTL-exact mode 0; tie = '
+  'oldest - lowest-slot; sat = oldest - 6-bit; interaction = gap - tie - sat; m1 - m0 = RTL-exact mode 1 - mode 0. '
+  'All in hits.')
+W('\n| slice | depth | ' + ' | '.join(P9_POL) + ' | gap | tie | sat | interaction | m1 - m0 |')
+W('|---|---|' + '---|' * (len(P9_POL) + 5))
+for r in SL['full']:
+    W(f'| {r["slice"]} | {r["depth"]} | ' + ' | '.join(f'{r["policies"][p]["hits"]:,}' for p in P9_POL) + ' | '
+      + ' | '.join(f'{r["decomposition"][k]:+,}' for k in DEC) + ' |')
+W('\n### P9 the P8 slice comparison explained: same requests as each P8 RTL run (first R of the slice), at the RTL depth')
+W(src('results/P9/slices/slices.json', ['results/P9/slices/slices.json']) + ' RTL hits = the P8 run\'s hits (P8 '
+  'summary line reproduced, table above). For a mode-1 run, oldest - RTL hits = tie + sat + interaction - (m1 - m0).')
+W('\n| slice | depth | mode | R | RTL hits | RTL-exact (this mode) | LFU-reset (oldest) | oldest - RTL | tie | sat | interaction | m1 - m0 |')
+W('|---|---|---|---|---|---|---|---|---|---|---|---|')
+for r in SL['p8']:
+    h, d = r['hits'], r['decomposition']
+    W(f'| {r["slice"]} | {r["depth"]} | {r["mode"]} | {r["requests"]:,} | {r["rtl_hits"]:,} | '
+      f'{h[f"RTL-exact mode {r["mode"]}"]:,} | {h["LFU-reset (oldest)"]:,} | {h["LFU-reset (oldest)"] - r["rtl_hits"]:+,} | '
+      f'{d["tie_alone"]:+,} | {d["saturation_alone"]:+,} | {d["interaction"]:+,} | {d["mode1_minus_mode0"]:+,} |')
+W('\n### P9 evictions of the line installed by the previous miss (full slices)')
+W(src('results/P9/slices/slices.json', ['results/P9/slices/slices.json']) + ' Evictions = misses - capacity. '
+  'Counted: the line installed at miss k is evicted at miss k+1.')
+MP = ['LRU', 'LFU-reset (oldest)', 'LFU-reset lowest-slot', 'RTL-exact mode 0', 'RTL-exact mode 1']
+W('\n| slice | depth | ' + ' | '.join(MP) + ' |')
+W('|---|---|' + '---|' * len(MP))
+for r in SL['full']:
+    W(f'| {r["slice"]} | {r["depth"]} | ' + ' | '.join(
+        f'{r["policies"][p]["evicted_previous_install"]:,} of {r["policies"][p]["evictions"]:,}' for p in MP) + ' |')
+CP = [f'{n} mode {m}' for n in ('Rotate-victim', 'Rotate-step', 'Young-bit') for m in (0, 1)]
+W('\n### P9 candidate tie-break rules on the full slices (simulated only; not in the RTL)')
+W(src('results/P9/slices/slices.json', ['results/P9/slices/slices.json']) + ' Recovered (mode 0 rules) = (rule - '
+  'RTL-exact mode 0) / (LFU-reset (oldest) - RTL-exact mode 0) x 100; not defined where the gap is negative or zero.')
+W('\n| slice | depth | RTL-exact m0 | RTL-exact m1 | LFU-reset (oldest) | ' + ' | '.join(CP) + ' | recovered % (rotate-victim m0 / rotate-step m0 / young-bit m0) |')
+W('|---|---|---|---|---|' + '---|' * (len(CP) + 1))
+for r in SL['full']:
+    h = {k: v['hits'] for k, v in r['policies'].items()}
+    g = h['LFU-reset (oldest)'] - h['RTL-exact mode 0']
+    rec = ' / '.join(f'{(h[f"{n} mode 0"] - h["RTL-exact mode 0"]) / g * 100:.1f}' for n in ('Rotate-victim', 'Rotate-step', 'Young-bit')) if g > 0 else 'n/a (gap <= 0)'
+    W(f'| {r["slice"]} | {r["depth"]} | {h["RTL-exact mode 0"]:,} | {h["RTL-exact mode 1"]:,} | {h["LFU-reset (oldest)"]:,} | '
+      + ' | '.join(f'{h[p]:,}' for p in CP) + f' | {rec} |')
+pr = SL['synthetic_probe']
+W(f'\nSynthetic probe (not Criteo; {pr["traces"]} random Zipf traces, see `tools/p9_slices.py`): traces on which the '
+  'mode-0 rule\'s hits differ from LFU-reset (oldest): ' + ', '.join(f'{k} {v}' for k, v in pr['differ_from_oldest'].items()) + '.')
+mt = read('results/P9/mutation.txt')
+W(f'\nTests: `tests/test_rtl_exact.py`; mutation check `tools/mutate_rtl_exact.py`: '
+  f'{grab(r"^(\d+/\d+) mutants caught", mt, str)} mutants caught ({src("results/P9/mutation.txt", ["results/P9/mutation.txt"])[8:-1]}).')
+FT = files('results/P9/cluster/rows_*_set*/parts/*.csv')
+W('\n### P9 full traces (P3b stream), shared cache, total hit %')
+if not FT:
+    W('Not run: the cluster jobs (`cluster/p9_driver.sh`) have not been submitted.')
+else:
+    for n in (2000000, 10000000):
+        parts = [p for p in FT if f'/rows_{n}_set' in p]
+        tot = {}
+        for p in parts:
+            for r in csv.DictReader(io.StringIO(read(p))):
+                if r['table'] == 'all':
+                    tot[r['policy'], int(r['capacity'])] = (int(r['hits']), int(r['misses']))
+        pols = list(dict.fromkeys(k[0] for k in sorted(tot, key=lambda k: k[1])))
+        W(f'\n#### {n:,} rows')
+        W(src(f'results/P9/cluster/rows_{n}_set*/parts/*.csv', parts) if parts else 'No parts files.')
+        if parts:
+            W('\n| capacity | ' + ' | '.join(pols) + ' |')
+            W('|---|' + '---|' * len(pols))
+            for c in sorted({k[1] for k in tot}):
+                W(f'| {c:,} | ' + ' | '.join(pct(*tot[p, c]) if (p, c) in tot else '-' for p in pols) + ' |')
+
 # ---------------------------------------------------------------- older evidence
 W('\n## Older evidence, not reproduced in P0-P5f (values parsed from the committed files)')
 W('\n### gem5 2 MB L2, LRU vs LFU (gem5 = CPU (X86TimingSimpleCPU) + DDR4, not a GPU)')

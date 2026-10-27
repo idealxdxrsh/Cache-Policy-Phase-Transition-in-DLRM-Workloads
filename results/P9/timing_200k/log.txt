@@ -1,0 +1,10 @@
+Loaded 200,000 rows, 4,940,119 accesses, 178,120 unique (table, id) keys in 2.6s
+Sweep finished in 69.1s
+
+  capacity | LFU (gem5 LFUR | RTL-exact mode | RTL-exact mode | LFU-reset lowe | LFU-reset 6-bi | LFU-reset lowe | Rotate-victim  | Rotate-victim  | Rotate-step mo | Rotate-step mo | Young-bit mode | Young-bit mode
+       256 |       25.8789% |       14.3170% |       16.2110% |       14.3170% |       25.8789% |       14.3170% |       25.8789% |       11.8010% |       26.6201% |       11.8010% |       25.8789% |       11.8003%
+     1,000 |       43.8128% |       31.6884% |       35.3384% |       31.6884% |       43.8128% |       31.6884% |       43.8128% |       27.5055% |       44.1226% |       27.5047% |       43.8128% |       27.5037%
+    10,000 |       78.9012% |       72.2754% |       75.5529% |       72.2754% |       78.9012% |       72.2754% |       78.9012% |       68.6323% |       78.5702% |       68.6050% |       78.9012% |       68.6208%
+   100,000 |       95.5951% |       95.3071% |       95.5247% |       95.3071% |       95.5951% |       95.3071% |       95.5951% |       95.5247% |       95.4774% |       95.5143% |       95.5951% |       95.4928%
+
+Saved: results/P9/timing_200k/shared_200k_synthetic.json

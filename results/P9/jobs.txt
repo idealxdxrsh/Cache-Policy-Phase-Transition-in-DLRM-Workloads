@@ -1,0 +1,21 @@
+P9 cluster jobs: PREPARED, NOT SUBMITTED (waiting for the user's OK). Submit with: bash cluster/p9_driver.sh
+Script: cluster/jobs/p9_shared.sbatch (trace_sim/run_shared_cache.py, P3b stream and order, 256/1000/10000/100000
+entries). Partition compute, 4 CPUs per job (compute QOS minimum), no GPU.
+
+job          rows        policies                                                       mem   time   dependency
+p9 A 2M      2,000,000   LFUResetCache (P3b reproduction check), RTL-exact m0, m1,      16G   1:00   none
+                         LFU-reset lowest-slot, 6-bit, lowest-slot 6-bit (24 tasks)
+p9 A 10M     10,000,000  same as A 2M                                                   32G   2:00   afterok: A 2M
+p9 B 2M      2,000,000   Rotate-victim, Rotate-step, Young-bit, modes 0/1 (24 tasks)    16G   1:00   none
+p9 B 10M     10,000,000  same as B 2M                                                   32G   2:00   afterok: B 2M
+
+Sizing (tools/p9_sizing.py -> jobs/sizing.json; a projection from measured times, not a measurement):
+per-task CPU = (P9 policy / LFUResetCache CPU seconds, both measured locally on the 200,000-row synthetic trace,
+timing_200k/) x P3b's measured LFUResetCache CPU seconds on the real trace at that capacity.
+  A 2M : 700 s CPU total, longest task 43 s   -> >= 2.9 min on 4 workers + 25 s load (P3b)
+  B 2M : 1092 s CPU total, longest task 103 s -> >= 4.6 min + 25 s load
+  A 10M: 3392 s CPU total, longest task 217 s -> >= 14.1 min + 132 s load
+  B 10M: 5335 s CPU total, longest task 521 s -> >= 22.2 min + 132 s load
+P3b for comparison: 2M wall 5:54.37 and 10M wall 30:09.61 with the same 4 workers (P3b/SUMMARY.md); limits 1 h / 2 h
+leave more than 2x on the projections. Memory as P3b at the same row counts (2M peak RSS 633444 kB under 16G;
+10M 2577964 kB under 32G); local 200k synthetic peak RSS 140964 kB vs P3b's 142032 kB (timing_200k/time.txt).

@@ -1,0 +1,66 @@
+.....................................planted figures the checker would accept: none
+Loading Criteo traces from: /tmp/tmpt6q3jswd/synth.txt
+  Categorical columns: 14..39 (26 embedding tables)
+  Max rows: 400
+  Done: 400 rows, 9,901 total accesses in 0.0s
+Loading Criteo traces from: /tmp/tmpt6q3jswd/synth.txt
+  Categorical columns: 14..39 (26 embedding tables)
+  Done: 2,000 rows, 49,429 total accesses in 0.0s
+Loading Criteo traces from: /tmp/tmpt6q3jswd/synth.txt
+  Categorical columns: 14..39 (26 embedding tables)
+  Max rows: 300
+  Done: 300 rows, 7,428 total accesses in 0.0s
+............sssssssss...............Loading Criteo traces from: /tmp/tmpt6q3jswd/synth.txt
+  Categorical columns: 14..39 (26 embedding tables)
+  Max rows: 500
+  Done: 500 rows, 12,365 total accesses in 0.0s
+Loading Criteo traces from: /tmp/tmpt6q3jswd/synth.txt
+  Categorical columns: 14..39 (26 embedding tables)
+  Max rows: 300
+  Done: 300 rows, 7,428 total accesses in 0.0s
+Loading Criteo traces from: /tmp/tmpt6q3jswd/synth.txt
+  Categorical columns: 14..39 (26 embedding tables)
+  Max rows: 500
+  Done: 500 rows, 12,365 total accesses in 0.0s
+....................Loading Criteo traces from: /tmp/tmpdv201fk2/synth.txt
+  Categorical columns: 14..39 (26 embedding tables)
+  Done: 1,500 rows, 37,069 total accesses in 0.0s
+./home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_uwe_16n/cap512_ARC.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_uwe_16n/cap512_LFU_gem5_LFURP_reset_on_eviction.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_uwe_16n/cap512_LFU_persistent_counters.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_uwe_16n/cap512_LRU.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_uwe_16n/cap512_W_TinyLFU_Count_Min_window_1.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_uwe_16n/cap64_ARC.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_uwe_16n/cap64_LFU_gem5_LFURP_reset_on_eviction.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_uwe_16n/cap64_LFU_persistent_counters.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_uwe_16n/cap64_LRU.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/tests/test_shared_cache.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_uwe_16n/cap64_W_TinyLFU_Count_Min_window_1.csv' mode='r' encoding='UTF-8'>
+  rows = list(csv.DictReader(open(os.path.join(d, fn))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+....
+----------------------------------------------------------------------
+Ran 98 tests in 37.781s
+
+OK (skipped=9)
+Loading Criteo traces from: /tmp/tmp63hepvm1/synth.txt
+  Categorical columns: 14..39 (26 embedding tables)
+  Done: 1,500 rows, 37,069 total accesses in 0.0s
+rc=0

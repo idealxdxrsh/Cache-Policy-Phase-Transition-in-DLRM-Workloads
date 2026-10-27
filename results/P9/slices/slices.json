@@ -1,0 +1,1660 @@
+{
+ "full": [
+  {
+   "slice": "row0",
+   "depth": 16,
+   "requests": 200000,
+   "rtl_hits": {
+    "0": 19946,
+    "1": 30018
+   },
+   "policies": {
+    "LRU": {
+     "hits": 151,
+     "misses": 199849,
+     "evictions": 199833,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset (oldest)": {
+     "hits": 17035,
+     "misses": 182965,
+     "evictions": 182949,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset lowest-slot": {
+     "hits": 19946,
+     "misses": 180054,
+     "evictions": 180038,
+     "evicted_previous_install": 180037
+    },
+    "LFU-reset 6-bit": {
+     "hits": 17035,
+     "misses": 182965,
+     "evictions": 182949,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset lowest-slot 6-bit": {
+     "hits": 19946,
+     "misses": 180054,
+     "evictions": 180038,
+     "evicted_previous_install": 180037
+    },
+    "RTL-exact mode 0": {
+     "hits": 19946,
+     "misses": 180054,
+     "evictions": 180038,
+     "evicted_previous_install": 180037
+    },
+    "RTL-exact mode 1": {
+     "hits": 30018,
+     "misses": 169982,
+     "evictions": 169966,
+     "evicted_previous_install": 168973
+    },
+    "Rotate-victim mode 0": {
+     "hits": 17035,
+     "misses": 182965,
+     "evictions": 182949,
+     "evicted_previous_install": 0
+    },
+    "Rotate-victim mode 1": {
+     "hits": 305,
+     "misses": 199695,
+     "evictions": 199679,
+     "evicted_previous_install": 0
+    },
+    "Rotate-step mode 0": {
+     "hits": 45121,
+     "misses": 154879,
+     "evictions": 154863,
+     "evicted_previous_install": 132410
+    },
+    "Rotate-step mode 1": {
+     "hits": 305,
+     "misses": 199695,
+     "evictions": 199679,
+     "evicted_previous_install": 0
+    },
+    "Young-bit mode 0": {
+     "hits": 17035,
+     "misses": 182965,
+     "evictions": 182949,
+     "evicted_previous_install": 0
+    },
+    "Young-bit mode 1": {
+     "hits": 305,
+     "misses": 199695,
+     "evictions": 199679,
+     "evicted_previous_install": 0
+    }
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": -2911,
+    "tie_alone": -2911,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 10072
+   }
+  },
+  {
+   "slice": "row0",
+   "depth": 64,
+   "requests": 200000,
+   "rtl_hits": {
+    "0": 54737,
+    "1": 61252
+   },
+   "policies": {
+    "LRU": {
+     "hits": 51543,
+     "misses": 148457,
+     "evictions": 148393,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset (oldest)": {
+     "hits": 80697,
+     "misses": 119303,
+     "evictions": 119239,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset lowest-slot": {
+     "hits": 54737,
+     "misses": 145263,
+     "evictions": 145199,
+     "evicted_previous_install": 145197
+    },
+    "LFU-reset 6-bit": {
+     "hits": 80697,
+     "misses": 119303,
+     "evictions": 119239,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset lowest-slot 6-bit": {
+     "hits": 54737,
+     "misses": 145263,
+     "evictions": 145199,
+     "evicted_previous_install": 145197
+    },
+    "RTL-exact mode 0": {
+     "hits": 54737,
+     "misses": 145263,
+     "evictions": 145199,
+     "evicted_previous_install": 145197
+    },
+    "RTL-exact mode 1": {
+     "hits": 61252,
+     "misses": 138748,
+     "evictions": 138684,
+     "evicted_previous_install": 135650
+    },
+    "Rotate-victim mode 0": {
+     "hits": 80697,
+     "misses": 119303,
+     "evictions": 119239,
+     "evicted_previous_install": 0
+    },
+    "Rotate-victim mode 1": {
+     "hits": 39743,
+     "misses": 160257,
+     "evictions": 160193,
+     "evicted_previous_install": 0
+    },
+    "Rotate-step mode 0": {
+     "hits": 80337,
+     "misses": 119663,
+     "evictions": 119599,
+     "evicted_previous_install": 118655
+    },
+    "Rotate-step mode 1": {
+     "hits": 39729,
+     "misses": 160271,
+     "evictions": 160207,
+     "evicted_previous_install": 0
+    },
+    "Young-bit mode 0": {
+     "hits": 80697,
+     "misses": 119303,
+     "evictions": 119239,
+     "evicted_previous_install": 0
+    },
+    "Young-bit mode 1": {
+     "hits": 39729,
+     "misses": 160271,
+     "evictions": 160207,
+     "evicted_previous_install": 0
+    }
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": 25960,
+    "tie_alone": 25960,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 6515
+   }
+  },
+  {
+   "slice": "row0",
+   "depth": 256,
+   "requests": 200000,
+   "rtl_hits": {
+    "0": 81221,
+    "1": 91192
+   },
+   "policies": {
+    "LRU": {
+     "hits": 85437,
+     "misses": 114563,
+     "evictions": 114307,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset (oldest)": {
+     "hits": 103382,
+     "misses": 96618,
+     "evictions": 96362,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset lowest-slot": {
+     "hits": 81221,
+     "misses": 118779,
+     "evictions": 118523,
+     "evicted_previous_install": 118522
+    },
+    "LFU-reset 6-bit": {
+     "hits": 103382,
+     "misses": 96618,
+     "evictions": 96362,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset lowest-slot 6-bit": {
+     "hits": 81221,
+     "misses": 118779,
+     "evictions": 118523,
+     "evicted_previous_install": 118522
+    },
+    "RTL-exact mode 0": {
+     "hits": 81221,
+     "misses": 118779,
+     "evictions": 118523,
+     "evicted_previous_install": 118522
+    },
+    "RTL-exact mode 1": {
+     "hits": 91192,
+     "misses": 108808,
+     "evictions": 108552,
+     "evicted_previous_install": 97068
+    },
+    "Rotate-victim mode 0": {
+     "hits": 103382,
+     "misses": 96618,
+     "evictions": 96362,
+     "evicted_previous_install": 0
+    },
+    "Rotate-victim mode 1": {
+     "hits": 75502,
+     "misses": 124498,
+     "evictions": 124242,
+     "evicted_previous_install": 0
+    },
+    "Rotate-step mode 0": {
+     "hits": 103285,
+     "misses": 96715,
+     "evictions": 96459,
+     "evicted_previous_install": 93674
+    },
+    "Rotate-step mode 1": {
+     "hits": 75454,
+     "misses": 124546,
+     "evictions": 124290,
+     "evicted_previous_install": 0
+    },
+    "Young-bit mode 0": {
+     "hits": 103382,
+     "misses": 96618,
+     "evictions": 96362,
+     "evicted_previous_install": 0
+    },
+    "Young-bit mode 1": {
+     "hits": 75483,
+     "misses": 124517,
+     "evictions": 124261,
+     "evicted_previous_install": 0
+    }
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": 22161,
+    "tie_alone": 22161,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 9971
+   }
+  },
+  {
+   "slice": "row1M",
+   "depth": 16,
+   "requests": 200000,
+   "rtl_hits": {
+    "0": 18254,
+    "1": 26350
+   },
+   "policies": {
+    "LRU": {
+     "hits": 139,
+     "misses": 199861,
+     "evictions": 199845,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset (oldest)": {
+     "hits": 5217,
+     "misses": 194783,
+     "evictions": 194767,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset lowest-slot": {
+     "hits": 18254,
+     "misses": 181746,
+     "evictions": 181730,
+     "evicted_previous_install": 181729
+    },
+    "LFU-reset 6-bit": {
+     "hits": 5217,
+     "misses": 194783,
+     "evictions": 194767,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset lowest-slot 6-bit": {
+     "hits": 18254,
+     "misses": 181746,
+     "evictions": 181730,
+     "evicted_previous_install": 181729
+    },
+    "RTL-exact mode 0": {
+     "hits": 18254,
+     "misses": 181746,
+     "evictions": 181730,
+     "evicted_previous_install": 181729
+    },
+    "RTL-exact mode 1": {
+     "hits": 26350,
+     "misses": 173650,
+     "evictions": 173634,
+     "evicted_previous_install": 172642
+    },
+    "Rotate-victim mode 0": {
+     "hits": 5217,
+     "misses": 194783,
+     "evictions": 194767,
+     "evicted_previous_install": 0
+    },
+    "Rotate-victim mode 1": {
+     "hits": 287,
+     "misses": 199713,
+     "evictions": 199697,
+     "evicted_previous_install": 0
+    },
+    "Rotate-step mode 0": {
+     "hits": 44035,
+     "misses": 155965,
+     "evictions": 155949,
+     "evicted_previous_install": 140761
+    },
+    "Rotate-step mode 1": {
+     "hits": 287,
+     "misses": 199713,
+     "evictions": 199697,
+     "evicted_previous_install": 1
+    },
+    "Young-bit mode 0": {
+     "hits": 5217,
+     "misses": 194783,
+     "evictions": 194767,
+     "evicted_previous_install": 0
+    },
+    "Young-bit mode 1": {
+     "hits": 287,
+     "misses": 199713,
+     "evictions": 199697,
+     "evicted_previous_install": 0
+    }
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": -13037,
+    "tie_alone": -13037,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 8096
+   }
+  },
+  {
+   "slice": "row1M",
+   "depth": 64,
+   "requests": 200000,
+   "rtl_hits": {
+    "0": 53788,
+    "1": 59978
+   },
+   "policies": {
+    "LRU": {
+     "hits": 49897,
+     "misses": 150103,
+     "evictions": 150039,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset (oldest)": {
+     "hits": 77528,
+     "misses": 122472,
+     "evictions": 122408,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset lowest-slot": {
+     "hits": 53788,
+     "misses": 146212,
+     "evictions": 146148,
+     "evicted_previous_install": 146147
+    },
+    "LFU-reset 6-bit": {
+     "hits": 77528,
+     "misses": 122472,
+     "evictions": 122408,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset lowest-slot 6-bit": {
+     "hits": 53788,
+     "misses": 146212,
+     "evictions": 146148,
+     "evicted_previous_install": 146147
+    },
+    "RTL-exact mode 0": {
+     "hits": 53788,
+     "misses": 146212,
+     "evictions": 146148,
+     "evicted_previous_install": 146147
+    },
+    "RTL-exact mode 1": {
+     "hits": 59978,
+     "misses": 140022,
+     "evictions": 139958,
+     "evicted_previous_install": 136862
+    },
+    "Rotate-victim mode 0": {
+     "hits": 77528,
+     "misses": 122472,
+     "evictions": 122408,
+     "evicted_previous_install": 0
+    },
+    "Rotate-victim mode 1": {
+     "hits": 38588,
+     "misses": 161412,
+     "evictions": 161348,
+     "evicted_previous_install": 0
+    },
+    "Rotate-step mode 0": {
+     "hits": 80334,
+     "misses": 119666,
+     "evictions": 119602,
+     "evicted_previous_install": 118134
+    },
+    "Rotate-step mode 1": {
+     "hits": 38577,
+     "misses": 161423,
+     "evictions": 161359,
+     "evicted_previous_install": 0
+    },
+    "Young-bit mode 0": {
+     "hits": 77528,
+     "misses": 122472,
+     "evictions": 122408,
+     "evicted_previous_install": 0
+    },
+    "Young-bit mode 1": {
+     "hits": 38578,
+     "misses": 161422,
+     "evictions": 161358,
+     "evicted_previous_install": 0
+    }
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": 23740,
+    "tie_alone": 23740,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 6190
+   }
+  },
+  {
+   "slice": "row1M",
+   "depth": 256,
+   "requests": 200000,
+   "rtl_hits": {
+    "0": 83219,
+    "1": 86439
+   },
+   "policies": {
+    "LRU": {
+     "hits": 83029,
+     "misses": 116971,
+     "evictions": 116715,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset (oldest)": {
+     "hits": 101867,
+     "misses": 98133,
+     "evictions": 97877,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset lowest-slot": {
+     "hits": 83219,
+     "misses": 116781,
+     "evictions": 116525,
+     "evicted_previous_install": 116524
+    },
+    "LFU-reset 6-bit": {
+     "hits": 101867,
+     "misses": 98133,
+     "evictions": 97877,
+     "evicted_previous_install": 0
+    },
+    "LFU-reset lowest-slot 6-bit": {
+     "hits": 83219,
+     "misses": 116781,
+     "evictions": 116525,
+     "evicted_previous_install": 116524
+    },
+    "RTL-exact mode 0": {
+     "hits": 83219,
+     "misses": 116781,
+     "evictions": 116525,
+     "evicted_previous_install": 116524
+    },
+    "RTL-exact mode 1": {
+     "hits": 86439,
+     "misses": 113561,
+     "evictions": 113305,
+     "evicted_previous_install": 101187
+    },
+    "Rotate-victim mode 0": {
+     "hits": 101867,
+     "misses": 98133,
+     "evictions": 97877,
+     "evicted_previous_install": 0
+    },
+    "Rotate-victim mode 1": {
+     "hits": 73151,
+     "misses": 126849,
+     "evictions": 126593,
+     "evicted_previous_install": 0
+    },
+    "Rotate-step mode 0": {
+     "hits": 101304,
+     "misses": 98696,
+     "evictions": 98440,
+     "evicted_previous_install": 94523
+    },
+    "Rotate-step mode 1": {
+     "hits": 73143,
+     "misses": 126857,
+     "evictions": 126601,
+     "evicted_previous_install": 0
+    },
+    "Young-bit mode 0": {
+     "hits": 101867,
+     "misses": 98133,
+     "evictions": 97877,
+     "evicted_previous_install": 0
+    },
+    "Young-bit mode 1": {
+     "hits": 73116,
+     "misses": 126884,
+     "evictions": 126628,
+     "evicted_previous_install": 0
+    }
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": 18648,
+    "tie_alone": 18648,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 3220
+   }
+  }
+ ],
+ "p8": [
+  {
+   "slice": "row0",
+   "depth": 16,
+   "mode": 0,
+   "requests": 5828,
+   "rtl_hits": 583,
+   "hits": {
+    "LRU": 8,
+    "LFU-reset (oldest)": 159,
+    "LFU-reset lowest-slot": 583,
+    "LFU-reset 6-bit": 159,
+    "LFU-reset lowest-slot 6-bit": 583,
+    "RTL-exact mode 0": 583,
+    "RTL-exact mode 1": 754,
+    "Rotate-victim mode 0": 159,
+    "Rotate-victim mode 1": 18,
+    "Rotate-step mode 0": 607,
+    "Rotate-step mode 1": 18,
+    "Young-bit mode 0": 159,
+    "Young-bit mode 1": 18
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": -424,
+    "tie_alone": -424,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 171
+   }
+  },
+  {
+   "slice": "row0",
+   "depth": 16,
+   "mode": 1,
+   "requests": 5946,
+   "rtl_hits": 774,
+   "hits": {
+    "LRU": 8,
+    "LFU-reset (oldest)": 165,
+    "LFU-reset lowest-slot": 597,
+    "LFU-reset 6-bit": 165,
+    "LFU-reset lowest-slot 6-bit": 597,
+    "RTL-exact mode 0": 597,
+    "RTL-exact mode 1": 774,
+    "Rotate-victim mode 0": 165,
+    "Rotate-victim mode 1": 18,
+    "Rotate-step mode 0": 631,
+    "Rotate-step mode 1": 18,
+    "Young-bit mode 0": 165,
+    "Young-bit mode 1": 18
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": -432,
+    "tie_alone": -432,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 177
+   }
+  },
+  {
+   "slice": "row0",
+   "depth": 64,
+   "mode": 0,
+   "requests": 6572,
+   "rtl_hits": 1762,
+   "hits": {
+    "LRU": 1665,
+    "LFU-reset (oldest)": 2532,
+    "LFU-reset lowest-slot": 1762,
+    "LFU-reset 6-bit": 2532,
+    "LFU-reset lowest-slot 6-bit": 1762,
+    "RTL-exact mode 0": 1762,
+    "RTL-exact mode 1": 1960,
+    "Rotate-victim mode 0": 2532,
+    "Rotate-victim mode 1": 1700,
+    "Rotate-step mode 0": 2581,
+    "Rotate-step mode 1": 1687,
+    "Young-bit mode 0": 2532,
+    "Young-bit mode 1": 1686
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": 770,
+    "tie_alone": 770,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 198
+   }
+  },
+  {
+   "slice": "row0",
+   "depth": 64,
+   "mode": 1,
+   "requests": 6730,
+   "rtl_hits": 2009,
+   "hits": {
+    "LRU": 1709,
+    "LFU-reset (oldest)": 2596,
+    "LFU-reset lowest-slot": 1811,
+    "LFU-reset 6-bit": 2596,
+    "LFU-reset lowest-slot 6-bit": 1811,
+    "RTL-exact mode 0": 1811,
+    "RTL-exact mode 1": 2009,
+    "Rotate-victim mode 0": 2596,
+    "Rotate-victim mode 1": 1736,
+    "Rotate-step mode 0": 2645,
+    "Rotate-step mode 1": 1722,
+    "Young-bit mode 0": 2596,
+    "Young-bit mode 1": 1722
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": 785,
+    "tie_alone": 785,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 198
+   }
+  },
+  {
+   "slice": "row0",
+   "depth": 256,
+   "mode": 0,
+   "requests": 27025,
+   "rtl_hits": 11067,
+   "hits": {
+    "LRU": 11881,
+    "LFU-reset (oldest)": 13968,
+    "LFU-reset lowest-slot": 11067,
+    "LFU-reset 6-bit": 13968,
+    "LFU-reset lowest-slot 6-bit": 11067,
+    "RTL-exact mode 0": 11067,
+    "RTL-exact mode 1": 12699,
+    "Rotate-victim mode 0": 13968,
+    "Rotate-victim mode 1": 12256,
+    "Rotate-step mode 0": 13899,
+    "Rotate-step mode 1": 12208,
+    "Young-bit mode 0": 13968,
+    "Young-bit mode 1": 12237
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": 2901,
+    "tie_alone": 2901,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 1632
+   }
+  },
+  {
+   "slice": "row0",
+   "depth": 256,
+   "mode": 1,
+   "requests": 28493,
+   "rtl_hits": 13371,
+   "hits": {
+    "LRU": 12497,
+    "LFU-reset (oldest)": 14734,
+    "LFU-reset lowest-slot": 11645,
+    "LFU-reset 6-bit": 14734,
+    "LFU-reset lowest-slot 6-bit": 11645,
+    "RTL-exact mode 0": 11645,
+    "RTL-exact mode 1": 13371,
+    "Rotate-victim mode 0": 14734,
+    "Rotate-victim mode 1": 12780,
+    "Rotate-step mode 0": 14675,
+    "Rotate-step mode 1": 12732,
+    "Young-bit mode 0": 14734,
+    "Young-bit mode 1": 12761
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": 3089,
+    "tie_alone": 3089,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 1726
+   }
+  },
+  {
+   "slice": "row1M",
+   "depth": 16,
+   "mode": 0,
+   "requests": 5798,
+   "rtl_hits": 537,
+   "hits": {
+    "LRU": 4,
+    "LFU-reset (oldest)": 122,
+    "LFU-reset lowest-slot": 537,
+    "LFU-reset 6-bit": 122,
+    "LFU-reset lowest-slot 6-bit": 537,
+    "RTL-exact mode 0": 537,
+    "RTL-exact mode 1": 679,
+    "Rotate-victim mode 0": 122,
+    "Rotate-victim mode 1": 6,
+    "Rotate-step mode 0": 791,
+    "Rotate-step mode 1": 6,
+    "Young-bit mode 0": 122,
+    "Young-bit mode 1": 6
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": -415,
+    "tie_alone": -415,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 142
+   }
+  },
+  {
+   "slice": "row1M",
+   "depth": 16,
+   "mode": 1,
+   "requests": 5893,
+   "rtl_hits": 688,
+   "hits": {
+    "LRU": 4,
+    "LFU-reset (oldest)": 124,
+    "LFU-reset lowest-slot": 543,
+    "LFU-reset 6-bit": 124,
+    "LFU-reset lowest-slot 6-bit": 543,
+    "RTL-exact mode 0": 543,
+    "RTL-exact mode 1": 688,
+    "Rotate-victim mode 0": 124,
+    "Rotate-victim mode 1": 6,
+    "Rotate-step mode 0": 803,
+    "Rotate-step mode 1": 6,
+    "Young-bit mode 0": 124,
+    "Young-bit mode 1": 6
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": -419,
+    "tie_alone": -419,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 145
+   }
+  },
+  {
+   "slice": "row1M",
+   "depth": 64,
+   "mode": 0,
+   "requests": 6588,
+   "rtl_hits": 1786,
+   "hits": {
+    "LRU": 1624,
+    "LFU-reset (oldest)": 2364,
+    "LFU-reset lowest-slot": 1786,
+    "LFU-reset 6-bit": 2364,
+    "LFU-reset lowest-slot 6-bit": 1786,
+    "RTL-exact mode 0": 1786,
+    "RTL-exact mode 1": 1904,
+    "Rotate-victim mode 0": 2364,
+    "Rotate-victim mode 1": 1664,
+    "Rotate-step mode 0": 2439,
+    "Rotate-step mode 1": 1653,
+    "Young-bit mode 0": 2364,
+    "Young-bit mode 1": 1654
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": 578,
+    "tie_alone": 578,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 118
+   }
+  },
+  {
+   "slice": "row1M",
+   "depth": 64,
+   "mode": 1,
+   "requests": 6674,
+   "rtl_hits": 1923,
+   "hits": {
+    "LRU": 1640,
+    "LFU-reset (oldest)": 2391,
+    "LFU-reset lowest-slot": 1806,
+    "LFU-reset 6-bit": 2391,
+    "LFU-reset lowest-slot 6-bit": 1806,
+    "RTL-exact mode 0": 1806,
+    "RTL-exact mode 1": 1923,
+    "Rotate-victim mode 0": 2391,
+    "Rotate-victim mode 1": 1677,
+    "Rotate-step mode 0": 2467,
+    "Rotate-step mode 1": 1666,
+    "Young-bit mode 0": 2391,
+    "Young-bit mode 1": 1667
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": 585,
+    "tie_alone": 585,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 117
+   }
+  },
+  {
+   "slice": "row1M",
+   "depth": 256,
+   "mode": 0,
+   "requests": 27189,
+   "rtl_hits": 11325,
+   "hits": {
+    "LRU": 11254,
+    "LFU-reset (oldest)": 13479,
+    "LFU-reset lowest-slot": 11325,
+    "LFU-reset 6-bit": 13479,
+    "LFU-reset lowest-slot 6-bit": 11325,
+    "RTL-exact mode 0": 11325,
+    "RTL-exact mode 1": 11912,
+    "Rotate-victim mode 0": 13479,
+    "Rotate-victim mode 1": 11520,
+    "Rotate-step mode 0": 13340,
+    "Rotate-step mode 1": 11515,
+    "Young-bit mode 0": 13479,
+    "Young-bit mode 1": 11486
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": 2154,
+    "tie_alone": 2154,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 587
+   }
+  },
+  {
+   "slice": "row1M",
+   "depth": 256,
+   "mode": 1,
+   "requests": 27712,
+   "rtl_hits": 12143,
+   "hits": {
+    "LRU": 11471,
+    "LFU-reset (oldest)": 13752,
+    "LFU-reset lowest-slot": 11537,
+    "LFU-reset 6-bit": 13752,
+    "LFU-reset lowest-slot 6-bit": 11537,
+    "RTL-exact mode 0": 11537,
+    "RTL-exact mode 1": 12143,
+    "Rotate-victim mode 0": 13752,
+    "Rotate-victim mode 1": 11711,
+    "Rotate-step mode 0": 13610,
+    "Rotate-step mode 1": 11706,
+    "Young-bit mode 0": 13752,
+    "Young-bit mode 1": 11676
+   },
+   "decomposition": {
+    "gap_oldest_minus_rtl_m0": 2215,
+    "tie_alone": 2215,
+    "saturation_alone": 0,
+    "interaction": 0,
+    "mode1_minus_mode0": 606
+   }
+  }
+ ],
+ "synthetic_probe": {
+  "traces": 60,
+  "differ_from_oldest": {
+   "Rotate-victim mode 0": 9,
+   "Rotate-step mode 0": 54,
+   "Young-bit mode 0": 14
+  },
+  "runs": [
+   {
+    "seed": 0,
+    "capacity": 64,
+    "keys": 640,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 5517,
+     "Rotate-victim mode 0": 5543,
+     "Rotate-step mode 0": 5435,
+     "Young-bit mode 0": 5528
+    }
+   },
+   {
+    "seed": 1,
+    "capacity": 8,
+    "keys": 400,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 2128,
+     "Rotate-victim mode 0": 2128,
+     "Rotate-step mode 0": 2148,
+     "Young-bit mode 0": 2050
+    }
+   },
+   {
+    "seed": 2,
+    "capacity": 4,
+    "keys": 8,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 11626,
+     "Rotate-victim mode 0": 11626,
+     "Rotate-step mode 0": 11625,
+     "Young-bit mode 0": 11626
+    }
+   },
+   {
+    "seed": 3,
+    "capacity": 8,
+    "keys": 400,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 10452,
+     "Rotate-victim mode 0": 10452,
+     "Rotate-step mode 0": 11057,
+     "Young-bit mode 0": 10452
+    }
+   },
+   {
+    "seed": 4,
+    "capacity": 8,
+    "keys": 80,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 4732,
+     "Rotate-victim mode 0": 4732,
+     "Rotate-step mode 0": 5259,
+     "Young-bit mode 0": 4732
+    }
+   },
+   {
+    "seed": 5,
+    "capacity": 16,
+    "keys": 800,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 6775,
+     "Rotate-victim mode 0": 6775,
+     "Rotate-step mode 0": 6415,
+     "Young-bit mode 0": 6775
+    }
+   },
+   {
+    "seed": 6,
+    "capacity": 4,
+    "keys": 40,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 6177,
+     "Rotate-victim mode 0": 6177,
+     "Rotate-step mode 0": 7666,
+     "Young-bit mode 0": 6177
+    }
+   },
+   {
+    "seed": 7,
+    "capacity": 16,
+    "keys": 32,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 15362,
+     "Rotate-victim mode 0": 15362,
+     "Rotate-step mode 0": 15691,
+     "Young-bit mode 0": 15351
+    }
+   },
+   {
+    "seed": 8,
+    "capacity": 8,
+    "keys": 80,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 9298,
+     "Rotate-victim mode 0": 9298,
+     "Rotate-step mode 0": 8594,
+     "Young-bit mode 0": 9541
+    }
+   },
+   {
+    "seed": 9,
+    "capacity": 64,
+    "keys": 3200,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 7971,
+     "Rotate-victim mode 0": 7975,
+     "Rotate-step mode 0": 7750,
+     "Young-bit mode 0": 7975
+    }
+   },
+   {
+    "seed": 10,
+    "capacity": 4,
+    "keys": 40,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 6191,
+     "Rotate-victim mode 0": 6191,
+     "Rotate-step mode 0": 6194,
+     "Young-bit mode 0": 6191
+    }
+   },
+   {
+    "seed": 11,
+    "capacity": 64,
+    "keys": 3200,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 7858,
+     "Rotate-victim mode 0": 7858,
+     "Rotate-step mode 0": 8031,
+     "Young-bit mode 0": 7858
+    }
+   },
+   {
+    "seed": 12,
+    "capacity": 64,
+    "keys": 640,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 15683,
+     "Rotate-victim mode 0": 15685,
+     "Rotate-step mode 0": 15644,
+     "Young-bit mode 0": 15685
+    }
+   },
+   {
+    "seed": 13,
+    "capacity": 16,
+    "keys": 160,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 13512,
+     "Rotate-victim mode 0": 13512,
+     "Rotate-step mode 0": 13802,
+     "Young-bit mode 0": 13512
+    }
+   },
+   {
+    "seed": 14,
+    "capacity": 4,
+    "keys": 200,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 8812,
+     "Rotate-victim mode 0": 8812,
+     "Rotate-step mode 0": 8811,
+     "Young-bit mode 0": 8812
+    }
+   },
+   {
+    "seed": 15,
+    "capacity": 8,
+    "keys": 16,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 15671,
+     "Rotate-victim mode 0": 15671,
+     "Rotate-step mode 0": 15993,
+     "Young-bit mode 0": 15931
+    }
+   },
+   {
+    "seed": 16,
+    "capacity": 16,
+    "keys": 160,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 10009,
+     "Rotate-victim mode 0": 10009,
+     "Rotate-step mode 0": 9713,
+     "Young-bit mode 0": 10009
+    }
+   },
+   {
+    "seed": 17,
+    "capacity": 64,
+    "keys": 640,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 11165,
+     "Rotate-victim mode 0": 11165,
+     "Rotate-step mode 0": 10805,
+     "Young-bit mode 0": 11165
+    }
+   },
+   {
+    "seed": 18,
+    "capacity": 8,
+    "keys": 16,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 15888,
+     "Rotate-victim mode 0": 15888,
+     "Rotate-step mode 0": 15886,
+     "Young-bit mode 0": 15888
+    }
+   },
+   {
+    "seed": 19,
+    "capacity": 4,
+    "keys": 200,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 926,
+     "Rotate-victim mode 0": 926,
+     "Rotate-step mode 0": 740,
+     "Young-bit mode 0": 926
+    }
+   },
+   {
+    "seed": 20,
+    "capacity": 8,
+    "keys": 80,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 12475,
+     "Rotate-victim mode 0": 12475,
+     "Rotate-step mode 0": 11917,
+     "Young-bit mode 0": 12475
+    }
+   },
+   {
+    "seed": 21,
+    "capacity": 8,
+    "keys": 80,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 12697,
+     "Rotate-victim mode 0": 12697,
+     "Rotate-step mode 0": 12687,
+     "Young-bit mode 0": 12697
+    }
+   },
+   {
+    "seed": 22,
+    "capacity": 8,
+    "keys": 16,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 13297,
+     "Rotate-victim mode 0": 12993,
+     "Rotate-step mode 0": 12002,
+     "Young-bit mode 0": 12993
+    }
+   },
+   {
+    "seed": 23,
+    "capacity": 16,
+    "keys": 32,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 13033,
+     "Rotate-victim mode 0": 13033,
+     "Rotate-step mode 0": 12961,
+     "Young-bit mode 0": 13033
+    }
+   },
+   {
+    "seed": 24,
+    "capacity": 64,
+    "keys": 3200,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 2949,
+     "Rotate-victim mode 0": 2940,
+     "Rotate-step mode 0": 2843,
+     "Young-bit mode 0": 2942
+    }
+   },
+   {
+    "seed": 25,
+    "capacity": 64,
+    "keys": 128,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 13635,
+     "Rotate-victim mode 0": 13551,
+     "Rotate-step mode 0": 13383,
+     "Young-bit mode 0": 13533
+    }
+   },
+   {
+    "seed": 26,
+    "capacity": 8,
+    "keys": 400,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 2445,
+     "Rotate-victim mode 0": 2445,
+     "Rotate-step mode 0": 2445,
+     "Young-bit mode 0": 2445
+    }
+   },
+   {
+    "seed": 27,
+    "capacity": 64,
+    "keys": 3200,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 7717,
+     "Rotate-victim mode 0": 7717,
+     "Rotate-step mode 0": 7730,
+     "Young-bit mode 0": 7717
+    }
+   },
+   {
+    "seed": 28,
+    "capacity": 4,
+    "keys": 200,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 1929,
+     "Rotate-victim mode 0": 1929,
+     "Rotate-step mode 0": 2225,
+     "Young-bit mode 0": 1568
+    }
+   },
+   {
+    "seed": 29,
+    "capacity": 4,
+    "keys": 40,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 11274,
+     "Rotate-victim mode 0": 11274,
+     "Rotate-step mode 0": 10143,
+     "Young-bit mode 0": 11274
+    }
+   },
+   {
+    "seed": 30,
+    "capacity": 16,
+    "keys": 800,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 2258,
+     "Rotate-victim mode 0": 2258,
+     "Rotate-step mode 0": 1869,
+     "Young-bit mode 0": 2258
+    }
+   },
+   {
+    "seed": 31,
+    "capacity": 4,
+    "keys": 40,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 5248,
+     "Rotate-victim mode 0": 5248,
+     "Rotate-step mode 0": 5248,
+     "Young-bit mode 0": 5248
+    }
+   },
+   {
+    "seed": 32,
+    "capacity": 4,
+    "keys": 8,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 11489,
+     "Rotate-victim mode 0": 11489,
+     "Rotate-step mode 0": 11489,
+     "Young-bit mode 0": 11489
+    }
+   },
+   {
+    "seed": 33,
+    "capacity": 8,
+    "keys": 400,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 1744,
+     "Rotate-victim mode 0": 1744,
+     "Rotate-step mode 0": 1670,
+     "Young-bit mode 0": 1744
+    }
+   },
+   {
+    "seed": 34,
+    "capacity": 16,
+    "keys": 800,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 2320,
+     "Rotate-victim mode 0": 2320,
+     "Rotate-step mode 0": 2219,
+     "Young-bit mode 0": 2320
+    }
+   },
+   {
+    "seed": 35,
+    "capacity": 16,
+    "keys": 32,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 17112,
+     "Rotate-victim mode 0": 17112,
+     "Rotate-step mode 0": 17217,
+     "Young-bit mode 0": 17112
+    }
+   },
+   {
+    "seed": 36,
+    "capacity": 16,
+    "keys": 32,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 13642,
+     "Rotate-victim mode 0": 13642,
+     "Rotate-step mode 0": 13613,
+     "Young-bit mode 0": 13642
+    }
+   },
+   {
+    "seed": 37,
+    "capacity": 4,
+    "keys": 200,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 8332,
+     "Rotate-victim mode 0": 8332,
+     "Rotate-step mode 0": 8793,
+     "Young-bit mode 0": 8332
+    }
+   },
+   {
+    "seed": 38,
+    "capacity": 64,
+    "keys": 640,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 15665,
+     "Rotate-victim mode 0": 15665,
+     "Rotate-step mode 0": 15600,
+     "Young-bit mode 0": 15665
+    }
+   },
+   {
+    "seed": 39,
+    "capacity": 8,
+    "keys": 80,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 8595,
+     "Rotate-victim mode 0": 8595,
+     "Rotate-step mode 0": 6552,
+     "Young-bit mode 0": 8595
+    }
+   },
+   {
+    "seed": 40,
+    "capacity": 64,
+    "keys": 3200,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 14500,
+     "Rotate-victim mode 0": 14500,
+     "Rotate-step mode 0": 14550,
+     "Young-bit mode 0": 14500
+    }
+   },
+   {
+    "seed": 41,
+    "capacity": 64,
+    "keys": 640,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 6022,
+     "Rotate-victim mode 0": 6022,
+     "Rotate-step mode 0": 5834,
+     "Young-bit mode 0": 6022
+    }
+   },
+   {
+    "seed": 42,
+    "capacity": 4,
+    "keys": 8,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 15723,
+     "Rotate-victim mode 0": 15723,
+     "Rotate-step mode 0": 15723,
+     "Young-bit mode 0": 15723
+    }
+   },
+   {
+    "seed": 43,
+    "capacity": 4,
+    "keys": 40,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 8890,
+     "Rotate-victim mode 0": 8890,
+     "Rotate-step mode 0": 8890,
+     "Young-bit mode 0": 8890
+    }
+   },
+   {
+    "seed": 44,
+    "capacity": 64,
+    "keys": 3200,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 14431,
+     "Rotate-victim mode 0": 14431,
+     "Rotate-step mode 0": 14242,
+     "Young-bit mode 0": 14385
+    }
+   },
+   {
+    "seed": 45,
+    "capacity": 16,
+    "keys": 160,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 9065,
+     "Rotate-victim mode 0": 9065,
+     "Rotate-step mode 0": 9425,
+     "Young-bit mode 0": 9339
+    }
+   },
+   {
+    "seed": 46,
+    "capacity": 4,
+    "keys": 40,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 4412,
+     "Rotate-victim mode 0": 3998,
+     "Rotate-step mode 0": 3997,
+     "Young-bit mode 0": 4412
+    }
+   },
+   {
+    "seed": 47,
+    "capacity": 16,
+    "keys": 32,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 15307,
+     "Rotate-victim mode 0": 15307,
+     "Rotate-step mode 0": 15348,
+     "Young-bit mode 0": 15307
+    }
+   },
+   {
+    "seed": 48,
+    "capacity": 16,
+    "keys": 32,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 17323,
+     "Rotate-victim mode 0": 17323,
+     "Rotate-step mode 0": 17157,
+     "Young-bit mode 0": 17323
+    }
+   },
+   {
+    "seed": 49,
+    "capacity": 4,
+    "keys": 40,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 7951,
+     "Rotate-victim mode 0": 7951,
+     "Rotate-step mode 0": 7962,
+     "Young-bit mode 0": 7951
+    }
+   },
+   {
+    "seed": 50,
+    "capacity": 64,
+    "keys": 640,
+    "alpha": 0.9,
+    "hits": {
+     "LFU-reset (oldest)": 11054,
+     "Rotate-victim mode 0": 11054,
+     "Rotate-step mode 0": 10834,
+     "Young-bit mode 0": 11054
+    }
+   },
+   {
+    "seed": 51,
+    "capacity": 8,
+    "keys": 400,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 10493,
+     "Rotate-victim mode 0": 10330,
+     "Rotate-step mode 0": 9624,
+     "Young-bit mode 0": 10330
+    }
+   },
+   {
+    "seed": 52,
+    "capacity": 16,
+    "keys": 32,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 17056,
+     "Rotate-victim mode 0": 17056,
+     "Rotate-step mode 0": 17300,
+     "Young-bit mode 0": 17056
+    }
+   },
+   {
+    "seed": 53,
+    "capacity": 8,
+    "keys": 80,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 12478,
+     "Rotate-victim mode 0": 12478,
+     "Rotate-step mode 0": 12304,
+     "Young-bit mode 0": 12478
+    }
+   },
+   {
+    "seed": 54,
+    "capacity": 8,
+    "keys": 80,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 12717,
+     "Rotate-victim mode 0": 12636,
+     "Rotate-step mode 0": 12722,
+     "Young-bit mode 0": 12717
+    }
+   },
+   {
+    "seed": 55,
+    "capacity": 4,
+    "keys": 8,
+    "alpha": 0.6,
+    "hits": {
+     "LFU-reset (oldest)": 12940,
+     "Rotate-victim mode 0": 12940,
+     "Rotate-step mode 0": 12130,
+     "Young-bit mode 0": 12940
+    }
+   },
+   {
+    "seed": 56,
+    "capacity": 4,
+    "keys": 40,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 10558,
+     "Rotate-victim mode 0": 10558,
+     "Rotate-step mode 0": 10559,
+     "Young-bit mode 0": 10558
+    }
+   },
+   {
+    "seed": 57,
+    "capacity": 4,
+    "keys": 40,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 11114,
+     "Rotate-victim mode 0": 11114,
+     "Rotate-step mode 0": 11114,
+     "Young-bit mode 0": 11114
+    }
+   },
+   {
+    "seed": 58,
+    "capacity": 8,
+    "keys": 16,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 16458,
+     "Rotate-victim mode 0": 16458,
+     "Rotate-step mode 0": 16425,
+     "Young-bit mode 0": 16458
+    }
+   },
+   {
+    "seed": 59,
+    "capacity": 8,
+    "keys": 16,
+    "alpha": 1.2,
+    "hits": {
+     "LFU-reset (oldest)": 16813,
+     "Rotate-victim mode 0": 16813,
+     "Rotate-step mode 0": 16814,
+     "Young-bit mode 0": 16813
+    }
+   }
+  ]
+ }
+}

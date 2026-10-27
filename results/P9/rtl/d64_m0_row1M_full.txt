@@ -1,0 +1,7 @@
+# P9 d64_m0_row1M_full: zero-delay RTL simulation (rtl/v2, rtl-v2-final), tb_hitlog FULL=1 WARM=20000 WIN=10000 SEED=1
+trace: /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P8/stimulus/row1M.hex sha256 9b3b547cfb697fa114fdb45745a731578af09e8b06d0cae86de7df5ebc94daa9
+iverilog: Icarus Verilog version 12.0 (stable) ()
+compile: 0:00.03 11660 
+run: 1:06.19 16756 
+p8_power depth=64 mode=0 stim=1 warm=20000 win=10000 cycles=911903 requests=200000 responses=200000 hits=53788 misses=146212 win_requests=2178 win_responses=2177 win_hits=584 win_misses=1593 win_first_req=4410 win_last_req=6587 winreq_responses=2178 winreq_hits=584 t_begin_ps=0 t_end_ps=60005000 x_cycles=0
+hitlog: lines 200000 sha256 63a48af9154c5fe429f4b9ad6c1ab47ce8da57a0f54c3615b4cc1c4f819e3e4e

@@ -1,0 +1,6 @@
+	Command being timed: "python3 -I trace_sim/run_shared_cache.py --criteo_path /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/56b14fc3-4aad-4a49-b9c7-544a8a45f304/scratchpad/synth_200k.txt --n_rows 200000 --workers 4 --output results/P9/timing_200k --tag shared_200k_synthetic --policies LFU (gem5 LFURP — reset on eviction) RTL-exact mode 0 RTL-exact mode 1 LFU-reset lowest-slot LFU-reset 6-bit LFU-reset lowest-slot 6-bit Rotate-victim mode 0 Rotate-victim mode 1 Rotate-step mode 0 Rotate-step mode 1 Young-bit mode 0 Young-bit mode 1"
+	User time (seconds): 271.30
+	System time (seconds): 0.59
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:12.04
+	Maximum resident set size (kbytes): 140964
+	Exit status: 0

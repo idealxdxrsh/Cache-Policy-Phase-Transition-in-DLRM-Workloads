@@ -25,8 +25,11 @@ from array import array
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from run_trace_sim import (LRUCache, LFUResetCache, LFUCache,  # noqa: E402
                            ARCCache, WTinyLFUCache)
+from rtl_exact import P9_POLICIES  # noqa: E402
 
 POLICIES = [LRUCache, LFUResetCache, LFUCache, ARCCache, WTinyLFUCache]
+# P9 (trace_sim/rtl_exact.py): selectable with --policies, not part of the default run
+SELECTABLE = POLICIES + P9_POLICIES
 DEFAULT_CAPACITIES = [256, 1000, 10000, 100000]
 N_TABLES = 26
 ID_BITS = 32
@@ -133,13 +136,13 @@ def main():
     ap.add_argument('--capacities', nargs='+', type=int, default=DEFAULT_CAPACITIES,
                     help='total cache size in vectors, shared by all tables')
     ap.add_argument('--policies', nargs='+', default=None,
-                    help='policy names (default: all five)')
+                    help='policy names (default: the five of POLICIES; P9 names: see rtl_exact.P9_POLICIES)')
     ap.add_argument('--workers', type=int, default=1)
     ap.add_argument('--output', default='results')
     ap.add_argument('--tag', default='shared_cache_results')
     args = ap.parse_args()
 
-    by_name = {p.name: p for p in POLICIES}
+    by_name = {p.name: p for p in SELECTABLE}
     policies = [by_name[n] for n in args.policies] if args.policies else POLICIES
 
     t0 = time.time()

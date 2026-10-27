@@ -1,0 +1,26 @@
+d16_m0_row0_p8budget     requests=  5828 rtl_hits=   583 fast=   583 structural=   583 mismatches fast/structural=0/0 addresses_ok=True p8_line_identical=True pass=True
+d16_m0_row1M_p8budget    requests=  5798 rtl_hits=   537 fast=   537 structural=   537 mismatches fast/structural=0/0 addresses_ok=True p8_line_identical=True pass=True
+d16_m1_row0_p8budget     requests=  5946 rtl_hits=   774 fast=   774 structural=   774 mismatches fast/structural=0/0 addresses_ok=True p8_line_identical=True pass=True
+d16_m1_row1M_p8budget    requests=  5893 rtl_hits=   688 fast=   688 structural=   688 mismatches fast/structural=0/0 addresses_ok=True p8_line_identical=True pass=True
+d64_m0_row0_p8budget     requests=  6572 rtl_hits=  1762 fast=  1762 structural=  1762 mismatches fast/structural=0/0 addresses_ok=True p8_line_identical=True pass=True
+d64_m0_row1M_p8budget    requests=  6588 rtl_hits=  1786 fast=  1786 structural=  1786 mismatches fast/structural=0/0 addresses_ok=True p8_line_identical=True pass=True
+d64_m1_row0_p8budget     requests=  6730 rtl_hits=  2009 fast=  2009 structural=  2009 mismatches fast/structural=0/0 addresses_ok=True p8_line_identical=True pass=True
+d64_m1_row1M_p8budget    requests=  6674 rtl_hits=  1923 fast=  1923 structural=  1923 mismatches fast/structural=0/0 addresses_ok=True p8_line_identical=True pass=True
+d256_m0_row0_p8budget    requests= 27025 rtl_hits= 11067 fast= 11067 structural= 11067 mismatches fast/structural=0/0 addresses_ok=True p8_line_identical=True pass=True
+d256_m0_row1M_p8budget   requests= 27189 rtl_hits= 11325 fast= 11325 structural= 11325 mismatches fast/structural=0/0 addresses_ok=True p8_line_identical=True pass=True
+d256_m1_row0_p8budget    requests= 28493 rtl_hits= 13371 fast= 13371 structural= 13371 mismatches fast/structural=0/0 addresses_ok=True p8_line_identical=True pass=True
+d256_m1_row1M_p8budget   requests= 27712 rtl_hits= 12143 fast= 12143 structural= 12143 mismatches fast/structural=0/0 addresses_ok=True p8_line_identical=True pass=True
+d16_m0_row0_full         requests=200000 rtl_hits= 19946 fast= 19946 structural= 19946 mismatches fast/structural=0/0 addresses_ok=True all_slice_requests=True pass=True
+d16_m0_row1M_full        requests=200000 rtl_hits= 18254 fast= 18254 structural= 18254 mismatches fast/structural=0/0 addresses_ok=True all_slice_requests=True pass=True
+d16_m1_row0_full         requests=200000 rtl_hits= 30018 fast= 30018 structural= 30018 mismatches fast/structural=0/0 addresses_ok=True all_slice_requests=True pass=True
+d16_m1_row1M_full        requests=200000 rtl_hits= 26350 fast= 26350 structural= 26350 mismatches fast/structural=0/0 addresses_ok=True all_slice_requests=True pass=True
+d64_m0_row0_full         requests=200000 rtl_hits= 54737 fast= 54737 structural= 54737 mismatches fast/structural=0/0 addresses_ok=True all_slice_requests=True pass=True
+d64_m0_row1M_full        requests=200000 rtl_hits= 53788 fast= 53788 structural= 53788 mismatches fast/structural=0/0 addresses_ok=True all_slice_requests=True pass=True
+d64_m1_row0_full         requests=200000 rtl_hits= 61252 fast= 61252 structural= 61252 mismatches fast/structural=0/0 addresses_ok=True all_slice_requests=True pass=True
+d64_m1_row1M_full        requests=200000 rtl_hits= 59978 fast= 59978 structural= 59978 mismatches fast/structural=0/0 addresses_ok=True all_slice_requests=True pass=True
+d256_m0_row0_full        requests=200000 rtl_hits= 81221 fast= 81221 structural= 81221 mismatches fast/structural=0/0 addresses_ok=True all_slice_requests=True pass=True
+d256_m0_row1M_full       requests=200000 rtl_hits= 83219 fast= 83219 structural= 83219 mismatches fast/structural=0/0 addresses_ok=True all_slice_requests=True pass=True
+d256_m1_row0_full        requests=200000 rtl_hits= 91192 fast= 91192 structural= 91192 mismatches fast/structural=0/0 addresses_ok=True all_slice_requests=True pass=True
+d256_m1_row1M_full       requests=200000 rtl_hits= 86439 fast= 86439 structural= 86439 mismatches fast/structural=0/0 addresses_ok=True all_slice_requests=True pass=True
+24/24 runs pass
+18.17 s 88136 kB
