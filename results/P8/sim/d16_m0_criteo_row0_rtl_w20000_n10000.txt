@@ -1,0 +1,6 @@
+# P8 d16_m0_criteo_row0_rtl_w20000_n10000: zero-delay simulation, 500 MHz clock (2 ns), rtl; fill data random (seed 1; real embedding data is not random)
+netlist: RTL rtl/v2 (rtl-v2-final)
+iverilog: Icarus Verilog version 12.0 (stable) ()
+compile: 0:00.02 11768 
+run: 0:01.60 15972 
+p8_power depth=16 mode=0 stim=1 warm=20000 win=10000 cycles=30005 requests=5828 responses=5828 hits=583 misses=5245 win_requests=1937 win_responses=1937 win_hits=200 win_misses=1737 win_first_req=3891 win_last_req=5827 winreq_responses=1937 winreq_hits=200 t_begin_ps=0 t_end_ps=60005000 x_cycles=0

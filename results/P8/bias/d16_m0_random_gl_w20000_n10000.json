@@ -1,0 +1,35 @@
+{
+ "netlist": "results/P5f_gls/netlists/d16_m0_500MHz/netlist.v",
+ "window_ps": [
+  40005000,
+  60004999
+ ],
+ "instances_in_debug": 11466,
+ "cells": 11466,
+ "vcd_unmapped_pins": 0,
+ "output_toggles_without_input_change_same_step": 930,
+ "leakage_states_not_covered_by_a_when": 0,
+ "switching_density_vs_vcd_max_rel_dev": 0.0049504950495049506,
+ "switching_density_vs_vcd_pins": 4859,
+ "switching_density_vs_vcd_pins_over_1pct": 0,
+ "power_W": {
+  "comb_internal_osta": 0.00047272910458899986,
+  "comb_leakage_osta": 0.00023250010355200317,
+  "comb_leakage_recomputed": 0.0002323551501356041,
+  "comb_out_osta_debug": 0.0004726942304452802,
+  "comb_out_recomputed": 0.0004621652002776662,
+  "comb_sw_osta_debug": 0.000689104451279998,
+  "comb_switching_osta": 0.0006890998346844719,
+  "ff_ck_osta_debug": 0.009946094454759002,
+  "ff_ck_recomputed": 0.010560218727000031,
+  "ff_in_osta_debug": 2.0407562360840982e-05,
+  "ff_in_recomputed": 3.229272464e-05,
+  "ff_internal_osta": 0.010130414898999846,
+  "ff_leakage_osta": 0.0002612510194799988,
+  "ff_leakage_recomputed": 0.0002614998724435021,
+  "ff_out_osta_debug": 0.00015438983299999998,
+  "ff_out_recomputed": 0.0001544787700000001,
+  "ff_sw_osta_debug": 5.582762600999986e-05,
+  "ff_switching_osta": 5.582861514811001e-05
+ }
+}

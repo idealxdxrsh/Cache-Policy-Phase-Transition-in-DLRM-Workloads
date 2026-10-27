@@ -1,0 +1,283 @@
+{
+ "netlist": "results/P5f_gls/netlists/d64_m0_500MHz/netlist.v",
+ "window_ps": [
+  40005000,
+  60004999
+ ],
+ "cells": 37939,
+ "flip_flops": 10431,
+ "cells_without_power_line": 0,
+ "power_W": {
+  "comb:all": {
+   "internal": 0.0007727993425621802,
+   "switching": 0.0012227784127176713,
+   "leakage": 0.0007728915768710104,
+   "total": 0.0027684693282719326,
+   "cells": 27508
+  },
+  "comb:control": {
+   "internal": 0.0004262079997828799,
+   "switching": 0.0005395315994471916,
+   "leakage": 0.00020482074716200564,
+   "total": 0.0011705603416419838,
+   "cells": 7884
+  },
+  "comb:counter": {
+   "internal": 3.0985664876000056e-05,
+   "switching": 5.8656044865170067e-05,
+   "leakage": 2.364114777400008e-05,
+   "total": 0.00011328285766400064,
+   "cells": 797
+  },
+  "comb:data": {
+   "internal": 7.939481343000004e-05,
+   "switching": 0.00025644523395999846,
+   "leakage": 0.0002819331667400149,
+   "total": 0.0006177732196400054,
+   "cells": 8891
+  },
+  "comb:none": {
+   "internal": 4.284112710942991e-05,
+   "switching": 9.764438785656028e-05,
+   "leakage": 8.588756855599761e-05,
+   "total": 0.00022637307891801018,
+   "cells": 3554
+  },
+  "comb:shared": {
+   "internal": 0.00018978412639386998,
+   "switching": 0.000265172459698729,
+   "leakage": 0.00013297997951899822,
+   "total": 0.0005879365659079954,
+   "cells": 4882
+  },
+  "comb:tag": {
+   "internal": 1.3275017699999999e-06,
+   "switching": 3.1585369e-07,
+   "leakage": 3.8807335639999e-05,
+   "total": 4.045069115999879e-05,
+   "cells": 1279
+  },
+  "comb:valid": {
+   "internal": 2.2581092e-06,
+   "switching": 5.012833200000001e-06,
+   "leakage": 4.821631480000003e-06,
+   "total": 1.2092573340000026e-05,
+   "cells": 221
+  },
+  "ff:all": {
+   "internal": 0.03659600000200482,
+   "switching": 4.608475671743005e-05,
+   "leakage": 0.0009217803143999725,
+   "total": 0.037563859487994816,
+   "cells": 10431
+  },
+  "ff:control": {
+   "internal": 0.001433879561000003,
+   "switching": 3.4404905933089963e-05,
+   "leakage": 4.4415707650000054e-05,
+   "total": 0.001512700028000001,
+   "cells": 511
+  },
+  "ff:counter": {
+   "internal": 0.0012581777460000036,
+   "switching": 2.539227434000001e-08,
+   "leakage": 3.3802407279999906e-05,
+   "total": 0.0012920053520000044,
+   "cells": 384
+  },
+  "ff:data": {
+   "internal": 0.029108455782000105,
+   "switching": 9.755316289999998e-06,
+   "leakage": 0.0007263416773599501,
+   "total": 0.02984454854399464,
+   "cells": 8192
+  },
+  "ff:tag": {
+   "internal": 0.00456748102600001,
+   "switching": 9.5650102e-07,
+   "leakage": 0.00011137746520999805,
+   "total": 0.0046798139849999155,
+   "cells": 1280
+  },
+  "ff:valid": {
+   "internal": 0.00022800588699999985,
+   "switching": 9.426412e-07,
+   "leakage": 5.843056899999996e-06,
+   "total": 0.00023479157899999997,
+   "cells": 64
+  },
+  "ffreg:data_store": {
+   "internal": 0.029108455782000105,
+   "switching": 9.755316289999998e-06,
+   "leakage": 0.0007263416773599501,
+   "total": 0.02984454854399464,
+   "cells": 8192
+  },
+  "ffreg:fill_addr": {
+   "internal": 5.5367280000000006e-05,
+   "switching": 1.1955271700000001e-06,
+   "leakage": 1.74767473e-06,
+   "total": 5.8310473999999985e-05,
+   "cells": 20
+  },
+  "ffreg:fill_req": {
+   "internal": 4.351394e-06,
+   "switching": 3.977715e-07,
+   "leakage": 8.759474e-08,
+   "total": 4.83676e-06,
+   "cells": 1
+  },
+  "ffreg:freq_cnt": {
+   "internal": 0.0012581777460000036,
+   "switching": 2.539227434000001e-08,
+   "leakage": 3.3802407279999906e-05,
+   "total": 0.0012920053520000044,
+   "cells": 384
+  },
+  "ffreg:hit_flag": {
+   "internal": 3.825903e-06,
+   "switching": 1.390896e-07,
+   "leakage": 8.683234e-08,
+   "total": 4.051824e-06,
+   "cells": 1
+  },
+  "ffreg:req_addr_grp": {
+   "internal": 0.0009168240549999961,
+   "switching": 6.517417709999979e-06,
+   "leakage": 2.795777968000004e-05,
+   "total": 0.0009512991309999997,
+   "cells": 320
+  },
+  "ffreg:resp_data": {
+   "internal": 0.00030734235600000004,
+   "switching": 2.5201306399999995e-05,
+   "leakage": 1.1287432159999996e-05,
+   "total": 0.0003438310939999999,
+   "cells": 128
+  },
+  "ffreg:resp_valid": {
+   "internal": 4.691749e-06,
+   "switching": 5.368611e-07,
+   "leakage": 8.722972e-08,
+   "total": 5.31584e-06,
+   "cells": 1
+  },
+  "ffreg:stageA_min": {
+   "internal": 0.00011065775200000004,
+   "switching": 3.885309e-11,
+   "leakage": 2.461739370000001e-06,
+   "total": 0.00011311952000000002,
+   "cells": 32
+  },
+  "ffreg:state": {
+   "internal": 9.334761e-06,
+   "switching": 4.168936e-07,
+   "leakage": 1.7691522e-07,
+   "total": 9.928569e-06,
+   "cells": 2
+  },
+  "ffreg:tag_store": {
+   "internal": 0.00456748102600001,
+   "switching": 9.5650102e-07,
+   "leakage": 0.00011137746520999805,
+   "total": 0.0046798139849999155,
+   "cells": 1280
+  },
+  "ffreg:valid_bits": {
+   "internal": 0.00022800588699999985,
+   "switching": 9.426412e-07,
+   "leakage": 5.843056899999996e-06,
+   "total": 0.00023479157899999997,
+   "cells": 64
+  },
+  "ffreg:victim_reg": {
+   "internal": 2.1484311e-05,
+   "switching": 0.0,
+   "leakage": 5.2250969e-07,
+   "total": 2.2006815999999998e-05,
+   "cells": 6
+  }
+ },
+ "toggles_in_window": {
+  "D:control": 326980,
+  "D:counter": 359,
+  "D:data": 99363,
+  "D:tag": 7261,
+  "D:valid": 3203,
+  "Dreg:data_store": 99363,
+  "Dreg:fill_addr": 7266,
+  "Dreg:fill_req": 3204,
+  "Dreg:freq_cnt": 359,
+  "Dreg:hit_flag": 1120,
+  "Dreg:req_addr_grp": 165888,
+  "Dreg:resp_data": 134449,
+  "Dreg:resp_valid": 4322,
+  "Dreg:stageA_min": 1,
+  "Dreg:state": 10730,
+  "Dreg:tag_store": 7261,
+  "Dreg:valid_bits": 3203,
+  "Q:control": 326980,
+  "Q:counter": 359,
+  "Q:data": 99363,
+  "Q:tag": 7261,
+  "Q:valid": 3203,
+  "Qreg:data_store": 99363,
+  "Qreg:fill_addr": 7266,
+  "Qreg:fill_req": 3203,
+  "Qreg:freq_cnt": 359,
+  "Qreg:hit_flag": 1120,
+  "Qreg:req_addr_grp": 165888,
+  "Qreg:resp_data": 134449,
+  "Qreg:resp_valid": 4323,
+  "Qreg:stageA_min": 1,
+  "Qreg:state": 10730,
+  "Qreg:tag_store": 7261,
+  "Qreg:valid_bits": 3203
+ },
+ "flip_flops_per_class": {
+  "control": 511,
+  "counter": 384,
+  "data": 8192,
+  "tag": 1280,
+  "valid": 64
+ },
+ "vcd_unmapped_flop_pins": 0,
+ "clock_pin_model_W": {
+  "check_untoggled_flops": 9875,
+  "check_untoggled_max_rel_err": 2.6037643145935076e-07,
+  "ck_exact_state:all": 0.03728768049645634,
+  "ck_exact_state:control": 0.0018245805061342449,
+  "ck_exact_state:counter": 0.0013732677911384875,
+  "ck_exact_state:data": 0.029278117207500835,
+  "ck_exact_state:tag": 0.0045836851123118505,
+  "ck_exact_state:valid": 0.00022802987937126622,
+  "ck_known_state_fraction_min:control": 1.0,
+  "ck_known_state_fraction_min:counter": 1.0,
+  "ck_known_state_fraction_min:data": 1.0,
+  "ck_known_state_fraction_min:tag": 1.0,
+  "ck_known_state_fraction_min:valid": 1.0,
+  "ck_opensta_model:all": 0.03636670480136673,
+  "ck_opensta_model:control": 0.0012622620827344318,
+  "ck_opensta_model:counter": 0.00125798764375629,
+  "ck_opensta_model:data": 0.02905648549269537,
+  "ck_opensta_model:tag": 0.00456366434170593,
+  "ck_opensta_model:valid": 0.00022630524047512947,
+  "flops_q_changed_in_window:all": 556,
+  "flops_q_changed_in_window:control": 334,
+  "flops_q_changed_in_window:counter": 85,
+  "flops_q_changed_in_window:data": 124,
+  "flops_q_changed_in_window:tag": 12,
+  "flops_q_changed_in_window:valid": 1,
+  "q_mix_factor_sum:all": 10173.779301500002,
+  "q_mix_factor_sum:control": 354.07777212,
+  "q_mix_factor_sum:counter": 351.7266096199999,
+  "q_mix_factor_sum:data": 8130.043821259992,
+  "q_mix_factor_sum:tag": 1274.4139489800002,
+  "q_mix_factor_sum:valid": 63.51714952
+ },
+ "slots_with_q_change_in_window": {
+  "data_store": 1,
+  "freq_cnt": 21,
+  "tag_store": 1
+ }
+}

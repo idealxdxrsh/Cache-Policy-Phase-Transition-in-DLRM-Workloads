@@ -1,0 +1,45 @@
+JobID|JobName|State|Elapsed|MaxRSS|ExitCode|NodeList
+418619|p8_stream|COMPLETED|00:00:44||0:0|node17
+418619.batch|batch|COMPLETED|00:00:44|1033536K|0:0|node17
+418619.extern|extern|COMPLETED|00:00:44||0:0|node17
+418620_1|p8_gls256|COMPLETED|01:08:05||0:0|node17
+418620_1.batch|batch|COMPLETED|01:08:05|2351880K|0:0|node17
+418620_1.extern|extern|COMPLETED|01:08:05||0:0|node17
+418620_2|p8_gls256|COMPLETED|01:06:35||0:0|node17
+418620_2.batch|batch|COMPLETED|01:06:35|2371020K|0:0|node17
+418620_2.extern|extern|COMPLETED|01:06:35||0:0|node17
+418620_3|p8_gls256|COMPLETED|01:06:46||0:0|node17
+418620_3.batch|batch|COMPLETED|01:06:46|2333688K|0:0|node17
+418620_3.extern|extern|COMPLETED|01:06:46||0:0|node17
+418620_4|p8_gls256|COMPLETED|01:06:13||0:0|node17
+418620_4.batch|batch|COMPLETED|01:06:13|2350280K|0:0|node17
+418620_4.extern|extern|COMPLETED|01:06:13||0:0|node17
+418620_5|p8_gls256|COMPLETED|01:05:32||0:0|node17
+418620_5.batch|batch|COMPLETED|01:05:32|2333412K|0:0|node17
+418620_5.extern|extern|COMPLETED|01:05:32||0:0|node17
+418620_6|p8_gls256|COMPLETED|01:06:32||0:0|node17
+418620_6.batch|batch|COMPLETED|01:06:32|2340724K|0:0|node17
+418620_6.extern|extern|COMPLETED|01:06:32||0:0|node17
+418620_7|p8_gls256|COMPLETED|00:00:20||0:0|node17
+418620_7.batch|batch|COMPLETED|00:00:20|22248K|0:0|node17
+418620_7.extern|extern|COMPLETED|00:00:20||0:0|node17
+418620_8|p8_gls256|COMPLETED|00:00:26||0:0|node17
+418620_8.batch|batch|COMPLETED|00:00:26|26620K|0:0|node17
+418620_8.extern|extern|COMPLETED|00:00:26||0:0|node17
+418620_9|p8_gls256|COMPLETED|00:00:18||0:0|node17
+418620_9.batch|batch|COMPLETED|00:00:18|26332K|0:0|node17
+418620_9.extern|extern|COMPLETED|00:00:18||0:0|node17
+418620_10|p8_gls256|COMPLETED|00:00:25||0:0|node17
+418620_10.batch|batch|COMPLETED|00:00:25|23988K|0:0|node17
+418620_10.extern|extern|COMPLETED|00:00:25||0:0|node17
+2cce193bb1106c3d91e3488c112967bf78277a02740b59694f547c4ff6399fe0  stimulus/row0.hex
+a34fd5a28792bf0d94fba94c2ee29d1d37189ef194763f4c8924f1d59729e751  stimulus/row0.json
+9b3b547cfb697fa114fdb45745a731578af09e8b06d0cae86de7df5ebc94daa9  stimulus/row1M.hex
+55cfab8466c520eff6a1e19528d1107a9d79c2d367af57801c617c46e7a14908  stimulus/row1M.json
+be4c47cd5e1ce2c5dcb36dfbefcf5d846d8e19a91bc2126573ea903c500fb09a  stimulus/stream.json
+2dec757dde88427843ea6f7cbe6d46bbdb6747e1a46a00d734123de5c12da035  results/work/d256_m0_criteo_row0_gl_w100000_n10000/act.vcd.gz
+23cddcdd5d73c48e97df9082ebd031584f7f979775433ed00236a793ddc478ba  results/work/d256_m0_criteo_row1M_gl_w100000_n10000/act.vcd.gz
+35dd6368ca3a1070eb78d6a9848887d33156237e0155b6d8c5d5cc39025b53a4  results/work/d256_m0_random_gl_w100000_n10000/act.vcd.gz
+b9d262d2305f32592cf29de6ed14c796152f9842b1a1b0fb721b95dee3223519  results/work/d256_m1_criteo_row0_gl_w100000_n10000/act.vcd.gz
+1e67e35ce0b237378f94a808d37d53d7966a91e49e15b1a10c0df89d0639c55f  results/work/d256_m1_criteo_row1M_gl_w100000_n10000/act.vcd.gz
+7064588a2c409670ec3c55e78efa1298fd8c7bdebe6ed96970d1aba571dd5e5a  results/work/d256_m1_random_gl_w100000_n10000/act.vcd.gz

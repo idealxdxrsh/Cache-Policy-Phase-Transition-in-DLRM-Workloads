@@ -1,0 +1,11 @@
+{
+ "rows": 2000000,
+ "accesses": 46128690,
+ "unique_keys": 2293344,
+ "p3b_accesses": 46128690,
+ "p3b_unique_keys": 2293344,
+ "split_row": 1000000,
+ "first_access_of_split_row": 22988023,
+ "requests_per_slice": 200000,
+ "matches_p3b": true
+}

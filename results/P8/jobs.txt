@@ -17,3 +17,10 @@ Basis for the 4 h limit (measured locally, results/P8/sim/, results/P8/power/*_t
   took 1:37:59-1:40:56 for 200,000 cycles (29.4-30.3 ms per cycle, netlist + RTL; results/P5f_gls/SUMMARY.md).
   With the depth-16 window factor x1.75 on the 10,000 recorded cycles: 58-59 min of simulation; with x1.75 on all
   110,000 cycles: 94-97 min; plus compile 9:40-13:09 (P5f). Both are under 3 h, so the 4 h limit is kept.
+
+Outcome (sacct, results/P8/cluster/sacct_and_sha256.txt): 418619 COMPLETED 0:0 in 00:00:44 (MaxRSS 1033536K);
+418620 tasks 1-10 COMPLETED 0:0: gate-level tasks 1-6 01:05:32-01:08:05 (MaxRSS 2333412K-2371020K), RTL tasks 7-10
+00:00:18-00:00:26. Copied back: stimulus (row0.hex, row1M.hex 1,200,000 bytes each; .hex not committed, sha256 in the
+sacct file), sim logs, VCDs (gzip 165,992,571-242,445,674 bytes; sha256 verified after copy, 11/11 OK).
+Local OpenSTA on the depth-256 VCDs (ulimit -v 8 GB, one at a time): 0:50.23-1:08.94, 983316-986700 kB
+(results/P8/power/d256_*_time.txt), against an estimate of about 70 s and under 1 GB.

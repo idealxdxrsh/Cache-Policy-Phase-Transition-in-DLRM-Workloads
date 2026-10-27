@@ -1,129 +1,234 @@
-"""Build results/P8/RESULTS.md from the P8 OpenSTA power reports and simulation logs only.
+"""Build results/P8/RESULTS.md from the P8 result files only.
 
 Usage: python -I tools/p8_results.py [results/P8]
-Reads power/<run>.txt (report_power, -digits 6), power/<run>_time.txt, sim/<run>.txt (line `p8_power ...`, vcd
-sizes, run times) and stimulus/*.json when present. Dynamic energy per cycle = (internal + switching power) x clock
-period (2 ns at 500 MHz); leakage power is reported separately. Clock group: 0 W because the clock is ideal (no clock
-tree cells); flip-flop clock-pin internal power is in Sequential.
+Reads power/<run>.txt (OpenSTA report_power), sim/<run>.txt (p8_power line, VCD sizes, run times), breakdown/<run>.json
+(tools/p8_breakdown.py), compare/<config>.json (tools/p8_compare.py), stimulus/*.json (tools/p8_stream.py), bias/*.json
+(tools/p8_bias_check.py) and results/P3b/rows_2000000/shared_cache_results.json.
+Power is given as components, never as one merged total:
+  clock-pin energy of the flip-flops: recalculated (time-weighted state occupancy, tools/p8_breakdown.py), because
+      OpenSTA's state weighting is biased for it (ANALYSIS.md);
+  flip-flop internal energy other than the clock pin, combinational internal energy, switching energy (all cells):
+      as OpenSTA reports them;
+  leakage power: as OpenSTA reports it.
+Energy per cycle = power x 2 ns (500 MHz).
 """
 import json
 import re
 import sys
 from pathlib import Path
 
-PERIOD = 2e-9
-LABEL = ('NanGate45, typical corner, pre-layout, no clock tree, no extracted parasitics, flip-flop storage, '
-         'activity from {method} over {n} cycles')
+PJ = 2000.0     # W -> pJ per 2 ns cycle
+P3B = Path('results/P3b/rows_2000000/shared_cache_results.json')
 CAVEAT = ('500 MHz netlists (P5e flow). Depths 16 and 64 meet 500 MHz; depth 256 misses it by 0.0357 ns (mode 0) and '
           '0.0015 ns (mode 1), inside the flow noise, so 500 MHz at depth 256 is not demonstrated (results/P5e/SUMMARY.md).')
-FILL = ('Fill data: random ($random, seed 1); real embedding vectors are not random, so data-path switching here is not '
-        'that of real embeddings.')
-GROUPS = ('Sequential', 'Combinational', 'Clock', 'Total')
+LABEL = ('NanGate45, typical corner, pre-layout, no clock tree, flip-flop storage, random fill data, activity over {n} '
+         'cycles from {src}')
 
 
-def report(path):
+def groups(path):
     t = path.read_text()
     g = {}
-    for name in GROUPS:
+    for name in ('Sequential', 'Combinational', 'Total'):
         m = re.search(rf'^{name}\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)', t, re.M)
-        g[name] = [float(x) for x in m.groups()] if m else None
+        g[name] = [float(x) for x in m.groups()]
     ann = re.search(r'^vcd\s+(\d+)', t, re.M)
     un = re.search(r'^unannotated\s+(\d+)', t, re.M)
     return g, (int(ann.group(1)) if ann else None), (int(un.group(1)) if un else None)
 
 
-def sim(path):
-    if not path.exists():
-        return None, {}
+def simfile(path):
     t = path.read_text()
     line = next((l for l in t.splitlines() if l.startswith('p8_power')), None)
-    kv = {k: int(v) for k, v in re.findall(r'(\w+)=(-?\d+)', line)} if line else None
+    kv = {k: int(v) for k, v in re.findall(r'(\w+)=(-?\d+)', line)} if line else {}
     vcd = re.search(r'vcd: raw_bytes (\d+) gzip_bytes (\d+)', t)
     run = re.search(r'^run: (\S+) (\d+)', t, re.M)
-    extra = {'vcd_raw': int(vcd.group(1)) if vcd else None, 'vcd_gz': int(vcd.group(2)) if vcd else None,
-             'run_wall': run.group(1) if run else None, 'run_rss_kb': int(run.group(2)) if run else None}
-    return kv, extra
+    comp = re.search(r'^compile: (\S+) (\d+)', t, re.M)
+    return kv, {'vcd_raw': int(vcd.group(1)) if vcd else None, 'vcd_gz': int(vcd.group(2)) if vcd else None,
+                'run_wall': run.group(1) if run else None, 'run_rss_kb': int(run.group(2)) if run else None,
+                'compile_wall': comp.group(1) if comp else None}
 
 
-def fmt_mw(x):
-    return f'{x * 1e3:.4f}'
+def parse_run(run):
+    m = re.match(r'd(\d+)_m(\d)_(random|criteo)(?:_(row0|row1M))?_(gl|rtl|glnovcd)_w(\d+)_n(\d+)(?:_s(\d+))?$', run)
+    d, mode, stim, sl, model, w, n, s = m.groups()
+    return {'d': int(d), 'm': int(mode), 'stim': stim, 'slice': sl, 'model': model, 'warm': int(w), 'win': int(n),
+            'seed': int(s) if s else 1}
 
 
-def table(rows):
-    out = ['| depth | mode | stimulus | Seq int/sw/leak mW | Comb int/sw/leak mW | Clock mW | total mW | '
-           'dynamic energy per cycle pJ | leakage mW | hit rate (window) | annotated pins (unannotated) |',
-           '|---|---|---|---|---|---|---|---|---|---|---|']
-    for r in rows:
-        g = r['g']
-        s, c, k, t = g['Sequential'], g['Combinational'], g['Clock'], g['Total']
-        dyn = (t[0] + t[1]) * PERIOD
-        hr = (f"{r['sim']['win_hits']}/{r['sim']['win_responses']} = "
-              f"{r['sim']['win_hits'] / r['sim']['win_responses'] * 100:.1f}%") if r.get('sim') else 'n/a'
-        ann = f"{r['ann']} ({r['un']})" if r['ann'] is not None else 'vectorless'
-        out.append(f"| {r['d']} | {r['m']} | {r['stim']} | {fmt_mw(s[0])}/{fmt_mw(s[1])}/{fmt_mw(s[2])} | "
-                   f"{fmt_mw(c[0])}/{fmt_mw(c[1])}/{fmt_mw(c[2])} | {fmt_mw(k[3])} | {fmt_mw(t[3])} | "
-                   f"{dyn * 1e12:.3f} | {fmt_mw(t[2])} | {hr} | {ann} |")
-    return out
+def source(p):
+    if p['stim'] == 'random':
+        return f"the random stimulus (P5f generator, seed {p['seed']})"
+    return f"Criteo slice {p['slice']}"
+
+
+def f3(x):
+    return f'{x:.3f}'
 
 
 def main():
     root = Path(sys.argv[1] if len(sys.argv) > 1 else 'results/P8')
-    out = ['# P8 results: power of rtl-v2-final (P5e-flow 500 MHz netlists) at 500 MHz', '',
-           f'{CAVEAT}', '', f'{FILL}', '',
-           'Clock group = 0 W: the clock is ideal (no clock-tree cells); the flip-flops\' clock-pin internal power is in '
-           'Sequential. Power in mW from OpenSTA `report_power` (`synthesis/p8/power.tcl`); dynamic energy per cycle = '
-           '(internal + switching) x 2 ns. Generated by `tools/p8_results.py`.', '']
-    vec = []
+    o = ['# P8 results: power components of rtl-v2-final (P5e-flow 500 MHz netlists) at 500 MHz, and slice hit counts',
+         '', CAVEAT, '',
+         'Label of every power and energy number: "' + LABEL.format(n='<N>', src='<slice>') + '"; N and the slice are '
+         'given per row. Fill data is random ($random); real embedding vectors are not random, so data-path switching '
+         'here is not that of real embeddings. No clock-tree cells (ideal clock): the clock-tree power of a layout is '
+         'not included. Zero-delay simulation: no glitches. Generated by `tools/p8_results.py` from the files named in '
+         'its header; the tests behind the component choices are in `results/P8/ANALYSIS.md`.', '']
+    # ---- vector-based components
+    runs = sorted(p.stem for p in (root / 'breakdown').glob('*.json'))
+    rows = []
+    for run in runs:
+        p = parse_run(run)
+        b = json.loads((root / 'breakdown' / f'{run}.json').read_text())
+        g, ann, un = groups(root / 'power' / f'{run}.txt')
+        c = b['clock_pin_model_W']
+        rows.append({'run': run, 'p': p, 'b': b, 'g': g, 'nff': b['flip_flops'],
+                     'ck_exact': c['ck_exact_state:all'], 'ck_osta': c['ck_opensta_model:all'],
+                     'ff_int': b['power_W']['ff:all']['internal']})
+    rows.sort(key=lambda r: (r['p']['d'], r['p']['stim'] != 'random', r['p']['slice'] or '', r['p']['seed'],
+                             r['p']['m']))
+    o += ['## 1. Power components from gate-level activity (pJ per cycle unless marked)', '',
+          'Columns: (a) clock-pin internal energy per flip-flop per cycle, fJ, and (b) for all flip-flops, pJ: **my '
+          'recalculation** from the liberty CK-pin tables weighted by the time each flip-flop spent in each (D, Q) state '
+          'in the recorded window (`tools/p8_breakdown.py`), cross-checked against clock-only OpenSTA runs and against '
+          'OpenSTA on every flip-flop that does not toggle (ANALYSIS.md section 2); (c) the same term with OpenSTA\'s '
+          'own state weighting, shown only for reference (biased, not used); (d) flip-flop internal energy other than '
+          'the clock pin, (e) combinational internal energy, (f) switching energy of all cells, as OpenSTA reports '
+          'them; (g) leakage power in mW as OpenSTA reports it. No column is a total.', '',
+          '| depth | mode | activity source | recorded cycles | (a) CK fJ per flip-flop per cycle | (b) CK all '
+          'flip-flops | (c) CK, OpenSTA weighting (not used) | (d) flip-flop other internal | (e) combinational internal '
+          '| (f) switching | (g) leakage mW |', '|---|---|---|---|---|---|---|---|---|---|---|']
+    for r in rows:
+        p, g = r['p'], r['g']
+        o.append(f"| {p['d']} | {p['m']} | {source(p)} | {p['win']:,} | "
+                 f"{r['ck_exact'] * 2e-9 / r['nff'] * 1e15:.4f} | {f3(r['ck_exact'] * PJ)} | {f3(r['ck_osta'] * PJ)} | "
+                 f"{f3((r['ff_int'] - r['ck_osta']) * PJ)} | {f3(g['Combinational'][0] * PJ)} | "
+                 f"{f3(g['Total'][1] * PJ)} | {g['Total'][2] * 1e3:.4f} |")
+    o += ['', 'Row label: "' + LABEL.format(n='10,000', src='<activity source of the row>') + '".', '']
+    # ---- bias statement per component
+    bias = sorted((root / 'bias').glob('*.json')) if (root / 'bias').exists() else []
+    if bias:
+        bj = json.loads(bias[0].read_text())
+        pw = bj['power_W']
+
+        def pct(a, b):
+            return f'{(b - a) / a * 100:+.2f}%'
+        o += ['### Can OpenSTA\'s state-probability weighting affect each component? '
+              f'(test on `{bias[0].stem}`, `results/P8/bias/{bias[0].name}`)', '',
+              '| component | how OpenSTA weights it | test: OpenSTA vs recomputed from the activity file | verdict |',
+              '|---|---|---|---|',
+              f"| clock-pin internal (a, b) | product of D, Q, QN, RN duties for each `when` state | per-event "
+              f"recomputation {pw['ff_ck_recomputed'] * 1e3:.4f} mW vs OpenSTA {pw['ff_ck_osta_debug'] * 1e3:.4f} mW "
+              f"({pct(pw['ff_ck_osta_debug'], pw['ff_ck_recomputed'])}) | biased: replaced by the recalculation |",
+              f"| flip-flop other internal (d): D pin | `when` duties (CK, Q, QN, RN) | "
+              f"{pw['ff_in_osta_debug'] * 1e3:.4f} vs recomputed {pw['ff_in_recomputed'] * 1e3:.4f} mW | affected, but "
+              f"small: under {max(pw['ff_in_osta_debug'], pw['ff_in_recomputed']) / pw['ff_ck_recomputed'] * 100:.1f}% "
+              'of the clock-pin term; zero-delay timing decides the CK state at a D change |',
+              f"| flip-flop other internal (d): Q, QN outputs | output toggle rate x arc energies; only the split "
+              f"between arcs uses duties | {pw['ff_out_osta_debug'] * 1e3:.4f} vs {pw['ff_out_recomputed'] * 1e3:.4f} mW "
+              f"({pct(pw['ff_out_osta_debug'], pw['ff_out_recomputed'])}) | not materially affected |",
+              f"| combinational internal (e) | output toggle rate x arc energies; split between arcs from "
+              f"independent sensitization duties | {pw['comb_out_osta_debug'] * 1e3:.4f} vs "
+              f"{pw['comb_out_recomputed'] * 1e3:.4f} mW ({pct(pw['comb_out_osta_debug'], pw['comb_out_recomputed'])}; "
+              f"{bj['output_toggles_without_input_change_same_step']} output toggles kept OpenSTA weights) | affected "
+              'by a few percent at most in this test |',
+              f"| switching (f) | 0.5 C V^2 x toggle rate; no duty term | OpenSTA density equals the activity file's "
+              f"toggle rate within {bj['switching_density_vs_vcd_max_rel_dev'] * 100:.2f}% (3-digit debug rounding) on "
+              f"{bj['switching_density_vs_vcd_pins']} output pins, none beyond 1% | not affected |",
+              f"| leakage (g) | per-state leakage x independent duties, remainder at the cell's average leakage | "
+              f"flip-flops {pw['ff_leakage_osta'] * 1e3:.5f} vs {pw['ff_leakage_recomputed'] * 1e3:.5f} mW "
+              f"({pct(pw['ff_leakage_osta'], pw['ff_leakage_recomputed'])}); combinational "
+              f"{pw['comb_leakage_osta'] * 1e3:.5f} vs {pw['comb_leakage_recomputed'] * 1e3:.5f} mW "
+              f"({pct(pw['comb_leakage_osta'], pw['comb_leakage_recomputed'])}) | affected in principle, "
+              'negligible in this test |', '',
+              'The test ran on one netlist and window only; the recomputation keeps OpenSTA\'s per-arc energies and '
+              'replaces only the probability weights (ANALYSIS.md section 3).', '']
+    # ---- vectorless
+    o += ['## 2. Vectorless (OpenSTA default activity), components as OpenSTA reports them', '',
+          'Label: "NanGate45, typical corner, pre-layout, no clock tree, flip-flop storage, activity from OpenSTA\'s '
+          'vectorless default (0.1 transitions per cycle, duty 0.5 on inputs except rst_n, held inactive), no '
+          'simulation" (no fill data is involved). The flip-flop clock-pin term here is under the same biased state weighting and '
+          'is not recalculated (there are no simulated states).', '',
+          '| depth | mode | Sequential internal pJ | Sequential switching pJ | Combinational internal pJ | Combinational '
+          'switching pJ | leakage mW |', '|---|---|---|---|---|---|---|']
     for d in (16, 64, 256):
         for m in (0, 1):
-            p = root / 'power' / f'd{d}_m{m}_vectorless.txt'
-            if p.exists():
-                g, a, u = report(p)
-                vec.append({'d': d, 'm': m, 'stim': 'none', 'g': g, 'ann': a, 'un': u})
-    out += ['## (a) Vectorless', '',
-            'Label: ' + LABEL.format(method='vectorless (OpenSTA default 0.1 transitions per cycle, duty 0.5, on all '
-                                            'inputs except rst_n, held inactive)', n='n/a (no simulation)'), '']
-    out += table(vec)
-    runs = sorted(p.stem for p in (root / 'power').glob('d*_gl_w*_n*.txt') if not p.stem.endswith('_time'))
-    vb = []
-    for run in runs:
-        d, m = (int(x) for x in re.match(r'd(\d+)_m(\d)', run).groups())
-        stim = re.match(r'd\d+_m\d_(\w+?)_gl_', run).group(1)
-        g, a, u = report(root / 'power' / f'{run}.txt')
-        kv, extra = sim(root / 'sim' / f'{run}.txt')
-        vb.append({'d': d, 'm': m, 'stim': stim, 'g': g, 'ann': a, 'un': u, 'sim': kv, 'extra': extra, 'run': run})
-    if vb:
-        n = sorted({r['sim']['win'] for r in vb if r['sim']})
-        out += ['', '## (b) Vector-based (zero-delay gate-level simulation, VCD of the recorded window)', '',
-                'Label: ' + LABEL.format(method='zero-delay gate-level simulation (Icarus, Yosys-generated cell models '
-                                                'from the liberty file), VCD of the recorded window',
-                                         n=', '.join(f'{x:,}' for x in n)), '',
-                'Zero delay: no glitches, so combinational switching and internal power are lower bounds for this '
-                'activity. Hit rate = hits / responses in the recorded window; a slice\'s window hit rate is not a '
-                'steady-state value.', '',
-                '**Caveat (results/P8/ANALYSIS.md):** OpenSTA weights the flip-flops\' clock-pin internal power by state '
-                'probabilities that treat Q and QN as independent, so Sequential internal power here falls for every '
-                'flip-flop that changes state in the window. The depth-64 mode-0 vs mode-1 gap (one slot rewritten vs 47) '
-                'is that artifact, not a mode effect; ANALYSIS.md gives exact-state recomputed values. Runs with a suffix '
-                '_s2/_s3 use stimulus seeds 2 and 3 (no suffix: seed 1).', '']
-        out += table(vb)
-        out += ['', '### Runs', '', '| run | warm-up cycles | recorded cycles | responses (all) | hits (all) | '
-                'window responses | window hits | requests (trace) | window requests (first-last index) | VCD raw / gzip MB | '
-                'sim wall | sim peak RSS kB |', '|---|---|---|---|---|---|---|---|---|---|---|---|']
-        for r in vb:
-            k, e = r['sim'] or {}, r['extra']
-            win_idx = f"{k.get('win_requests')} ({k.get('win_first_req')}-{k.get('win_last_req')})" \
-                if k.get('stim') == 1 else 'n/a'
-            out.append(f"| {r['run']} | {k.get('warm')} | {k.get('win')} | {k.get('responses')} | {k.get('hits')} | "
-                       f"{k.get('win_responses')} | {k.get('win_hits')} | "
-                       f"{k.get('requests') if k.get('stim') == 1 else 'n/a'} | {win_idx} | "
-                       f"{e['vcd_raw'] / 1e6:.1f} / {e['vcd_gz'] / 1e6:.1f} | {e['run_wall']} | {e['run_rss_kb']} |")
-    stim = sorted((root / 'stimulus').glob('*.json')) if (root / 'stimulus').exists() else []
-    if stim:
-        out += ['', '## Criteo slices (tools/p8_stream.py)', '']
-        for p in stim:
-            out.append(f'- `{p.name}`: `{p.read_text().strip()}`'.replace('\n', ' '))
-    (root / 'RESULTS.md').write_text('\n'.join(out) + '\n')
+            pth = root / 'power' / f'd{d}_m{m}_vectorless.txt'
+            if pth.exists():
+                g, _, _ = groups(pth)
+                o.append(f"| {d} | {m} | {f3(g['Sequential'][0] * PJ)} | {f3(g['Sequential'][1] * PJ)} | "
+                         f"{f3(g['Combinational'][0] * PJ)} | {f3(g['Combinational'][1] * PJ)} | "
+                         f"{g['Total'][2] * 1e3:.4f} |")
+    # ---- slices
+    p3j = json.loads(P3B.read_text())
+    p3 = p3j['results']['256']['LFU (gem5 LFURP — reset on eviction)']
+    o += ['', '## 3. Criteo slices: position, requests, hit rate, and trace-simulator hit counts on the same requests',
+          '']
+    for sj in sorted((root / 'stimulus').glob('row*.json')):
+        s = json.loads(sj.read_text())
+        o.append(f"- `{s['slice']}`: starts at row {s['start_row']:,} (access {s['start_access']:,} of the 2M-row "
+                 f"shared-cache stream); {s['requests']:,} accesses in the slice file, {s['distinct_keys']:,} distinct "
+                 f"keys, numbered in order of first appearance (`results/P8/stimulus/{sj.name}`).")
+    st = json.loads((root / 'stimulus' / 'stream.json').read_text())
+    same = st['accesses'] == p3j['meta']['accesses'] and st['unique_keys'] == p3j['meta']['unique_keys']
+    o += [f"- Stream totals: {st['accesses']:,} accesses, {st['unique_keys']:,} distinct keys in {st['rows']:,} rows; "
+          f"P3b: {p3j['meta']['accesses']:,} accesses and {p3j['meta']['unique_keys']:,} keys "
+          f"({'match' if same else 'MISMATCH'}; `results/P8/stimulus/stream.json`, `{P3B}` meta).", '',
+          'Each run replays the slice from its start (cold cache) until the cycle budget ends; R = requests completed. '
+          'Window = requests issued in the recorded cycles (indices first-last). Hit rate = hits / requests. Trace '
+          'simulator (`trace_sim/run_trace_sim.py` LFUResetCache and LRUCache, unchanged) at 256 entries, cold start, '
+          'on exactly the first R requests; its hits are counted over all R and over the window\'s requests. Known '
+          'RTL differences: on equal counts the RTL evicts the lowest slot index, the simulator the entry that entered '
+          'earliest; RTL counters saturate at 63, the simulator\'s at 255; RTL mode 1 keeps the slot\'s count for a new '
+          f"tag. Reference: P3b shared cache, LFU reset on eviction, 256 entries, whole 2M-row stream: "
+          f"{p3['hit_rate']:.2f}% (`{P3B}`). A slice's hit rate is not a steady-state value.", '',
+          '| depth | mode | slice | R | distinct keys in R | window requests (indices) | RTL hit rate, window | RTL '
+          'hits, all R | netlist = RTL | sim LFU-reset 256 hits, all / window | sim LRU 256 hits, all / window | RTL '
+          'minus sim LFU-reset, all / window | RTL minus sim LRU, all / window | sim LFU-reset / LRU at the RTL depth, '
+          f"all R | window hit rate minus {p3['hit_rate']:.2f}% |", '|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|']
+    gaps = {}
+    for cj in sorted((root / 'compare').glob('*.json'), key=lambda x: (int(re.match(r'd(\d+)', x.stem).group(1)),
+                                                                      x.stem)):
+        c = json.loads(cj.read_text())
+        wr = c['rtl_winreq_hits'] / c['window_requests'] * 100
+        gaps.setdefault(c['depth'], []).append(wr - p3['hit_rate'])
+        o.append(f"| {c['depth']} | {c['mode']} | {c['slice']} | {c['requests']:,} | {c['distinct_keys_replayed']:,} | "
+                 f"{c['window_requests']:,} ({c['window_first_req']:,}-{c['window_last_req']:,}) | "
+                 f"{c['rtl_winreq_hits']:,}/{c['window_requests']:,} = {wr:.1f}% | {c['rtl_hits']:,} | "
+                 f"{c.get('netlist_equals_rtl', 'n/a')} | {c['sim_lfu_reset_256_hits']:,} / "
+                 f"{c['sim_lfu_reset_256_win_hits']:,} | {c['sim_lru_256_hits']:,} / {c['sim_lru_256_win_hits']:,} | "
+                 f"{c['rtl_hits'] - c['sim_lfu_reset_256_hits']:+,} / "
+                 f"{c['rtl_winreq_hits'] - c['sim_lfu_reset_256_win_hits']:+,} | "
+                 f"{c['rtl_hits'] - c['sim_lru_256_hits']:+,} / {c['rtl_winreq_hits'] - c['sim_lru_256_win_hits']:+,} | "
+                 f"{c['sim_lfu_reset_%d_hits' % c['depth']]:,} / {c['sim_lru_%d_hits' % c['depth']]:,} | "
+                 f"{wr - p3['hit_rate']:+.1f} points |")
+    o += [''] + [f"**Depth {d}: every slice window hit rate is {-max(v):.1f}-{-min(v):.1f} points below the "
+                 f"{p3['hit_rate']:.2f}% of the trace simulator's 256-entry shared cache over the whole stream"
+                 + (' (the RTL cache here is smaller than that 256-entry reference, so this is not a like-for-like comparison).**' if d < 256 else
+                    '.** The slices are short, start cold and are replayed by a different policy implementation, so '
+                    'they are not a measurement of that figure.')
+                 for d, v in sorted(gaps.items()) if all(x < 0 for x in v)]
+    o += ['', 'At depths 16 and 64 the RTL cache is smaller than the 256-entry simulator, so the 256-entry columns '
+          'compare different capacities there; the column "at the RTL depth" runs the same simulator classes with the '
+          'RTL\'s number of entries (`results/P8/compare/<config>.json`).', '']
+    # ---- runs
+    o += ['## 4. Runs', '', '| run | warm-up cycles | recorded cycles | responses (all) | hits (all) | window responses '
+          '| window hits | VCD raw / gzip MB | compile wall | sim wall | sim peak RSS kB | OpenSTA annotated pins '
+          '(unannotated) |', '|---|---|---|---|---|---|---|---|---|---|---|---|']
+    for sp in sorted((root / 'sim').glob('d*.txt')):
+        kv, ex = simfile(sp)
+        if not kv:
+            continue
+        pw = root / 'power' / sp.name
+        ann = groups(pw)[1:] if pw.exists() else (None, None)
+        vcdmb = f"{ex['vcd_raw'] / 1e6:.1f} / {ex['vcd_gz'] / 1e6:.1f}" if ex['vcd_raw'] else 'no VCD'
+        o.append(f"| {sp.stem} | {kv['warm']:,} | {kv['win']:,} | {kv['responses']:,} | {kv['hits']:,} | "
+                 f"{kv['win_responses']:,} | {kv['win_hits']:,} | {vcdmb} | {ex['compile_wall']} | {ex['run_wall']} | "
+                 f"{ex['run_rss_kb']} | {ann[0] if ann[0] is not None else 'n/a'} "
+                 f"({ann[1] if ann[1] is not None else 'n/a'}) |")
+    o += ['', 'Depth-256 runs: cluster jobs 418619 and 418620 (`results/P8/jobs.txt`, `results/P8/cluster/`); OpenSTA '
+          'locally.']
+    (root / 'RESULTS.md').write_text('\n'.join(o) + '\n')
     print(f'wrote {root / "RESULTS.md"}')
 
 

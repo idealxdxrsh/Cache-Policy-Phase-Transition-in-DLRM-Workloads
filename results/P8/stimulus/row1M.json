@@ -1,0 +1,9 @@
+{
+ "slice": "row1M",
+ "start_row": 1000000,
+ "start_access": 22988023,
+ "requests": 200000,
+ "distinct_keys": 38707,
+ "address_bits": 20,
+ "numbering": "keys numbered 0,1,2,... in order of first appearance inside the slice"
+}

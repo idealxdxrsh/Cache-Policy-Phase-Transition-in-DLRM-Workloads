@@ -1,0 +1,7 @@
+# P8 d16_m1_criteo_row0_gl_w20000_n10000: zero-delay simulation, 500 MHz clock (2 ns), gl; fill data random (seed 1; real embedding data is not random)
+netlist: /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P5f_gls/netlists/d16_m1_500MHz/netlist.v sha256 1e83b5e078801b686818b2d8185b80bc3114e088c697ef67518a0169ac050569
+iverilog: Icarus Verilog version 12.0 (stable) ()
+compile: 0:01.83 163896 
+vcd: raw_bytes 92599921 gzip_bytes 45942585
+run: 2:18.28 74968 
+p8_power depth=16 mode=1 stim=1 warm=20000 win=10000 cycles=30002 requests=5946 responses=5946 hits=774 misses=5172 win_requests=2021 win_responses=2020 win_hits=336 win_misses=1684 win_first_req=3925 win_last_req=5945 winreq_responses=2021 winreq_hits=337 t_begin_ps=40005000 t_end_ps=60005000 x_cycles=0

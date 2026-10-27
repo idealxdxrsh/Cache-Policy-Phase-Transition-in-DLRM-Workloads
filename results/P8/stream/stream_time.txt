@@ -1,0 +1,6 @@
+	Command being timed: "/home/rahulkmr/.conda/envs/rtl_sim/bin/python3 -I /scratch/rahulkmr/Adarsh/p8/code/tools/p8_stream.py /scratch/rahulkmr/Adarsh/data/criteo/extracted/train.txt /scratch/rahulkmr/Adarsh/p8/stimulus 200000"
+	User time (seconds): 41.98
+	System time (seconds): 0.56
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:43.21
+	Maximum resident set size (kbytes): 740820
+	Exit status: 0

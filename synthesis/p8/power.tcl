@@ -9,6 +9,7 @@
 # per cycle, the clock) and RN pins and rst_n (duty 1, reset inactive); set per pin because -global would override the
 # case analysis and the clock (power/Power.cc findActivity). The only switching is the clock, and
 # the Sequential internal power is the flip-flops' clock-pin internal power alone.
+# POWER_DEBUG=1: OpenSTA power debug level 2 (per-pin energies, duties, weights) on stdout during report_power.
 # INST_OUT=<file>: also write report_power -instances for every cell to that file.
 read_liberty $::env(LIB)
 read_verilog $::env(NETLIST)
@@ -36,7 +37,13 @@ if {[info exists ::env(VCD)] && $::env(VCD) ne ""} {
 } else {
   puts "ACTIVITY vectorless default"
 }
+if {[info exists ::env(POWER_DEBUG)] && $::env(POWER_DEBUG) ne ""} {
+  sta::set_debug power 2
+}
 report_power -digits 6
+if {[info exists ::env(POWER_DEBUG)] && $::env(POWER_DEBUG) ne ""} {
+  sta::set_debug power 0
+}
 if {[info exists ::env(INST_OUT)] && $::env(INST_OUT) ne ""} {
   report_power -instances [get_cells *] -digits 6 > $::env(INST_OUT)
 }

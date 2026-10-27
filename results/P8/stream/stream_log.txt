@@ -1,0 +1,3 @@
+{"slice": "row0", "start_row": 0, "start_access": 0, "requests": 200000, "distinct_keys": 39367, "address_bits": 20, "numbering": "keys numbered 0,1,2,... in order of first appearance inside the slice"}
+{"slice": "row1M", "start_row": 1000000, "start_access": 22988023, "requests": 200000, "distinct_keys": 38707, "address_bits": 20, "numbering": "keys numbered 0,1,2,... in order of first appearance inside the slice"}
+{"rows": 2000000, "accesses": 46128690, "unique_keys": 2293344, "p3b_accesses": 46128690, "p3b_unique_keys": 2293344, "split_row": 1000000, "first_access_of_split_row": 22988023, "requests_per_slice": 200000, "matches_p3b": true}

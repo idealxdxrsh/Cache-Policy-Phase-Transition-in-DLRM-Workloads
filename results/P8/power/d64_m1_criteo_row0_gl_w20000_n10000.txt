@@ -1,0 +1,22 @@
+OpenSTA 3.1.0 7b261909c1 Copyright (c) 2026, Parallax Software, Inc.
+License GPLv3: GNU GPL version 3 <http://gnu.org/licenses/gpl.html>
+
+This is free software, and you are free to change and redistribute it
+under certain conditions; type `show_copying' for details. 
+This program comes with ABSOLUTELY NO WARRANTY; for details type `show_warranty'.
+PERIOD_NS 2.0
+ACTIVITY read_vcd /home/adarsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads/results/P8/work/d64_m1_criteo_row0_gl_w20000_n10000/act.vcd.gz window_ps 40005000 60004999
+Annotated 159130 pin activities.
+vcd         159130
+unannotated     0
+Group                    Internal    Switching      Leakage        Total
+                            Power        Power        Power        Power (Watts)
+------------------------------------------------------------------------
+Sequential           3.670784e-02 4.616638e-05 9.233798e-04 3.767739e-02  93.7%
+Combinational        7.016551e-04 1.042800e-03 8.025677e-04 2.547023e-03   6.3%
+Clock                0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00   0.0%
+Macro                0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00   0.0%
+Pad                  0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00   0.0%
+------------------------------------------------------------------------
+Total                3.740941e-02 1.088963e-03 1.726286e-03 4.022466e-02 100.0%
+                            93.0%         2.7%         4.3%

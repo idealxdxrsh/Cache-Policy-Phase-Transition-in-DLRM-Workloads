@@ -1,0 +1,7 @@
+# P8 d256_m1_criteo_row0_gl_w100000_n10000: zero-delay simulation, 500 MHz clock (2 ns), gl; fill data random (seed 1; real embedding data is not random)
+netlist: /scratch/rahulkmr/Adarsh/gls/netlists/d256_m1_500MHz/netlist.v sha256 8cb31362ec9b1545d2411530dbf32b4ba3e92e35d706deba2f089a1f9ddb2927
+iverilog: Icarus Verilog version 11.0 (stable) ()
+compile: 9:27.27 2143224 
+vcd: raw_bytes 373250051 gzip_bytes 171728889
+run: 56:22.47 851048 
+p8_power depth=256 mode=1 stim=1 warm=100000 win=10000 cycles=110001 requests=28493 responses=28493 hits=13371 misses=15122 win_requests=2556 win_responses=2557 win_hits=1175 win_misses=1382 win_first_req=25937 win_last_req=28492 winreq_responses=2556 winreq_hits=1175 t_begin_ps=200005000 t_end_ps=220005000 x_cycles=0

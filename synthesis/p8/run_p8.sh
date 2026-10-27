@@ -8,7 +8,9 @@
 #        STIM random|criteo; MODEL gl (netlist, VCD + power) | rtl (RTL, counts only, no VCD) | glnovcd (timing pilot)
 #        SLICE row0|row1M (criteo only; results/P8/stimulus/<SLICE>.hex + .json from tools/p8_stream.py)
 #   bash synthesis/p8/run_p8.sh pilot                      # depth 16 mode 0 random: gl with and without VCD
-#   bash synthesis/p8/run_p8.sh inst RUN                   # per-instance power of an existing gl run (VCD in work/)
+#   bash synthesis/p8/run_p8.sh inst RUN                   # power (power/RUN.txt) + per-instance power of an existing
+#                                                          # gl run (VCD in work/); OpenSTA under ulimit -v P8_MEM_GB (8)
+#   bash synthesis/p8/run_p8.sh debug RUN                  # OpenSTA power debug log of an existing gl run (bias check)
 #   bash synthesis/p8/run_p8.sh clockonly D M              # flip-flop clock-pin power alone (all data activity 0)
 # SEED=<n> (env, default 1): stimulus and fill-data seed; runs with SEED != 1 get the suffix _s<n>.
 set -uo pipefail
@@ -83,13 +85,22 @@ vectorless)
 sim) shift; sim "$@" ;;
 inst)
     run=$2; d=$(echo "$run" | sed -E 's/^d([0-9]+)_m([0-9]).*/\1/'); m=$(echo "$run" | sed -E 's/^d([0-9]+)_m([0-9]).*/\2/')
-    vv=$R/work/$run/vvp.txt; mkdir -p "$R/inst"
-    INST_OUT=$R/work/$run/inst.txt power "$N/d${d}_m${m}_500MHz/netlist.v" "$R/work/$run/power_inst.txt" \
-        "$R/work/$run/act.vcd.gz" "$(grep -oP 't_begin_ps=\K\d+' "$vv")" "$(grep -oP 't_end_ps=\K\d+' "$vv")"
+    vv=$R/work/$run/vvp.txt
+    mkdir -p "$R/power"
+    ( ulimit -v $((${P8_MEM_GB:-8} * 1024 * 1024))
+      INST_OUT=$R/work/$run/inst.txt power "$N/d${d}_m${m}_500MHz/netlist.v" "$R/power/$run.txt" \
+        "$R/work/$run/act.vcd.gz" "$(grep -oP 't_begin_ps=\K\d+' "$vv")" "$(grep -oP 't_end_ps=\K\d+' "$vv")" )
     gzip -f "$R/work/$run/inst.txt" ;;
+debug)
+    run=$2; d=$(echo "$run" | sed -E 's/^d([0-9]+)_m([0-9]).*/\1/'); m=$(echo "$run" | sed -E 's/^d([0-9]+)_m([0-9]).*/\2/')
+    vv=$R/work/$run/vvp.txt
+    POWER_DEBUG=1 power "$N/d${d}_m${m}_500MHz/netlist.v" "$R/work/$run/power_debug.txt" \
+        "$R/work/$run/act.vcd.gz" "$(grep -oP 't_begin_ps=\K\d+' "$vv")" "$(grep -oP 't_end_ps=\K\d+' "$vv")"
+    gzip -f "$R/work/$run/power_debug.txt" ;;
 clockonly)
     mkdir -p "$R/power"
-    CLOCK_ONLY=1 power "$N/d$2_m$3_500MHz/netlist.v" "$R/power/d$2_m$3_clockonly.txt" ;;
+    ( ulimit -v $((${P8_MEM_GB:-8} * 1024 * 1024))
+      CLOCK_ONLY=1 power "$N/d$2_m$3_500MHz/netlist.v" "$R/power/d$2_m$3_clockonly.txt" ) ;;
 pilot)
     sim 16 0 random 20000 10000 glnovcd
     sim 16 0 random 20000 10000 gl ;;
