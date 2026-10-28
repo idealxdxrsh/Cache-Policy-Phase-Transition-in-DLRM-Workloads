@@ -1,0 +1,9 @@
+Loaded 2,000,000 rows, 46,128,690 accesses, 2,293,344 unique (table, id) keys in 25.4s
+Sweep finished in 108.3s
+
+  capacity |            LRU | LFU (gem5 LFUR | RTL-exact mode | Rotate-victim 
+        16 |        0.0792% |       14.2361% |        9.4309% |       14.2361%
+        64 |       24.9119% |       38.9979% |       28.3291% |       38.9979%
+       256 |       41.4010% |       47.6719% |       39.3685% |       47.6719%
+
+Saved: /scratch/rahulkmr/Adarsh/results/P11/rows_2000000/shared_cache_results.json

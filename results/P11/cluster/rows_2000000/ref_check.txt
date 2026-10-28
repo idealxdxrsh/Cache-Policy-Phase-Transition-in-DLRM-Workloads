@@ -1,0 +1,9 @@
+meta n_rows: equal
+meta accesses: equal
+meta unique_keys: equal
+meta accesses_per_table: equal
+LRU 256: P11 19097727 hits / 27030963 misses vs p3b 19097727 / 27030963; per table equal: MATCH
+LFU (gem5 LFURP — reset on eviction) 256: P11 21990422 hits / 24138268 misses vs p3b 21990422 / 24138268; per table equal: MATCH
+RTL-exact mode 0 256: P11 18160168 hits / 27968522 misses vs p9A 18160168 / 27968522; per table equal: MATCH
+Rotate-victim mode 0 256: P11 21990422 hits / 24138268 misses vs p9B 21990422 / 24138268; per table equal: MATCH
+P11_REF_CHECK PASS

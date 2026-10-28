@@ -1,0 +1,35 @@
+# P11 gls_slice d64_m1_500MHz row0: v3 netlist vs v3 RTL, functional gate-level simulation, zero delay
+job 419704_7 host node15.hpc.bits-hyderabad.ac.in cpus 4 mem 8192 MB
+iverilog: Icarus Verilog version 11.0 (stable) ()
+netlist sha256: 5210f206eb898264562c82894695d9f60c38bc6aefae1aef90695bde707e5161
+rtl sha256: 13a7a7a98583d0848705eef46b9e6c800d28e241a5d1616ccb58b06493ce747c
+trace sha256: 2cce193bb1106c3d91e3488c112967bf78277a02740b59694f547c4ff6399fe0
+== compile
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:13.05
+	Maximum resident set size (kbytes): 560004
+	Exit status: 0
+== run
+vvp exit=0
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:49:17.71
+	Maximum resident set size (kbytes): 225716
+	Exit status: 0
+cycles compared 50000, requests 11322, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 100000, requests 22624, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 150000, requests 34011, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 200000, requests 45292, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 250000, requests 56548, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 300000, requests 67823, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 350000, requests 79182, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 400000, requests 90480, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 450000, requests 101826, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 500000, requests 113141, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 550000, requests 124424, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 600000, requests 135605, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 650000, requests 146868, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 700000, requests 158093, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 750000, requests 169343, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 800000, requests 180597, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 850000, requests 191877, mismatches 0 (x_cycles netlist 0, rtl 0)
+gls_slice depth=64 mode=1 cycles=885966 requests=200000 responses=200000 hits=61252 misses=138748 gl_responses=200000 gl_hits=61252 mismatching_cycles=0 hit_flag=0 resp_valid=0 resp_data=0 fill_req=0 fill_addr=0 x_cycles_netlist=0 x_cycles_rtl=0
+GLS SLICE LOCKSTEP PASSED
+hitlog: lines 200000 sha256 40de39e1e686cccc536b0271ba772ca67da9eb7fcf3f04316bd6be7ac30c4877

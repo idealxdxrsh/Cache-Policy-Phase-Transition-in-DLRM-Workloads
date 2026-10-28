@@ -1,0 +1,22 @@
+# gold: rtl-v2-final:rtl/v2/lfu_cache_controller.v sha256 f2e5aca7aef7a69e9326a7d28618ac6f9c436fea9352f89675e9fefeb4f0d09d
+# gate: rtl/v3/lfu_cache_controller.v sha256 13a7a7a98583d0848705eef46b9e6c800d28e241a5d1616ccb58b06493ce747c
+# Yosys 0.33 (git sha1 2584903a060); CACHE_DEPTH=16 COUNTER_MODE=1; started 2026-10-29T00:35:05+05:30
+Warning: Replacing memory \data_store with list of registers. See /tmp/tmp.MW7gvDaoU0/gold.v:268
+Warning: Replacing memory \tag_store with list of registers. See /tmp/tmp.MW7gvDaoU0/gold.v:267
+Warning: Replacing memory \freq_cnt with list of registers. See /tmp/tmp.MW7gvDaoU0/gold.v:266
+Warning: Replacing memory \valid_bits with list of registers. See /tmp/tmp.MW7gvDaoU0/gold.v:265
+Warning: Replacing memory \req_addr_grp with list of registers. See /tmp/tmp.MW7gvDaoU0/gold.v:238
+Warning: Replacing memory \stageA_min with list of registers. See /tmp/tmp.MW7gvDaoU0/gold.v:193
+Warning: Replacing memory \data_store with list of registers. See /tmp/tmp.MW7gvDaoU0/gate.v:278
+Warning: Replacing memory \tag_store with list of registers. See /tmp/tmp.MW7gvDaoU0/gate.v:277
+Warning: Replacing memory \freq_cnt with list of registers. See /tmp/tmp.MW7gvDaoU0/gate.v:276
+Warning: Replacing memory \valid_bits with list of registers. See /tmp/tmp.MW7gvDaoU0/gate.v:275
+Warning: Replacing memory \req_addr_grp with list of registers. See /tmp/tmp.MW7gvDaoU0/gate.v:247
+Warning: Replacing memory \stageA_min with list of registers. See /tmp/tmp.MW7gvDaoU0/gate.v:199
+wall 246.24 s, max RSS 425368 KB
+
+14. Executing EQUIV_STATUS pass.
+Found 3520 $equiv cells in eq:
+  Of those cells 3520 are proven and 0 are unproven.
+  Equivalence successfully proven!
+depth=16 mode=1 exit=0 (0 = all proven, 124 = timeout); ended 2026-10-29T00:39:11+05:30

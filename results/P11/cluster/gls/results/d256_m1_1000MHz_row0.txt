@@ -1,0 +1,33 @@
+# P11 gls_slice d256_m1_1000MHz row0: v3 netlist vs v3 RTL, functional gate-level simulation, zero delay
+job 419705_5 host node2.hpc.bits-hyderabad.ac.in cpus 4 mem 8192 MB
+iverilog: Icarus Verilog version 11.0 (stable) ()
+netlist sha256: 6d6f050d558744d3faa73ef62eb87582743b90d231d07caeb53795cc3a8367e2
+rtl sha256: 13a7a7a98583d0848705eef46b9e6c800d28e241a5d1616ccb58b06493ce747c
+trace sha256: 2cce193bb1106c3d91e3488c112967bf78277a02740b59694f547c4ff6399fe0
+== compile
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 4:16.23
+	Maximum resident set size (kbytes): 2156248
+	Exit status: 0
+== run
+vvp exit=0
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 10:06:12.35
+	Maximum resident set size (kbytes): 830024
+	Exit status: 0
+cycles compared 50000, requests 13032, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 100000, requests 25936, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 150000, requests 38779, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 200000, requests 51652, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 250000, requests 64471, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 300000, requests 77292, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 350000, requests 90127, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 400000, requests 102896, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 450000, requests 115666, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 500000, requests 128471, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 550000, requests 141184, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 600000, requests 153891, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 650000, requests 166629, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 700000, requests 179385, mismatches 0 (x_cycles netlist 0, rtl 0)
+cycles compared 750000, requests 192094, mismatches 0 (x_cycles netlist 0, rtl 0)
+gls_slice depth=256 mode=1 cycles=780964 requests=200000 responses=200000 hits=91192 misses=108808 gl_responses=200000 gl_hits=91192 mismatching_cycles=0 hit_flag=0 resp_valid=0 resp_data=0 fill_req=0 fill_addr=0 x_cycles_netlist=0 x_cycles_rtl=0
+GLS SLICE LOCKSTEP PASSED
+hitlog: lines 200000 sha256 aeb036428c65e7ed343875b8dfdf739b8ce0d1249be2c36b954faade80a989fe
