@@ -1,1 +1,23 @@
 partA submitted 2026-10-28T02:22:16+05:30: rows=2000000 job=419663 (16G 1:00); rows=10000000 job=419664 (32G 2:00, afterok:419663)
+netlists sha256 OK
+sources sha256 OK
+gls submitted 2026-10-28T03:04:31+05:30: d16 array 419703 (8 tasks, 8G 2:00); d64 array 419704 (8G 4:00, afterok:419703); d256 array 419705 (8G 12:00, afterok:419704)
+
+# Job ids (submitted by cluster/p11_driver.sh partA / gls; no result fetched yet)
+#   419663  part A, 2M rows      (cluster/jobs/p11_shared.sbatch, N_ROWS=2000000)
+#   419664  part A, 10M rows     (afterok:419663)
+#   419703  GLS array, depth 16  (8 tasks, results/P11/gls_tasks_d16.txt)
+#   419704  GLS array, depth 64  (afterok:419703, results/P11/gls_tasks_d64.txt)
+#   419705  GLS array, depth 256 (afterok:419704, results/P11/gls_tasks_d256.txt)
+#   419713  p11_wait (sbatch --wait, afterany on the five above, `echo done` only); the local wait was stopped
+#           before it ended, so the job may still be queued on the cluster; it does nothing
+#
+# To fetch the results, run these commands from the repo root once the jobs have ended:
+#   ssh -o BatchMode=yes rahulkmr@hpc.bits-hyderabad.ac.in "sacct -X -n -j 419663,419664,419703,419704,419705 -o JobID%20,JobName%12,State%12,ExitCode,Elapsed" | tee results/P11/sacct.txt
+#   bash cluster/p11_driver.sh fetch
+#     which runs:
+#     mkdir -p results/P11/cluster
+#     rsync -a rahulkmr@hpc.bits-hyderabad.ac.in:/scratch/rahulkmr/Adarsh/results/P11/ results/P11/cluster/
+#     rsync -a --exclude work rahulkmr@hpc.bits-hyderabad.ac.in:/scratch/rahulkmr/Adarsh/p11gls/results rahulkmr@hpc.bits-hyderabad.ac.in:/scratch/rahulkmr/Adarsh/p11gls/slurm results/P11/cluster/gls/
+#   grep P11_REF_CHECK results/P11/cluster/rows_2000000/ref_check.txt results/P11/cluster/rows_10000000/ref_check.txt
+#   python3 -I tools/p11_gls_check.py      # writes results/P11/gls.json
