@@ -51,3 +51,6 @@ results/P10/rtl/*.hits.gz
 # P11 netlists (sha256 in results/P11/synth/netlists.sha256; regenerate with cluster/p11_driver.sh synth)
 results/P11/**/netlist.v
 results/P11/cluster/gls/work/
+# C2 (Cadence) run: library paths live only in cadence/local.env on C2; C2 results stay outside the repo
+cadence/local.env
+results_c2/

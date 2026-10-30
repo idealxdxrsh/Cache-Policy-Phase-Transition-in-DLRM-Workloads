@@ -1,0 +1,5 @@
+create_clock -name clk -period PERIOD_PLACEHOLDER [get_ports clk]
+set_clock_uncertainty 0.0 [get_clocks clk]
+set all_in [remove_from_collection [all_inputs] [get_ports clk]]
+set_input_delay  [expr {PERIOD_PLACEHOLDER * 0.2}] -clock clk $all_in
+set_output_delay [expr {PERIOD_PLACEHOLDER * 0.2}] -clock clk [all_outputs]
