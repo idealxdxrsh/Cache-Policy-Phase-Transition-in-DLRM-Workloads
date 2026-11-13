@@ -15,6 +15,9 @@ Table 2 = v3 - v2 at each mode, depth and period, in Decimal arithmetic on the r
 logic in both versions (RTL equivalence proven by Yosys at depth 16 and 64: results/P11/equiv/equiv_d16_m1.txt,
 equiv_d64_m1.txt), so its difference is the observed noise reference of this flow; mode 0 differs in logic (v3 adds
 the Rotate-victim tie-break).
+Table 3 = per version, mode and depth: the tightest period with WNS >= 0, the loosest period with WNS < 0, and
+Fmax = 1 / (period - WNS) of every run with WNS < 0. "non-monotonic" marks a depth where a period met timing although
+a looser one failed.
 """
 import re
 import sys
@@ -109,6 +112,26 @@ def main():
         print(f"| {mode} | {depth} | {r3['period']} | {r2['area']} | {r3['area']} | {da:+} "
               f"| {da / Decimal(r2['area']) * 100:+.2f}% | {r2['wns']} | {r3['wns']} "
               f"| {Decimal(r3['wns']) - Decimal(r2['wns']):+} | {role} |")
+
+    groups = {}
+    for r in rows:
+        groups.setdefault((r['ver'], r['mode'], r['depth']), []).append(r)
+    print('\n## Timing limit per version, mode and depth')
+    print('Tightest met = smallest period with WNS >= 0; loosest failed = largest period with WNS < 0; '
+          'Fmax = 1 / (period - WNS) of each failing run. Only the periods listed were run.\n')
+    print('| version | mode | depth | periods run (ns) | tightest met (ns) | loosest failed (ns) '
+          '| Fmax of failing runs (period ns: MHz) | note |')
+    print('|---|---|---|---|---|---|---|---|')
+    for (ver, mode, depth), rs in sorted(groups.items()):
+        rs = sorted(rs, key=lambda r: -Decimal(r['period']))
+        met = [r['period'] for r in rs if Decimal(r['wns']) >= 0]
+        fail = [r for r in rs if Decimal(r['wns']) < 0]
+        tight = met[-1] if met else 'none'
+        loose = fail[0]['period'] if fail else 'none'
+        fmaxes = '; '.join(f"{r['period']}: {r['fmax']}" for r in fail) or '-'
+        note = 'non-monotonic' if met and fail and Decimal(tight) < Decimal(loose) else ''
+        print(f"| {ver} | {mode} | {depth} | {', '.join(r['period'] for r in rs)} | {tight} | {loose} | {fmaxes} "
+              f"| {note} |")
 
 
 if __name__ == '__main__':
