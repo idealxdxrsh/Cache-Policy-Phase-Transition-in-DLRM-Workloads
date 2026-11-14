@@ -4,6 +4,11 @@ names or paths, the C2 host address or user name.
 Usage: python3 -I tools/check_no_lib_leak.py                       scan every tracked file (git ls-files); exit 1 on
                                                                    any match, or if the local pattern file is
                                                                    missing, empty or tracked
+       python3 -I tools/check_no_lib_leak.py --history                scan every commit reachable from any ref
+                                                                   (git log --all -p: all local branches, tags and
+                                                                   remote-tracking branches), patches and commit
+                                                                   messages; reports commit hash, file and pattern
+                                                                   number only; exit 1 on any match
        python3 -I tools/check_no_lib_leak.py --add-from-gates <dir>
                                                                    append the cell and library names from every
                                                                    gates.rpt (Genus report_gates) under <dir> to
@@ -60,6 +65,55 @@ def add_from_gates(top):
     print(f'{len(names)} cell and library names found, {len(new)} added to {LOCAL.relative_to(ROOT)}')
 
 
+def kinds(regs, line):
+    idx = [i for i, r in enumerate(regs) if r.search(line)]
+    return [f'generic {i + 1}' if i < len(GENERIC) else f'local {i - len(GENERIC) + 1}' for i in idx]
+
+
+def history(regs, big):
+    # one stream: a marker line per commit, its message, then its patch; text patches only (binary ones are counted)
+    cmd = ['git', 'log', '--all', '-p', '--no-color', '--no-ext-diff', '--format=@@LEAKCHECK %H%n%B%n@@LEAKCHECK-END']
+    proc = subprocess.Popen(cmd, cwd=ROOT, stdout=subprocess.PIPE)
+    found = {}                                   # (commit, file) -> {pattern: 'added' or 'removed/context'}
+    commits = binary = 0
+    commit, where, in_msg = None, None, False
+    for raw in proc.stdout:
+        line = raw.decode('utf-8', 'replace').rstrip('\n')
+        if line.startswith('@@LEAKCHECK ') and len(line) == 12 + 40:
+            commit, where, in_msg = line[12:24], '(commit message)', True
+            commits += 1
+            continue
+        if line == '@@LEAKCHECK-END':
+            in_msg, where = False, None
+            continue
+        if not in_msg:
+            if line.startswith('diff --git '):
+                where = line.split(' b/', 1)[-1]
+                continue
+            if line.startswith('+++ b/') or (line.startswith('--- a/') and where is None):
+                where = line[6:]
+            if line.startswith('Binary files '):
+                binary += 1
+                continue
+        if commit is None or not big.search(line):
+            continue
+        tag = 'added' if (not in_msg and line.startswith('+') and not line.startswith('+++')) or in_msg else \
+            'removed/context'
+        for k in kinds(regs, line):
+            slot = found.setdefault((commit, where), {})
+            if slot.get(k) != 'added':
+                slot[k] = tag
+    if proc.wait() != 0:
+        sys.exit('FAIL: git log failed')
+    for (c, w), ks in sorted(found.items()):
+        print(f"LEAK commit {c} {w} ({', '.join(f'{k}: {t}' for k, t in sorted(ks.items()))})")
+    hit_commits = len({c for c, _ in found})
+    print(f'scanned {commits} commits (patches and messages; {binary} binary patches not scanned) with {len(GENERIC)} '
+          f'generic + {len(regs) - len(GENERIC)} local patterns: '
+          f'{"FAIL, " + str(hit_commits) + " commits with matches" if found else "PASS, no matches"}')
+    sys.exit(1 if found else 0)
+
+
 def main():
     if sys.argv[1:2] == ['--add-from-gates']:
         add_from_gates(sys.argv[2])
@@ -67,6 +121,8 @@ def main():
     pats = GENERIC + local_patterns()
     regs = [re.compile(p) for p in pats]
     big = re.compile('|'.join(f'(?:{p})' for p in pats))
+    if sys.argv[1:2] == ['--history']:
+        history(regs, big)
     files = subprocess.run(['git', 'ls-files', '-z'], cwd=ROOT, capture_output=True, check=True).stdout.split(b'\0')
     hits = 0
     for name in (f.decode() for f in files if f):
@@ -76,9 +132,7 @@ def main():
         for n, line in enumerate(path.read_bytes().decode('utf-8', 'replace').splitlines(), 1):
             if not big.search(line):
                 continue
-            idx = [i for i, r in enumerate(regs) if r.search(line)]
-            kind = ', '.join(f'generic {i + 1}' if i < len(GENERIC) else f'local {i - len(GENERIC) + 1}' for i in idx)
-            print(f'LEAK {name}:{n} (pattern {kind})')
+            print(f"LEAK {name}:{n} (pattern {', '.join(kinds(regs, line))})")
             hits += 1
     print(f'scanned {sum(1 for f in files if f)} tracked files with {len(GENERIC)} generic + {len(pats) - len(GENERIC)} '
           f'local patterns: {"FAIL, " + str(hits) + " matching lines" if hits else "PASS, no matches"}')
