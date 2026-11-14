@@ -11,7 +11,7 @@
 //  - the netlist module is `GL_MODULE (the elaborated Genus name), so the netlist is compiled unchanged.
 //  - +gl_hitlog=<file>: the netlist's own hit log in the same format, written at the compare point from the
 //    netlist's outputs (index = netlist response count).
-//  - with `GLS_SDF defined, delays.sdf in the run directory is annotated onto the netlist instance.
+//  - with `GLS_SDF defined, delays.sdf in the run directory is annotated onto the netlist instance (log: sdf.log).
 // Pass = all +nreq requests replayed, 0 mismatching cycles, 0 X cycles, netlist hit and response counts equal to
 // the RTL's.
 `timescale 1ps / 1ps
@@ -39,7 +39,7 @@ lfu_cache_controller #(.CACHE_DEPTH(CACHE_DEPTH), .COUNTER_MODE(COUNTER_MODE)) r
     .resp_valid(rv_g), .resp_data(rd_g), .hit_flag(hf_g), .fill_req(fr_g), .fill_addr(fa_g),
     .fill_valid(fill_valid), .fill_data(fill_data));
 `ifdef GLS_SDF
-initial $sdf_annotate("delays.sdf", gl);
+initial $sdf_annotate("delays.sdf", gl, , "sdf.log");
 `endif
 integer cyc = 0, seed = SEED, d, k = 0, nreq = 0;
 integer m_hf = 0, m_rv = 0, m_rd = 0, m_fr = 0, m_fa = 0, mism = 0, x_g = 0, x_r = 0;

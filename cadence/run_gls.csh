@@ -1,10 +1,11 @@
 #!/bin/csh -f
 # P13 gate-level simulation on C2 with xrun.
-# usage: ./run_gls.csh <run> <row0|row1M> <zero|sdf> [nreq]
+# usage: ./run_gls.csh <run> <row0|row1M> <zero|sdf> [nreq [sdf_file]]
 #   <run>: a results folder, e.g. v3_m0_d256_p0.8_nomerge; version, mode and depth are read from its name.
 #   zero: no SDF, specify blocks ignored, timing checks off, zero gate delays; inputs driven at half period (P11).
-#   sdf:  results/<run>/delays.sdf annotated, timing checks on; inputs driven 0.2 x period after the rising edge
-#         (the SDC input delay); timing violations counted in the xrun log.
+#   sdf:  results/<run>/<sdf_file> (default delays.sdf) annotated, timing checks on; inputs driven 0.2 x period
+#         after the rising edge (the SDC input delay); timing violations counted in the xrun log; SDF log sdf.log
+#         (-sdf_verbose) and annotation statistics sdfstats.txt in the run directory.
 # Clock period 0.8 ns in both modes (PERIOD_PS = 800, timescale 1ps). Compiles the netlist unchanged, the three main
 # cell models (globs GLS_*_V_GLOB in $W/local.env, on C2 only), the run's RTL and synthesis/p13/tb_gls_c2.sv.
 # Output: $W/p13/runs/<run>_<slice>_<mode>[_n<nreq>]/ with xrun.log, hits_rtl.txt, hits_gl.txt, summary.txt.
@@ -26,13 +27,18 @@ if ($#argv >= 4) then
     set NREQ = $4
     set TAG = ${TAG}_n$NREQ
 endif
+set SDFN = delays.sdf
+if ($#argv >= 5) then
+    set SDFN = $5
+    set TAG = ${TAG}_$SDFN:r
+endif
 set PERIOD_PS = 800
 if ($GMODE == zero) then
     set IN_PS = 400
     set OPTS = (-nospecify -notimingchecks -delay_mode zero)
 else if ($GMODE == sdf) then
     set IN_PS = 160
-    set OPTS = (-define GLS_SDF)
+    set OPTS = (-define GLS_SDF -sdf_verbose -sdfstats sdfstats.txt)
 else
     echo "mode must be zero or sdf"
     exit 1
@@ -40,7 +46,7 @@ endif
 set OUT = $W/p13/runs/$TAG
 mkdir -p $OUT
 cd $OUT
-if ($GMODE == sdf) ln -sf $W/results/$RUN/delays.sdf delays.sdf
+if ($GMODE == sdf) ln -sf $W/results/$RUN/$SDFN delays.sdf
 set CORE_V = `ls $GLS_CORE_V_GLOB`
 set CLK_V = `ls $GLS_CLK_V_GLOB`
 set PR_V = `ls $GLS_PR_V_GLOB`
@@ -68,6 +74,12 @@ echo "trace $SLICE sha256 `sha256sum < $TRACE | cut -c1-64`, requests replayed $
 echo "xrun exit=$RC wall_s=$WALL" >> summary.txt
 grep -E '^gls_c2 |LOCKSTEP' xrun.log >> summary.txt
 echo "reference ${VER}_d${DEPTH}_m${MODE}_$SLICE (first $NREQ lines): hits_rtl lines `wc -l < hits_rtl.txt` differing $DR; hits_gl lines `wc -l < hits_gl.txt` differing $DG" >> summary.txt
-if ($GMODE == sdf) echo "timing violations: `grep -c 'Timing violation' xrun.log`" >> summary.txt
+if ($GMODE == sdf) then
+    echo "sdf file: results/$RUN/$SDFN" >> summary.txt
+    grep -A2 'SDF statistics' xrun.log >> summary.txt
+    echo "timing violations: `grep -c 'Timing violation' xrun.log`" >> summary.txt
+    echo "sdf.log message ids (count):" >> summary.txt
+    grep -o -E '\*[WEF],[A-Z0-9]+' sdf.log | sort | uniq -c >> summary.txt
+endif
 echo "xrun message ids (count):" >> summary.txt
 grep -o -E '\*[WEF],[A-Z0-9]+' xrun.log | sort | uniq -c >> summary.txt
