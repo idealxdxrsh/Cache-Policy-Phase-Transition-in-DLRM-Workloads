@@ -1,4 +1,4 @@
-"""P12: Genus runs on C2 as two Markdown tables. Library, corner and tool version are not named in the repo.
+"""P12: Genus runs on C2 as Markdown tables. Technology: a commercial 28nm FD-SOI standard-cell library, typical corner.
 
 Usage: python -I tools/c2_collect.py [dir]   (dir defaults to ~/c2_results, outside the repo)
 One folder per run, named <ver>_m<mode>_d<depth>_p<period_ns> as written by cadence/run_genus.csh, holding
@@ -30,6 +30,7 @@ from decimal import Decimal
 from pathlib import Path
 
 DIR = Path(sys.argv[1]).expanduser() if len(sys.argv) > 1 else Path.home() / 'c2_results'
+SHOW = str(DIR).replace(str(Path.home()), '~')   # printed source path, without the home directory
 NAME = re.compile(r'^(v\d+)_m(\d+)_d(\d+)_p(\d+(?:\.\d+)?)(_nomerge)?$')
 
 
@@ -90,13 +91,13 @@ def main():
     nomerge = [r for r in rows if r['flow'] == 'merge-off']
     rows = [r for r in rows if r['flow'] == 'normal']
     print('# P12 Genus synthesis on C2 (v2 = tag rtl-v2-final, v3 = branch rtl-v3). '
-          'Library, corner and tool version are not named in the repo.')
+          'Technology: a commercial 28nm FD-SOI standard-cell library, typical corner; area in library units.')
     print('Pre-layout: no LEF, library default wireload; power is vectorless (default switching activity); '
           'I/O delay 0.2 x period, clock uncertainty 0. Fmax = 1 / (period - WNS), only for WNS < 0.')
     print('Limitation: Genus ignored (* keep *) on req_addr_grp (VLOGPT-506) and merged the per-group address copies '
           'into one register, so these netlists lack the per-group fan-out split the RTL was written for.')
-    print(f'Source: {DIR}/<run>/{{timing,area,gates,power}}.rpt, constraints.sdc\n')
-    print('| version | mode | depth | period (ns) | WNS (ps) | Fmax (MHz) | area (lib unit) | cells | flip-flops '
+    print(f'Source: {SHOW}/<run>/{{timing,area,gates,power}}.rpt, constraints.sdc (raw reports, kept off the repo)\n')
+    print('| version | mode | depth | period (ns) | WNS (ps) | Fmax (MHz) | area (library units) | cells | flip-flops '
           '| total power |')
     print('|---|---|---|---|---|---|---|---|---|---|')
     for r in rows:
@@ -109,7 +110,7 @@ def main():
           'results/P11/equiv/equiv_d16_m1.txt and equiv_d64_m1.txt; not run at 256), so its difference is the observed '
           'noise reference of this flow. Mode 0 differs in logic (v3 adds the Rotate-victim tie-break). '
           'Where both WNS >= 0 the constraint was met, so the WNS difference is not a speed difference.\n')
-    print('| mode | depth | period (ns) | area v2 | area v3 | area v3 - v2 | area change | WNS v2 (ps) | WNS v3 (ps) '
+    print('| mode | depth | period (ns) | area v2 (library units) | area v3 | area v3 - v2 | area change | WNS v2 (ps) | WNS v3 (ps) '
           '| WNS v3 - v2 (ps) | difference is |')
     print('|---|---|---|---|---|---|---|---|---|---|---|')
     for (ver, mode, depth, period), r3 in sorted(by.items(), key=lambda kv: kv[0][1:]):
@@ -163,10 +164,10 @@ def main():
     grp = {m[0]: (m[1], m[2]) for m in re.findall(r'(\S+_nomerge) .*?req_addr_grp_flops=(\d+) is_320=(yes|no)',
                                                   log.read_text())} if log.exists() else {}
     print('\n## Merge-off (optimize_merge_seq false on req_addr_grp_reg) next to the normal run')
-    print(f'req_addr_grp flops and is_320: {log} (req_addr_grp_reg instances in each netlist.v on C2); flip-flops: '
+    print(f'req_addr_grp flops and is_320: {SHOW}/{log.name} (req_addr_grp_reg instances in each netlist.v on C2); flip-flops: '
           'gates.rpt. Change = (merge-off - normal) / normal; Fmax change only when both have WNS < 0.\n')
     print('| version | mode | depth | period (ns) | flow | req_addr_grp flops | is_320 | WNS (ps) | Fmax (MHz) '
-          '| Fmax change | area (lib unit) | area change | flip-flops |')
+          '| Fmax change | area (library units) | area change | flip-flops |')
     print('|---|---|---|---|---|---|---|---|---|---|---|---|---|')
     for r in nomerge:
         n = by.get(key(r))

@@ -16,6 +16,20 @@ Hard rules
 5. Secrets (Kaggle token, ssh keys) are never read, printed or committed.
 6. Never add Co-Authored-By or Claude-Session lines, or any Claude attribution, to commit messages or PR descriptions.
 
+Lab server C2 (licensed commercial library; P12/P13). These rules have the same weight as the hard rules.
+- Library, LEF, docs and tech files stay on C2: never copy them off, read or print their contents, or open their PDFs.
+  Only file names and the tool reports of our own runs may be looked at.
+- The repo is public. No library name, cell name, library file name or path, C2 host address or C2 user name in any
+  tracked file. Library paths live only in local.env on C2 (gitignored as cadence/local.env).
+- Name the technology only as "a commercial 28nm FD-SOI standard-cell library, typical corner"; area in "library units".
+- Raw reports, logs, netlists and SDF stay off the repo (C2 and ~/c2_results/). Only aggregate tables
+  (results/P12|P13/TABLES.md from tools/c2_collect.py, tools/p13_power_table.py) and SUMMARY.md are committed;
+  publishing these aggregates was approved by Prof. Mane.
+- Before every commit run `python3 -I tools/check_no_lib_leak.py` (it reads the identifying patterns from the
+  gitignored tools/leak_patterns.local, which must never be committed); commit only if it prints PASS.
+- Connect only through the user's master socket (`ssh -S ~/.ssh/c2.sock ...`); never ask for or read a password.
+  Jobs started over it die when the socket closes (logind kills the session); at most 4 tool jobs at a time.
+
 Keep usage low
 - Do not poll. Use `sbatch --dependency=afterok` chains.
 - One driver script per phase, writing results/<phase>/SUMMARY.md (<40 lines).

@@ -54,3 +54,5 @@ results/P11/cluster/gls/work/
 # C2 (Cadence) run: library paths live only in cadence/local.env on C2; C2 results stay outside the repo
 cadence/local.env
 results_c2/
+# identifying leak-check patterns (library, cell, host, user names); local only, see tools/check_no_lib_leak.py
+tools/leak_patterns.local
