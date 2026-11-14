@@ -6,6 +6,8 @@
 #   sdf:  results/<run>/<sdf_file> (default delays.sdf) annotated, timing checks on; inputs driven 0.2 x period
 #         after the rising edge (the SDC input delay); timing violations counted in the xrun log; SDF log sdf.log
 #         (-sdf_verbose) and annotation statistics sdfstats.txt in the run directory.
+#   With GLS_TCF set in the environment: switching activity of the netlist instance in activity.tcf
+#   (xmsim dumptcf -scope tb_gls_c2.gl -eot, written at the end of the simulation; -access +r); folder suffix _tcf.
 # Clock period 0.8 ns in both modes (PERIOD_PS = 800, timescale 1ps). Compiles the netlist unchanged, the three main
 # cell models (globs GLS_*_V_GLOB in $W/local.env, on C2 only), the run's RTL and synthesis/p13/tb_gls_c2.sv.
 # Output: $W/p13/runs/<run>_<slice>_<mode>[_n<nreq>]/ with xrun.log, hits_rtl.txt, hits_gl.txt, summary.txt.
@@ -43,9 +45,16 @@ else
     echo "mode must be zero or sdf"
     exit 1
 endif
+if ($?GLS_TCF) set TAG = ${TAG}_tcf
 set OUT = $W/p13/runs/$TAG
 mkdir -p $OUT
 cd $OUT
+if ($?GLS_TCF) then
+    echo "dumptcf -scope tb_gls_c2.gl -eot -output activity.tcf -overwrite" > tcf.tcl
+    echo "run" >> tcf.tcl
+    echo "exit" >> tcf.tcl
+    set OPTS = ($OPTS -access +r -input tcf.tcl)
+endif
 if ($GMODE == sdf) ln -sf $W/results/$RUN/$SDFN delays.sdf
 set CORE_V = `ls $GLS_CORE_V_GLOB`
 set CLK_V = `ls $GLS_CLK_V_GLOB`
@@ -81,5 +90,6 @@ if ($GMODE == sdf) then
     echo "sdf.log message ids (count):" >> summary.txt
     grep -o -E '\*[WEF],[A-Z0-9]+' sdf.log | sort | uniq -c >> summary.txt
 endif
+if ($?GLS_TCF) echo "tcf: activity.tcf `stat -c %s activity.tcf` bytes" >> summary.txt
 echo "xrun message ids (count):" >> summary.txt
 grep -o -E '\*[WEF],[A-Z0-9]+' xrun.log | sort | uniq -c >> summary.txt
