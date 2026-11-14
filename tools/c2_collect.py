@@ -18,6 +18,11 @@ the Rotate-victim tie-break).
 Table 3 = per version, mode and depth: the tightest period with WNS >= 0, the loosest period with WNS < 0, and
 Fmax = 1 / (period - WNS) of every run with WNS < 0. "non-monotonic" marks a depth where a period met timing although
 a looser one failed.
+Table 4 = v3 against v2 Fmax at each mode, depth and period where at least one of them has WNS < 0; differences are
+computed from the unrounded Fmax.
+Tables 1-4 use the normal runs only. Folders ending in _nomerge are merge-off runs (cadence/genus_lfu_nomerge.tcl);
+table 5 puts each next to the normal run with the same parameters, with req_addr_grp flops and is_320 read from
+<dir>/sweep_nomerge.log (written by cadence/run_nomerge.sh from each netlist.v on C2).
 """
 import re
 import sys
@@ -25,7 +30,7 @@ from decimal import Decimal
 from pathlib import Path
 
 DIR = Path(sys.argv[1]).expanduser() if len(sys.argv) > 1 else Path.home() / 'c2_results'
-NAME = re.compile(r'^(v\d+)_m(\d+)_d(\d+)_p(\d+(?:\.\d+)?)$')
+NAME = re.compile(r'^(v\d+)_m(\d+)_d(\d+)_p(\d+(?:\.\d+)?)(_nomerge)?$')
 
 
 def find(pattern, text, where, last=False):
@@ -36,7 +41,7 @@ def find(pattern, text, where, last=False):
 
 
 def row(d):
-    ver, mode, depth, period = NAME.match(d.name).groups()
+    ver, mode, depth, period, nomerge = NAME.match(d.name).groups()
     t, a, g, p, sdc = ((d / f).read_text() for f in ('timing.rpt', 'area.rpt', 'gates.rpt', 'power.rpt', 'constraints.sdc'))
     sdc_period = find(r'^create_clock\b.*-period\s+(\S+)', sdc, f'{d}/constraints.sdc')
     if float(sdc_period) != float(period):
@@ -58,14 +63,16 @@ def row(d):
         sys.exit(f'{d}/power.rpt: latch power is not zero, so gates.rpt sequential is not a flip-flop count')
     unit = find(r'^Power Unit:\s*(\S+)', p, f'{d}/power.rpt')
     power = find(r'^\s*Subtotal\s+\S+\s+\S+\s+\S+\s+(\S+)', p, f'{d}/power.rpt')
+    mhz = None
     if Decimal(wns) > 0:
         fmax = 'relaxed, Fmax not meaningful'
     elif Decimal(wns) == 0:
         fmax = 'met at target, Fmax not measured'
     else:
-        fmax = f'{1e6 / (float(period) * 1e3 - float(wns)):.1f}'  # MHz, from ns and ps
-    return dict(ver=ver, mode=int(mode), depth=int(depth), period=period, wns=wns, status=status, fmax=fmax,
-                area=area, cells=cells, ffs=ffs, power=f'{power} {unit}')
+        mhz = 1e6 / (float(period) * 1e3 - float(wns))  # MHz, from ns and ps
+        fmax = f'{mhz:.1f}'
+    return dict(ver=ver, mode=int(mode), depth=int(depth), period=period, wns=wns, status=status, fmax=fmax, mhz=mhz,
+                area=area, cells=cells, ffs=ffs, power=f'{power} {unit}', flow='merge-off' if nomerge else 'normal')
 
 
 def key(r):
@@ -80,6 +87,8 @@ def main():
         else:
             print(f'skipped {d.name}', file=sys.stderr)
     rows.sort(key=key)
+    nomerge = [r for r in rows if r['flow'] == 'merge-off']
+    rows = [r for r in rows if r['flow'] == 'normal']
     print('# P12 Genus synthesis on C2 (v2 = tag rtl-v2-final, v3 = branch rtl-v3). '
           'Library, corner and tool version are not named in the repo.')
     print('Pre-layout: no LEF, library default wireload; power is vectorless (default switching activity); '
@@ -132,6 +141,43 @@ def main():
         note = 'non-monotonic' if met and fail and Decimal(tight) < Decimal(loose) else ''
         print(f"| {ver} | {mode} | {depth} | {', '.join(r['period'] for r in rs)} | {tight} | {loose} | {fmaxes} "
               f"| {note} |")
+
+    print('\n## v3 against v2 Fmax at the same mode, depth and period (periods where at least one fails)')
+    print('Fmax = 1 / (period - WNS) for WNS < 0; difference and change from the unrounded values. Mode 1 is the same '
+          'logic in both versions, so its difference is the observed noise reference.\n')
+    print('| mode | depth | period (ns) | WNS v2 (ps) | WNS v3 (ps) | Fmax v2 (MHz) | Fmax v3 (MHz) | Fmax v3 - v2 (MHz) '
+          '| change | difference is |')
+    print('|---|---|---|---|---|---|---|---|---|---|')
+    for (ver, mode, depth, period), r3 in sorted(by.items(), key=lambda kv: kv[0][1:]):
+        r2 = by.get(('v2', mode, depth, period))
+        if ver != 'v3' or r2 is None or (r2['mhz'] is None and r3['mhz'] is None):
+            continue
+        both = r2['mhz'] is not None and r3['mhz'] is not None
+        dif = f"{r3['mhz'] - r2['mhz']:+.1f}" if both else '-'
+        pct = f"{(r3['mhz'] - r2['mhz']) / r2['mhz'] * 100:+.2f}%" if both else '-'
+        role = 'observed noise reference (same logic)' if mode == 1 else 'logic change (Rotate-victim)'
+        print(f"| {mode} | {depth} | {r3['period']} | {r2['wns']} | {r3['wns']} | {r2['fmax']} | {r3['fmax']} | {dif} "
+              f"| {pct} | {role} |")
+
+    log = DIR / 'sweep_nomerge.log'
+    grp = {m[0]: (m[1], m[2]) for m in re.findall(r'(\S+_nomerge) .*?req_addr_grp_flops=(\d+) is_320=(yes|no)',
+                                                  log.read_text())} if log.exists() else {}
+    print('\n## Merge-off (optimize_merge_seq false on req_addr_grp_reg) next to the normal run')
+    print(f'req_addr_grp flops and is_320: {log} (req_addr_grp_reg instances in each netlist.v on C2); flip-flops: '
+          'gates.rpt. Change = (merge-off - normal) / normal; Fmax change only when both have WNS < 0.\n')
+    print('| version | mode | depth | period (ns) | flow | req_addr_grp flops | is_320 | WNS (ps) | Fmax (MHz) '
+          '| Fmax change | area (lib unit) | area change | flip-flops |')
+    print('|---|---|---|---|---|---|---|---|---|---|---|---|---|')
+    for r in nomerge:
+        n = by.get(key(r))
+        if n:
+            print(f"| {n['ver']} | {n['mode']} | {n['depth']} | {n['period']} | normal | - | - | {n['wns']} ({n['status']}) "
+                  f"| {n['fmax']} | | {n['area']} | | {n['ffs']} |")
+        g, ok = grp.get(f"{r['ver']}_m{r['mode']}_d{r['depth']}_p{r['period']}_nomerge", ('not in log', 'not in log'))
+        fc = f"{(r['mhz'] - n['mhz']) / n['mhz'] * 100:+.2f}%" if n and r['mhz'] and n['mhz'] else '-'
+        ac = f"{(Decimal(r['area']) - Decimal(n['area'])) / Decimal(n['area']) * 100:+.2f}%" if n else '-'
+        print(f"| {r['ver']} | {r['mode']} | {r['depth']} | {r['period']} | merge-off | {g} | {ok} | {r['wns']} "
+              f"({r['status']}) | {r['fmax']} | {fc} | {r['area']} | {ac} | {r['ffs']} |")
 
 
 if __name__ == '__main__':
