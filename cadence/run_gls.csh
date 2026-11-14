@@ -8,6 +8,8 @@
 #         (-sdf_verbose) and annotation statistics sdfstats.txt in the run directory.
 #   With GLS_TCF set in the environment: switching activity of the netlist instance in activity.tcf
 #   (xmsim dumptcf -scope tb_gls_c2.gl -eot, written at the end of the simulation; -access +r); folder suffix _tcf.
+#   With GLS_TCF_WIREASNET also set (off by default): dumptcf -dumpwireasnet (ports as pins, wires as nets);
+#   folder suffix _tcfw. It did not change Genus's activity coverage in the P13 smoke test.
 # Clock period 0.8 ns in both modes (PERIOD_PS = 800, timescale 1ps). Compiles the netlist unchanged, the three main
 # cell models (globs GLS_*_V_GLOB in $W/local.env, on C2 only), the run's RTL and synthesis/p13/tb_gls_c2.sv.
 # Output: $W/p13/runs/<run>_<slice>_<mode>[_n<nreq>]/ with xrun.log, hits_rtl.txt, hits_gl.txt, summary.txt.
@@ -45,12 +47,19 @@ else
     echo "mode must be zero or sdf"
     exit 1
 endif
-if ($?GLS_TCF) set TAG = ${TAG}_tcf
+set TCFOPT = ""
+if ($?GLS_TCF) then
+    set TAG = ${TAG}_tcf
+    if ($?GLS_TCF_WIREASNET) then
+        set TAG = ${TAG}w
+        set TCFOPT = "-dumpwireasnet"
+    endif
+endif
 set OUT = $W/p13/runs/$TAG
 mkdir -p $OUT
 cd $OUT
 if ($?GLS_TCF) then
-    echo "dumptcf -scope tb_gls_c2.gl -eot -output activity.tcf -overwrite" > tcf.tcl
+    echo "dumptcf -scope tb_gls_c2.gl -eot $TCFOPT -output activity.tcf -overwrite" > tcf.tcl
     echo "run" >> tcf.tcl
     echo "exit" >> tcf.tcl
     set OPTS = ($OPTS -access +r -input tcf.tcl)
