@@ -1,0 +1,9 @@
+==WARNING== Could not deploy stock section files to "/home/rahulkmr/Documents/NVIDIA Nsight Compute/2025.1.1/Sections".
+Set the HOME environment variable to a writable directory.
+==WARNING== Using "/opt/nvidia/nsight-compute/2025.1.1/target/linux-desktop-glibc_2_11_3-x64/../../sections" instead.
+==WARNING== See https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#faq.
+==PROF== Connected to process 3075033 (/scratch/rahulkmr/Adarsh/envs/dlrm_cache/bin/python3.11)
+==PROF== Disconnected from process 3075033
+"ID","Process ID","Process Name","Host Name","Kernel Name","Context","Stream","Block Size","Grid Size","Device","CC","Section Name","Metric Name","Metric Unit","Metric Value"
+"0","3075033","python3.11","127.0.0.1","void unnamed>::EmbeddingBag_updateOutputKernel_sum_mean<float, long>(const T2 *, const T2 *, const T1 *, T1 *, T2 *, long, long, long, long, long, int, T2 *, const T1 *, long, T2, long)","1","7","(32, 8, 1)","(1024, 1, 1)","0","9.0","Command line profiler metrics","dram__bytes_read.sum","byte","556,544"
+"0","3075033","python3.11","127.0.0.1","void unnamed>::EmbeddingBag_updateOutputKernel_sum_mean<float, long>(const T2 *, const T2 *, const T1 *, T1 *, T2 *, long, long, long, long, long, int, T2 *, const T1 *, long, T2, long)","1","7","(32, 8, 1)","(1024, 1, 1)","0","9.0","Command line profiler metrics","lts__t_sector_hit_rate.pct","%","74.27"

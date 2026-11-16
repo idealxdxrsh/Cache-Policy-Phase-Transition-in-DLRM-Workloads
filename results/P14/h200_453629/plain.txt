@@ -1,0 +1,1 @@
+P14_SMOKE rows=1000000 dim=128 lookups=1000 seed=0 out_shape=(1000, 128) checksum=-282.260395 gpu=NVIDIA H200 NVL torch=2.14.1+cu126

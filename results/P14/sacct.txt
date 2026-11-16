@@ -1,0 +1,7 @@
+JobID         Partition        NodeList      State ExitCode    Elapsed 
+------------ ---------- --------------- ---------- -------- ---------- 
+453624       gpu_h100_4        gpunode6     FAILED      5:0   00:01:57 
+453625       gpu_h200_8   None assigned  CANCELLED      0:0   00:00:00 
+JobID         Partition        NodeList      State ExitCode    Elapsed 
+------------ ---------- --------------- ---------- -------- ---------- 
+453629       gpu_h200_8        gpunode7     FAILED      5:0   00:02:07 

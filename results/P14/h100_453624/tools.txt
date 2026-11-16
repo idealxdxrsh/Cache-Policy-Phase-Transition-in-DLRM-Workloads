@@ -1,0 +1,16 @@
+node gpunode6.hpc.bits-hyderabad.ac.in job 453624 partition gpu_h100_4
+lmod: function
+RmProfilingAdminOnly: RmProfilingAdminOnly: 0
+environment: line 17: /usr/share/lmod/lmod/libexec/lmod: No such file or directory
+module cuda-12.1.0 loaded
+ncu candidate: /opt/nvidia/nsight-compute/2025.1.1/ncu version 2025.1.1.0
+ncu candidate: /usr/local/cuda-12.8/bin/ncu version 2025.1.1.0
+ncu candidate: /usr/local/cuda-12/bin/ncu version 2025.1.1.0
+ncu candidate: /usr/local/cuda/bin/ncu version 2025.1.1.0
+nsys candidate: /opt/nvidia/nsight-systems/2024.6.2/bin/nsys NVIDIA Nsight Systems version 2024.6.2.225-246235244400v0
+nsys candidate: /usr/local/bin/nsys NVIDIA Nsight Systems version 2024.6.2.225-246235244400v0
+nsys candidate: /usr/local/cuda-12.8/bin/nsys NVIDIA Nsight Systems version 2024.6.2.225-246235244400v0
+nsys candidate: /usr/local/cuda-12/bin/nsys NVIDIA Nsight Systems version 2024.6.2.225-246235244400v0
+nsys candidate: /usr/local/cuda/bin/nsys NVIDIA Nsight Systems version 2024.6.2.225-246235244400v0
+ncu chosen: /usr/local/cuda/bin/ncu 2025.1.1.0
+ncu rc=0
