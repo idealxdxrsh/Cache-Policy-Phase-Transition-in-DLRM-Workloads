@@ -29,6 +29,7 @@ Lab server C2 (licensed commercial library; P12/P13). These rules have the same 
   gitignored tools/leak_patterns.local, which must never be committed); commit only if it prints PASS.
 - Connect only through the user's master socket (`ssh -S ~/.ssh/c2.sock ...`); never ask for or read a password.
   Jobs started over it die when the socket closes (logind kills the session); at most 4 tool jobs at a time.
+- Long C2 jobs (Genus, Xcelium, Innovus): linger is on, so start them as `systemd-run --user --unit=<unique-name> csh -fc 'cd <run dir>; <cmd> >& <run dir>/job.log'`; they survive logout (tested: nohup died, the unit survived). Check with `systemctl --user status <unit>`.
 
 Keep usage low
 - Do not poll. Use `sbatch --dependency=afterok` chains.
