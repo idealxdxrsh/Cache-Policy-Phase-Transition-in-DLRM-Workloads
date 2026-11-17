@@ -7,6 +7,10 @@ set invs {}
 foreach c [get_object_name [get_lib_cells $env(PNR_CTS_BUF_PAT)]] { lappend bufs [file tail $c] }
 foreach c [get_object_name [get_lib_cells $env(PNR_CTS_INV_PAT)]] { lappend invs [file tail $c] }
 foreach c [concat $bufs $invs] { setDontUse $c false }
+# multi-row cells stay dont_use (stage A), also if a clock-tree pattern matched one
+foreach c $MULTIROW { setDontUse $c true }
+set bufs [lmap c $bufs { expr {[lsearch -exact $MULTIROW $c] < 0 ? $c : [continue]} }]
+set invs [lmap c $invs { expr {[lsearch -exact $MULTIROW $c] < 0 ? $c : [continue]} }]
 set_ccopt_property buffer_cells $bufs
 set_ccopt_property inverter_cells $invs
 # place, clock tree, route
@@ -57,6 +61,7 @@ puts $fm "insts_total [llength $all]"
 puts $fm "insts_physical_only $nphys"
 puts $fm "insts_logic [expr {[llength $all] - $nphys}]"
 foreach p {FILL ENDCAP_LR ENDCAP_TB WT} { puts $fm "insts_prefix_$p [llength [dbGet -e top.insts.name ${p}*]]" }
+puts $fm "insts_multirow [llength [p15_multirow_insts]]"
 puts $fm "logic_cell_area_um2 [format %.3f $logic_area]"
 puts $fm "logic_utilisation_core [format %.4f [expr {$logic_area / [box_area $core]}]]"
 close $fm

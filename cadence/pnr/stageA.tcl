@@ -39,6 +39,58 @@ setDesignMode -process 28
 setAnalysisMode -analysisType onChipVariation -cppr both
 foreach n $PG { globalNetConnect $n -type pgpin -pin $n -all }
 
+# multi-row cells: in the first d256 runs every instance of a double-height master (its own double-height site) had
+# its pins shorted to the PG rails and its PG pins unconnected (P15 diagnosis, cadence/pnr/diag_shorts.tcl). Fix:
+# every library cell taller than one core-site row is dont_use, and the netlist's multi-row instances are resized
+# to single-row cells with ecoChangeCell (downsize, then upsize, one step at a time) before the floorplan.
+proc p15_multirow_cells {} {
+  set h0 {}
+  foreach c [dbGet head.libCells] {
+    if {[dbGet $c.site.name] eq $::env(PNR_SITE)} {
+      set h [dbGet $c.size_y]
+      if {$h0 eq "" || $h < $h0} { set h0 $h }
+    }
+  }
+  set out {}
+  foreach c [dbGet head.libCells] { if {[dbGet $c.size_y] > $h0 + 0.001} { lappend out [dbGet $c.name] } }
+  return $out
+}
+proc p15_multirow_insts {} {
+  set out {}
+  foreach c $::MULTIROW {
+    set p [dbGet -e -p2 top.insts.cell.name $c]
+    if {$p ne "" && $p ne "0x0"} { foreach i $p { lappend out [dbGet $i.name] } }
+  }
+  return $out
+}
+proc p15_cell_of {n} { return [dbGet [lindex [dbGet -p top.insts.name $n] 0].cell.name] }
+set MULTIROW [p15_multirow_cells]
+foreach c $MULTIROW { setDontUse $c true }
+set mr_netlist [p15_multirow_insts]
+set mr_swapped 0
+foreach n $mr_netlist {
+  set ok 0
+  foreach dir {-downsize -upsize} {
+    for {set k 0} {$k < 10} {incr k} {
+      set before [p15_cell_of $n]
+      if {[catch {ecoChangeCell -inst $n $dir}]} { break }
+      set after [p15_cell_of $n]
+      if {[lsearch -exact $MULTIROW $after] < 0} { set ok 1; break }
+      if {$after eq $before} { break }
+    }
+    if {$ok} { break }
+  }
+  if {$ok} { incr mr_swapped }
+}
+set mr_left [llength [p15_multirow_insts]]
+set fm [open rpt/multirow.txt w]
+puts $fm "multirow_libcells [llength $MULTIROW]"
+puts $fm "multirow_insts_netlist [llength $mr_netlist]"
+puts $fm "multirow_insts_swapped $mr_swapped"
+puts $fm "multirow_insts_left $mr_left"
+close $fm
+if {$mr_left > 0} { error "P15: $mr_left multi-row instances could not be resized to single-row cells (rpt/multirow.txt)" }
+
 # floorplan: aspect 1.0, utilisation 0.6, 12 um core-to-die margins; inputs left, outputs right on M4
 floorPlan -site $env(PNR_SITE) -r 1.0 0.6 12 12 12 12
 editPin -pin [dbGet [dbGet top.terms.direction input  -p].name] -side Left  -layer M4 -spreadType side -fixOverlap 1

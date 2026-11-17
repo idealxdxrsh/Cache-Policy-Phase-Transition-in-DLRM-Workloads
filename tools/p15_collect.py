@@ -67,6 +67,17 @@ def drc_split(path):
     return shorts, viols - shorts
 
 
+def other_drc_types(path):
+    """verify_drc violations other than PG special-wire shorts, as 'type layer: count' (no net or cell names)."""
+    out = {}
+    for kind, rule, what, layer in re.findall(r'^(\w+): \( ([^)]+?) \) (.*?) of Net .*?\(\s*(M\d+)\s*\)\s*$', text(path), re.M):
+        if kind == 'SHORT' and what.startswith('Special Wire'):
+            continue
+        k = f'{rule} {layer}'
+        out[k] = out.get(k, 0) + 1
+    return '; '.join(f'{k}: {v}' for k, v in sorted(out.items())) or '-'
+
+
 def pg_open_insts(path):
     """Distinct instances with an unconnected power/ground terminal (IMPVFC-96); used for counts only."""
     return set(re.findall(r'Pin Pin: ([^/\s]+)/\S+; Direction: INOUT; Use: (?:GROUND|POWER);: has an unconnected', text(path)))
@@ -95,6 +106,21 @@ def power(path):
     return unit, vals, f'default (seq {seq}, PI {pi})'
 
 
+def flow(m):
+    """Folder suffix -> flow label: none = first P15 flow (multi-row cells allowed); nodv = multi-row cells dont_use."""
+    return {None: 'multi-row allowed', 'nodv': 'multi-row dont_use'}.get(m.group(3), m.group(3))
+
+
+def multirow(rp, mt):
+    """Multi-row logic instances in the routed design: metrics.txt (new flow) or rpt/diag_census.txt (diagnosis)."""
+    if 'insts_multirow' in mt:
+        return mt['insts_multirow']
+    census = rp / 'diag_census.txt'
+    if census.exists():
+        return str(sum(int(n) for n in re.findall(r'^count (\d+) rows=', census.read_text(), re.M)))
+    return 'n/a'
+
+
 def metrics(path):
     out = {}
     for line in text(path).splitlines():
@@ -108,14 +134,14 @@ def main():
     runs = sorted(p.parent.parent for p in root.glob('*/rpt/metrics.txt'))
     if not runs:
         raise SystemExit(f'no runs under {root}')
-    print('| run | period ns | setup WNS ns | setup TNS ns | setup viol. paths | hold WNS ns | hold TNS ns | '
+    print('| run | flow | period ns | multi-row insts | setup WNS ns | setup TNS ns | setup viol. paths | hold WNS ns | hold TNS ns | '
           'hold viol. paths | DRC | conn. problems all nets | conn. problems 4 PG nets | 4 PG nets metal only | '
           'well-tap rule um | well-tap viol. full core | well-tap viol. inner rows | core area | '
           'logic cell area | logic insts | phys.-only insts | power total | internal | switching | leakage | '
           'activity |')
-    print('|' + '---|' * 24)
+    print('|' + '---|' * 26)
     for r in runs:
-        m = re.match(r'(.+)_pnr([\d.]+)$', r.name)
+        m = re.match(r'(.+)_pnr([\d.]+)(?:_([A-Za-z0-9]+))?$', r.name)
         if not m:
             continue
         rp = r / 'rpt'
@@ -127,7 +153,7 @@ def main():
         rule = (rp / 'welltap_rule.txt').read_text().split()[0]
         unit, pw, act = power(rp / 'power.rpt')
         mt = metrics(rp / 'metrics.txt')
-        print(f"| {m.group(1)} | {m.group(2)} | {s['WNS']} | {s['TNS']} | {s['Violating Paths']} | {h['WNS']} | "
+        print(f"| {m.group(1)} | {flow(m)} | {m.group(2)} | {multirow(rp, mt)} | {s['WNS']} | {s['TNS']} | {s['Violating Paths']} | {h['WNS']} | "
               f"{h['TNS']} | {h['Violating Paths']} | {drc(rp / 'drc.rpt')} | {ca}{' (' + cad + ')' if ca else ''} | "
               f"{cp}{' (' + cpd + ')' if cp else ''} | {cm}{' (' + cmd + ')' if cm else ''} | {rule} | "
               f"{welltap(rp / 'welltap.rpt')} | {welltap(rp / 'welltap_inner.rpt')} | {float(mt['core_area_um2']):.1f} | "
@@ -136,11 +162,11 @@ def main():
               f"{act} |")
     print()
     print('## DRC and PG-connectivity breakdown')
-    print('| run | period ns | DRC total | metal shorts PG special wire vs cell pin | other DRC | '
-          'instances with unconnected PG terminals | instances in shorts | instances in both |')
-    print('|' + '---|' * 8)
+    print('| run | flow | period ns | DRC total | metal shorts PG special wire vs cell pin | other DRC | '
+          'instances with unconnected PG terminals | instances in shorts | instances in both | other DRC types |')
+    print('|' + '---|' * 10)
     for r in runs:
-        m = re.match(r'(.+)_pnr([\d.]+)$', r.name)
+        m = re.match(r'(.+)_pnr([\d.]+)(?:_([A-Za-z0-9]+))?$', r.name)
         if not m:
             continue
         rp = r / 'rpt'
@@ -149,7 +175,89 @@ def main():
         if sh + other != total:
             raise SystemExit(f'{rp}/drc.rpt: {sh}+{other} != total {total}')
         po, si = pg_open_insts(rp / 'conn_pg.rpt'), short_insts(rp / 'drc.rpt')
-        print(f"| {m.group(1)} | {m.group(2)} | {total} | {sh} | {other} | {len(po)} | {len(si)} | {len(po & si)} |")
+        print(f"| {m.group(1)} | {flow(m)} | {m.group(2)} | {total} | {sh} | {other} | {len(po)} | {len(si)} | {len(po & si)} | "
+              f"{other_drc_types(rp / 'drc.rpt')} |")
+
+    diagnosis(runs)
+    fix_table(runs)
+
+
+def fix_table(runs):
+    """rpt/multirow.txt of the fixed flow (stageA.tcl): multi-row library cells set dont_use, netlist instances resized."""
+    rows = []
+    for r in runs:
+        f = r / 'rpt' / 'multirow.txt'
+        if not f.exists():
+            continue
+        m = re.match(r'(.+)_pnr([\d.]+)(?:_([A-Za-z0-9]+))?$', r.name)
+        kv = dict(l.split() for l in f.read_text().splitlines() if l.strip())
+        rows.append(f"| {m.group(1)} | {m.group(2)} | {kv['multirow_libcells']} | {kv['multirow_insts_netlist']} | "
+                    f"{kv['multirow_insts_swapped']} | {kv['multirow_insts_left']} | "
+                    f"{metrics(r / 'rpt' / 'metrics.txt').get('insts_multirow', 'n/a')} |")
+    if rows:
+        print()
+        print('## Fix: multi-row cells dont_use, netlist multi-row instances resized (rpt/multirow.txt, metrics.txt)')
+        print('| run | period ns | multi-row library cells set dont_use | multi-row insts in netlist | resized to single-row | '
+              'left | multi-row insts after route |')
+        print('|' + '---|' * 7)
+        for row in rows:
+            print(row)
+
+
+def diagnosis(runs):
+    """Names-free counts from cadence/pnr/diag_shorts.tcl + run_diag.csh (rpt/diag_*.txt) of the first-flow runs."""
+    rows = []
+    for r in runs:
+        rp = r / 'rpt'
+        if not (rp / 'diag_census.txt').exists():
+            continue
+        m = re.match(r'(.+)_pnr([\d.]+)(?:_([A-Za-z0-9]+))?$', r.name)
+        census = (rp / 'diag_census.txt').read_text()
+        kv = dict(re.findall(r'^(\w+) (\d+)$', census, re.M))
+        classes = re.findall(r'^count (\d+) rows=(\S+) master_site_is_row_site=(\d) bottom_row_orient=(\S+) '
+                             r'inst_orient=(\S+) in_shorts=(\d)$', census, re.M)
+        n_multi = sum(int(c[0]) for c in classes)
+        n_multi_short = sum(int(c[0]) for c in classes if c[5] == '1')
+        heights = sorted({c[1] for c in classes}) or ['-']
+        on_own_site = sum(int(c[0]) for c in classes if c[2] == '1')
+        orients = {}
+        for c in classes:
+            orients[f'{c[3]} row/{c[4]}'] = orients.get(f'{c[3]} row/{c[4]}', 0) + int(c[0])
+        insts = [l.split()[0] for l in (rp / 'diag_insts.txt').read_text().splitlines() if l.strip()]
+        pres = {}
+        for db in ('place', 'cts', 'route'):
+            pres[db] = {a: b == '1' for a, b in (l.split() for l in (rp / f'diag_present_{db}.txt').read_text().splitlines() if l.strip())}
+        in_nl = set((rp / 'diag_in_netlist.txt').read_text().split())
+        first = {'netlist name': 0, 'place_opt': 0, 'CTS + postCTS opt': 0, 'postRoute opt': 0}
+        for n in insts:
+            if n in in_nl:
+                first['netlist name'] += 1
+            elif pres['place'].get(n):
+                first['place_opt'] += 1
+            elif pres['cts'].get(n):
+                first['CTS + postCTS opt'] += 1
+            else:
+                first['postRoute opt'] += 1
+        prefixes = {}
+        for n in insts:
+            k = re.sub(r'_?\d+(_\d+)?$', '', n)
+            prefixes[k] = prefixes.get(k, 0) + 1
+        rows.append(f"| {m.group(1)} | {m.group(2)} | {len(insts)} | {kv.get('multirow_masters_used')} | "
+                    f"{kv.get('single_row_other_site_masters_used')} | {kv.get('row_sites')} | {n_multi} | {n_multi_short} | "
+                    f"{', '.join(heights)} | {on_own_site} of {n_multi} | "
+                    f"{'; '.join(f'{k} {v}' for k, v in sorted(orients.items())) or '-'} | "
+                    f"{'; '.join(f'{k} {v}' for k, v in first.items())} | "
+                    f"{'; '.join(f'{k} {v}' for k, v in sorted(prefixes.items())) or '-'} |")
+    if not rows:
+        return
+    print()
+    print('## Diagnosis of the PG-rail shorts (first flow; route.enc, place.enc, cts.enc and the Genus netlist)')
+    print('| run | period ns | shorting insts | multi-row masters used | single-row other-site masters used | row sites | '
+          'multi-row insts | of which shorting | height rows | on a row of their own site | row orient/inst orient | '
+          'first present (netlist name = in the Genus netlist by name) | name prefix |')
+    print('|' + '---|' * 13)
+    for row in rows:
+        print(row)
 
 
 if __name__ == '__main__':
