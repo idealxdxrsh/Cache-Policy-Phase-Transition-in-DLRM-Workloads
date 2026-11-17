@@ -24,6 +24,9 @@ routeDesign
 optDesign -postRoute -setup -hold
 addFiller -cell [env_list PNR_FILLERS] -prefix FILL
 ecoRoute -fix_drc
+# extra DRC pass (from the d256 0.9/1.0 ns runs on): check, fix again; the reports below are on the saved design
+verify_drc -report rpt/drc_pass1.rpt
+ecoRoute -fix_drc
 saveDesign route.enc
 
 # reports (raw reports stay on C2 and in ~/c2_results/p15)

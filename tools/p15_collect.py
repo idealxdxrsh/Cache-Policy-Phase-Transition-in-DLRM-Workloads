@@ -108,7 +108,8 @@ def power(path):
 
 def flow(m):
     """Folder suffix -> flow label: none = first P15 flow (multi-row cells allowed); nodv = multi-row cells dont_use."""
-    return {None: 'multi-row allowed', 'nodv': 'multi-row dont_use'}.get(m.group(3), m.group(3))
+    return {None: 'multi-row allowed', 'nodv': 'multi-row dont_use',
+            'nodveco2': 'multi-row dont_use + 2nd ecoRoute'}.get(m.group(3), m.group(3))
 
 
 def multirow(rp, mt):
@@ -163,8 +164,9 @@ def main():
     print()
     print('## DRC and PG-connectivity breakdown')
     print('| run | flow | period ns | DRC total | metal shorts PG special wire vs cell pin | other DRC | '
-          'instances with unconnected PG terminals | instances in shorts | instances in both | other DRC types |')
-    print('|' + '---|' * 10)
+          'instances with unconnected PG terminals | instances in shorts | instances in both | other DRC types | '
+          'DRC before the 2nd ecoRoute |')
+    print('|' + '---|' * 11)
     for r in runs:
         m = re.match(r'(.+)_pnr([\d.]+)(?:_([A-Za-z0-9]+))?$', r.name)
         if not m:
@@ -176,10 +178,41 @@ def main():
             raise SystemExit(f'{rp}/drc.rpt: {sh}+{other} != total {total}')
         po, si = pg_open_insts(rp / 'conn_pg.rpt'), short_insts(rp / 'drc.rpt')
         print(f"| {m.group(1)} | {flow(m)} | {m.group(2)} | {total} | {sh} | {other} | {len(po)} | {len(si)} | {len(po & si)} | "
-              f"{other_drc_types(rp / 'drc.rpt')} |")
+              f"{other_drc_types(rp / 'drc.rpt')} | "
+              f"{drc(rp / 'drc_pass1.rpt') if (rp / 'drc_pass1.rpt').exists() else '-'} |")
 
     diagnosis(runs)
     fix_table(runs)
+    bracket(runs)
+
+
+def bracket(runs):
+    """Met = setup WNS >= 0 and hold WNS >= 0 (timeDesign 'all'); fixed-flow runs only (no multi-row cells)."""
+    res = {}
+    for r in runs:
+        m = re.match(r'(.+)_pnr([\d.]+)(?:_([A-Za-z0-9]+))?$', r.name)
+        if not m or m.group(3) not in ('nodv', 'nodveco2') or '_d256_' not in m.group(1):
+            continue
+        rp = r / 'rpt'
+        s = timing(one(rp / 'setup', '*_postRoute.summary.gz'))
+        h = timing(one(rp / 'hold', '*_postRoute_hold.summary.gz'))
+        met = float(s['WNS']) >= 0 and float(h['WNS']) >= 0
+        res.setdefault(m.group(1), []).append((float(m.group(2)), met, s['WNS'], h['WNS']))
+    if not res:
+        return
+    print()
+    print('## Met/failed bracket per version (fixed flow; met = setup and hold WNS >= 0)')
+    print('| run | periods run ns (setup WNS / hold WNS ns) | tightest met ns | loosest failed ns | monotonic |')
+    print('|' + '---|' * 5)
+    for run, rows in sorted(res.items()):
+        rows.sort()
+        met = [p for p, ok, _, _ in rows if ok]
+        failed = [p for p, ok, _, _ in rows if not ok]
+        tm = min(met) if met else None
+        lf = max(failed) if failed else None
+        mono = 'yes' if tm is None or lf is None or lf < tm else 'no'
+        runs_s = '; '.join(f"{p} {'met' if ok else 'failed'} ({sw} / {hw})" for p, ok, sw, hw in rows)
+        print(f"| {run} | {runs_s} | {tm if tm is not None else 'none'} | {lf if lf is not None else 'none'} | {mono} |")
 
 
 def fix_table(runs):

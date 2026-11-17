@@ -4,7 +4,9 @@ Technology: a commercial 28nm FD-SOI standard-cell library, typical corner. Area
 Power: report_power with Innovus default activity (no simulation activity). Timing: timeDesign -postRoute, 'all' path group.
 Flow: cadence/pnr/{run_pnr.csh,pnr.tcl,stageA.tcl,stageB.tcl}; netlists from P11 (d16) and P12 merge-off (d256), synthesised at 0.8 ns.
 Flow column: "multi-row allowed" = first P15 flow; "multi-row dont_use" = fixed flow (folder suffix _nodv): library cells taller
-than one core row set dont_use and the netlist's multi-row instances resized to single-row cells before the floorplan.
+than one core row set dont_use and the netlist's multi-row instances resized to single-row cells before the floorplan;
+"+ 2nd ecoRoute" (suffix _nodveco2): the same plus verify_drc (rpt/drc_pass1.rpt) and a second ecoRoute -fix_drc before
+the design is saved; all reports are on the saved design.
 Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries on the saved designs, no library files read).
 
 ## Post-route results
@@ -13,27 +15,35 @@ Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries o
 | v2_m0_d256_p0.8_nomerge | multi-row allowed | 0.8 | 15 | -0.102 | -116.917 | 1864 | -0.001 | -0.001 | 2 | 46 | 48 (IMPVFC-96:45 IMPVFC-200:3) | 48 (IMPVFC-96:45 IMPVFC-200:3) | 32 (IMPVFC-96:30 IMPVFC-200:2) | 40 | 2 | 0 | 379007.7 | 256070.4 | 126411 | 136117 | 366.2748 mW | 235.3695 | 130.7637 | 0.14159 | default (seq 0.200000, PI 0.200000) |
 | v2_m0_d256_p0.8_nomerge | multi-row allowed | 0.9 | 6 | -0.012 | -0.240 | 70 | 0.000 | 0.000 | 0 | 19 | 21 (IMPVFC-96:18 IMPVFC-200:3) | 21 (IMPVFC-96:18 IMPVFC-200:3) | 14 (IMPVFC-96:12 IMPVFC-200:2) | 40 | 2 | 0 | 379007.7 | 249950.3 | 121997 | 140378 | 322.0320 mW | 207.0676 | 114.8285 | 0.13597 | default (seq 0.200000, PI 0.200000) |
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use | 0.9 | 0 | -0.022 | -0.547 | 144 | 0.001 | 0.000 | 0 | 2 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 246565.3 | 120901 | 141043 | 318.0970 mW | 205.3180 | 112.6462 | 0.13281 | default (seq 0.200000, PI 0.200000) |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.05 | 0 | -0.006 | -0.042 | 22 | 0.045 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 237085.2 | 114440 | 156305 | 258.3733 mW | 170.8099 | 87.4403 | 0.12306 | default (seq 0.200000, PI 0.200000) |
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 0 | -0.007 | -0.092 | 37 | 0.000 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 240220.9 | 115616 | 151644 | 274.9076 mW | 179.9427 | 94.8391 | 0.12584 | default (seq 0.200000, PI 0.200000) |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0 | -0.002 | -0.006 | 10 | 0.053 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 235128.3 | 112958 | 161491 | 244.9640 mW | 162.3747 | 82.4682 | 0.12113 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d16_p0.8 | multi-row allowed | 0.8 | 0 | -0.004 | -0.013 | 5 | 0.057 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 24063.3 | 14815.6 | 6177 | 10160 | 21.4210 mW | 14.6570 | 6.7569 | 0.00713 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d16_p0.8 | multi-row dont_use | 0.8 | 0 | -0.001 | -0.001 | 1 | 0.056 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 24063.3 | 14825.7 | 6178 | 10201 | 21.4664 mW | 14.6640 | 6.7953 | 0.00714 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d256_p0.8_nomerge | multi-row allowed | 0.8 | 11 | -0.164 | -241.688 | 1922 | -0.003 | -0.010 | 20 | 39 | 36 (IMPVFC-96:33 IMPVFC-200:3) | 36 (IMPVFC-96:33 IMPVFC-200:3) | 24 (IMPVFC-96:22 IMPVFC-200:2) | 40 | 2 | 0 | 376946.3 | 262048.6 | 137594 | 132914 | 360.2312 mW | 234.9468 | 125.1394 | 0.14493 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d256_p0.8_nomerge | multi-row allowed | 0.9 | 7 | -0.077 | -96.836 | 1874 | -0.002 | -0.010 | 17 | 25 | 24 (IMPVFC-96:21 IMPVFC-200:3) | 24 (IMPVFC-96:21 IMPVFC-200:3) | 16 (IMPVFC-96:14 IMPVFC-200:2) | 40 | 2 | 0 | 376946.3 | 254406.1 | 125962 | 131915 | 317.7485 mW | 206.6056 | 111.0027 | 0.14019 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use | 0.9 | 0 | -0.071 | -85.861 | 1863 | -0.002 | -0.004 | 9 | 2 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 252851.3 | 126298 | 132240 | 316.2335 mW | 206.0623 | 110.0328 | 0.13842 | default (seq 0.200000, PI 0.200000) |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.05 | 0 | -0.008 | -0.309 | 102 | 0.041 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 239580.4 | 116272 | 152366 | 256.7357 mW | 171.2596 | 85.3494 | 0.12672 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 0 | -0.007 | -0.030 | 22 | 0.004 | 0.000 | 0 | 1 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 241238.3 | 118025 | 150528 | 271.4632 mW | 179.8446 | 91.4903 | 0.12829 | default (seq 0.200000, PI 0.200000) |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0 | -0.004 | -0.037 | 25 | 0.046 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 236501.0 | 114429 | 162624 | 243.4872 mW | 163.0513 | 80.3122 | 0.12377 | default (seq 0.200000, PI 0.200000) |
 
 ## DRC and PG-connectivity breakdown
-| run | flow | period ns | DRC total | metal shorts PG special wire vs cell pin | other DRC | instances with unconnected PG terminals | instances in shorts | instances in both | other DRC types |
-|---|---|---|---|---|---|---|---|---|---|
-| v2_m0_d256_p0.8_nomerge | multi-row allowed | 0.8 | 46 | 45 | 1 | 15 | 15 | 15 | OppositeEol Spacing M1: 1 |
-| v2_m0_d256_p0.8_nomerge | multi-row allowed | 0.9 | 19 | 18 | 1 | 6 | 6 | 6 | OppositeEol Spacing M1: 1 |
-| v2_m0_d256_p0.8_nomerge | multi-row dont_use | 0.9 | 2 | 0 | 2 | 0 | 0 | 0 | Notch Spacing M1: 1; OppositeEol Spacing M1: 1 |
-| v2_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 0 | 0 | 0 | 0 | 0 | 0 | - |
-| v3_m0_d16_p0.8 | multi-row allowed | 0.8 | 0 | 0 | 0 | 0 | 0 | 0 | - |
-| v3_m0_d16_p0.8 | multi-row dont_use | 0.8 | 0 | 0 | 0 | 0 | 0 | 0 | - |
-| v3_m0_d256_p0.8_nomerge | multi-row allowed | 0.8 | 39 | 33 | 6 | 11 | 11 | 11 | OppositeEol Spacing M1: 6 |
-| v3_m0_d256_p0.8_nomerge | multi-row allowed | 0.9 | 25 | 21 | 4 | 7 | 7 | 7 | OppositeEol Spacing M1: 4 |
-| v3_m0_d256_p0.8_nomerge | multi-row dont_use | 0.9 | 2 | 0 | 2 | 0 | 0 | 0 | OppositeEol Spacing M1: 2 |
-| v3_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 1 | 0 | 1 | 0 | 0 | 0 | OppositeEol Spacing M1: 1 |
+| run | flow | period ns | DRC total | metal shorts PG special wire vs cell pin | other DRC | instances with unconnected PG terminals | instances in shorts | instances in both | other DRC types | DRC before the 2nd ecoRoute |
+|---|---|---|---|---|---|---|---|---|---|---|
+| v2_m0_d256_p0.8_nomerge | multi-row allowed | 0.8 | 46 | 45 | 1 | 15 | 15 | 15 | OppositeEol Spacing M1: 1 | - |
+| v2_m0_d256_p0.8_nomerge | multi-row allowed | 0.9 | 19 | 18 | 1 | 6 | 6 | 6 | OppositeEol Spacing M1: 1 | - |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use | 0.9 | 2 | 0 | 2 | 0 | 0 | 0 | Notch Spacing M1: 1; OppositeEol Spacing M1: 1 | - |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.05 | 0 | 0 | 0 | 0 | 0 | 0 | - | 2 |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 0 | 0 | 0 | 0 | 0 | 0 | - | - |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0 | 0 | 0 | 0 | 0 | 0 | - | 2 |
+| v3_m0_d16_p0.8 | multi-row allowed | 0.8 | 0 | 0 | 0 | 0 | 0 | 0 | - | - |
+| v3_m0_d16_p0.8 | multi-row dont_use | 0.8 | 0 | 0 | 0 | 0 | 0 | 0 | - | - |
+| v3_m0_d256_p0.8_nomerge | multi-row allowed | 0.8 | 39 | 33 | 6 | 11 | 11 | 11 | OppositeEol Spacing M1: 6 | - |
+| v3_m0_d256_p0.8_nomerge | multi-row allowed | 0.9 | 25 | 21 | 4 | 7 | 7 | 7 | OppositeEol Spacing M1: 4 | - |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use | 0.9 | 2 | 0 | 2 | 0 | 0 | 0 | OppositeEol Spacing M1: 2 | - |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.05 | 0 | 0 | 0 | 0 | 0 | 0 | - | 0 |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 1 | 0 | 1 | 0 | 0 | 0 | OppositeEol Spacing M1: 1 | - |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0 | 0 | 0 | 0 | 0 | 0 | - | 2 |
 
 ## Diagnosis of the PG-rail shorts (first flow; route.enc, place.enc, cts.enc and the Genus netlist)
 | run | period ns | shorting insts | multi-row masters used | single-row other-site masters used | row sites | multi-row insts | of which shorting | height rows | on a row of their own site | row orient/inst orient | first present (netlist name = in the Genus netlist by name) | name prefix |
@@ -48,10 +58,20 @@ Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries o
 | run | period ns | multi-row library cells set dont_use | multi-row insts in netlist | resized to single-row | left | multi-row insts after route |
 |---|---|---|---|---|---|---|
 | v2_m0_d256_p0.8_nomerge | 0.9 | 29 | 8 | 8 | 0 | 0 |
+| v2_m0_d256_p0.8_nomerge | 1.05 | 29 | 8 | 8 | 0 | 0 |
 | v2_m0_d256_p0.8_nomerge | 1.0 | 29 | 8 | 8 | 0 | 0 |
+| v2_m0_d256_p0.8_nomerge | 1.1 | 29 | 8 | 8 | 0 | 0 |
 | v3_m0_d16_p0.8 | 0.8 | 29 | 0 | 0 | 0 | 0 |
 | v3_m0_d256_p0.8_nomerge | 0.9 | 29 | 6 | 6 | 0 | 0 |
+| v3_m0_d256_p0.8_nomerge | 1.05 | 29 | 6 | 6 | 0 | 0 |
 | v3_m0_d256_p0.8_nomerge | 1.0 | 29 | 6 | 6 | 0 | 0 |
+| v3_m0_d256_p0.8_nomerge | 1.1 | 29 | 6 | 6 | 0 | 0 |
+
+## Met/failed bracket per version (fixed flow; met = setup and hold WNS >= 0)
+| run | periods run ns (setup WNS / hold WNS ns) | tightest met ns | loosest failed ns | monotonic |
+|---|---|---|---|---|
+| v2_m0_d256_p0.8_nomerge | 0.9 failed (-0.022 / 0.001); 1.0 failed (-0.007 / 0.000); 1.05 failed (-0.006 / 0.045); 1.1 failed (-0.002 / 0.053) | none | 1.1 | yes |
+| v3_m0_d256_p0.8_nomerge | 0.9 failed (-0.071 / -0.002); 1.0 failed (-0.007 / 0.004); 1.05 failed (-0.008 / 0.041); 1.1 failed (-0.004 / 0.046) | none | 1.1 | yes |
 
 ## Run time (Innovus 'Ending "Innovus" ... real=' line of each run's log, kept on C2; 16 CPUs each, up to 4 runs in parallel)
 | run | flow | period ns | real |
@@ -65,3 +85,7 @@ Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries o
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 0:47:50 |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use | 0.9 | 0:57:35 |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 0:47:51 |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.05 | 0:42:25 |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0:37:33 |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.05 | 0:45:32 |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0:38:24 |
