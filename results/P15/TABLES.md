@@ -6,7 +6,11 @@ Flow: cadence/pnr/{run_pnr.csh,pnr.tcl,stageA.tcl,stageB.tcl}; netlists from P11
 Flow column: "multi-row allowed" = first P15 flow; "multi-row dont_use" = fixed flow (folder suffix _nodv): library cells taller
 than one core row set dont_use and the netlist's multi-row instances resized to single-row cells before the floorplan;
 "+ 2nd ecoRoute" (suffix _nodveco2): the same plus verify_drc (rpt/drc_pass1.rpt) and a second ecoRoute -fix_drc before
-the design is saved; all reports are on the saved design.
+the design is saved; all reports are on the saved design. "+ setup target slack 0.03 + extra postRoute setup opt" (suffix
+_nodvts): the same plus setOptMode -setupTargetSlack 0.03 from place_opt on, and after the 2nd ecoRoute one more
+optDesign -postRoute -setup (fillers removed and re-inserted) and ecoRoute -fix_drc; timing before that step in rpt/pre_extra/.
+Post-route GLS and power (sections from "Post-route GLS" on): `python3 -I tools/p15_gls_table.py` on ~/c2_results/p15/gls/
+(cadence/pnr/export_gls.tcl, run_export.csh; cadence/run_gls.csh, run_power.csh, genus_power.tcl with the P15 overrides).
 Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries on the saved designs, no library files read).
 
 ## Post-route results
@@ -17,7 +21,9 @@ Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries o
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use | 0.9 | 0 | -0.022 | -0.547 | 144 | 0.001 | 0.000 | 0 | 2 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 246565.3 | 120901 | 141043 | 318.0970 mW | 205.3180 | 112.6462 | 0.13281 | default (seq 0.200000, PI 0.200000) |
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.05 | 0 | -0.006 | -0.042 | 22 | 0.045 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 237085.2 | 114440 | 156305 | 258.3733 mW | 170.8099 | 87.4403 | 0.12306 | default (seq 0.200000, PI 0.200000) |
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 0 | -0.007 | -0.092 | 37 | 0.000 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 240220.9 | 115616 | 151644 | 274.9076 mW | 179.9427 | 94.8391 | 0.12584 | default (seq 0.200000, PI 0.200000) |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.0 | 0 | 0.022 | 0.000 | 0 | -0.001 | -0.001 | 3 | 1 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 240887.4 | 117628 | 151462 | 278.1177 mW | 181.3645 | 96.6264 | 0.12679 | default (seq 0.200000, PI 0.200000) |
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0 | -0.002 | -0.006 | 10 | 0.053 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 235128.3 | 112958 | 161491 | 244.9640 mW | 162.3747 | 82.4682 | 0.12113 | default (seq 0.200000, PI 0.200000) |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.1 | 0 | 0.029 | 0.000 | 0 | 0.033 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 236373.3 | 114505 | 158265 | 245.5463 mW | 162.5251 | 82.8989 | 0.12233 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d16_p0.8 | multi-row allowed | 0.8 | 0 | -0.004 | -0.013 | 5 | 0.057 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 24063.3 | 14815.6 | 6177 | 10160 | 21.4210 mW | 14.6570 | 6.7569 | 0.00713 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d16_p0.8 | multi-row dont_use | 0.8 | 0 | -0.001 | -0.001 | 1 | 0.056 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 24063.3 | 14825.7 | 6178 | 10201 | 21.4664 mW | 14.6640 | 6.7953 | 0.00714 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d256_p0.8_nomerge | multi-row allowed | 0.8 | 11 | -0.164 | -241.688 | 1922 | -0.003 | -0.010 | 20 | 39 | 36 (IMPVFC-96:33 IMPVFC-200:3) | 36 (IMPVFC-96:33 IMPVFC-200:3) | 24 (IMPVFC-96:22 IMPVFC-200:2) | 40 | 2 | 0 | 376946.3 | 262048.6 | 137594 | 132914 | 360.2312 mW | 234.9468 | 125.1394 | 0.14493 | default (seq 0.200000, PI 0.200000) |
@@ -25,25 +31,31 @@ Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries o
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use | 0.9 | 0 | -0.071 | -85.861 | 1863 | -0.002 | -0.004 | 9 | 2 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 252851.3 | 126298 | 132240 | 316.2335 mW | 206.0623 | 110.0328 | 0.13842 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.05 | 0 | -0.008 | -0.309 | 102 | 0.041 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 239580.4 | 116272 | 152366 | 256.7357 mW | 171.2596 | 85.3494 | 0.12672 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 0 | -0.007 | -0.030 | 22 | 0.004 | 0.000 | 0 | 1 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 241238.3 | 118025 | 150528 | 271.4632 mW | 179.8446 | 91.4903 | 0.12829 | default (seq 0.200000, PI 0.200000) |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.0 | 0 | 0.014 | 0.000 | 0 | -0.002 | -0.004 | 8 | 1 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 246334.6 | 120835 | 144851 | 274.9586 mW | 180.8301 | 93.9954 | 0.13319 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0 | -0.004 | -0.037 | 25 | 0.046 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 236501.0 | 114429 | 162624 | 243.4872 mW | 163.0513 | 80.3122 | 0.12377 | default (seq 0.200000, PI 0.200000) |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.1 | 0 | 0.030 | 0.000 | 0 | 0.051 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 238484.3 | 116314 | 155731 | 245.2794 mW | 163.9032 | 81.2503 | 0.12596 | default (seq 0.200000, PI 0.200000) |
 
 ## DRC and PG-connectivity breakdown
-| run | flow | period ns | DRC total | metal shorts PG special wire vs cell pin | other DRC | instances with unconnected PG terminals | instances in shorts | instances in both | other DRC types | DRC before the 2nd ecoRoute |
-|---|---|---|---|---|---|---|---|---|---|---|
-| v2_m0_d256_p0.8_nomerge | multi-row allowed | 0.8 | 46 | 45 | 1 | 15 | 15 | 15 | OppositeEol Spacing M1: 1 | - |
-| v2_m0_d256_p0.8_nomerge | multi-row allowed | 0.9 | 19 | 18 | 1 | 6 | 6 | 6 | OppositeEol Spacing M1: 1 | - |
-| v2_m0_d256_p0.8_nomerge | multi-row dont_use | 0.9 | 2 | 0 | 2 | 0 | 0 | 0 | Notch Spacing M1: 1; OppositeEol Spacing M1: 1 | - |
-| v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.05 | 0 | 0 | 0 | 0 | 0 | 0 | - | 2 |
-| v2_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 0 | 0 | 0 | 0 | 0 | 0 | - | - |
-| v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0 | 0 | 0 | 0 | 0 | 0 | - | 2 |
-| v3_m0_d16_p0.8 | multi-row allowed | 0.8 | 0 | 0 | 0 | 0 | 0 | 0 | - | - |
-| v3_m0_d16_p0.8 | multi-row dont_use | 0.8 | 0 | 0 | 0 | 0 | 0 | 0 | - | - |
-| v3_m0_d256_p0.8_nomerge | multi-row allowed | 0.8 | 39 | 33 | 6 | 11 | 11 | 11 | OppositeEol Spacing M1: 6 | - |
-| v3_m0_d256_p0.8_nomerge | multi-row allowed | 0.9 | 25 | 21 | 4 | 7 | 7 | 7 | OppositeEol Spacing M1: 4 | - |
-| v3_m0_d256_p0.8_nomerge | multi-row dont_use | 0.9 | 2 | 0 | 2 | 0 | 0 | 0 | OppositeEol Spacing M1: 2 | - |
-| v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.05 | 0 | 0 | 0 | 0 | 0 | 0 | - | 0 |
-| v3_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 1 | 0 | 1 | 0 | 0 | 0 | OppositeEol Spacing M1: 1 | - |
-| v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0 | 0 | 0 | 0 | 0 | 0 | - | 2 |
+| run | flow | period ns | DRC total | metal shorts PG special wire vs cell pin | other DRC | instances with unconnected PG terminals | instances in shorts | instances in both | other DRC types | DRC before the 2nd ecoRoute | setup / hold WNS ns before the extra postRoute setup opt |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| v2_m0_d256_p0.8_nomerge | multi-row allowed | 0.8 | 46 | 45 | 1 | 15 | 15 | 15 | OppositeEol Spacing M1: 1 | - | - |
+| v2_m0_d256_p0.8_nomerge | multi-row allowed | 0.9 | 19 | 18 | 1 | 6 | 6 | 6 | OppositeEol Spacing M1: 1 | - | - |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use | 0.9 | 2 | 0 | 2 | 0 | 0 | 0 | Notch Spacing M1: 1; OppositeEol Spacing M1: 1 | - | - |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.05 | 0 | 0 | 0 | 0 | 0 | 0 | - | 2 | - |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 0 | 0 | 0 | 0 | 0 | 0 | - | - | - |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.0 | 1 | 0 | 1 | 0 | 0 | 0 | OppositeEol Spacing M1: 1 | 4 | 0.002 / -0.001 |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0 | 0 | 0 | 0 | 0 | 0 | - | 2 | - |
+| v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.1 | 0 | 0 | 0 | 0 | 0 | 0 | - | 0 | 0.013 / 0.033 |
+| v3_m0_d16_p0.8 | multi-row allowed | 0.8 | 0 | 0 | 0 | 0 | 0 | 0 | - | - | - |
+| v3_m0_d16_p0.8 | multi-row dont_use | 0.8 | 0 | 0 | 0 | 0 | 0 | 0 | - | - | - |
+| v3_m0_d256_p0.8_nomerge | multi-row allowed | 0.8 | 39 | 33 | 6 | 11 | 11 | 11 | OppositeEol Spacing M1: 6 | - | - |
+| v3_m0_d256_p0.8_nomerge | multi-row allowed | 0.9 | 25 | 21 | 4 | 7 | 7 | 7 | OppositeEol Spacing M1: 4 | - | - |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use | 0.9 | 2 | 0 | 2 | 0 | 0 | 0 | OppositeEol Spacing M1: 2 | - | - |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.05 | 0 | 0 | 0 | 0 | 0 | 0 | - | 0 | - |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 1 | 0 | 1 | 0 | 0 | 0 | OppositeEol Spacing M1: 1 | - | - |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.0 | 1 | 0 | 1 | 0 | 0 | 0 | OppositeEol Spacing M1: 1 | 3 | 0.014 / -0.002 |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0 | 0 | 0 | 0 | 0 | 0 | - | 2 | - |
+| v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.1 | 0 | 0 | 0 | 0 | 0 | 0 | - | 4 | 0.026 / 0.051 |
 
 ## Diagnosis of the PG-rail shorts (first flow; route.enc, place.enc, cts.enc and the Genus netlist)
 | run | period ns | shorting insts | multi-row masters used | single-row other-site masters used | row sites | multi-row insts | of which shorting | height rows | on a row of their own site | row orient/inst orient | first present (netlist name = in the Genus netlist by name) | name prefix |
@@ -60,18 +72,24 @@ Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries o
 | v2_m0_d256_p0.8_nomerge | 0.9 | 29 | 8 | 8 | 0 | 0 |
 | v2_m0_d256_p0.8_nomerge | 1.05 | 29 | 8 | 8 | 0 | 0 |
 | v2_m0_d256_p0.8_nomerge | 1.0 | 29 | 8 | 8 | 0 | 0 |
+| v2_m0_d256_p0.8_nomerge | 1.0 | 29 | 8 | 8 | 0 | 0 |
+| v2_m0_d256_p0.8_nomerge | 1.1 | 29 | 8 | 8 | 0 | 0 |
 | v2_m0_d256_p0.8_nomerge | 1.1 | 29 | 8 | 8 | 0 | 0 |
 | v3_m0_d16_p0.8 | 0.8 | 29 | 0 | 0 | 0 | 0 |
 | v3_m0_d256_p0.8_nomerge | 0.9 | 29 | 6 | 6 | 0 | 0 |
 | v3_m0_d256_p0.8_nomerge | 1.05 | 29 | 6 | 6 | 0 | 0 |
 | v3_m0_d256_p0.8_nomerge | 1.0 | 29 | 6 | 6 | 0 | 0 |
+| v3_m0_d256_p0.8_nomerge | 1.0 | 29 | 6 | 6 | 0 | 0 |
+| v3_m0_d256_p0.8_nomerge | 1.1 | 29 | 6 | 6 | 0 | 0 |
 | v3_m0_d256_p0.8_nomerge | 1.1 | 29 | 6 | 6 | 0 | 0 |
 
-## Met/failed bracket per version (fixed flow; met = setup and hold WNS >= 0)
-| run | periods run ns (setup WNS / hold WNS ns) | tightest met ns | loosest failed ns | monotonic |
-|---|---|---|---|---|
-| v2_m0_d256_p0.8_nomerge | 0.9 failed (-0.022 / 0.001); 1.0 failed (-0.007 / 0.000); 1.05 failed (-0.006 / 0.045); 1.1 failed (-0.002 / 0.053) | none | 1.1 | yes |
-| v3_m0_d256_p0.8_nomerge | 0.9 failed (-0.071 / -0.002); 1.0 failed (-0.007 / 0.004); 1.05 failed (-0.008 / 0.041); 1.1 failed (-0.004 / 0.046) | none | 1.1 | yes |
+## Met/failed bracket per version (fixed flows; met = setup and hold WNS >= 0)
+| run | flows | periods run ns (setup WNS / hold WNS ns) | tightest met ns | loosest failed ns | monotonic |
+|---|---|---|---|---|---|
+| v2_m0_d256_p0.8_nomerge | all fixed flows | 0.9 nodv failed (-0.022 / 0.001); 1.0 nodv failed (-0.007 / 0.000); 1.0 nodvts failed (0.022 / -0.001); 1.05 nodveco2 failed (-0.006 / 0.045); 1.1 nodveco2 failed (-0.002 / 0.053); 1.1 nodvts met (0.029 / 0.033) | 1.1 | 1.1 | no |
+| v2_m0_d256_p0.8_nomerge | target-slack flow (nodvts) only | 1.0 nodvts failed (0.022 / -0.001); 1.1 nodvts met (0.029 / 0.033) | 1.1 | 1.0 | yes |
+| v3_m0_d256_p0.8_nomerge | all fixed flows | 0.9 nodv failed (-0.071 / -0.002); 1.0 nodv failed (-0.007 / 0.004); 1.0 nodvts failed (0.014 / -0.002); 1.05 nodveco2 failed (-0.008 / 0.041); 1.1 nodveco2 failed (-0.004 / 0.046); 1.1 nodvts met (0.030 / 0.051) | 1.1 | 1.1 | no |
+| v3_m0_d256_p0.8_nomerge | target-slack flow (nodvts) only | 1.0 nodvts failed (0.014 / -0.002); 1.1 nodvts met (0.030 / 0.051) | 1.1 | 1.0 | yes |
 
 ## Run time (Innovus 'Ending "Innovus" ... real=' line of each run's log, kept on C2; 16 CPUs each, up to 4 runs in parallel)
 | run | flow | period ns | real |
@@ -89,3 +107,51 @@ Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries o
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0:37:33 |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.05 | 0:45:32 |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0:38:24 |
+| v2_m0_d256_p0.8_nomerge | + setup target slack 0.03 + extra postRoute setup opt | 1.0 | 0:57:57 |
+| v2_m0_d256_p0.8_nomerge | + setup target slack 0.03 + extra postRoute setup opt | 1.1 | 0:50:17 |
+| v3_m0_d256_p0.8_nomerge | + setup target slack 0.03 + extra postRoute setup opt | 1.0 | 1:01:00 |
+| v3_m0_d256_p0.8_nomerge | + setup target slack 0.03 + extra postRoute setup opt | 1.1 | 0:52:19 |
+| v2_m0_d256_p0.8_nomerge | export for GLS (export_gls.tcl) | 1.1 | 0:01:38 |
+| v3_m0_d256_p0.8_nomerge | export for GLS (export_gls.tcl) | 1.1 | 0:01:39 |
+
+## Post-route GLS: lockstep with the RTL, both 200,000-request slices
+| netlist | slice | mode | PnR period ns | clock / input delay ps | requests | cycles | mismatching cycles | X cycles netlist / RTL | netlist hit log lines differing from P9/P10 RTL log | lockstep | SDF path delays annotated | SDF timing checks annotated | timing violations | wall s |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| v2 | row0 | sdf | 1.1 | 1100 / 220 | 200000 | 815771 | 0 | 0 / 0 | 0 of 200000 | passed | 841055/841055 (100.00%) | 0/468796 (0.00%) | 0 | 272 |
+| v2 | row0 | sdf tcf | 1.1 | 1100 / 220 | 200000 | 815771 | 0 | 0 / 0 | 0 of 200000 | passed | 841055/841055 (100.00%) | 0/468796 (0.00%) | 0 | 2946 |
+| v2 | row0 | zero | 1.1 | 1100 / 550 | 200000 | 815771 | 0 | 0 / 0 | 0 of 200000 | passed | - | - | - | 110 |
+| v2 | row1M | sdf | 1.1 | 1100 / 220 | 200000 | 808867 | 0 | 0 / 0 | 0 of 200000 | passed | 841055/841055 (100.00%) | 0/468796 (0.00%) | 0 | 231 |
+| v2 | row1M | sdf tcf | 1.1 | 1100 / 220 | 200000 | 808867 | 0 | 0 / 0 | 0 of 200000 | passed | 841055/841055 (100.00%) | 0/468796 (0.00%) | 0 | 2818 |
+| v2 | row1M | zero | 1.1 | 1100 / 550 | 200000 | 808867 | 0 | 0 / 0 | 0 of 200000 | passed | - | - | - | 102 |
+| v3 | row0 | sdf | 1.1 | 1100 / 220 | 200000 | 738077 | 0 | 0 / 0 | 0 of 200000 | passed | 878949/878949 (100.00%) | 0/450970 (0.00%) | 0 | 311 |
+| v3 | row0 | sdf tcf | 1.1 | 1100 / 220 | 200000 | 738077 | 0 | 0 / 0 | 0 of 200000 | passed | 878949/878949 (100.00%) | 0/450970 (0.00%) | 0 | 2618 |
+| v3 | row0 | zero | 1.1 | 1100 / 550 | 200000 | 738077 | 0 | 0 / 0 | 0 of 200000 | passed | - | - | - | 132 |
+| v3 | row1M | sdf | 1.1 | 1100 / 220 | 200000 | 743408 | 0 | 0 / 0 | 0 of 200000 | passed | 878949/878949 (100.00%) | 0/450970 (0.00%) | 0 | 335 |
+| v3 | row1M | sdf tcf | 1.1 | 1100 / 220 | 200000 | 743408 | 0 | 0 / 0 | 0 of 200000 | passed | 878949/878949 (100.00%) | 0/450970 (0.00%) | 0 | 2679 |
+| v3 | row1M | zero | 1.1 | 1100 / 550 | 200000 | 743408 | 0 | 0 / 0 | 0 of 200000 | passed | - | - | - | 136 |
+
+## SDF variant check (v3, row0, first 10,000 requests; a = write_sdf defaults, b = SETUPHOLD/RECREM merged when paired, library check edges)
+| netlist | slice | mode | PnR period ns | clock / input delay ps | requests | cycles | mismatching cycles | X cycles netlist / RTL | netlist hit log lines differing from P9/P10 RTL log | lockstep | SDF path delays annotated | SDF timing checks annotated | timing violations | wall s |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| v3 | row0 | sdf a | 1.1 | 1100 / 220 | 10000 | 37581 | 0 | 0 / 0 | 0 of 10000 | passed | 878949/878949 (100.00%) | 0/450970 (0.00%) | 0 | 48 |
+| v3 | row0 | sdf b | 1.1 | 1100 / 220 | 10000 | 37581 | 0 | 0 / 0 | 0 of 10000 | passed | 878949/878949 (100.00%) | 0/450970 (0.00%) | 0 | 48 |
+
+## Export from the routed design (cadence/pnr/export_gls.tcl) and constructs in the SDF used (delays_a.sdf)
+| run | netlist insts FILL | netlist insts ENDCAP | netlist insts WT | SDF variants written | SDF IOPATH | SDF INTERCONNECT | SDF TIMINGCHECK | SDF SETUPHOLD | SDF RECREM | SDF WIDTH | SDF COND |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| v2_m0_d256_p0.8_nomerge_pnr1.1 | 0 | 0 | 0 | a, b | 841055 | 393299 | 40245 | 232126 | 40181 | 196489 | 894275 |
+| v3_m0_d256_p0.8_nomerge_pnr1.1 | 0 | 0 | 0 | a, b | 878949 | 398559 | 40253 | 220226 | 40189 | 190555 | 919950 |
+
+## Post-route power (typical corner; path delays annotated, timing checks not annotated): report_power with the routed netlist, SDC, Innovus SPEF and the TCF of the SDF run
+| netlist | slice | period ns | SPEF read (read_spef statistics) | total | internal | switching | leakage | register share | clock (clock tree) share | logic (combinational) share = uncertainty bound | driver nets annotated | flop outputs annotated | ports in / out annotated | cycles | lockstep (SDF+TCF run) | energy per request |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| v2 | row0 | 1.1 | 114686 nets, 0 not annotated | 2.25440e-01 W | 1.75024e-01 | 5.02946e-02 | 1.21369e-04 | 72.74% | 24.54% | 2.72% | 48.74% | 100.00% | 100.00% / 100.00% | 815771 | passed | 1011.49 pJ |
+| v2 | row1M | 1.1 | 114686 nets, 0 not annotated | 2.24874e-01 W | 1.74806e-01 | 4.99472e-02 | 1.21410e-04 | 72.92% | 24.60% | 2.48% | 48.74% | 100.00% | 100.00% / 100.00% | 808867 | passed | 1000.41 pJ |
+| v3 | row0 | 1.1 | 116466 nets, 0 not annotated | 2.27787e-01 W | 1.75912e-01 | 5.17499e-02 | 1.25777e-04 | 71.98% | 24.80% | 3.21% | 48.95% | 100.00% | 100.00% / 100.00% | 738077 | passed | 924.68 pJ |
+| v3 | row1M | 1.1 | 116466 nets, 0 not annotated | 2.28118e-01 W | 1.76001e-01 | 5.19920e-02 | 1.25761e-04 | 71.89% | 24.77% | 3.34% | 48.95% | 100.00% | 100.00% / 100.00% | 743408 | passed | 932.72 pJ |
+
+## v3 against v2 per slice (1.1 ns, both meet setup and hold)
+| slice | energy per request v2 -> v3 | change | total power change | cycles change |
+|---|---|---|---|---|
+| row0 | 1011.49 -> 924.68 pJ | -86.81 pJ (-8.58%) | +1.04% | -9.52% |
+| row1M | 1000.41 -> 932.72 pJ | -67.70 pJ (-6.77%) | +1.44% | -8.09% |

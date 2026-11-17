@@ -13,6 +13,9 @@ set bufs [lmap c $bufs { expr {[lsearch -exact $MULTIROW $c] < 0 ? $c : [continu
 set invs [lmap c $invs { expr {[lsearch -exact $MULTIROW $c] < 0 ? $c : [continue]} }]
 set_ccopt_property buffer_cells $bufs
 set_ccopt_property inverter_cells $invs
+# setup target slack +0.03 ns for place_opt, postCTS and postRoute optimisation (default 0 left the d256 runs 2-8 ps
+# short at 0.9-1.1 ns)
+setOptMode -setupTargetSlack 0.03
 # place, clock tree, route
 place_opt_design
 saveDesign place.enc
@@ -26,6 +29,14 @@ addFiller -cell [env_list PNR_FILLERS] -prefix FILL
 ecoRoute -fix_drc
 # extra DRC pass (from the d256 0.9/1.0 ns runs on): check, fix again; the reports below are on the saved design
 verify_drc -report rpt/drc_pass1.rpt
+ecoRoute -fix_drc
+# extra postRoute setup optimisation (fillers removed for it and re-inserted), then DRC fix; timing before it in
+# rpt/pre_extra/
+timeDesign -postRoute -outDir rpt/pre_extra/setup
+timeDesign -postRoute -hold -outDir rpt/pre_extra/hold
+deleteFiller -prefix FILL
+optDesign -postRoute -setup
+addFiller -cell [env_list PNR_FILLERS] -prefix FILL
 ecoRoute -fix_drc
 saveDesign route.enc
 

@@ -14,6 +14,9 @@
 # cell models (globs GLS_*_V_GLOB in $W/local.env, on C2 only), the run's RTL and synthesis/p13/tb_gls_c2.sv.
 # Output: $W/p13/runs/<run>_<slice>_<mode>[_n<nreq>]/ with xrun.log, hits_rtl.txt, hits_gl.txt, summary.txt.
 # The reference hit log is the P9 (v2) / P10 (v3) RTL log of the slice, first <nreq> lines.
+# Optional overrides (P15 post-route GLS; unset = P13 behaviour): GLS_NETLIST (netlist file), GLS_SDF_PATH (SDF file,
+# replaces results/<run>/<sdf_file>), GLS_PERIOD_PS (clock period; input times stay half / 0.2 of it), GLS_OUT_ROOT
+# (instead of $W/p13/runs), GLS_TAG_SUFFIX (appended to the folder name).
 set RUN = $1
 set SLICE = $2
 set GMODE = $3
@@ -36,12 +39,18 @@ if ($#argv >= 5) then
     set SDFN = $5
     set TAG = ${TAG}_$SDFN:r
 endif
+if ($?GLS_TAG_SUFFIX) then
+    set TAG = ${TAG}$GLS_TAG_SUFFIX
+endif
 set PERIOD_PS = 800
+if ($?GLS_PERIOD_PS) then
+    set PERIOD_PS = $GLS_PERIOD_PS
+endif
 if ($GMODE == zero) then
-    set IN_PS = 400
+    @ IN_PS = $PERIOD_PS / 2
     set OPTS = (-nospecify -notimingchecks -delay_mode zero)
 else if ($GMODE == sdf) then
-    set IN_PS = 160
+    @ IN_PS = $PERIOD_PS / 5
     set OPTS = (-define GLS_SDF -sdf_verbose -sdfstats sdfstats.txt)
 else
     echo "mode must be zero or sdf"
@@ -56,6 +65,9 @@ if ($?GLS_TCF) then
     endif
 endif
 set OUT = $W/p13/runs/$TAG
+if ($?GLS_OUT_ROOT) then
+    set OUT = $GLS_OUT_ROOT/$TAG
+endif
 mkdir -p $OUT
 cd $OUT
 if ($?GLS_TCF) then
@@ -64,11 +76,18 @@ if ($?GLS_TCF) then
     echo "exit" >> tcf.tcl
     set OPTS = ($OPTS -access +r -input tcf.tcl)
 endif
-if ($GMODE == sdf) ln -sf $W/results/$RUN/$SDFN delays.sdf
+set SDFSRC = $W/results/$RUN/$SDFN
+if ($?GLS_SDF_PATH) then
+    set SDFSRC = $GLS_SDF_PATH
+endif
+if ($GMODE == sdf) ln -sf $SDFSRC delays.sdf
 set CORE_V = `ls $GLS_CORE_V_GLOB`
 set CLK_V = `ls $GLS_CLK_V_GLOB`
 set PR_V = `ls $GLS_PR_V_GLOB`
 set NETLIST = $W/results/$RUN/netlist.v
+if ($?GLS_NETLIST) then
+    set NETLIST = $GLS_NETLIST
+endif
 set RTL = $W/rtl/$VER/lfu_cache_controller.v
 set TB = $W/p13/tb/tb_gls_c2.sv
 set T0 = `date +%s`
@@ -84,7 +103,7 @@ set T1 = `date +%s`
 zcat $REF | head -n $NREQ > ref.txt
 set DR = `paste -d'|' ref.txt hits_rtl.txt | awk -F'|' '$1 == $2 {next} {n++} END {print n+0}'`
 set DG = `paste -d'|' ref.txt hits_gl.txt | awk -F'|' '$1 == $2 {next} {n++} END {print n+0}'`
-echo "# P13 gls ${TAG}: $VER netlist results/$RUN in lockstep with $VER RTL, mode $GMODE, period $PERIOD_PS ps, inputs $IN_PS ps after the rising edge" > summary.txt
+echo "# P13 gls ${TAG}: $VER netlist $NETLIST:t ($RUN) in lockstep with $VER RTL, mode $GMODE, period $PERIOD_PS ps, inputs $IN_PS ps after the rising edge" > summary.txt
 echo "netlist sha256 `sha256sum < $NETLIST | cut -c1-64`" >> summary.txt
 echo "rtl sha256 `sha256sum < $RTL | cut -c1-64`" >> summary.txt
 echo "tb sha256 `sha256sum < $TB | cut -c1-64`" >> summary.txt
@@ -93,7 +112,7 @@ echo "xrun exit=$RC wall_s=$WALL" >> summary.txt
 grep -E '^gls_c2 |LOCKSTEP' xrun.log >> summary.txt
 echo "reference ${VER}_d${DEPTH}_m${MODE}_$SLICE (first $NREQ lines): hits_rtl lines `wc -l < hits_rtl.txt` differing $DR; hits_gl lines `wc -l < hits_gl.txt` differing $DG" >> summary.txt
 if ($GMODE == sdf) then
-    echo "sdf file: results/$RUN/$SDFN" >> summary.txt
+    echo "sdf file: $SDFSRC:t" >> summary.txt
     grep -A2 'SDF statistics' xrun.log >> summary.txt
     echo "timing violations: `grep -c 'Timing violation' xrun.log`" >> summary.txt
     echo "sdf.log message ids (count):" >> summary.txt

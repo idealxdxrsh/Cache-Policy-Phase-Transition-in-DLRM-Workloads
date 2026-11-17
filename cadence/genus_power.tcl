@@ -5,6 +5,8 @@
 read_libs [list $::env(CORELIB) $::env(CLKLIB)]
 read_netlist $::env(NETLIST) -top $::env(TOP)
 read_sdc $::env(SDC_FILE)
+# P15 post-route: parasitics extracted by Innovus (SPEF_FILE set by run_power.csh from PWR_SPEF)
+if {[info exists ::env(SPEF_FILE)]} { read_spef $::env(SPEF_FILE) }
 read_tcf -tcf_instance $::env(TCF_INSTANCE) $::env(TCF_FILE)
 report_power > $::env(OUT)/power_tcf.rpt
 report_sdb_annotation > $::env(OUT)/sdb_annotation.rpt
