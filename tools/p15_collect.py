@@ -122,7 +122,9 @@ def flow(m):
     return {None: 'multi-row allowed', 'nodv': 'multi-row dont_use',
             'nodveco2': 'multi-row dont_use + 2nd ecoRoute',
             'nodvts': 'multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt',
-            'nodvtsh': 'nodvts database + one extra optDesign -postRoute -hold and ecoRoute -fix_drc'
+            'nodvtsh': 'nodvts database + one extra optDesign -postRoute -hold and ecoRoute -fix_drc',
+            'nodvtsh2': 'nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc '
+                        '(+1 if verify_drc found a violation)'
             }.get(m.group(3), m.group(3))
 
 
@@ -179,7 +181,7 @@ def main():
     print('## DRC and PG-connectivity breakdown')
     print('| run | flow | period ns | DRC total | metal shorts PG special wire vs cell pin | other DRC | '
           'instances with unconnected PG terminals | instances in shorts | instances in both | other DRC types | '
-          'DRC before the 2nd ecoRoute | setup / hold WNS ns before the last optimisation pass |')
+          'DRC in rpt/drc_pass1.rpt (before the extra ecoRoute) | setup / hold WNS ns before the last optimisation pass |')
     print('|' + '---|' * 12)
     for r in runs:
         m = re.match(r'(.+)_pnr([\d.]+)(?:_([A-Za-z0-9]+))?$', r.name)
@@ -205,7 +207,7 @@ def bracket(runs):
     res = {}
     for r in runs:
         m = re.match(r'(.+)_pnr([\d.]+)(?:_([A-Za-z0-9]+))?$', r.name)
-        if not m or m.group(3) not in ('nodv', 'nodveco2', 'nodvts', 'nodvtsh') or '_d256_' not in m.group(1):
+        if not m or m.group(3) not in ('nodv', 'nodveco2', 'nodvts', 'nodvtsh', 'nodvtsh2') or '_d256_' not in m.group(1):
             continue
         rp = r / 'rpt'
         s = timing(one(rp / 'setup', '*_postRoute.summary.gz'))
@@ -223,10 +225,14 @@ def bracket(runs):
     for run, rows in res.items():
         groups.setdefault((run, 'all fixed flows'), []).extend(rows)
         groups.setdefault((run, 'target-slack flow (nodvts) only'), []).extend(x for x in rows if x[4] == 'nodvts')
-        held = {x[0] for x in rows if x[4] == 'nodvtsh'}
-        if held:
-            groups.setdefault((run, 'target-slack flow, hold pass where run (nodvtsh replaces nodvts)'), []).extend(
-                x for x in rows if x[4] == 'nodvtsh' or (x[4] == 'nodvts' and x[0] not in held))
+        # target-slack flow with the latest hold pass at each period (nodvtsh2 over nodvtsh over nodvts)
+        rank = {'nodvts': 0, 'nodvtsh': 1, 'nodvtsh2': 2}
+        best = {}
+        for x in rows:
+            if x[4] in rank and (x[0] not in best or rank[x[4]] > rank[best[x[0]][4]]):
+                best[x[0]] = x
+        if any(x[4] != 'nodvts' for x in best.values()):
+            groups.setdefault((run, 'target-slack flow, latest hold pass at each period'), []).extend(best.values())
     for (run, fl), rows in sorted(groups.items()):
         if not rows:
             continue

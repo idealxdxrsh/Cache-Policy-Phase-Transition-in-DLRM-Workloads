@@ -1,5 +1,5 @@
 # P15 optional hold pass on a finished run: restore its route.enc, optDesign -postRoute -hold (fillers removed for it and
-# re-inserted), ecoRoute -fix_drc, save route.enc and write the same reports as stageB.tcl (copied from there) into the
+# re-inserted; optional hold target slack), ecoRoute -fix_drc (optional DRC check and one retry), save route.enc and write the same reports as stageB.tcl (copied from there) into the
 # current folder (a new folder, so the source run is not changed). Run by run_holdfix.csh. Environment: HOLDFIX_SRC (source
 # run folder), PNR_TOP, PNR_CPUS and the PNR_* names from local.env (well tap, fillers, site, body-bias pins).
 proc env_list {name} { return [regexp -all -inline {\S+} $::env($name)] }
@@ -35,10 +35,18 @@ foreach c $MULTIROW { setDontUse $c true }
 # timing of the source design as restored (should equal its own reports)
 timeDesign -postRoute -outDir rpt/pre_hold/setup
 timeDesign -postRoute -hold -outDir rpt/pre_hold/hold
+# optional: HOLDFIX_HOLD_TARGET (ns) = setOptMode -holdTargetSlack for this pass (default: the restored setting)
+if {[info exists env(HOLDFIX_HOLD_TARGET)]} { setOptMode -holdTargetSlack $env(HOLDFIX_HOLD_TARGET) }
 deleteFiller -prefix FILL
 optDesign -postRoute -hold
 addFiller -cell [env_list PNR_FILLERS] -prefix FILL
 ecoRoute -fix_drc
+# optional: HOLDFIX_DRC_RETRY set = verify_drc (rpt/drc_pass1.rpt) and, if it finds a violation, one more ecoRoute -fix_drc
+if {[info exists env(HOLDFIX_DRC_RETRY)]} {
+  verify_drc -report rpt/drc_pass1.rpt
+  set fd [open rpt/drc_pass1.rpt]; set t [read $fd]; close $fd
+  if {![string match "*No DRC violations were found*" $t]} { puts "HOLDFIX DRC RETRY"; ecoRoute -fix_drc }
+}
 saveDesign route.enc
 
 # reports (raw reports stay on C2 and in ~/c2_results/p15)

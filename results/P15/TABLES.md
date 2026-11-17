@@ -12,6 +12,9 @@ optDesign -postRoute -setup (fillers removed and re-inserted) and ecoRoute -fix_
 "nodvts database + one extra optDesign -postRoute -hold" (suffix _nodvtsh, 1.0 ns only): cadence/pnr/holdfix.tcl and
 run_holdfix.csh restore the _nodvts route.enc, run optDesign -postRoute -hold (fillers removed and re-inserted) and
 ecoRoute -fix_drc, then the stageB.tcl reports; timing of the restored design before the pass in rpt/pre_hold/.
+"nodvtsh database + hold target slack 0.01" (suffix _nodvtsh2, 1.0 ns only): holdfix.tcl on the _nodvtsh route.enc with
+HOLDFIX_HOLD_TARGET 0.01 (setOptMode -holdTargetSlack 0.01) and HOLDFIX_DRC_RETRY (verify_drc to rpt/drc_pass1.rpt, one more
+ecoRoute -fix_drc if it finds a violation; it did in both runs).
 Met (bracket): setup and hold WNS not negative (a reported -0.000 is negative) and 0 violating paths.
 Post-route GLS and power (sections from "Post-route GLS" on): `python3 -I tools/p15_gls_table.py` on ~/c2_results/p15/gls/
 (cadence/pnr/export_gls.tcl, run_export.csh; cadence/run_gls.csh, run_power.csh, genus_power.tcl with the P15 overrides).
@@ -27,6 +30,7 @@ Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries o
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 0 | -0.007 | -0.092 | 37 | 0.000 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 240220.9 | 115616 | 151644 | 274.9076 mW | 179.9427 | 94.8391 | 0.12584 | default (seq 0.200000, PI 0.200000) |
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.0 | 0 | 0.022 | 0.000 | 0 | -0.001 | -0.001 | 3 | 1 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 240887.4 | 117628 | 151462 | 278.1177 mW | 181.3645 | 96.6264 | 0.12679 | default (seq 0.200000, PI 0.200000) |
 | v2_m0_d256_p0.8_nomerge | nodvts database + one extra optDesign -postRoute -hold and ecoRoute -fix_drc | 1.0 | 0 | 0.022 | 0.000 | 0 | -0.000 | -0.000 | 1 | 1 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 240888.4 | 117630 | 151462 | 278.1184 mW | 181.3649 | 96.6267 | 0.12679 | default (seq 0.200000, PI 0.200000) |
+| v2_m0_d256_p0.8_nomerge | nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation) | 1.0 | 0 | 0.022 | 0.000 | 0 | 0.009 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 240979.5 | 117808 | 151458 | 278.1788 mW | 181.4015 | 96.6505 | 0.12686 | default (seq 0.200000, PI 0.200000) |
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0 | -0.002 | -0.006 | 10 | 0.053 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 235128.3 | 112958 | 161491 | 244.9640 mW | 162.3747 | 82.4682 | 0.12113 | default (seq 0.200000, PI 0.200000) |
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.1 | 0 | 0.029 | 0.000 | 0 | 0.033 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 379007.7 | 236373.3 | 114505 | 158265 | 245.5463 mW | 162.5251 | 82.8989 | 0.12233 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d16_p0.8 | multi-row allowed | 0.8 | 0 | -0.004 | -0.013 | 5 | 0.057 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 24063.3 | 14815.6 | 6177 | 10160 | 21.4210 mW | 14.6570 | 6.7569 | 0.00713 | default (seq 0.200000, PI 0.200000) |
@@ -38,11 +42,12 @@ Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries o
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 0 | -0.007 | -0.030 | 22 | 0.004 | 0.000 | 0 | 1 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 241238.3 | 118025 | 150528 | 271.4632 mW | 179.8446 | 91.4903 | 0.12829 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.0 | 0 | 0.014 | 0.000 | 0 | -0.002 | -0.004 | 8 | 1 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 246334.6 | 120835 | 144851 | 274.9586 mW | 180.8301 | 93.9954 | 0.13319 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d256_p0.8_nomerge | nodvts database + one extra optDesign -postRoute -hold and ecoRoute -fix_drc | 1.0 | 0 | 0.014 | 0.000 | 0 | -0.000 | -0.000 | 1 | 1 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 246337.0 | 120840 | 144847 | 274.9601 mW | 180.8310 | 93.9960 | 0.13319 | default (seq 0.200000, PI 0.200000) |
+| v3_m0_d256_p0.8_nomerge | nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation) | 1.0 | 0 | 0.014 | 0.000 | 0 | 0.008 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 246532.5 | 121216 | 144752 | 275.0874 mW | 180.9082 | 94.0458 | 0.13334 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0 | -0.004 | -0.037 | 25 | 0.046 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 236501.0 | 114429 | 162624 | 243.4872 mW | 163.0513 | 80.3122 | 0.12377 | default (seq 0.200000, PI 0.200000) |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.1 | 0 | 0.030 | 0.000 | 0 | 0.051 | 0.000 | 0 | 0 | 0 | 0 | 0 | 40 | 2 | 0 | 376946.3 | 238484.3 | 116314 | 155731 | 245.2794 mW | 163.9032 | 81.2503 | 0.12596 | default (seq 0.200000, PI 0.200000) |
 
 ## DRC and PG-connectivity breakdown
-| run | flow | period ns | DRC total | metal shorts PG special wire vs cell pin | other DRC | instances with unconnected PG terminals | instances in shorts | instances in both | other DRC types | DRC before the 2nd ecoRoute | setup / hold WNS ns before the last optimisation pass |
+| run | flow | period ns | DRC total | metal shorts PG special wire vs cell pin | other DRC | instances with unconnected PG terminals | instances in shorts | instances in both | other DRC types | DRC in rpt/drc_pass1.rpt (before the extra ecoRoute) | setup / hold WNS ns before the last optimisation pass |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | v2_m0_d256_p0.8_nomerge | multi-row allowed | 0.8 | 46 | 45 | 1 | 15 | 15 | 15 | OppositeEol Spacing M1: 1 | - | - |
 | v2_m0_d256_p0.8_nomerge | multi-row allowed | 0.9 | 19 | 18 | 1 | 6 | 6 | 6 | OppositeEol Spacing M1: 1 | - | - |
@@ -51,6 +56,7 @@ Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries o
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 0 | 0 | 0 | 0 | 0 | 0 | - | - | - |
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.0 | 1 | 0 | 1 | 0 | 0 | 0 | OppositeEol Spacing M1: 1 | 4 | 0.002 / -0.001 (before setup pass) |
 | v2_m0_d256_p0.8_nomerge | nodvts database + one extra optDesign -postRoute -hold and ecoRoute -fix_drc | 1.0 | 1 | 0 | 1 | 0 | 0 | 0 | OppositeEol Spacing M1: 1 | - | 0.022 / -0.001 (before hold pass) |
+| v2_m0_d256_p0.8_nomerge | nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation) | 1.0 | 0 | 0 | 0 | 0 | 0 | 0 | - | 3 | 0.022 / -0.000 (before hold pass) |
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0 | 0 | 0 | 0 | 0 | 0 | - | 2 | - |
 | v2_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.1 | 0 | 0 | 0 | 0 | 0 | 0 | - | 0 | 0.013 / 0.033 (before setup pass) |
 | v3_m0_d16_p0.8 | multi-row allowed | 0.8 | 0 | 0 | 0 | 0 | 0 | 0 | - | - | - |
@@ -62,6 +68,7 @@ Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries o
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use | 1.0 | 1 | 0 | 1 | 0 | 0 | 0 | OppositeEol Spacing M1: 1 | - | - |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.0 | 1 | 0 | 1 | 0 | 0 | 0 | OppositeEol Spacing M1: 1 | 3 | 0.014 / -0.002 (before setup pass) |
 | v3_m0_d256_p0.8_nomerge | nodvts database + one extra optDesign -postRoute -hold and ecoRoute -fix_drc | 1.0 | 1 | 0 | 1 | 0 | 0 | 0 | OppositeEol Spacing M1: 1 | - | 0.014 / -0.002 (before hold pass) |
+| v3_m0_d256_p0.8_nomerge | nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation) | 1.0 | 0 | 0 | 0 | 0 | 0 | 0 | - | 1 | 0.014 / -0.000 (before hold pass) |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute | 1.1 | 0 | 0 | 0 | 0 | 0 | 0 | - | 2 | - |
 | v3_m0_d256_p0.8_nomerge | multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt | 1.1 | 0 | 0 | 0 | 0 | 0 | 0 | - | 4 | 0.026 / 0.051 (before setup pass) |
 
@@ -82,11 +89,13 @@ Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries o
 | v2_m0_d256_p0.8_nomerge | 1.0 | 29 | 8 | 8 | 0 | 0 |
 | v2_m0_d256_p0.8_nomerge | 1.0 | 29 | 8 | 8 | 0 | 0 |
 | v2_m0_d256_p0.8_nomerge | 1.0 | 29 | 8 | 8 | 0 | 0 |
+| v2_m0_d256_p0.8_nomerge | 1.0 | 29 | 8 | 8 | 0 | 0 |
 | v2_m0_d256_p0.8_nomerge | 1.1 | 29 | 8 | 8 | 0 | 0 |
 | v2_m0_d256_p0.8_nomerge | 1.1 | 29 | 8 | 8 | 0 | 0 |
 | v3_m0_d16_p0.8 | 0.8 | 29 | 0 | 0 | 0 | 0 |
 | v3_m0_d256_p0.8_nomerge | 0.9 | 29 | 6 | 6 | 0 | 0 |
 | v3_m0_d256_p0.8_nomerge | 1.05 | 29 | 6 | 6 | 0 | 0 |
+| v3_m0_d256_p0.8_nomerge | 1.0 | 29 | 6 | 6 | 0 | 0 |
 | v3_m0_d256_p0.8_nomerge | 1.0 | 29 | 6 | 6 | 0 | 0 |
 | v3_m0_d256_p0.8_nomerge | 1.0 | 29 | 6 | 6 | 0 | 0 |
 | v3_m0_d256_p0.8_nomerge | 1.0 | 29 | 6 | 6 | 0 | 0 |
@@ -96,12 +105,12 @@ Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries o
 ## Met/failed bracket per version (fixed flows; met = setup and hold WNS not negative, 0 violating paths)
 | run | flows | periods run ns (setup WNS / hold WNS ns) | tightest met ns | loosest failed ns | monotonic |
 |---|---|---|---|---|---|
-| v2_m0_d256_p0.8_nomerge | all fixed flows | 0.9 nodv failed (-0.022 / 0.001); 1.0 nodv failed (-0.007 / 0.000); 1.0 nodvtsh failed (0.022 / -0.000); 1.0 nodvts failed (0.022 / -0.001); 1.05 nodveco2 failed (-0.006 / 0.045); 1.1 nodveco2 failed (-0.002 / 0.053); 1.1 nodvts met (0.029 / 0.033) | 1.1 | 1.1 | no |
+| v2_m0_d256_p0.8_nomerge | all fixed flows | 0.9 nodv failed (-0.022 / 0.001); 1.0 nodv failed (-0.007 / 0.000); 1.0 nodvtsh failed (0.022 / -0.000); 1.0 nodvts failed (0.022 / -0.001); 1.0 nodvtsh2 met (0.022 / 0.009); 1.05 nodveco2 failed (-0.006 / 0.045); 1.1 nodveco2 failed (-0.002 / 0.053); 1.1 nodvts met (0.029 / 0.033) | 1.0 | 1.1 | no |
 | v2_m0_d256_p0.8_nomerge | target-slack flow (nodvts) only | 1.0 nodvts failed (0.022 / -0.001); 1.1 nodvts met (0.029 / 0.033) | 1.1 | 1.0 | yes |
-| v2_m0_d256_p0.8_nomerge | target-slack flow, hold pass where run (nodvtsh replaces nodvts) | 1.0 nodvtsh failed (0.022 / -0.000); 1.1 nodvts met (0.029 / 0.033) | 1.1 | 1.0 | yes |
-| v3_m0_d256_p0.8_nomerge | all fixed flows | 0.9 nodv failed (-0.071 / -0.002); 1.0 nodv failed (-0.007 / 0.004); 1.0 nodvtsh failed (0.014 / -0.000); 1.0 nodvts failed (0.014 / -0.002); 1.05 nodveco2 failed (-0.008 / 0.041); 1.1 nodveco2 failed (-0.004 / 0.046); 1.1 nodvts met (0.030 / 0.051) | 1.1 | 1.1 | no |
+| v2_m0_d256_p0.8_nomerge | target-slack flow, latest hold pass at each period | 1.0 nodvtsh2 met (0.022 / 0.009); 1.1 nodvts met (0.029 / 0.033) | 1.0 | none | yes |
+| v3_m0_d256_p0.8_nomerge | all fixed flows | 0.9 nodv failed (-0.071 / -0.002); 1.0 nodv failed (-0.007 / 0.004); 1.0 nodvtsh failed (0.014 / -0.000); 1.0 nodvts failed (0.014 / -0.002); 1.0 nodvtsh2 met (0.014 / 0.008); 1.05 nodveco2 failed (-0.008 / 0.041); 1.1 nodveco2 failed (-0.004 / 0.046); 1.1 nodvts met (0.030 / 0.051) | 1.0 | 1.1 | no |
 | v3_m0_d256_p0.8_nomerge | target-slack flow (nodvts) only | 1.0 nodvts failed (0.014 / -0.002); 1.1 nodvts met (0.030 / 0.051) | 1.1 | 1.0 | yes |
-| v3_m0_d256_p0.8_nomerge | target-slack flow, hold pass where run (nodvtsh replaces nodvts) | 1.0 nodvtsh failed (0.014 / -0.000); 1.1 nodvts met (0.030 / 0.051) | 1.1 | 1.0 | yes |
+| v3_m0_d256_p0.8_nomerge | target-slack flow, latest hold pass at each period | 1.0 nodvtsh2 met (0.014 / 0.008); 1.1 nodvts met (0.030 / 0.051) | 1.0 | none | yes |
 
 ## Run time (Innovus 'Ending "Innovus" ... real=' line of each run's log, kept on C2; 16 CPUs each, up to 4 runs in parallel)
 | run | flow | period ns | real |
@@ -127,6 +136,8 @@ Diagnosis: cadence/pnr/diag_shorts.tcl and run_diag.csh (tool database queries o
 | v3_m0_d256_p0.8_nomerge | export for GLS (export_gls.tcl) | 1.1 | 0:01:39 |
 | v2_m0_d256_p0.8_nomerge | nodvts database + extra hold pass (holdfix.tcl) | 1.0 | 0:06:08 |
 | v3_m0_d256_p0.8_nomerge | nodvts database + extra hold pass (holdfix.tcl) | 1.0 | 0:06:34 |
+| v2_m0_d256_p0.8_nomerge | nodvtsh database + hold target 0.01 pass (holdfix.tcl) | 1.0 | 0:06:50 |
+| v3_m0_d256_p0.8_nomerge | nodvtsh database + hold target 0.01 pass (holdfix.tcl) | 1.0 | 0:07:10 |
 
 ## Post-route GLS: lockstep with the RTL, both 200,000-request slices
 | netlist | slice | mode | PnR period ns | clock / input delay ps | requests | cycles | mismatching cycles | X cycles netlist / RTL | netlist hit log lines differing from P9/P10 RTL log | lockstep | SDF path delays annotated | SDF timing checks annotated | timing violations | wall s |

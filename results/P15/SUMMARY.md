@@ -10,18 +10,18 @@ Every number is from results/P15/TABLES.md (tools/p15_collect.py, tools/p15_gls_
 | run | period ns | setup WNS / TNS ns (viol. paths) | hold WNS / TNS ns (viol. paths) | DRC | conn. problems all nets |
 |---|---|---|---|---|---|
 | v2 | 1.0 | 0.022 / 0.000 (0) | -0.001 / -0.001 (3) | 1 | 0 |
+| v2 | 1.0, after 2 hold passes | 0.022 / 0.000 (0) | 0.009 / 0.000 (0) | 0 | 0 |
 | v2 | 1.1 | 0.029 / 0.000 (0) | 0.033 / 0.000 (0) | 0 | 0 |
 | v3 | 1.0 | 0.014 / 0.000 (0) | -0.002 / -0.004 (8) | 1 | 0 |
+| v3 | 1.0, after 2 hold passes | 0.014 / 0.000 (0) | 0.008 / 0.000 (0) | 0 | 0 |
 | v3 | 1.1 | 0.030 / 0.000 (0) | 0.051 / 0.000 (0) | 0 | 0 |
-- Bracket (target-slack flow): v2 and v3 tightest met 1.1 ns, loosest failed 1.0 ns. One extra optDesign -postRoute -hold + ecoRoute
-  on the 1.0 ns databases (holdfix.tcl) left hold WNS -0.000 ns, 1 path each (was 3 / 8), DRC 1, setup unchanged: still failed.
-  Earlier fixed flows met no period (setup WNS -0.002 to -0.071 ns, 0.9-1.1 ns): flow-dependent. v2/v3 compared only at 1.1 ns.
-
+- Bracket (target-slack flow, latest hold pass per period): v2 and v3 tightest met 1.0 ns, no failed period (1.0, 1.1 ns run; earlier
+  flows failed 0.9-1.1 ns). 1.0 ns needed two hold passes (holdfix.tcl): optDesign -postRoute -hold, then with hold target slack
+  0.01 ns plus one DRC-retry ecoRoute. GLS, power and the v2/v3 comparison are at 1.1 ns only.
 ## Post-route GLS at 1.1 ns (TABLES.md "Post-route GLS", "SDF variant check", "Export"), both 200,000-request slices
 - Innovus netlist (no physical-only cells) and SDF. Zero-delay and SDF lockstep passed, v2 and v3, row0 and row1M: 0 mismatching and 0 X
   cycles, hit logs identical to the P9/P10 RTL logs. SDF path delays 100.00% annotated (v2 841055/841055, v3 878949/878949); timing
   checks 0.00% (v2 0/468796, v3 0/450970; both write_sdf variants; SDF has 40245 / 40253 TIMINGCHECK blocks), so 0 violations is no check.
-
 ## Post-route power at 1.1 ns (TABLES.md "Post-route power"): post-route, typical corner, path delays annotated, timing checks not annotated
 Genus report_power: routed netlist, SDC, Innovus SPEF (0 nets not annotated), TCF of the SDF run. Energy/request = total x cycles x 1.1 ns / 200,000.
 | netlist | slice | total W | internal | switching | leakage | logic share (bound) | driver nets annotated | energy/request |
