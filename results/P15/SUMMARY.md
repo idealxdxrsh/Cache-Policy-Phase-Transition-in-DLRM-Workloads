@@ -4,9 +4,8 @@ Every number is from results/P15/TABLES.md (tools/p15_collect.py, tools/p15_gls_
 (stageA/B.tcl, diag_shorts.tcl, export_gls.tcl), cadence/run_gls.csh, run_power.csh, genus_power.tcl. Netlists synthesised at 0.8 ns.
 
 ## First flow defect and fix (TABLES.md "Diagnosis", "Fix")
-- d256 PG-rail shorts (15 / 6 / 11 / 7 instances) = all instances of the one double-height master used. Fix: 29 multi-row cells dont_use,
-  netlist multi-row instances (v2 8, v3 6) resized to single-row before the floorplan; 0 after route. d16: DRC 0, connectivity 0.
-
+- d256 PG-rail shorts (15/6/11/7) = all instances of the one double-height master; fix: 29 multi-row cells dont_use, netlist ones
+  resized (v2 8, v3 6), 0 after route. d16 (v3, 0.8 ns): DRC 0, connectivity 0, setup WNS -0.001 ns (1 path).
 ## Timing, d256 v2/v3 merge-off, target-slack flow (setup target slack 0.03 ns, extra postRoute setup opt; TABLES.md "Met/failed bracket")
 | run | period ns | setup WNS / TNS ns (viol. paths) | hold WNS / TNS ns (viol. paths) | DRC | conn. problems all nets |
 |---|---|---|---|---|---|
@@ -14,8 +13,9 @@ Every number is from results/P15/TABLES.md (tools/p15_collect.py, tools/p15_gls_
 | v2 | 1.1 | 0.029 / 0.000 (0) | 0.033 / 0.000 (0) | 0 | 0 |
 | v3 | 1.0 | 0.014 / 0.000 (0) | -0.002 / -0.004 (8) | 1 | 0 |
 | v3 | 1.1 | 0.030 / 0.000 (0) | 0.051 / 0.000 (0) | 0 | 0 |
-- Bracket (target-slack flow): v2 and v3 tightest met 1.1 ns, loosest failed 1.0 ns (hold misses by 1-2 ps). Earlier fixed flows met no
-  period (setup WNS -0.002 to -0.071 ns at 0.9-1.1 ns), so the result depends on the flow. v2/v3 compared only at 1.1 ns.
+- Bracket (target-slack flow): v2 and v3 tightest met 1.1 ns, loosest failed 1.0 ns. One extra optDesign -postRoute -hold + ecoRoute
+  on the 1.0 ns databases (holdfix.tcl) left hold WNS -0.000 ns, 1 path each (was 3 / 8), DRC 1, setup unchanged: still failed.
+  Earlier fixed flows met no period (setup WNS -0.002 to -0.071 ns, 0.9-1.1 ns): flow-dependent. v2/v3 compared only at 1.1 ns.
 
 ## Post-route GLS at 1.1 ns (TABLES.md "Post-route GLS", "SDF variant check", "Export"), both 200,000-request slices
 - Innovus netlist (no physical-only cells) and SDF. Zero-delay and SDF lockstep passed, v2 and v3, row0 and row1M: 0 mismatching and 0 X

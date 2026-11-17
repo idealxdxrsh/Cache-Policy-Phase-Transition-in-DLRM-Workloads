@@ -68,12 +68,14 @@ def drc_split(path):
 
 
 def pre_extra(rp):
-    """Setup / hold WNS before the extra optDesign -postRoute -setup (rpt/pre_extra/, target-slack flow only)."""
-    d = rp / 'pre_extra'
-    if not d.exists():
-        return '-'
-    return (f"{timing(one(d / 'setup', '*_postRoute.summary.gz'))['WNS']} / "
-            f"{timing(one(d / 'hold', '*_postRoute_hold.summary.gz'))['WNS']}")
+    """Setup / hold WNS before the last optimisation pass: rpt/pre_extra/ (before the extra postRoute setup opt, nodvts)
+    or rpt/pre_hold/ (the restored nodvts design before the extra hold pass, nodvtsh)."""
+    for sub, what in (('pre_extra', 'before setup pass'), ('pre_hold', 'before hold pass')):
+        d = rp / sub
+        if d.exists():
+            return (f"{timing(one(d / 'setup', '*_postRoute.summary.gz'))['WNS']} / "
+                    f"{timing(one(d / 'hold', '*_postRoute_hold.summary.gz'))['WNS']} ({what})")
+    return '-'
 
 
 def other_drc_types(path):
@@ -119,7 +121,8 @@ def flow(m):
     """Folder suffix -> flow label: none = first P15 flow (multi-row cells allowed); nodv = multi-row cells dont_use."""
     return {None: 'multi-row allowed', 'nodv': 'multi-row dont_use',
             'nodveco2': 'multi-row dont_use + 2nd ecoRoute',
-            'nodvts': 'multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt'
+            'nodvts': 'multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt',
+            'nodvtsh': 'nodvts database + one extra optDesign -postRoute -hold and ecoRoute -fix_drc'
             }.get(m.group(3), m.group(3))
 
 
@@ -176,7 +179,7 @@ def main():
     print('## DRC and PG-connectivity breakdown')
     print('| run | flow | period ns | DRC total | metal shorts PG special wire vs cell pin | other DRC | '
           'instances with unconnected PG terminals | instances in shorts | instances in both | other DRC types | '
-          'DRC before the 2nd ecoRoute | setup / hold WNS ns before the extra postRoute setup opt |')
+          'DRC before the 2nd ecoRoute | setup / hold WNS ns before the last optimisation pass |')
     print('|' + '---|' * 12)
     for r in runs:
         m = re.match(r'(.+)_pnr([\d.]+)(?:_([A-Za-z0-9]+))?$', r.name)
@@ -198,27 +201,32 @@ def main():
 
 
 def bracket(runs):
-    """Met = setup WNS >= 0 and hold WNS >= 0 (timeDesign 'all'); fixed-flow runs only (no multi-row cells)."""
+    """Met = setup and hold WNS not negative and 0 violating paths (timeDesign 'all'); fixed-flow runs only."""
     res = {}
     for r in runs:
         m = re.match(r'(.+)_pnr([\d.]+)(?:_([A-Za-z0-9]+))?$', r.name)
-        if not m or m.group(3) not in ('nodv', 'nodveco2', 'nodvts') or '_d256_' not in m.group(1):
+        if not m or m.group(3) not in ('nodv', 'nodveco2', 'nodvts', 'nodvtsh') or '_d256_' not in m.group(1):
             continue
         rp = r / 'rpt'
         s = timing(one(rp / 'setup', '*_postRoute.summary.gz'))
         h = timing(one(rp / 'hold', '*_postRoute_hold.summary.gz'))
-        met = float(s['WNS']) >= 0 and float(h['WNS']) >= 0
+        # met: WNS not negative (a reported -0.000 counts as negative) and no violating path, setup and hold
+        met = all(not t['WNS'].startswith('-') and t['Violating Paths'] == '0' for t in (s, h))
         res.setdefault(m.group(1), []).append((float(m.group(2)), met, s['WNS'], h['WNS'], m.group(3)))
     if not res:
         return
     print()
-    print('## Met/failed bracket per version (fixed flows; met = setup and hold WNS >= 0)')
+    print('## Met/failed bracket per version (fixed flows; met = setup and hold WNS not negative, 0 violating paths)')
     print('| run | flows | periods run ns (setup WNS / hold WNS ns) | tightest met ns | loosest failed ns | monotonic |')
     print('|' + '---|' * 6)
     groups = {}
     for run, rows in res.items():
         groups.setdefault((run, 'all fixed flows'), []).extend(rows)
         groups.setdefault((run, 'target-slack flow (nodvts) only'), []).extend(x for x in rows if x[4] == 'nodvts')
+        held = {x[0] for x in rows if x[4] == 'nodvtsh'}
+        if held:
+            groups.setdefault((run, 'target-slack flow, hold pass where run (nodvtsh replaces nodvts)'), []).extend(
+                x for x in rows if x[4] == 'nodvtsh' or (x[4] == 'nodvts' and x[0] not in held))
     for (run, fl), rows in sorted(groups.items()):
         if not rows:
             continue
