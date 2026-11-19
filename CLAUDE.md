@@ -21,7 +21,8 @@ Lab server C2 (licensed commercial library; P12/P13). These rules have the same 
   Only file names and the tool reports of our own runs may be looked at.
 - The repo is public. No library name, cell name, library file name or path, C2 host address or C2 user name in any
   tracked file. Library paths live only in local.env on C2 (gitignored as cadence/local.env).
-- Name the technology only as "a commercial 28nm FD-SOI standard-cell library, typical corner"; area in "library units".
+- Name the technology only as "a commercial 28nm FD-SOI standard-cell library, typical corner". Label areas in the unit
+  the tool reports: µm² for Innovus; "library units" where the report states no unit, as for Genus.
   Exception, paper only (approved by Prof. Mane, 2026-11-19): the paper may name the vendor and node, as "an
   STMicroelectronics 28nm FD-SOI standard-cell library (accessed through CMP)" at first mention, "the 28nm FD-SOI
   library" elsewhere, and thank CMP and STMicroelectronics in the acknowledgements. Nothing else from the kit: no cell
