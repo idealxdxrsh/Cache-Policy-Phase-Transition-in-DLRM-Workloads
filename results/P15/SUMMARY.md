@@ -9,15 +9,15 @@ Every number is from results/P15/TABLES.md (tools/p15_collect.py, tools/p15_gls_
 ## Timing, d256 v2/v3 merge-off, target-slack flow (setup target slack 0.03 ns, extra postRoute setup opt; TABLES.md "Met/failed bracket")
 | run | period ns | setup WNS / TNS ns (viol. paths) | hold WNS / TNS ns (viol. paths) | DRC | conn. problems all nets |
 |---|---|---|---|---|---|
-| v2 | 1.0 | 0.022 / 0.000 (0) | -0.001 / -0.001 (3) | 1 | 0 |
+| v2 | 0.9, after 2 hold passes | -0.008 / -0.139 (56) | 0.010 / 0.000 (0) | 0 | 0 |
 | v2 | 1.0, after 2 hold passes | 0.022 / 0.000 (0) | 0.009 / 0.000 (0) | 0 | 0 |
 | v2 | 1.1 | 0.029 / 0.000 (0) | 0.033 / 0.000 (0) | 0 | 0 |
-| v3 | 1.0 | 0.014 / 0.000 (0) | -0.002 / -0.004 (8) | 1 | 0 |
+| v3 | 0.9, after 2 hold passes | -0.056 / -60.911 (1841) | 0.010 / 0.000 (0) | 0 | 0 |
 | v3 | 1.0, after 2 hold passes | 0.014 / 0.000 (0) | 0.008 / 0.000 (0) | 0 | 0 |
 | v3 | 1.1 | 0.030 / 0.000 (0) | 0.051 / 0.000 (0) | 0 | 0 |
-- Bracket (target-slack flow, latest hold pass per period): v2 and v3 tightest met 1.0 ns, no failed period (1.0, 1.1 ns run; earlier
-  flows failed 0.9-1.1 ns). 1.0 ns needed two hold passes (holdfix.tcl): optDesign -postRoute -hold, then with hold target slack
-  0.01 ns plus one DRC-retry ecoRoute. GLS, power and the v2/v3 comparison are at 1.1 ns only.
+- Bracket (target-slack flow, latest hold pass per period): v2 and v3 tightest met 1.0 ns, loosest failed 0.9 ns (setup; the hold passes
+  leave setup unchanged). Before them 1.0 ns missed hold (v2 -0.001 ns, 3 paths; v3 -0.002 ns, 8 paths); passes (holdfix.tcl): optDesign
+  -postRoute -hold, then hold target slack 0.01 ns plus one DRC-retry ecoRoute. Earlier flows failed 0.9-1.1 ns. GLS, power, v2/v3: 1.1 ns only.
 ## Post-route GLS at 1.1 ns (TABLES.md "Post-route GLS", "SDF variant check", "Export"), both 200,000-request slices
 - Innovus netlist (no physical-only cells) and SDF. Zero-delay and SDF lockstep passed, v2 and v3, row0 and row1M: 0 mismatching and 0 X
   cycles, hit logs identical to the P9/P10 RTL logs. SDF path delays 100.00% annotated (v2 841055/841055, v3 878949/878949); timing
