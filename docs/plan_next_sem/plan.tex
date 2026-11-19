@@ -1,0 +1,201 @@
+% docs/plan_next_sem/plan.tex: plan for the next semester.
+% Build (from this folder): latexmk -pdf plan.tex
+% Result numbers are the paper's macros (\R{key}, defined in paper/v2/macros.tex, each with its results/ source).
+% Numbers that are not results (weeks, run counts, licence limits) are planning parameters.
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep,leftmargin=*}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{1.5em}
+\makeatletter
+\newcommand{\defnum}[2]{\expandafter\def\csname pn@#1\endcsname{#2}}
+\newcommand{\R}[1]{\ifcsname pn@#1\endcsname\csname pn@#1\endcsname\else
+  \PackageError{plan}{number key '#1' is not defined in paper/v2/macros.tex}{}\fi}
+\makeatother
+\input{../../paper/v2/macros.tex}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+
+\title{Cache Policy for DLRM Embedding Lookups:\\Plan for the Next Semester}
+\author{Adarsh \quad (mentor: Prof.\ Pravin Mane)\\
+Department of Electrical and Electronics Engineering, BITS Pilani, K K Birla Goa Campus}
+\date{November 2026}
+
+\begin{document}
+\maketitle
+
+\section{Where the project stands}
+The trace study and the controller are complete up to a routed layout; result numbers below are those of the paper
+draft (\path{paper/v2}), generated from \path{results/}.
+\begin{itemize}
+\item \textbf{Finding.} In one cache shared by all Criteo tables, the exact model of the LFU controller with
+lowest-index ties (v2) loses to LRU at every size simulated from \R{sz.256} to \R{sz.100000} entries:
+\R{p9.10M.256.v2}\% against \R{p3b.10M.256.LRU}\% at \R{sz.256} entries on the first \R{lab.10M} rows
+(\path{results/P9}, \path{results/P3b}).
+\item \textbf{Fix.} Rotate-victim (v3) restores oldest-first LFU: \R{p11.10M.256.v3}\% at \R{sz.256} entries,
+\R{d.v3lru} points above LRU (\path{results/P11}). RTL and simulator agree request by request on test slices
+(\path{results/P10}).
+\item \textbf{Hardware (STMicroelectronics 28nm FD-SOI, typical corner).} At depth \R{sz.256} both versions meet
+\R{p15.met} ns and fail \R{p15.fail} ns after routing; in post-route simulation of the \R{p15.gls.period} ns layouts
+with the testbench fill model, v3 needs \R{p15.dE.row1M.abs} to \R{p15.dE.row0.abs}\% less energy per request
+(\path{results/P15}). Registers and the clock tree take all but \R{p15.logic.lo} to \R{p15.logic.hi}\% of the
+power.
+\item \textbf{GPU.} On one H100 the L2 read hit rate of the embedding kernels falls from \R{p14.pt.64}\% to
+\R{p14.pt.16384}\% as the batch grows (\path{results/P14}); H200 counters are blocked by a permission error that
+needs the cluster administrators (\path{results/P14/PREP.md}).
+\end{itemize}
+\textbf{Open, as stated in the results and in the paper's limitations.} Layouts were optimised at the typical corner
+only; at the slow corner the derived periods are \R{p16.dp.v2.10} and \R{p16.dp.v3.10} ns and I/O hold fails because
+the I/O constraints use an ideal external clock (\path{results/P16}). Every point is one run, so the v2/v3 timing
+difference at \R{p15.fail} ns is not resolved. SDF simulations annotate \R{p15.sdf.check}\% of the timing checks.
+Energy per request rests on a fill model of up to \R{p13.fill.max} random cycles, and activity covers
+\R{p15.cov.v2} to \R{p15.cov.v3}\% of the driver nets. Hardware exists only up to \R{sz.256} entries, lines hold a
+data word rather than a vector, and only one dataset and one trace order were studied.
+
+\section{Goals, ranked}
+Each goal has one measurable success criterion; ``v2/v3'' means both versions, mode 0, unless stated.
+
+\begin{enumerate}[label=\textbf{\alph*.},leftmargin=1.6em]
+\item \textbf{Multi-corner sign-off.} Write block-level I/O constraints with a clock latency per corner, set up
+multi-mode multi-corner (MMMC) optimisation over the typical, slow and fast corners, and re-run place and route of
+the depth-\R{sz.256} designs.
+\emph{Success:} for v2 and v3, a met/failed clock-period bracket per corner with setup and hold met in all three
+corners at the reported period, plus DRC and connectivity clean in the tool's checks.
+
+\item \textbf{Clock gating and/or SRAM storage for the data array.} Add clock gating to the line registers (enable per
+line on fill and counter update), and, if the design kit provides SRAM macros for this node (checked by file name
+only), move the data array to SRAM.
+\emph{Success:} power and energy per request before and after, same flow, same slices, same period, for v2 and v3;
+the change reported with the activity-coverage bound.
+
+\item \textbf{Set-associative controller with Rotate-victim per set.} Parameterise sets and ways, keep one
+Rotate-victim pointer per set, extend the RTL-exact simulator to sets, and compare its hit rate with the
+fully associative results on the same stream.
+\emph{Success:} RTL that elaborates and passes the existing tests for capacities from 1,000 to 100,000 entries (or
+the nearest sets$\times$ways configuration), request-by-request agreement with the simulator on test slices, and a
+routed layout for at least the smallest of these sizes; the largest sizes in layout depend on goal~b.
+
+\item \textbf{Realistic miss cost.} Put a cycle-level DRAM model (for example Ramulator or DRAMSim3) behind the cache
+in place of the testbench fill model: replay the miss stream, take the per-miss latency from the DRAM model, and
+re-run gate-level simulation and power with those latencies.
+\emph{Success:} energy per request for v2 and v3 recomputed with the DRAM latencies, reported next to the current
+fill-model numbers, with the DRAM model and its configuration named.
+
+\item \textbf{Generality.} Repeat the tie-break study (LRU, oldest-first LFU-reset, v2 rule, v3 rule, ablation) on a
+second dataset (for example Avazu) and with a second within-row access order on Criteo.
+\emph{Success:} hit rates and the ablation for both, at the sizes of the current study, stating whether v2 still
+loses to LRU and whether the tie-break still explains the whole gap.
+
+\item \textbf{Run-to-run variation.} Repeat place and route of v2 and v3 at the failing and met periods with varied
+utilisation and placement seeds.
+\emph{Success:} the spread of setup WNS and area across runs per version, and a statement whether the v2/v3
+difference exceeds it.
+
+\item \textbf{SDF timing checks and H200 counters.} Find a write\_sdf and simulator setting that annotates the
+conditional timing checks of the cell models; re-run the H200 counter job once the administrators grant access.
+\emph{Success:} a non-zero share of timing checks annotated, with the violation count of the post-route
+simulations; the P14 table repeated on the H200.
+
+\item \textbf{Paper.} Incorporate Prof.\ Mane's comments, add the results of goals a to f that are ready, choose
+the venue with him, submit, and revise.
+\emph{Success:} submitted manuscript that passes the number and leak checks; revision done within the venue's
+deadline.
+\end{enumerate}
+
+\section{Timeline}
+C2 work (lab network only) is placed early and in blocks of at most 4 parallel tool jobs; Sharanga and writing work
+fills the weeks without lab access. Depth-\R{sz.256} place-and-route runs took 0:37:33 to 1:03:40 each in P15
+(\path{results/P15/TABLES.md}, Run time), so one block of 4 runs fits in a lab session.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}p{0.27\textwidth}L>{\raggedright\arraybackslash}p{0.2\textwidth}@{}}
+\toprule
+Week & C2 (lab) & Sharanga / local & Milestone \\
+\midrule
+1 & Re-run the final P15 flow once; check the database restores & Env check against the pinned list; paper
+comments in & Flows reproduce \\
+2 & Goal a: I/O constraints with per-corner clock latency; MMMC set-up & Goal c: set-associative RTL and
+simulator model & \\
+3 & Goal a: MMMC runs, v2 and v3, met periods per corner & Goal c: tests, lockstep on slices & Goal a results \\
+4 & Goal f: seed and utilisation sweep, block 1 & Goal e: second dataset download and stream checks & \\
+5 & Goal f: block 2; summary & Goal e: tie-break study, dataset 2 & Goal f results \\
+6 & Goal b: clock gating, synthesis and gate-level power & Goal e: second access order & Goal e results \\
+7 & Goal b: SRAM option (if the kit has macros); place and route & Goal d: DRAM model set-up, miss-stream replay &
+Goal b results \\
+8 & Goal c: synthesis and layout of the smallest set-associative size & Goal d: per-miss latencies for v2 and v3 & \\
+9 & Goal d: gate-level simulation and power with DRAM latencies & Goal c: hit rates against fully associative &
+Goals c, d results \\
+10 & Goal g: SDF timing-check annotation & Goal g: H200 counters (if access granted) & \\
+11 & Buffer for C2 reruns & Paper: integrate results of goals a to f & Draft to Prof.\ Mane \\
+12 & -- & Paper: revise after his review & \\
+13 & -- & Paper: final checks (numbers, leak check), submission & Submission \\
+14 & -- & Semester report; push of aggregate results after approval & Final report \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Resources and dependencies}
+\begin{itemize}
+\item \textbf{C2 lab server.} Reachable only from the lab network, through the master ssh socket. Lingering is
+enabled, so long Genus, Xcelium and Innovus jobs start as \texttt{systemd-run -{}-user} units and survive logout; at most
+4 tool jobs at a time. Raw reports stay off the repository; only aggregate tables are committed after the leak check.
+\item \textbf{Cadence licences.} Genus, Xcelium and Innovus from the campus licence; the plan assumes 4
+concurrent jobs and schedules C2 work in blocks of that size.
+\item \textbf{Sharanga HPC.} Batch jobs only (\texttt{compute}, \texttt{gpu\_h100\_4}, and the H200 partition found
+with \texttt{sinfo}). Scratch is purged without notice: the environment is pinned in
+\path{cluster/dlrm_cache.explicit.txt} and rebuilt offline with \path{cluster/jobs/env_rebuild.sbatch}; every
+job starts with an environment check, and results are copied back and committed after each phase.
+\item \textbf{Prof.\ Mane.} Review of the paper draft (week 11), approval of the venue and of any newly published
+aggregate results.
+\item \textbf{Cluster administrators.} H200 performance-counter access (goal g).
+\end{itemize}
+
+\section{Risks and fallbacks}
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}p{0.38\textwidth}L@{}}
+\toprule
+Goal & Risk & Fallback \\
+\midrule
+a & MMMC optimisation does not close all corners at any period tried & Report the best per-corner brackets and the
+limiting paths; sign off at a relaxed period \\
+b & No SRAM macros in the kit, or clock gating breaks timing & Clock gating only; or gating in synthesis without
+layout, labelled pre-layout \\
+c & Large sizes do not fit flip-flop storage in layout & Layout of the smallest size; larger sizes in RTL, simulation
+and synthesis only, with SRAM if goal b succeeds \\
+d & DRAM model integration takes longer than planned & Trace-driven latency distribution from the DRAM model fed to
+the existing testbench, without co-simulation \\
+e & Second dataset unavailable or licence-restricted & Second access order and a second part of the Criteo file only
+\\
+f & Licence or lab time limits the number of runs & Fewer seeds at the failing period only; spread reported with the
+run count \\
+g & Timing checks stay unannotated; H200 access not granted & Keep static timing analysis as the timing evidence;
+report H200 as not measured \\
+h & Review or results late for the venue deadline & Submit with goals a and f; later results in a revision or a
+journal version \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Deliverables at the end of the semester}
+\begin{itemize}
+\item \path{results/} phases for goals a to g, each with SUMMARY.md and aggregate tables, committed after the leak
+check.
+\item RTL: clock-gated and/or SRAM variant (goal b) and the set-associative controller with its simulator model and
+tests (goal c).
+\item Multi-corner signed-off layouts of v2 and v3 at depth \R{sz.256} with per-corner met periods (goal a), and the
+run-to-run spread (goal f).
+\item Energy per request with a DRAM model (goal d) and the tie-break study on a second dataset and order (goal e).
+\item The submitted paper and its revision (goal h), and a semester report.
+\end{itemize}
+
+\end{document}

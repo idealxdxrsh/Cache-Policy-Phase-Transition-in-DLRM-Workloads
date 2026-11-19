@@ -1,0 +1,7 @@
+# LaTeX build byproducts; plan.tex and plan.pdf are tracked
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.out
+*.synctex.gz
