@@ -16,3 +16,13 @@
   paper discussed the Zipf-fit method.
 - Kal et al., "SPACE: Locality-Aware Processing in Heterogeneous Memory for Personalized Recommendations" (ISCA 2021).
 - Yang et al., "Mixed-Precision Embedding Using a Cache" (arXiv 2020).
+
+## Rewrite of 2026-11-19 (28nm version)
+- Cited now: all entries of refs.bib except `binkert2011gem5` (gem5 is no longer discussed). The open fields above
+  still apply.
+- Named without a citation (no verified entry): Nsight Compute, Cadence Genus / Xcelium / Innovus, CMP.
+- Not cited, would need a verified source if the text is extended: a classic LRU/LFU reference, an FD-SOI technology
+  overview (body bias), prior hardware LFU or replacement-unit designs, clock gating of register files.
+- Claims about other papers to re-check against the papers themselves: Gupta et al. (embedding operators can dominate
+  inference time), Bandana and FAE (skewed accesses, hot rows), ScratchPipe (future accesses known from the training
+  pipeline).

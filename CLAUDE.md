@@ -22,6 +22,10 @@ Lab server C2 (licensed commercial library; P12/P13). These rules have the same 
 - The repo is public. No library name, cell name, library file name or path, C2 host address or C2 user name in any
   tracked file. Library paths live only in local.env on C2 (gitignored as cadence/local.env).
 - Name the technology only as "a commercial 28nm FD-SOI standard-cell library, typical corner"; area in "library units".
+  Exception, paper only (approved by Prof. Mane, 2026-11-19): the paper may name the vendor and node, as "an
+  STMicroelectronics 28nm FD-SOI standard-cell library (accessed through CMP)" at first mention, "the 28nm FD-SOI
+  library" elsewhere, and thank CMP and STMicroelectronics in the acknowledgements. Nothing else from the kit: no cell
+  names, library file names or paths, metal stack or layer details, C2 host or user names.
 - Raw reports, logs, netlists and SDF stay off the repo (C2 and ~/c2_results/). Only aggregate tables
   (results/P12|P13/TABLES.md from tools/c2_collect.py, tools/p13_power_table.py) and SUMMARY.md are committed;
   publishing these aggregates was approved by Prof. Mane.

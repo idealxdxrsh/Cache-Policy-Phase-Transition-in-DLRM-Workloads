@@ -1,0 +1,3 @@
+# Raw Innovus screenshots: the window title shows the lab-server user name and home path. Never commit them;
+# only the cropped fig_layout_v*_d256.png (figs/crop_layout.py) are used.
+*_innovus_screenshot.png

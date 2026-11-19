@@ -34,8 +34,8 @@ plt.rcParams.update({
 # policy name in the result CSVs -> (label, colour, marker, line style, hatch)
 POLICY = {
     'LRU': ('LRU', '#000000', 'o', '-', ''),
-    'LFU (gem5 LFURP — reset on eviction)': ('LFU, reset on eviction', '#0072B2', 's', '-', '//'),
-    'LFU (persistent counters)': ('LFU, persistent counters', '#D55E00', '^', '-.', '\\\\'),
+    'LFU (gem5 LFURP — reset on eviction)': ('LFU-reset (oldest-first)', '#0072B2', 's', '-', '//'),
+    'LFU (persistent counters)': ('LFU-persistent', '#D55E00', '^', '-.', '\\\\'),
     'TinyLFU-exact (window=1%)': ('TinyLFU, exact counters', '#E69F00', 'P', ':', '..'),
     'W-TinyLFU (Count-Min, window=1%)': ('W-TinyLFU (Count-Min)', '#CC79A7', 'v', '--', 'xx'),
     'ARC': ('ARC', '#009E73', 'D', (0, (5, 1, 1, 1)), '++'),
