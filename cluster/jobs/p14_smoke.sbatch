@@ -10,6 +10,9 @@
 # Exit 0 only if ncu returned counter values (COUNTERS=OK); otherwise exit 5, so a job chained
 # with afterok (and --kill-on-invalid-dep=yes) is cancelled.
 set -eo pipefail
+# Env check: fail at once if the env lost files (scratch purge 2026-11-17 broke jobs 456795-7; rebuild:
+# cluster/jobs/env_rebuild.sbatch).
+/scratch/rahulkmr/Adarsh/envs/p4_torch/bin/python -I -c 'import enum, numpy, torch' || { echo "ENV CHECK FAILED: /scratch/rahulkmr/Adarsh/envs/p4_torch/bin/python cannot import enum, numpy, torch (env damaged or purged)" >&2; exit 3; }
 W=/scratch/rahulkmr/Adarsh
 : "${GPU_LABEL:?set GPU_LABEL}"
 OUT=$W/results/P14/${GPU_LABEL}_$SLURM_JOB_ID; mkdir -p "$OUT"

@@ -9,6 +9,9 @@
 # P8: Criteo request slices (tools/p8_stream.py): first 2,000,000 rows, P3b shared-cache order and keys; slices from
 # row 0 and from row 1,000,000, 200,000 requests each, keys numbered inside each slice.
 set -euo pipefail
+# Env check: fail at once if the env lost files (scratch purge 2026-11-17 broke jobs 456795-7; rebuild:
+# cluster/jobs/env_rebuild.sbatch).
+/home/rahulkmr/.conda/envs/rtl_sim/bin/python3 -I -c 'import enum, numpy' || { echo "ENV CHECK FAILED: /home/rahulkmr/.conda/envs/rtl_sim/bin/python3 cannot import enum, numpy (env damaged or purged)" >&2; exit 3; }
 P=/scratch/rahulkmr/Adarsh/p8
 E=/home/rahulkmr/.conda/envs/rtl_sim/bin
 "$E/python3" -I "$P/code/tools/timev.py" "$E/python3" -I "$P/code/tools/p8_stream.py" \

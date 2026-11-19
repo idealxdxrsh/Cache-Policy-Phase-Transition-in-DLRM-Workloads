@@ -5,6 +5,7 @@
 #SBATCH -t 01:00:00
 #SBATCH -o /scratch/rahulkmr/Adarsh/logs/%x_%j.out
 set -euo pipefail
+# No env check here: this job creates or updates the dlrm_cache env (cluster/bootstrap.sh imports numpy at the end).
 W=/scratch/rahulkmr/Adarsh
 OUT=$W/results/P2; mkdir -p "$OUT"
 { echo "host $(hostname)"; date -Is; } > "$OUT/bootstrap.txt"

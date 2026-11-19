@@ -8,6 +8,9 @@
 # Merge the 26 per-table parts, then write figures + CSV tables.
 # Submit with: sbatch --export=ALL,N_ROWS=2000000 p3_merge.sbatch
 set -euo pipefail
+# Env check: fail at once if the env lost files (scratch purge 2026-11-17 broke jobs 456795-7; rebuild:
+# cluster/jobs/env_rebuild.sbatch).
+/scratch/rahulkmr/Adarsh/envs/dlrm_cache/bin/python -I -c 'import enum, numpy' || { echo "ENV CHECK FAILED: /scratch/rahulkmr/Adarsh/envs/dlrm_cache/bin/python cannot import enum, numpy (env damaged or purged)" >&2; exit 3; }
 W=/scratch/rahulkmr/Adarsh
 : "${N_ROWS:?set N_ROWS}"
 OUT=$W/results/P3/rows_$N_ROWS

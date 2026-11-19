@@ -5,6 +5,9 @@
 #SBATCH -t 02:00:00
 #SBATCH -o /scratch/rahulkmr/Adarsh/logs/%x_%j.out
 set -euo pipefail
+# Env check: fail at once if the env lost files (scratch purge 2026-11-17 broke jobs 456795-7; rebuild:
+# cluster/jobs/env_rebuild.sbatch).
+/scratch/rahulkmr/Adarsh/envs/dlrm_cache/bin/python -I -c 'import enum, numpy' || { echo "ENV CHECK FAILED: /scratch/rahulkmr/Adarsh/envs/dlrm_cache/bin/python cannot import enum, numpy (env damaged or purged)" >&2; exit 3; }
 W=/scratch/rahulkmr/Adarsh
 OUT=$W/results/P2
 EXT=$W/data/criteo/extracted

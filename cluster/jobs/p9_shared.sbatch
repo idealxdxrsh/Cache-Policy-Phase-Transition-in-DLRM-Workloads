@@ -11,6 +11,9 @@
 #   SET=B: candidate tie-break rules (not in the RTL): Rotate-victim, Rotate-step, Young-bit, modes 0/1.
 # Submit with: sbatch --export=ALL,N_ROWS=2000000,SET=A p9_shared.sbatch
 set -euo pipefail
+# Env check: fail at once if the env lost files (scratch purge 2026-11-17 broke jobs 456795-7; rebuild:
+# cluster/jobs/env_rebuild.sbatch).
+/scratch/rahulkmr/Adarsh/envs/dlrm_cache/bin/python -I -c 'import enum, numpy' || { echo "ENV CHECK FAILED: /scratch/rahulkmr/Adarsh/envs/dlrm_cache/bin/python cannot import enum, numpy (env damaged or purged)" >&2; exit 3; }
 W=/scratch/rahulkmr/Adarsh
 : "${N_ROWS:?set N_ROWS}"; : "${SET:?set SET (A or B)}"
 case $SET in

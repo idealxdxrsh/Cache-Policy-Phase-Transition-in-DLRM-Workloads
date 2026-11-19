@@ -1,0 +1,11 @@
+host node7.hpc.bits-hyderabad.ac.in job 460012 start 2026-11-19T18:01:15+05:30
+archives in /scratch/rahulkmr/Adarsh/envs/pkgs_2026-11-19 md5-checked: 165; urls.txt lines: 165
+conda 23.7.4
+conda create done 2026-11-19T18:02:51+05:30
+conda-meta packages 165, files listed 34647, missing 0
+dlrm_cache python 3.11.17 numpy 2.4.6 pandas 3.1.0 matplotlib 3.11.2
+yosys: Yosys 0.69+ (git sha1 9f09efcdb-dirty, Release, GNU /home/conda/feedstock_root/build_artifacts/bld/rattler-build_yosys_1788957668/build_env/bin/x86_64-conda-linux-gnu-c++ 15.3.0) [github.com/conda-forge/yosys-feedstock at main] / iverilog: Icarus Verilog version 13.0 (stable) (v13_0)
+p4_torch torch/cuda/numpy: 2.14.1+cu126 12.6 1.26.4
+ALL CHECKS PASSED 2026-11-19T18:04:22+05:30
+1.5G	/scratch/rahulkmr/Adarsh/envs/dlrm_cache
+626M	/scratch/rahulkmr/Adarsh/envs/pkgs_2026-11-19

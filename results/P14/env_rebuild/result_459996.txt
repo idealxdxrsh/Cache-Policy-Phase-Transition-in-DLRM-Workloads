@@ -1,0 +1,25 @@
+host node7.hpc.bits-hyderabad.ac.in job 459996 start 2026-11-19T17:56:24+05:30
+archives copied and md5-checked: 165
+renamed /scratch/rahulkmr/Adarsh/envs/dlrm_cache -> /scratch/rahulkmr/Adarsh/envs/dlrm_cache.purged_2026-11-19
+conda 23.7.4
+RuntimeError('EnforceUnusedAdapter called with url https://conda.anaconda.org/conda-forge/linux-64/libharfbuzz-15.0.0-h23af247_0.conda\nThis command is using a remote connection in offline mode.\n')
+CancelledError()
+CancelledError()
+RuntimeError('EnforceUnusedAdapter called with url https://conda.anaconda.org/conda-forge/noarch/wheel-0.48.0-pyhd8ed1ab_0.conda\nThis command is using a remote connection in offline mode.\n')
+CancelledError()
+CancelledError()
+CancelledError()
+RuntimeError('EnforceUnusedAdapter called with url https://conda.anaconda.org/conda-forge/linux-64/at-spi2-core-2.40.3-h0630a04_0.tar.bz2\nThis command is using a remote connection in offline mode.\n')
+CancelledError()
+RuntimeError('EnforceUnusedAdapter called with url https://conda.anaconda.org/conda-forge/linux-64/libraqm-0.11.0-h6406941_0.conda\nThis command is using a remote connection in offline mode.\n')
+CancelledError()
+CancelledError()
+CancelledError()
+RuntimeError('EnforceUnusedAdapter called with url https://conda.anaconda.org/conda-forge/linux-64/epoxy-1.5.10-hb03c661_2.conda\nThis command is using a remote connection in offline mode.\n')
+RuntimeError('EnforceUnusedAdapter called with url https://conda.anaconda.org/conda-forge/linux-64/harfbuzz-15.0.0-ha770c72_0.conda\nThis command is using a remote connection in offline mode.\n')
+RuntimeError('EnforceUnusedAdapter called with url https://conda.anaconda.org/conda-forge/linux-64/qt6-main-6.11.2-pl5321hcf69127_1.conda\nThis command is using a remote connection in offline mode.\n')
+RuntimeError('EnforceUnusedAdapter called with url https://conda.anaconda.org/conda-forge/noarch/adwaita-icon-theme-51.0-unix_0.conda\nThis command is using a remote connection in offline mode.\n')
+RuntimeError('EnforceUnusedAdapter called with url https://conda.anaconda.org/conda-forge/linux-64/librsvg-2.62.4-ha427ee3_0.conda\nThis command is using a remote connection in offline mode.\n')
+
+
+FAIL: conda create rc != 0

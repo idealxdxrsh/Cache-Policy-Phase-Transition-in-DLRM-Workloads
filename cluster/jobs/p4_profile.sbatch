@@ -8,6 +8,9 @@
 # EmbeddingBag vs MLP timing on one GPU. Partition and label come from the submit line:
 #   sbatch -p gpu_h100_4 --export=ALL,GPU_LABEL=h100 p4_profile.sbatch
 set -euo pipefail
+# Env check: fail at once if the env lost files (scratch purge 2026-11-17 broke jobs 456795-7; rebuild:
+# cluster/jobs/env_rebuild.sbatch).
+/scratch/rahulkmr/Adarsh/envs/p4_torch/bin/python -I -c 'import enum, numpy, torch' || { echo "ENV CHECK FAILED: /scratch/rahulkmr/Adarsh/envs/p4_torch/bin/python cannot import enum, numpy, torch (env damaged or purged)" >&2; exit 3; }
 W=/scratch/rahulkmr/Adarsh
 : "${GPU_LABEL:?set GPU_LABEL}"
 OUT=$W/results/P4/${GPU_LABEL}_$SLURM_JOB_ID; mkdir -p "$OUT"

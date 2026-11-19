@@ -9,6 +9,9 @@
 # larger depths do not start after a failure (cluster/p11_driver.sh). Times and peak memory: tools/timev.py.
 #   sbatch --array=1-8 ... p11_gls.sbatch <tasklist>
 set -uo pipefail
+# Env check: fail at once if the env lost files (scratch purge 2026-11-17 broke jobs 456795-7; rebuild:
+# cluster/jobs/env_rebuild.sbatch).
+/home/rahulkmr/.conda/envs/rtl_sim/bin/python3 -I -c 'import enum, numpy' || { echo "ENV CHECK FAILED: /home/rahulkmr/.conda/envs/rtl_sim/bin/python3 cannot import enum, numpy (env damaged or purged)" >&2; exit 3; }
 G=/scratch/rahulkmr/Adarsh/p11gls
 E=/home/rahulkmr/.conda/envs/rtl_sim/bin
 read -r run slice < <(sed -n "${SLURM_ARRAY_TASK_ID}p" "$1")

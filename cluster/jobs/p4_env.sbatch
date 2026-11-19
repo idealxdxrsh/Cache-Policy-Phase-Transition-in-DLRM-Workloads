@@ -12,6 +12,9 @@
 # cu126 index, so PyPI is not used. Wheels are downloaded to $WHL first (kept across reruns; pip skips
 # files already there), then installed offline. $ENV/.p4_complete marks a finished env.
 set -euo pipefail
+# Env check: fail at once if the env lost files (scratch purge 2026-11-17 broke jobs 456795-7; rebuild:
+# cluster/jobs/env_rebuild.sbatch).
+/scratch/rahulkmr/Adarsh/envs/dlrm_cache/bin/python -I -c 'import enum, numpy' || { echo "ENV CHECK FAILED: /scratch/rahulkmr/Adarsh/envs/dlrm_cache/bin/python cannot import enum, numpy (env damaged or purged)" >&2; exit 3; }
 W=/scratch/rahulkmr/Adarsh
 ENV=$W/envs/p4_torch
 WHL=$W/wheels/p4_cu126
