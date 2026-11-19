@@ -82,6 +82,8 @@ names its source file and line. The check runs per sentence, table cell and capt
 macros.tex, and fails on: any digit outside \\R{...} (identifiers listed in NAMES are allowed); a key that macros.tex
 does not define; a definition without a results/ source comment; the word TSMC; a stale macros.tex
 (make_paper_macros.py --check). It prints each failing sentence with its numbers, and the number of \\todo{} left.
+It also fails a prose paragraph or list item with more than PAR_MAX distinct numbers, or an abstract with more than
+ABSTRACT_MAX (tables, figures and captions are exempt).
 """
 NAMES = [                                    # identifiers that contain digits but are not results
     (r'28nm', 'technology node name'),
@@ -118,6 +120,26 @@ def macro_clean(tex):
     return tex
 
 
+PAR_MAX, ABSTRACT_MAX = 3, 6        # distinct \R{} numbers per prose paragraph / in the abstract (authors' rule)
+
+
+def paragraph_counts(nocom):
+    """(label, distinct keys) for the abstract and every prose paragraph or list item; floats, tables, captions and
+    the bibliography are not prose and are skipped."""
+    out = []
+    m = re.search(r'\\begin\{abstract\}(.*?)\\end\{abstract\}', nocom, re.S)
+    if m:
+        out.append(('abstract', sorted(set(re.findall(r'\\R\{([^{}]+)\}', m.group(1)))), ABSTRACT_MAX))
+        nocom = nocom.replace(m.group(0), ' ')
+    nocom = re.sub(r'\\begin\{(figure|table)\*?\}.*?\\end\{\1\*?\}', ' ', nocom, flags=re.S)
+    nocom = re.sub(r'\\(title|author|maketitle|bibliography|bibliographystyle)\b(\{(?:[^{}]|\{[^{}]*\})*\})?', ' ', nocom)
+    for par in re.split(r'\n\s*\n|\\item\b', nocom):
+        keys = sorted(set(re.findall(r'\\R\{([^{}]+)\}', par)))
+        if keys:
+            out.append((' '.join(par.split())[:90], keys, PAR_MAX))
+    return out
+
+
 def macro_mode(root):
     import subprocess
     bad, nsent, nuse = [], 0, 0
@@ -140,6 +162,9 @@ def macro_mode(root):
         body = raw.split('\\begin{document}', 1)[-1]
         nocom = re.sub(r'(?<!\\)%.*', '', body)
         todos += len(re.findall(r'\\todo\{', nocom))
+        for label, keys, lim in paragraph_counts(nocom):
+            if len(keys) > lim:
+                bad.append((tex.name, f'{len(keys)} numbers (limit {lim}) in paragraph: {label}  keys: {keys}'))
         if re.search(r'tsmc', nocom, re.I):
             bad.append((tex.name, 'the word TSMC appears (withdrawn numbers)'))
         for k in re.findall(r'\\R\{([^{}]+)\}', nocom):

@@ -1,2 +1,2 @@
 
-299 sentences, cells and captions checked; 449 \R{} uses of 268 macros; 0 \todo{} left; 0 failed.
+363 sentences, cells and captions checked; 270 \R{} uses of 186 macros; 0 \todo{} left; 0 failed.

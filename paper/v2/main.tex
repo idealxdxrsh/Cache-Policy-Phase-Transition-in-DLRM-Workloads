@@ -22,12 +22,13 @@
 \newcommand{\R}[1]{\ifcsname pn@#1\endcsname\csname pn@#1\endcsname\else
   \PackageError{paper}{number key '#1' is not defined in macros.tex}{Run tools/make_paper_macros.py}\fi}
 \makeatother
+\newcommand{\umsq}{\textmu m\textsuperscript{2}}
 \newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
 \input{macros}
 
 \begin{document}
 
-\title{Rotate-Victim: A One-Pointer Tie-Break Fix for a Hardware LFU Embedding Cache, from Criteo Traces to 28nm
+\title{Rotate-Victim: A One-Pointer Tie-Break Fix for Hardware LFU Embedding Caches, from Criteo Traces to 28nm
 FD-SOI Layout}
 
 \author{\IEEEauthorblockN{Adarsh}
@@ -43,73 +44,82 @@ Goa, India}}
 \maketitle
 
 \begin{abstract}
-Embedding lookups take a large share of deep-learning recommendation model (DLRM) inference time and are skewed.
-On one H100, the L2 read hit rate of the embedding kernels on the Criteo stream falls from \R{p14.pt.64}\% to \R{p14.pt.16384}\% as the batch grows from \R{p14.B.64} to
-\R{p14.B.16384} (one kernel per table). We study LFU replacement for a small embedding cache, from traces to layout. A hardware LFU controller breaks count ties by the lowest slot index; its exact
-trace model loses to LRU in a cache shared by all \R{ds.tables} tables at all four sizes simulated from \R{sz.256}
-to \R{sz.100000} entries (\R{p9.10M.256.v2}\% against \R{p3b.10M.256.LRU}\% at \R{sz.256} entries, first
-\R{lab.10M} Criteo rows), and an ablation assigns the whole gap to the tie-break. Rotate-victim, a one-pointer
-change, reproduces LFU with oldest-first ties (\R{p11.10M.256.v3}\% at \R{sz.256} entries) and beats LRU and the
-old rule at all six simulated sizes, \R{sz.16} to \R{sz.100000} entries; its RTL matches the model request by
-request on test slices. With an STMicroelectronics 28nm FD-SOI library at the typical corner, both versions meet a
-\R{p15.met} ns clock and fail \R{p15.fail} ns after routing at \R{sz.256} entries, and in post-route
-simulation at \R{p15.gls.period} ns the new rule needs \R{p15.dE.row1M.abs} to \R{p15.dE.row0.abs}\% less energy
-per request, as it needs fewer cycles under the testbench's fill model. Code and aggregate results are public.
+Our LFU embedding cache finds the victim with a comparator tree that, like a priority
+encoder, breaks ties by a fixed index order: the lowest index wins. With new lines starting at count one, this choice
+decides whether the cache beats LRU. On Criteo, in one cache shared by all tables, its exact model
+evicts the newest line almost every time on test slices and loses to LRU at every size simulated from \R{sz.256}
+entries upwards; an ablation shows that the tie-break alone separates it from oldest-first LFU. The mechanism holds
+for any counter-based cache that inserts at the minimum count with fixed-order ties. Rotate-victim starts the search
+after the previous victim; for one pointer register it restores oldest-first LFU, raising the \R{sz.256}-entry hit
+rate on the first \R{lab.10M} rows from \R{p9.10M.256.v2}\% to \R{p11.10M.256.v3}\%,
+above LRU. With an STMicroelectronics 28nm FD-SOI standard-cell library (accessed through CMP) it keeps the original
+clock period after routing at the typical corner and, in post-route simulation at a relaxed clock with a testbench
+fill model, needs \R{p15.dE.row1M.abs} to \R{p15.dE.row0.abs}\% less energy per request. Code and aggregate
+results are public.
 \end{abstract}
 
-\section{Introduction}
+\section{Introduction}\label{sec:intro}
 A deep-learning recommendation model (DLRM) maps each categorical feature of a request to a row of an embedding
-table and combines the pooled rows with dense features in multilayer perceptrons~\cite{naumov2019dlrm}. The lookups
-are irregular, memory-bound and take a large share of inference time~\cite{gupta2020architectural,ke2020recnmp}.
-Their accesses are skewed, and several systems keep the frequently used rows in a faster memory: a DRAM cache in
-front of non-volatile memory~\cite{eisenman2019bandana}, hot embeddings in GPU memory~\cite{adnan2022fae}, or a
-GPU-side cache that looks ahead in the access stream~\cite{kwon2022scratchpipe}. Each needs a replacement rule.
+table and combines the pooled rows with dense features in multilayer perceptrons~\cite{naumov2019dlrm}. Embedding
+operations are memory-bound and can dominate inference time~\cite{gupta2020architectural,ke2020recnmp}, and their
+accesses are skewed toward a small set of hot rows~\cite{adnan2022fae,agarwal2023bagpipe}. Systems therefore keep
+hot rows in a faster memory, a DRAM cache in front of non-volatile memory~\cite{eisenman2019bandana} or GPU
+memory~\cite{adnan2022fae,xie2022fleche,wei2022hps}, and each of these caches needs a replacement rule.
 
 \begin{figure}[t]
 \centering
 \includegraphics{fig_l2}
-\caption[]{L2 read hit rate of the \texttt{nn.EmbeddingBag} kernels on one H100 (Nsight Compute, sector counts,
-\R{p14.batches} profiled batches per point from row \R{p14.start}, after a warm-up on the rows before it),
-first \R{p14.rows} Criteo rows, \R{p14.dim}-dimensional fp32 vectors, zero or one lookup per table and row.}
+\caption[]{L2 read hit rate of the \texttt{nn.EmbeddingBag} kernels on one H100 (Nsight Compute sector counts;
+\R{p14.batches} profiled batches per point from row \R{p14.start}, after a warm-up on the rows before it), first
+\R{p14.rows} Criteo rows, \R{p14.dim}-dimensional fp32 vectors, zero or one lookup per table and row. Simulator
+reference (not plotted): one shared cache of \R{p14.cap} vectors, the simulated size closest to the
+\R{p14.l2mib}\,MiB L2 at \R{p14.vecbytes} bytes per vector.}
 \label{fig:l2}
 \end{figure}
 
-How well does a general-purpose cache serve these lookups? We profiled PyTorch's \texttt{nn.EmbeddingBag}~\cite{paszke2019pytorch} on the Criteo
-stream on one H100 with hardware counters (Fig.~\ref{fig:l2}). The L2 read hit rate of the embedding kernels falls
-from \R{p14.pt.64}\% at batch \R{p14.B.64} to \R{p14.pt.1024}\% at \R{p14.B.1024} and \R{p14.pt.16384}\% at
-\R{p14.B.16384} with one kernel per table, and from \R{p14.cc.64}\% to \R{p14.cc.16384}\% with all tables
-concatenated. The profiled window starts at the same row for every batch size, so it grows with the batch: batch
-size and window length change together. In our trace simulator, one cache of \R{p14.cap} vectors shared by all tables, the simulated capacity
-closest to the \R{p14.l2bytes}-byte L2 at \R{p14.vecbytes} bytes per vector, reaches \R{p3b.2M.100000.LRU}\% with LRU
-and \R{p3b.2M.100000.LFUr}\% with LFU-reset over the first \R{lab.2M} rows. The comparison is indicative, not a validation:
-the L2 has its own replacement policy, works on \R{p14.sectorbytes}-byte sectors and also holds indices, offsets and
-outputs, and the counters cover a \R{p14.batches}-batch window, whereas the simulator counts vector hits over the
-whole trace from a cold cache.
+How well does a general-purpose cache serve these lookups? We profiled PyTorch's
+\texttt{nn.EmbeddingBag}~\cite{paszke2019pytorch} on the Criteo stream on one H100 with Nsight Compute. The L2 read
+hit rate of the embedding kernels falls from \R{p14.pt.64}\% to \R{p14.pt.16384}\% as the batch grows, with one
+kernel per table (Fig.~\ref{fig:l2}); with all tables concatenated into one, the trend is the same.
 
-A frequency-aware cache next to the lookup datapath needs a small replacement unit. We take a simple hardware LFU
-controller (flip-flop storage, saturating counters, a two-stage minimum search) and ask whether it reaches the hit
-rate of the LFU policy it was written to implement, and at what cost in a commercial process. Contributions:
+Our trace simulator, given the shared-cache size closest to the L2's capacity in vectors, reaches
+\R{p3b.2M.100000.LFUr}\% with LFU-reset over the first \R{lab.2M} rows. The comparison is indicative, not a
+validation: the L2 has its own replacement policy, works on sectors smaller than a vector and also holds indices,
+offsets and outputs, and the counters cover a window of batches that grows with the batch size, whereas the simulator
+counts vector hits over the whole trace from a cold cache.
+
+A frequency-aware cache next to the lookup datapath needs a small replacement unit. Our controller keeps a saturating
+counter per line and finds the line with the smallest count with a tree of comparators. Without extra state such a
+tree, like a priority encoder, breaks ties by a fixed index order; ours keeps the left operand unless the right one is
+strictly smaller, so the lowest index wins. When the count of a new line restarts at one, the newest line holds the
+smallest possible count and sits in the slot that won the last tie, so the next miss evicts it again unless it was hit
+in between.
+
+The argument needs three properties: new lines start at the minimum count, they take the victim's slot, and counts do
+not decrease between misses. With any fixed tie order the newest line is then the next victim unless it is hit
+first, so the mechanism applies to other counter-based caches built this way. How much it costs depends on the
+workload, which we measured only on Criteo: there, in one shared cache of \R{sz.256} entries or more, the tie-break
+decides whether our controller beats LRU. We explain this exactly and give a fix that costs one pointer register. In
+detail:
 \begin{itemize}
-\item A trace-driven comparison of replacement policies on Criteo (seven per table, five in a shared cache) at two
-trace lengths (Sections~\ref{sec:method}, \ref{sec:res-policy}).
-\item The finding that the controller's lowest-slot tie-break makes its exact model lose to LRU in a shared cache
-at all four sizes simulated from \R{sz.256} to \R{sz.100000} entries, with an ablation that assigns the whole gap to the tie-break
-(Section~\ref{sec:tie}).
-\item Rotate-victim, a fix with one pointer register that reproduces LFU with oldest-first ties, verified request
-by request against the simulator on test slices in RTL simulation and cycle by cycle against the RTL at gate level
-(Sections~\ref{sec:fix}, \ref{sec:verif}).
-\item Synthesis, place and route and multi-corner timing of both versions with a commercial 28nm FD-SOI library:
-v2 and v3 meet and fail the same clock periods before routing (\R{p12.br.256.met} and \R{p12.br.256.fail} ns) and
-after it (\R{p15.met} and \R{p15.fail} ns), and v3 needs \R{p15.dE.row1M.abs} to \R{p15.dE.row0.abs}\% less energy
-per request in post-route simulation (Section~\ref{sec:res-hw}).
+\item A trace-driven comparison of replacement policies on Criteo for per-table and shared caches, at two trace
+lengths (Sections~\ref{sec:method} and~\ref{sec:res-policy}).
+\item The finding that lowest-index ties make our controller (mode 0) lose to LRU in a shared cache at every size
+simulated from \R{sz.256} to \R{sz.100000} entries, with an ablation showing that the tie-break alone separates it
+from oldest-first LFU-reset (Section~\ref{sec:tie}).
+\item Rotate-victim, a fix with one pointer register that reproduces LFU with oldest-first ties, verified request by
+request against the simulator on two test slices in RTL simulation and cycle by cycle against the RTL at gate level
+(Sections~\ref{sec:fix} and~\ref{sec:verif}).
+\item Synthesis, place and route and multi-corner timing of both versions with a commercial 28nm FD-SOI library: at
+the typical corner the fix meets and fails the same clock periods as the original design, before and after routing,
+and in post-route simulation with a testbench fill model it needs \R{p15.dE.row1M.abs} to \R{p15.dE.row0.abs}\% less
+energy per request (Section~\ref{sec:res-hw}).
 \item Public RTL, simulators, flow scripts and aggregate results.
 \end{itemize}
 
 \section{Background and Related Work}\label{sec:bg}
-\textbf{Embedding tables.} In the Criteo display-advertising data~\cite{criteo2014dac} each of \R{ds.tables}
+\textbf{Embedding tables.} In the Criteo display-advertising data~\cite{criteo2014dac}, each of \R{ds.tables}
 categorical columns holds hashed values; with one table per column, each distinct value is one embedding vector.
-Production characterisations show that embedding operators can dominate inference time~\cite{gupta2020architectural},
-and the accesses are skewed, so that a small set of hot rows receives many of the lookups~\cite{eisenman2019bandana,adnan2022fae}.
 
 \textbf{Replacement policies.} LRU evicts the least recently used entry. LFU evicts the entry with the fewest
 accesses; variants differ in what happens to a count on eviction. \emph{LFU-reset} discards the count and restarts
@@ -121,40 +131,48 @@ balances a recency list and a frequency list using ghost lists of evicted keys~\
 evicts the entry used furthest in the future and gives an offline upper bound for a cache that fetches on
 demand~\cite{belady1966study}.
 
-\textbf{Caches for recommendation.} Bandana places embeddings in non-volatile memory behind a DRAM
-cache~\cite{eisenman2019bandana}; FAE keeps hot embeddings in GPU
-memory~\cite{adnan2022fae}; ScratchPipe builds a GPU-side cache that uses future accesses known from the training
-pipeline~\cite{kwon2022scratchpipe}; RecNMP performs embedding operations near memory~\cite{ke2020recnmp}. We study a lower level: the replacement
-decision inside one small hardware cache, where the tie-break between equal counts is a design choice of the circuit.
+\textbf{Caches for recommendation.} Bandana stores embeddings in non-volatile memory behind a small DRAM
+cache~\cite{eisenman2019bandana}, and FAE keeps the most accessed embeddings in GPU memory during
+training~\cite{adnan2022fae}. ScratchPipe~\cite{kwon2022scratchpipe} and Bagpipe~\cite{agarwal2023bagpipe} look
+ahead at future training batches to decide what to cache. For inference, Fleche uses one GPU cache for all embedding
+tables~\cite{xie2022fleche}, the HugeCTR parameter server puts a GPU embedding cache in front of a storage
+hierarchy~\cite{wei2022hps}, and EVStore layers several caches for embedding lookups~\cite{kurniawan2023evstore}.
+UGache spreads one cache over several GPUs, for training and inference, with a policy based on a hotness
+metric~\cite{song2023ugache}.
+RecNMP moves embedding operations near memory~\cite{ke2020recnmp}. We study a lower level: the replacement decision
+inside one small hardware cache, where the tie-break between equal counts is a property of the circuit.
 
 \section{Methodology}\label{sec:method}
-\textbf{Workload.} We use the Criteo Display Advertising Challenge training file (\R{ds.rows} rows) and replay its
-first \R{ds.r2M} and \R{ds.r10M} rows (\R{lab.2M} and \R{lab.10M} below); nothing is claimed for the rest of the file.
-Empty fields produce no access. \emph{Per-table} caches give each table its own cache of $C$ vectors ($C$ from
-\R{sz.p3min} to \R{sz.100000}). A \emph{shared} cache holds vectors of all tables under the key (table, value), with
-the accesses of one row issued in table order; this order is a modelling choice. The shared stream has
-\R{p11.acc.2M} accesses at \R{lab.2M} rows and \R{p11.acc.10M} at \R{lab.10M}. Capacities are in vectors.
+\textbf{Workload.} We replay the first \R{lab.2M} and \R{lab.10M} rows of the Criteo training file; nothing is
+claimed for the rest of the file. Each categorical column is one table, and an empty field produces no access.
+
+\textbf{Cache organisations.} \emph{Per-table} caches give each table its own cache of $C$ vectors, with $C$ from
+\R{sz.p3min} to \R{sz.100000}. A \emph{shared} cache holds the vectors of all tables under the key (table, value), as
+Fleche keeps one GPU cache for all tables~\cite{xie2022fleche}; the accesses of one row are issued in table order,
+which is a modelling choice. Capacities are in vectors.
 
 \textbf{Policies.} LRU, LFU-reset, LFU-persistent, TinyLFU with exact counters, W-TinyLFU with a Count-Min sketch
-(both with a \R{p3.window}\% window), ARC and Belady. In the simulator, LFU-reset breaks count ties in favour of the
-entry installed earliest (\emph{oldest-first}) and saturates its counters at \R{rtl.simcap}. The simulators have
-unit tests and mutation tests that check that the tests fail on deliberately broken policies.
+(both with a \R{p3.window}\% window), ARC and Belady; the shared-cache simulator runs all of them except TinyLFU and
+Belady. In the simulator LFU-reset breaks count ties in favour of the entry installed earliest (\emph{oldest-first})
+and saturates its counters at \R{rtl.simcap}. Unit tests and mutation tests check the simulators.
 
-\textbf{Controller, v2.} The controller (tag \texttt{rtl-v2-final}, Fig.~\ref{fig:rtl}) stores tags,
-\R{rtl.vecw}-bit data words, counters and valid bits in flip-flops, with no SRAM macro. Parameters: address width
-\R{rtl.addrw}, counter width \R{rtl.cntw} (saturating at \R{rtl.sat}), \R{rtl.groups} groups, depth \R{sz.16},
-\R{sz.64} or \R{sz.256} lines. The tag compare runs per group on registered copies of the request address and a
-priority tree gives the hit index. On a miss, Stage~A (a minimum tree per group, registered in LOOKUP) and Stage~B
-(across groups, in EVICT) find the line with the smallest key $\mathit{eff}$, which is zero for an invalid line and
-the count plus one otherwise. With \texttt{COUNTER\_MODE} 0 (default) an installed tag starts at count one, so the
-controller belongs to the LFU-reset family; with mode 1 the tag continues from the count left in the slot. Both trees
-keep the left operand on equal keys, so the victim is the \emph{lowest slot index} among the minimum counts.
+\textbf{Controller, v2.} The controller (tag \texttt{rtl-v2-final}, Fig.~\ref{fig:rtl}, parameters in
+Table~\ref{tab:flows}) stores tags, data words, counters and valid bits in flip-flops, with no SRAM. Each line holds
+a \R{rtl.vecw}-bit data word, not a full embedding vector: the vectors of Fig.~\ref{fig:l2} are \R{p14.vecbytes}
+bytes, and storing them would need wider storage. The tag compare runs per group on registered copies of the request
+address. On a miss, Stage~A (a minimum tree per group, registered in LOOKUP) and Stage~B (across groups, in EVICT)
+find the line with the smallest key $\mathit{eff}$, which is zero for an invalid line and the count plus one
+otherwise.
 
-\textbf{Controller, v3 (Rotate-victim).} v3 adds a pointer register \texttt{ptr} that loads victim${}+1$
-(modulo the depth) when a fill completes, and extends the tree key by one wrap bit, set when the slot index is below
-\texttt{ptr} (key width \R{p10.kw} bits). The victim is then the first minimum-count slot at or after \texttt{ptr},
-wrapping around. Tree depth, counters and FSM are unchanged; mode 1 keeps the v2 rule. In mode 0 the flip-flop count
-grows by the pointer width (\R{p11.ff.16}, \R{p11.ff.64} and \R{p11.ff.256} at the three depths).
+With \texttt{COUNTER\_MODE} 0 (the default) a new tag starts at count one, so the controller belongs to the LFU-reset
+family; with mode 1 the tag continues from the count left in the slot. Both trees keep the left operand on equal
+keys, so the victim is the \emph{lowest slot index} among the minimum counts.
+
+\textbf{Controller, v3 (Rotate-victim).} v3 adds a pointer register \texttt{ptr} that loads victim${}+1$ (modulo the
+depth) when a fill completes, and extends the tree key by one wrap bit, set when the slot index is below
+\texttt{ptr}. The victim is then the first minimum-count slot at or after \texttt{ptr}, wrapping around. Tree depth,
+counters and FSM are unchanged, and mode 1 keeps the v2 rule. The pointer adds \R{p11.ff.256} flip-flops at depth
+\R{sz.256}.
 
 \begin{figure}[t]
 \centering
@@ -202,46 +220,46 @@ change of v3 (pointer register and one wrap bit in the tree key).}
 
 \textbf{RTL-exact simulator.} To compare the controller with the policies on full traces, we wrote a trace-simulator
 policy that models the RTL exactly: slots, lowest-index filling of invalid lines, the key $\mathit{eff}$, the
-lowest-slot victim, the install count of each mode and saturation at \R{rtl.sat}. Against the RTL hit flag of
-\R{p9.runs} zero-delay RTL simulations (three depths, both modes, two cold-start slices of \R{p9.slicereq}
-consecutive requests of the shared stream, and their prefixes), it gives \R{p9.mism} mismatches in
-\R{p9.req} requests. For the ablation we built three variants of LFU-reset: lowest-slot ties, counters saturating at
-\R{rtl.sat}, and both together; the last equals the RTL-exact policy in mode 0.
+lowest-slot victim, the install count of each mode and counter saturation. It matches the RTL hit flag request by
+request on two cold-start slices of \R{p9.slicereq} consecutive requests of the shared stream (\emph{row0} and
+\emph{row1M}) at all three depths and in both modes (Table~\ref{tab:verif}). For the ablation we built LFU-reset with
+lowest-slot ties, with \R{rtl.cntw}-bit counters, and with both; the last equals the RTL-exact policy in mode 0.
 
-\textbf{Verification.} The RTL is checked by a self-checking testbench (\R{rtl.tests} tests, plus a tie-order test
-for v3), by mutation testing (the tests must fail on broken copies of the RTL), by lockstep comparison with the
-simulator or with earlier RTL versions, by Yosys equivalence checking, and by gate-level simulation in lockstep with
-the RTL.
+\textbf{Verification} uses a self-checking testbench (\R{rtl.tests} tests, plus a tie-order test for v3), mutation
+testing, lockstep runs, Yosys equivalence checks and gate-level simulation (Table~\ref{tab:verif}).
 
 \textbf{Implementation flows.} Table~\ref{tab:flows} lists the flows. The open flow maps the RTL to the NanGate45
-library~\cite{nangate45} with Yosys and ABC~\cite{wolf_yosys,brayton2010abc} and runs OpenSTA~\cite{opensta}
-before layout. The commercial flow uses an STMicroelectronics 28nm FD-SOI standard-cell library (accessed through
-CMP) with Cadence Genus for synthesis, Xcelium for gate-level simulation, Genus for power with simulated switching
-activity, and Innovus for place and route; area is in library units. The floorplan has end caps, well taps and a
-four-net power grid (supply, ground and the two body-bias nets of FD-SOI, which connect to the well taps). Each
-design point was run once.
+library~\cite{nangate45} with Yosys and ABC~\cite{wolf_yosys,brayton2010abc} and runs OpenSTA~\cite{opensta} before
+layout. The commercial flow uses an STMicroelectronics 28nm FD-SOI standard-cell library (accessed through CMP), with
+Cadence Genus for synthesis and power, Xcelium for gate-level simulation and Innovus for place and route. The
+floorplan has end caps, well taps and a four-net power grid: supply, ground and the two body-bias nets of FD-SOI,
+which connect to the well taps. Genus states no area unit, so synthesis areas are in library units; Innovus reports
+\umsq{}. Each design point was run once.
 
 \begin{table}[t]
 \centering
-\caption[]{Implementation flows (tt: typical corner)}
+\caption[]{Controller parameters and implementation flows (tt: typical corner)}
 \label{tab:flows}
 \setlength{\tabcolsep}{3pt}
 \footnotesize
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.2\columnwidth}>{\raggedright\arraybackslash}p{0.77\columnwidth}@{}}
 \toprule
-Flow & Settings \\
+Item & Settings \\
 \midrule
+Controller & Address \R{rtl.addrw} bits, data word \R{rtl.vecw} bits, counter \R{rtl.cntw} bits saturating at
+\R{rtl.sat}, \R{rtl.groups} groups; depth \R{sz.16}, \R{sz.64} or \R{sz.256} lines; mode 0 or mode 1 \\
 Open synthesis & Yosys \R{tool.yosys} + ABC, OpenSTA \R{tool.opensta}, NanGate45 typical; wire-load model, ideal
 clock, pre-layout; Icarus Verilog~\cite{icarus} for zero-delay gate-level simulation \\
 Synthesis, 28nm & Genus, tt; library default (zero) wire load, no parasitics, pre-layout; I/O delay
 \R{p12.io}${}\times{}$period; periods \R{p12.per.min} to \R{p12.per.max} ns \\
 GLS and power & Xcelium, \R{p13.req} requests per slice, two slices, netlist and RTL compared every cycle;
 zero delay and SDF (path delays); Genus power with the activity file of the SDF run \\
-Place and route & Innovus, tt (\R{p15.tt.v}\,V, \R{p15.tt.t}\,\textdegree C, nominal RC); setup target slack \R{p15.tslack} ns, extra post-route setup
-optimisation, then two post-route hold passes at \R{p15.met} and \R{p15.fail} ns; multi-row cells excluded;
-parasitics extracted for power \\
-Corners & Routed layouts re-timed, no re-optimisation: slow (\R{p16.ss.v}\,V, \R{p16.ss.t}\,\textdegree C, maximum-RC extraction), fast (\R{p16.ff.v}\,V,
-\R{p16.ff.t}\,\textdegree C, minimum-C extraction); on-chip variation \\
+Place and route & Innovus, tt (\R{p15.tt.v}\,V, \R{p15.tt.t}\,\textdegree C, nominal RC); setup target slack
+\R{p15.tslack} ns, extra post-route setup optimisation, then two post-route hold passes at \R{p15.met} and
+\R{p15.fail} ns; multi-row cells excluded; parasitics extracted for power \\
+Corners & Routed layouts re-timed, no re-optimisation: slow (\R{p16.ss.v}\,V, \R{p16.ss.t}\,\textdegree C,
+maximum-RC extraction), fast (\R{p16.ff.v}\,V, \R{p16.ff.t}\,\textdegree C, minimum-C extraction); on-chip
+variation \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -276,22 +294,24 @@ and Rotate-victim policy, mode 0.}
 \end{table}
 
 \textbf{Per-table and shared caches.} With per-table caches both LFU variants beat LRU at \R{sz.256} vectors
-(Table~\ref{tab:hit}) and at every other capacity of the sweep from \R{sz.p3min} to \R{sz.100000} vectors, at both
-trace lengths. With one shared cache the tables
-compete for the same entries and the two LFU variants part ways (Fig.~\ref{fig:shared}). LFU-reset beats LRU at every shared size tested
-(\R{sz.256} to \R{sz.100000}) at both lengths. LFU-persistent does not: it is below LRU at \R{sz.256} entries at
-both lengths and at \R{sz.1000} entries at \R{lab.10M} rows (\R{p3b.10M.1000.LFUp}\% against
-\R{p3b.10M.1000.LRU}\%), and it loses the most from the shorter to the longer trace, \R{p3b.drop.lo} to
-\R{p3b.drop.hi} percentage points at \R{sz.256} to \R{sz.10000} entries. Keeping counts for every address therefore
-does not help a small shared cache; we did not isolate the cause. ARC and W-TinyLFU are the strongest online policies
-up to \R{sz.256} vectors per table and up to \R{sz.1000} shared entries, but need ghost lists or a sketch and a window, whose hardware cost we did
-not measure. The controller belongs to the LFU-reset family, so LFU-reset is the policy it should reach.
+(Table~\ref{tab:hit}) and at every other capacity of the sweep, on both traces. In one shared cache the tables
+compete for the same entries, and the two LFU variants part ways (Fig.~\ref{fig:shared}). LFU-reset beats LRU at
+every shared size on both traces.
+
+LFU-persistent does not. It falls below LRU at the smallest shared size on both traces and at the next size on the
+longer one. At the three smaller sizes it also loses more than any other policy from the shorter to the longer trace,
+\R{p3b.drop.lo} to \R{p3b.drop.hi} percentage points. Keeping a count for every address therefore does not
+help a small shared cache; we did not isolate why.
+
+ARC and W-TinyLFU are the strongest online policies up to \R{sz.256} vectors per table and \R{sz.1000} shared entries,
+but they need ghost lists, or a sketch and a window, whose hardware cost we did not measure. The controller belongs
+to the LFU-reset family, so LFU-reset is the policy it should reach.
 
 \begin{figure}[t]
 \centering
 \includegraphics{fig_shared}
-\caption[]{One cache shared by all \R{ds.tables} tables, the five policies run in the shared-cache simulator: hit rate against capacity, trace
-simulation of the first \R{lab.10M} (solid) and \R{lab.2M} (dashed) Criteo rows.}
+\caption[]{One cache shared by all \R{ds.tables} tables, the five policies run in the shared-cache simulator: hit
+rate against capacity, trace simulation of the first \R{lab.10M} (solid) and \R{lab.2M} (dashed) Criteo rows.}
 \label{fig:shared}
 \end{figure}
 
@@ -305,131 +325,148 @@ simulation of the first \R{lab.10M} (solid) and \R{lab.2M} (dashed) Criteo rows.
 \end{figure}
 
 \subsection{The tie-break makes the controller lose to LRU}\label{sec:tie}
-On the full traces the RTL-exact policy in mode 0 (the v2 rule) is below LRU at all four shared sizes simulated
-from \R{sz.256} to \R{sz.100000} entries, at both lengths (Fig.~\ref{fig:tiebreak}): \R{p9.10M.256.v2}\% against
-\R{p3b.10M.256.LRU}\% at \R{sz.256} entries and \R{p9.10M.100000.v2}\% against \R{p3b.10M.100000.LRU}\% at
-\R{sz.100000} entries (\R{lab.10M} rows). At \R{sz.16} and \R{sz.64} entries, where LRU is low
-(\R{p11.2M.16.LRU}\% and \R{p11.2M.64.LRU}\% at \R{lab.2M} rows), the v2 rule is above LRU (\R{p11.2M.16.v2}\% and
-\R{p11.2M.64.v2}\%) but far below LFU-reset (\R{p11.2M.16.LFUr}\% and \R{p11.2M.64.LFUr}\%).
+On the full traces the RTL-exact policy in mode 0 (the v2 rule) is below LRU at all four shared sizes simulated from
+\R{sz.256} to \R{sz.100000} entries, on both traces (Fig.~\ref{fig:tiebreak}; Table~\ref{tab:hit} gives the values
+at the smallest of them). Below that range, at the two smallest sizes simulated, where LRU is low, the v2 rule is
+above LRU but far below LFU-reset.
 
-The cause is the tie-break. A new tag takes the slot of the victim, which was the lowest-indexed slot with the
-minimum count, and starts at count one, so unless it is hit before the next miss it is again the lowest-indexed
-minimum and is evicted next. On the row0 slice at \R{sz.256} entries, the v2 rule evicts the line installed by the
-previous miss in \R{p9.prev.v2} of \R{p9.prev.v2.n} evictions; LFU-reset with oldest-first ties does so in
-\R{p9.prev.old} of \R{p9.prev.old.n}. The ablation confirms it: LFU-reset with lowest-slot ties alone gives exactly
-the hits of the RTL-exact policy, and LFU-reset with \R{rtl.cntw}-bit counters alone gives exactly the hits of
-LFU-reset, at all four sizes and both lengths. The tie-break accounts for the whole gap (\R{p9.gap.10M.256} hits at
-\R{sz.256} entries, \R{lab.10M} rows), saturation for \R{p9.sat} hits and their interaction for \R{p9.int}. Mode 1 is
-no remedy: it beats LRU at \R{sz.256} entries but loses to it at \R{sz.1000} and \R{sz.10000} entries on both traces.
+The cause is the tie-break, through the mechanism of Section~\ref{sec:intro}. On the row0 slice at \R{sz.256}
+entries, the v2 rule evicts the line installed by the previous miss in all but one of its \R{p9.prev.v2.n}
+evictions; oldest-first LFU-reset never does.
+
+The ablation confirms it. LFU-reset with lowest-slot ties alone gives exactly the hits of the RTL-exact policy, and
+LFU-reset with \R{rtl.cntw}-bit counters alone gives exactly the hits of LFU-reset, at all four sizes and on both
+traces. The tie-break therefore accounts for the whole gap to oldest-first LFU-reset (\R{p9.gap.10M.256} hits at \R{sz.256} entries on the
+longer trace) and saturation for none of it. Mode 1 is no remedy: it beats LRU at the smallest of these sizes but
+loses at the next two, on both traces.
 
 \subsection{Rotate-victim restores LFU-reset}\label{sec:fix}
-We simulated three replacements for the lowest-slot rule: Rotate-victim, which starts the search for the minimum at
-the slot after the previous victim; Rotate-step, whose pointer advances on every miss; and a young bit per line. At
-depth \R{sz.256} the first two add \R{p9.ff.rs} flip-flops and the third \R{p9.ff.yb}. We implemented Rotate-victim
-because it reproduces the policy the controller was written for: on the slices it gives exactly the hits of
-oldest-first LFU-reset, and on \R{p9.probe.n} synthetic traces it differs from it on \R{p9.probe.rv}, against
-\R{p9.probe.rs} for Rotate-step. Rotate-step got more hits than LFU-reset at \R{p9.rs.beats} of \R{p9.rs.pts}
-full-trace points; we did not pursue it. In mode 0 Rotate-victim recovers \R{p9.rec}\% of the gap at every size, to one decimal,
-and differs from oldest-first LFU-reset by \R{p9.rvdiff.lo} to \R{p9.rvdiff.hi} hits on the full traces; at
-\R{sz.16}, \R{sz.64} and \R{sz.256} entries it equals LFU-reset exactly, in total and in every table. It beats LRU and
-the v2 rule at all six sizes simulated, from \R{sz.16} to \R{sz.100000} entries (Fig.~\ref{fig:tiebreak}); at \R{sz.256} entries
-and \R{lab.10M} rows it has \R{p11.10M.256.v3}\%, \R{d.v3lru} points above LRU and \R{d.v3v2} points above the v2
-rule. In mode 1 all three candidates lose hits against the unchanged rule, so v3 changes mode 0 only.
+We simulated three replacements for the lowest-slot rule: Rotate-victim, which starts the search at the slot after
+the previous victim; Rotate-step, whose pointer advances on every miss; and a young bit per line. The first two need
+one pointer register, the third one flip-flop per line. We implemented Rotate-victim because it reproduces the policy
+the controller was written for: on the slices it gives exactly the hits of oldest-first LFU-reset, and on
+\R{p9.probe.n} synthetic traces it departs from it on \R{p9.probe.rv}, against \R{p9.probe.rs} for Rotate-step.
+Rotate-step got more hits than LFU-reset at most full-trace points; we did not pursue it.
 
-The gain is not uniform. Inside the shared cache, \R{p11.tl.16} of \R{ds.tables} tables at \R{sz.16} entries,
-\R{p11.tl.64} at \R{sz.64} and \R{p11.tl.256} at \R{sz.256} have fewer hits under v3 than under v2 (at \R{sz.16}
-entries and \R{lab.2M} rows they lose \R{p11.lost.2M.16} hits while the total gains \R{p11.gain.2M.16}). On the
-cold-start slices at depth \R{sz.16}, v3 has fewer hits than v2 (\R{p10.16.row0.v3} against \R{p10.16.row0.v2} and
-\R{p10.16.row1M.v3} against \R{p10.16.row1M.v2} of \R{p9.slicereq} requests).
+In mode 0, Rotate-victim recovers \R{p9.rec}\% of that gap at every size, to one decimal. On the full traces it
+differs from oldest-first LFU-reset by at most \R{p9.rvdiff.hi.abs} hits, and at the three smallest sizes it equals
+LFU-reset exactly, in total and in every table.
+
+It beats LRU and the v2 rule at all six sizes simulated (Fig.~\ref{fig:tiebreak}). At the \R{sz.256}-entry size of
+Table~\ref{tab:hit} it is \R{d.v3lru} points above LRU and \R{d.v3v2} above the v2 rule on the longer trace. In mode
+1 all three candidates lose hits against the unchanged rule, so v3 changes mode 0 only.
+
+The gain is not uniform. Inside the shared cache, \R{p11.tl.16} of the \R{ds.tables} tables have fewer hits under v3
+than under v2 at the smallest size, and \R{p11.tl.256} at the size of Table~\ref{tab:hit}. On the cold-start slices,
+the smallest design also has fewer hits with v3.
 
 \section{Results: Hardware}\label{sec:res-hw}
+This section compares v2 and v3 in mode 0. Unless stated, results are for the \R{sz.256}-entry design, and
+Table~\ref{tab:hw} collects them.
+
 \subsection{Verification}\label{sec:verif}
-v3 passes the inherited tests at all three depths in both modes and the tie-order test in mode 0, and the \R{p10.mut} mutants of the
-new rule (the v2 rule, \texttt{ptr} loading the victim instead of victim${}+1$, no wrap bit in Stage B) are caught.
-The full mutation suite on v3 kills \R{p11.mut.tb} mutants with the testbench and \R{p11.mut.ls} more with the
-lockstep check, and no non-equivalent mutant survives. In lockstep with the simulator, \R{p10.runs} RTL simulations
-(three depths, both modes, two slices of \R{p9.slicereq} requests) show \R{p10.mism} mismatches, request by request;
-at depth \R{sz.256} on the row0 slice v3 has \R{p10.256.row0.v3} hits where the v2 rule has \R{p10.256.row0.v2}.
-Mode 1 is unchanged: its hit logs equal those of v2 line for line, and Yosys proves the v2 and v3 RTL equivalent in
-mode 1 at depths \R{sz.16} and \R{sz.64} (\R{p11.eq.16} and \R{p11.eq.64} equivalence cells); the proof was not run
-at depth \R{sz.256} and does not cover the netlists. At gate level, the \R{p11.gls.n} open-flow v3 runs (three depths, both modes, two clock targets, two slices) show
-\R{p11.gls.mism} mismatching cycles against the RTL, and so do the commercial depth-\R{sz.256} netlists of both
-versions before layout (\R{p13.mism}) and after routing at \R{p15.gls.period} ns (\R{p15.mism}); their hit logs equal the RTL logs. The SDF runs annotate
-\R{p15.sdf.path}\% of the path delays but \R{p15.sdf.check}\% of the timing checks, so setup and hold rest on static
-timing analysis (typical corner; other corners in Section~\ref{sec:corners}), not on simulation.
+\begin{table}[t]
+\centering
+\caption[]{Verification of the controller, as run}
+\label{tab:verif}
+\setlength{\tabcolsep}{3pt}
+\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.33\columnwidth}>{\raggedright\arraybackslash}p{0.64\columnwidth}@{}}
+\toprule
+Check & Scope and result \\
+\midrule
+RTL-exact model against v2 RTL & \R{p9.runs} runs (three depths, both modes, two slices, full and prefix):
+\R{p9.mism} mismatches in \R{p9.req} requests \\
+v3 RTL against the simulator (Rotate-victim in mode 0, v2 rule in mode 1) & \R{p10.runs} runs of \R{p9.slicereq} requests (three depths, both modes, two
+slices): \R{p10.mism} mismatches \\
+Mutants of the v3 rule & all \R{p10.mut} caught by the tie-order test \\
+Mutation suite on v3 & \R{p11.mut.tb} killed by the testbench, \R{p11.mut.ls} by lockstep; no non-equivalent mutant
+survives \\
+v2 and v3 equal in mode 1 (Yosys, RTL only) & proven at depth \R{sz.16} (\R{p11.eq.16} cells) and \R{sz.64}
+(\R{p11.eq.64} cells); not run at \R{sz.256} \\
+Open-flow GLS of v3, zero delay & \R{p11.gls.n} netlist runs: \R{p11.gls.mism} mismatching cycles \\
+28nm GLS before layout, \R{p13.period} ns & zero delay and SDF, v2 and v3, two slices: \R{p13.mism} mismatching
+cycles \\
+28nm GLS after routing, \R{p15.gls.period} ns & zero delay and SDF: \R{p15.mism} mismatching cycles; SDF path delays
+\R{p15.sdf.path}\%, timing checks \R{p15.sdf.check}\% annotated \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:verif} summarises the checks. v3 passes the inherited tests in both modes and the tie-order test in
+mode 0, and every mutant of its rule is caught. In lockstep with the simulator its RTL shows no mismatch, request by
+request, and in mode 1 its hit logs equal those of v2 line for line. Yosys proves the v2 and v3 RTL equivalent in mode
+1 at the two smaller depths; the proof was not run at depth \R{sz.256} and does not cover netlists.
+
+At gate level every netlist run, open-flow and commercial, before layout and after routing, matches the RTL in every
+cycle. The SDF runs annotate path delays but none of the timing checks, so setup and hold rest on static timing
+analysis at the typical corner; Section~\ref{sec:corners} covers the other corners.
 
 \subsection{Synthesis}
-\textbf{Open flow.} On NanGate45 (pre-layout, one run per point) the Fmax of v3 in mode 0 differs from v2 by
-\R{p11.nfmax.lo}\% to \R{p11.nfmax.hi}\%, inside the \R{p11.nnoise}\% change of the same-logic mode 1, so no Fmax cost
-or gain of Rotate-victim is claimed from this flow.
+\textbf{Open flow.} On NanGate45 (pre-layout, one run per point) every Fmax change of v3 in mode 0 lies within the
+\R{p11.nnoise}\% change seen between the two versions in mode 1, whose logic is unchanged, so no Fmax cost or gain
+is claimed from this flow.
 
-\textbf{28nm.} With Genus at the typical corner (pre-layout, one run per point) the tightest met and loosest failed
-periods are \R{p12.br.16.met} and \R{p12.br.16.fail} ns at depth \R{sz.16} for both versions and modes, and
-\R{p12.br.256.met} and \R{p12.br.256.fail} ns at depth \R{sz.256} for all four version and mode pairs; at depth
-\R{sz.64} they are \R{p12.br.64.met} and \R{p12.br.64.fail} ns except v3 in mode 1. The Fmax of a failing run
-depends on its target period, so the bracket is the reliable figure. At a relaxed \R{p12.relax} ns, the area of v3
-differs from v2 by \R{p12.a.16.m0}\%, \R{p12.a.64.m0}\% and \R{p12.a.256.m0}\% in mode 0 at the three depths, against
-\R{p12.a.16.m1}\%, \R{p12.a.64.m1}\% and \R{p12.a.256.m1}\% in mode 1, whose logic is unchanged (proven at depths
-\R{sz.16} and \R{sz.64}). Genus merges the per-group copies of the request address into one register; keeping all
-of them (\R{p12.copies} flip-flops) raises the Fmax of the failing
-\R{p12.br.256.fail} ns run at depth \R{sz.256} by \R{p12.mo.v2}\% (v2) and \R{p12.mo.v3}\% (v3), one run each, at
-\R{p12.mo.a.v2}\% and \R{p12.mo.a.v3}\% area; the latter is above the largest same-logic area difference seen in
-this flow (\R{p12.noise}\%). These merge-off netlists, synthesised at \R{p13.period} ns, are the
-ones taken to gate-level simulation and layout.
+\textbf{28nm.} With Genus at the typical corner (pre-layout, one run per point), v2 and v3 meet and fail the same
+clock periods in both modes (Table~\ref{tab:hw} for mode 0), and so do the smaller designs, except v3 in mode 1 at the middle
+depth. The Fmax of a failing run depends on its target period, so the met and failed periods are the reliable figure.
+At a relaxed clock, the area of v3 differs from v2 by at most \R{p12.a.16.m0.abs}\% in mode 0, while in mode 1, whose logic is
+unchanged by construction (proven at the two smaller depths), the versions differ by up to \R{p12.a.256.m1.abs}\%.
+
+Genus merges the per-group copies of the request address into one register. Keeping all of them (\R{p12.copies}
+flip-flops) raises the Fmax of the failing runs by \R{p12.mo.v2}\% for v2 and \R{p12.mo.v3}\% for v3, one run each.
+
+In those failing runs the option costs v3 \R{p12.mo.a.v3.abs}\% in area, more than any v2-to-v3 area difference in
+mode 1, and v2 less. The merge-off netlists synthesised at \R{p13.period} ns, which go to gate-level simulation and
+layout, cost v3 \R{p12.mo.a08.v3.abs}\% in area.
 
 \subsection{Energy per request before layout}
-For the merge-off depth-\R{sz.256} netlists at \R{p13.period} ns (typical corner, pre-layout, no clock tree), power
-with the switching activity of the SDF simulations is \R{p13.P.lo} to \R{p13.P.hi} W. Energy per request
-(power${}\times{}$cycles${}\times{}$period$/$requests) is \R{p13.E.v2.row0} and \R{p13.E.v2.row1M} pJ for v2 and
-\R{p13.E.v3.row0} and \R{p13.E.v3.row1M} pJ for v3 on the two slices, \R{p13.dE.row0}\% and \R{p13.dE.row1M}\% for v3:
-its power is \R{p13.dP.row0}\% and \R{p13.dP.row1M}\% higher, but it needs \R{p13.dC.row0.abs}\% and
-\R{p13.dC.row1M.abs}\% fewer cycles: it has more hits, so fewer requests wait for a fill. Flip-flop outputs and ports are fully
-annotated but only \R{p13.cov.lo}\% to \R{p13.cov.hi}\% of the combinational driver nets; combinational logic is
-\R{p13.logic.lo}\% to \R{p13.logic.hi}\% of the power, which bounds the error of total power by about
-\R{p13.bound}\%. Registers take \R{p13.reg.lo}\% to \R{p13.reg.hi}\% of the power.
+For the merge-off netlists at \R{p13.period} ns (typical corner, pre-layout, no clock tree), with switching activity
+from the SDF simulations, v3 needs \R{p13.dE.row1M.abs} to \R{p13.dE.row0.abs}\% less energy per request than v2 on
+the two slices. Its power is slightly higher; the saving comes from fewer cycles, because with more hits fewer
+requests wait for a fill (Table~\ref{tab:hw}).
 
-\subsection{Place and route}
+Flip-flop outputs and ports are fully annotated with simulated activity, but only part of the combinational driver
+nets are. Combinational logic takes at most \R{p13.logic.hi}\% of the power, and we take its share as the bound on
+this error.
+
+\subsection{Place and route}\label{sec:pnr}
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.49\columnwidth]{fig_layout_v2_d256.png}\hfill
 \includegraphics[width=0.49\columnwidth]{fig_layout_v3_d256.png}\\[2pt]
 \footnotesize (a) v2 \hspace{0.4\columnwidth} (b) v3
 \caption[]{Routed layouts at depth \R{sz.256} (merge-off netlists), \R{p15.met} ns clock after the two hold passes,
-meeting setup and hold at the typical corner; same scale. Core area \R{p15.core.v2} (v2) and \R{p15.core.v3} (v3)
-library units.}
+meeting setup and hold at the typical corner; same scale. Core area \R{p15.core.v2}\,\umsq{}
+(v2) and \R{p15.core.v3}\,\umsq{} (v3).}
 \label{fig:layout}
 \end{figure}
 
-The first flow left power-rail shorts at every instance of the one double-height cell type in the depth-\R{sz.256}
-designs. Excluding all multi-row cells and resizing the netlist instances (\R{p15.rs.v2} in v2, \R{p15.rs.v3} in v3)
-removed them. With the target-slack flow and two hold passes (Table~\ref{tab:flows}), both versions meet setup and
-hold at \R{p15.met} ns (setup WNS \R{p15.s.v2.10} and \R{p15.s.v3.10} ns, hold WNS \R{p15.h.v2.10} and
-\R{p15.h.v3.10} ns for v2 and v3) and fail setup at \R{p15.fail} ns (\R{p15.s.v2.09} ns on \R{p15.n.v2.09} paths and
-\R{p15.s.v3.09} ns on \R{p15.n.v3.09} paths), with \R{p15.drc} DRC violations and \R{p15.conn} connectivity problems
-on all nets, including the four power nets, in the tool's own checks (Fig.~\ref{fig:layout}). The well-tap check
-reports \R{p15.wtv} violations per run, in rows that hold only end caps. The logic cell area of the \R{p15.met} ns
-layouts is \R{p15.ladiff}\% larger for v3 (Table~\ref{tab:hw}), one layout each; with same-logic synthesis runs
-differing by up to \R{p12.noise}\% in area, this is not shown to be a cost of the design. In both fixed flows that
-ran \R{p15.fail} ns, v3 missed setup by more than v2 (\R{p15.s.v3.09dv} against \R{p15.s.v2.09dv} ns and
-\R{p15.s.v3.09} against \R{p15.s.v2.09} ns), one run per flow. The \R{sz.16}-line v3 design, routed at
-\R{p15.d16.period} ns, has \R{p15.d16.drc} DRC violations and misses setup by \R{p15.d16.wns} ns on
-\R{p15.d16.n} path.
+With the flow of Table~\ref{tab:flows}, both versions meet setup and hold at \R{p15.met} ns and fail setup at
+\R{p15.fail} ns at the typical corner (Table~\ref{tab:hw}, Fig.~\ref{fig:layout}). The tool's checks report no DRC
+violations and no connectivity problems on any net, including the four power nets; the well-tap check reports
+\R{p15.wtv} violations per run, in rows that hold only end caps.
+
+At the failing period v3 misses setup by more than v2, and the logic cell area of the \R{p15.met} ns layouts is
+\R{p15.ladiff}\% larger for v3, one layout each. No same-logic pair of layouts was run, so neither difference can be
+separated from flow variation.
 
 Gate-level simulation and power after routing were run on the \R{p15.gls.period} ns layouts, which meet setup and
-hold at the typical corner, with the routed netlist, its SDF and its extracted parasitics (no net without parasitics). Energy per request
-is \R{p15.E.v2.row0} and \R{p15.E.v2.row1M} pJ for v2 and \R{p15.E.v3.row0} and \R{p15.E.v3.row1M} pJ for v3, that is
-\R{p15.dE.row0}\% and \R{p15.dE.row1M}\% for v3, again from \R{p15.dC.row0.abs}\% and \R{p15.dC.row1M.abs}\% fewer
-cycles at \R{p15.dP.row0}\% and \R{p15.dP.row1M}\% more power. Registers take \R{p15.reg.lo}\% to \R{p15.reg.hi}\%
-of the power and the clock tree \R{p15.clk.lo}\% to \R{p15.clk.hi}\%; combinational logic, \R{p15.logic.lo}\% to
-\R{p15.logic.hi}\%, bounds the error from the \R{p15.cov.v2}\% and \R{p15.cov.v3}\% of driver nets with simulated
-activity. These figures are not comparable with the pre-layout ones, which have no clock tree and no parasitics.
+hold at the typical corner, with the routed netlist, its SDF and its extracted parasitics. v3 needs
+\R{p15.dE.row1M.abs} to \R{p15.dE.row0.abs}\% less energy per request, again because it needs fewer cycles
+(Table~\ref{tab:hw}).
+
+Registers and the clock tree take all but \R{p15.logic.lo} to \R{p15.logic.hi}\% of the post-route power. As before only
+ports and flip-flop outputs are fully annotated (the clock-tree nets are not listed separately), and we take the logic
+share as the bound on the activity error. These figures are not
+comparable with the pre-layout ones, which have no clock tree and no parasitics.
 
 \begin{table}[t]
 \centering
 \caption[]{v2 against v3 at depth \R{sz.256}, mode 0, 28nm FD-SOI library, typical corner unless stated; one run
-per point. Energy per request on the two slices (row0 / row1M).}
+per point. Two values: the row0 / row1M slices.}
 \label{tab:hw}
-\setlength{\tabcolsep}{2.5pt}
+\setlength{\tabcolsep}{2pt}
 \footnotesize
 \begin{tabular}{@{}lcc@{}}
 \toprule
@@ -440,74 +477,85 @@ Met / failed period (ns) & \R{p12.br.256.met} / \R{p12.br.256.fail} & \R{p12.br.
 Fmax at \R{p12.br.256.fail} ns, normal (MHz) & \R{p12.f.v2} & \R{p12.f.v3} \\
 Fmax at \R{p12.br.256.fail} ns, merge-off (MHz) & \R{p12.fmo.v2} & \R{p12.fmo.v3} \\
 Area at \R{p12.relax} ns, normal (lib.\ units) & \R{p12.area.v2} & \R{p12.area.v3} \\
-Energy at \R{p13.period} ns, GLS (pJ/request) & \R{p13.E.v2.row0} / \R{p13.E.v2.row1M} & \R{p13.E.v3.row0} / \R{p13.E.v3.row1M} \\
+\multicolumn{3}{@{}l}{\emph{Gate-level simulation before layout, \R{p13.period} ns}} \\
+Power (mW) & \R{p13.mW.v2.row0} / \R{p13.mW.v2.row1M} & \R{p13.mW.v3.row0} / \R{p13.mW.v3.row1M} \\
+Energy per request (pJ) & \R{p13.E.v2.row0} / \R{p13.E.v2.row1M} & \R{p13.E.v3.row0} / \R{p13.E.v3.row1M} \\
+Cycles, v3 against v2 (\%) & & \R{p13.dC.row0} / \R{p13.dC.row1M} \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{After place and route}} \\
 Met / failed period$^{*}$ (ns) & \R{p15.met} / \R{p15.fail} & \R{p15.met} / \R{p15.fail} \\
 Setup / hold WNS at \R{p15.met} ns (ns) & \R{p15.s.v2.10} / \R{p15.h.v2.10} & \R{p15.s.v3.10} / \R{p15.h.v3.10} \\
-Logic cell area at \R{p15.met} ns (lib.\ units) & \R{p15.la.v2} & \R{p15.la.v3} \\
-Energy at \R{p15.gls.period} ns, GLS (pJ/request) & \R{p15.E.v2.row0} / \R{p15.E.v2.row1M} & \R{p15.E.v3.row0} / \R{p15.E.v3.row1M} \\
-Slow corner, derived period (ns) & \R{p16.dp.v2.10} & \R{p16.dp.v3.10} \\
+Setup WNS at \R{p15.fail} ns (ns) & \R{p15.s.v2.09} & \R{p15.s.v3.09} \\
+Logic cell area at \R{p15.met} ns (\umsq{}) & \R{p15.la.v2} & \R{p15.la.v3} \\
+\multicolumn{3}{@{}l}{\emph{Gate-level simulation after routing, \R{p15.gls.period} ns}} \\
+Power (mW) & \R{p15.mW.v2.row0} / \R{p15.mW.v2.row1M} & \R{p15.mW.v3.row0} / \R{p15.mW.v3.row1M} \\
+Energy per request (pJ) & \R{p15.E.v2.row0} / \R{p15.E.v2.row1M} & \R{p15.E.v3.row0} / \R{p15.E.v3.row1M} \\
+Cycles, v3 against v2 (\%) & & \R{p15.dC.row0} / \R{p15.dC.row1M} \\
+Registers, share of power, row0 (\%) & \R{p15.reg.v2.row0} & \R{p15.reg.v3.row0} \\
+Clock tree, share of power, row0 (\%) & \R{p15.clk.v2.row0} & \R{p15.clk.v3.row0} \\
+Logic, share of power, row0 (\%) & \R{p15.logic.v2.row0} & \R{p15.logic.v3.row0} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Other corners, \R{p15.met} ns layouts}} \\
+Slow: setup WNS (ns) & \R{p16.ss.s.v2.10} & \R{p16.ss.s.v3.10} \\
+Slow: derived period$^{\dagger}$ (ns) & \R{p16.dp.v2.10} & \R{p16.dp.v3.10} \\
+Slow: hold-failing paths, I/O / reg. & \R{p16.ss.hio.v2} / \R{p16.ss.hrr.v2} & \R{p16.ss.hio.v3} / \R{p16.ss.hrr.v3} \\
+Fast: hold-failing paths, I/O / reg. & \R{p16.ff.hio.v2} / \R{p16.ff.hrr.v2} & \R{p16.ff.hio.v3} / \R{p16.ff.hrr.v3} \\
 \bottomrule
 \end{tabular}\\[3pt]
-\parbox{\columnwidth}{\footnotesize\raggedright Merge-off netlists except the normal-flow rows. $^{*}$Target-slack flow with two hold passes
-(Table~\ref{tab:flows}). Derived period = \R{p15.met} ns minus the slow-corner setup WNS of the same layout, not
-re-optimised; it ignores hold and is not a measurement.}
+\parbox{\columnwidth}{\footnotesize\raggedright Merge-off netlists except the rows marked normal. $^{*}$Target-slack
+flow with two hold passes (Table~\ref{tab:flows}). $^{\dagger}$\R{p15.met} ns minus the slow-corner setup WNS of the
+same layout, not re-optimised; it ignores hold and is not a measurement.}
 \end{table}
 
 \subsection{Corners}\label{sec:corners}
-The layouts were optimised at the typical corner only, so failures at other corners are expected; Table~\ref{tab:hw}
-and this section describe the existing layouts, not a sign-off. The typical-corner re-timing reproduces the
-place-and-route reports for all five designs. At the slow corner every design fails setup, at depth \R{sz.256} on
-register-to-register paths only (WNS \R{p16.ss.s.v2.10} and \R{p16.ss.s.v3.10} ns for the \R{p15.met} ns layouts of
-v2 and v3). The derived slow-corner period, which ignores hold, is \R{p16.dp.v2.10} and \R{p16.dp.v3.10} ns for these layouts and
-\R{p16.dp.v2.11} and \R{p16.dp.v3.11} ns for the \R{p15.gls.period} ns ones. Here v3 is ahead of v2 by
-\R{d.dp10} ns, the opposite sign to the \R{p15.fail} ns typical-corner difference above, which suggests that both
-differences lie within the variation of the flow; one layout per point cannot show this. The fast corner meets setup
-for all designs.
+The layouts were optimised at the typical corner only, so failures at other corners are expected; this section
+describes the existing layouts, not a sign-off. Re-timing at the typical corner reproduces the place-and-route
+reports. At the slow corner both versions fail setup on register-to-register paths, and the derived slow-corner
+period, which ignores hold, is \R{p16.dp.v2.10} ns for v2 and \R{p16.dp.v3.10} ns for v3 (Table~\ref{tab:hw}).
+Here v3 is ahead, the opposite sign to the typical-corner difference at the failing period, which suggests that both
+differences lie within the variation of the flow; one layout per point cannot show this. The fast corner meets
+setup.
 
-Hold fails at the slow corner for the depth-\R{sz.256} layouts in the I/O path group only
-(\R{p16.ss.hn.v2.10} and \R{p16.ss.hn.v3.10} paths for the \R{p15.met} ns layouts); register-to-register hold is
-met (\R{p16.ss.hr.v2.10} and \R{p16.ss.hr.v3.10} ns). Path reports of the v3 \R{p15.met} ns layout explain this. The
-constraints give inputs a delay of \R{p16.io.indelay} ns on the ideal clock edge; at the slow corner the data arrive
-at \R{p16.io.arr} ns, while the capturing register's clock arrives at \R{p16.io.clk} ns through the propagated clock
-tree, so the hold slack is \R{p16.io.slack} ns, and \R{p16.io.in2reg} of the \R{p16.io.all} failing paths start at an
-input while \R{p16.io.r2o} end at an output. At the typical corner the saved database holds a clock source latency of \R{p16.io.lat} ns, written by the tool
-during the flow, which cancels the \R{p16.io.tree} ns tree delay for these paths (slack \R{p16.io.ttslack} ns); the
-added corners have none. At the fast corner hold fails in the I/O group of all four depth-\R{sz.256} layouts
-(\R{p16.ff.hdn.lo} to \R{p16.ff.hdn.hi} paths) and, in the \R{p15.met} ns layouts only, on register-to-register
-paths (\R{p16.ff.hrn.v2} and \R{p16.ff.hrn.v3} paths). Sign-off would need block-level I/O constraints with a clock latency
-per corner, or multi-corner optimisation; neither was done.
+Hold fails at the slow corner in the I/O path group only, while register-to-register hold is met. Path reports of v3
+explain this: inputs arrive just after their delay of \R{p16.io.indelay} ns on the ideal clock edge, but the
+capturing register's clock arrives at \R{p16.io.clk} ns through the propagated clock tree, so the hold slack is
+\R{p16.io.slack} ns.
+
+Of the failing slow-corner hold paths of v3, all but \R{d.in2reg.other} start at an input, and no register-to-output
+path fails. At the typical corner
+the saved database holds a clock source latency, written by the tool during the flow, that cancels the tree delay
+for these paths; the added corners have none. At the fast corner hold fails in the I/O group and, in these layouts,
+on some register-to-register paths (Table~\ref{tab:hw}). Sign-off would need block-level I/O constraints with a clock
+latency per corner, or multi-corner optimisation; neither was done.
 
 \section{Discussion and Limitations}\label{sec:disc}
 \begin{itemize}
 \item \emph{Corners and runs.} All layouts were optimised at the typical corner only, and every point is one run. The
-bracket depends on the flow: earlier flows failed setup between \R{p15.fail} and \R{p15.oldfail} ns, and
-\R{p15.met} ns needed two hold passes. The \R{p15.fail} ns difference between v2 and v3 is not resolved.
-\item \emph{Timing in simulation.} The SDF simulations annotate no timing checks, so their zero violations are no
-check; setup and hold rest on static timing analysis at the typical corner.
-\item \emph{Energy.} Activity is simulated for \R{p15.cov.v2}\% to \R{p15.cov.v3}\% of the driver nets after routing,
-with the bound stated above. Cycles per miss come from the testbench's fill handshake (\R{p13.fill.lo} to \R{p13.fill.hi} random cycles),
-not from a memory system, and the two slices come from one dataset.
-\item \emph{Scope.} One dataset, the first \R{lab.10M} of \R{ds.rows} rows; hardware built up to \R{sz.256} entries;
-larger sizes are trace simulations of the RTL-exact model, up to \R{sz.100000}; the controller stores a \R{rtl.vecw}-bit word per line, not a full embedding vector.
-\item \emph{Frequency.} At depth \R{sz.256} the pre-layout bracket (\R{p12.br.256.met} ns met) is tighter than the
-post-route one (\R{p15.met} ns met), probably because the pre-layout runs have no wire load, parasitics or clock
-tree; we did not separate these effects.
-\item \emph{Power.} Registers and the clock tree take all but \R{p15.logic.lo}\% to \R{p15.logic.hi}\% of the
-post-route power, so holding every line in flip-flops dominates the power. Clock gating, or storage in SRAM, is the
-next step to try.
+met and failed periods depend on the flow settings: other settings we tried failed at periods up to
+\R{p15.oldfail} ns, and \R{p15.met} ns needed two hold passes.
+\item \emph{Timing in simulation.} No timing checks are annotated in the SDF simulations; setup and hold rest on
+static timing analysis.
+\item \emph{Energy.} Activity is simulated for \R{p15.cov.v2} to \R{p15.cov.v3}\% of the driver nets after routing,
+with the bound stated above. Cycles per miss come from the testbench's fill handshake, a random delay of up to
+\R{p13.fill.max} cycles, not from a memory system, and the two slices come from one dataset.
+\item \emph{Scope.} One dataset, the first \R{lab.10M} of \R{ds.rows} rows; hardware built up to \R{sz.256} entries,
+larger sizes simulated with the RTL-exact model; lines hold data words, not full vectors.
+\item \emph{Frequency.} The pre-layout runs meet \R{p12.br.256.met} ns and the routed layouts \R{p15.met} ns,
+probably because the pre-layout runs have no wire load, parasitics or clock tree; we did not separate these effects.
+\item \emph{Power.} Holding every line in flip-flops dominates the power (Section~\ref{sec:pnr}); clock gating, or
+storage in SRAM, is the next step to try.
 \end{itemize}
 
 \section{Conclusion and Future Work}
-In a hardware LFU controller for embedding lookups, the rule that breaks ties between equal counts decides whether
-a shared cache of \R{sz.256} to \R{sz.100000} entries beats LRU on Criteo. Lowest-slot ties make the newest line
-the next victim, and the exact model of the controller loses to LRU at all four sizes simulated in that range; a
-single pointer (Rotate-victim) restores the hit rate of LFU-reset. In a 28nm FD-SOI flow through place and route,
-the fix keeps the same met and failed clock periods and lowers energy per request by \R{p15.dE.row1M.abs} to
-\R{p15.dE.row0.abs}\% in post-route simulation with a testbench fill model. Future work: a set-associative organisation, clock
-gating, a realistic memory model behind the cache, body bias, multi-corner sign-off, more datasets, and hardware
-counters on the H200.
+Fixed-order ties, which comparator trees and priority encoders give without extra state, can decide whether a
+counter-based LFU embedding cache beats LRU: with them, a new line that starts at count one becomes the next victim
+unless it is hit first. On Criteo, in a cache shared by all tables, the exact model of our controller loses to LRU at
+every size simulated from \R{sz.256} entries upwards, and one pointer register (Rotate-victim) restores LFU with
+oldest-first ties. Through place and route in a 28nm FD-SOI flow, the fix keeps the clock period of the original
+design at the typical corner and lowers energy per request by \R{p15.dE.row1M.abs} to \R{p15.dE.row0.abs}\% in
+post-route simulation with a testbench fill model. Future work: a
+set-associative organisation, clock gating, a realistic memory model behind the cache, body bias, multi-corner
+sign-off, more datasets, and hardware counters on the H200.
 
 \section*{Acknowledgements}
 We thank CMP and STMicroelectronics for access to the 28nm FD-SOI design kit, BITS Pilani K K Birla Goa Campus for
@@ -516,9 +564,9 @@ the Cadence tools and laboratory, and the Sharanga HPC facility.
 \section*{Artifact Availability}
 {\raggedright RTL, simulators, flow scripts, figure scripts and aggregate result tables are at
 \url{https://github.com/idealxdxrsh/Cache-Policy-Phase-Transition-in-DLRM-Workloads}. v2 is tag
-\texttt{rtl-v2-final}; v3 is \texttt{rtl/v3} on branch \texttt{rtl-v3}. Every result number in this paper is generated
-from the files in \texttt{results/} by \texttt{tools/make\_paper\_macros.py}. Library data, netlists and raw tool
-reports of the commercial flow are not published. The Criteo data are not redistributed.\par}
+\texttt{rtl-v2-final}; v3 is \texttt{rtl/v3} on branch \texttt{rtl-v3}. Every result number in this paper is
+generated from the files in \texttt{results/} by \texttt{tools/make\_paper\_macros.py}. Library data, netlists and
+raw tool reports of the commercial flow are not published. The Criteo data are not redistributed.\par}
 
 \bibliographystyle{IEEEtran}
 \bibliography{refs}

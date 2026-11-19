@@ -2,19 +2,14 @@
 % Each line: \defnum{key}{shown}% format: source file:line [row | column] = full source value
 \defnum{ds.rows}{45,840,617}% raw: results/P7/TABLES.md:8 /Rows in the file: ([\d,]+)/ group 1 = 45,840,617
 \defnum{ds.tables}{26}% raw: results/P7/TABLES.md:8 /; (\d+) categorical columns = \d+ tables/ group 1 = 26
-\defnum{ds.r2M}{2,000,000}% raw: results/P7/TABLES.md:8 /use the first ([\d,]+) and/ group 1 = 2,000,000
-\defnum{ds.r10M}{10,000,000}% raw: results/P7/TABLES.md:8 /and the first ([\d,]+) of them/ group 1 = 10,000,000
 \defnum{lab.2M}{2M}% raw: results/P9/SUMMARY.md:14 /\| (2M), 256 \|/ group 1 = 2M
 \defnum{lab.10M}{10M}% raw: results/P9/SUMMARY.md:18 /\| (10M), 256 \|/ group 1 = 10M
 \defnum{sz.16}{16}% raw: results/P11/PARTA.md:7 [2,000,000, 16 | entries] = 16
 \defnum{sz.64}{64}% raw: results/P11/PARTA.md:8 [2,000,000, 64 | entries] = 64
 \defnum{sz.256}{256}% raw: results/P11/PARTA.md:9 [2,000,000, 256 | entries] = 256
 \defnum{sz.1000}{1,000}% raw: results/P7/TABLES.md:196 [1,000 | capacity (vectors, total)] = 1,000
-\defnum{sz.10000}{10,000}% raw: results/P7/TABLES.md:197 [10,000 | capacity (vectors, total)] = 10,000
 \defnum{sz.100000}{100,000}% raw: results/P7/TABLES.md:198 [100,000 | capacity (vectors, total)] = 100,000
 \defnum{sz.p3min}{64}% raw: results/P7/TABLES.md:18 [64 | capacity (vectors per table)] = 64
-\defnum{p11.acc.2M}{46,128,690}% raw: results/P11/PARTA.md:9 [2,000,000, 256 | accesses] = 46,128,690
-\defnum{p11.acc.10M}{231,492,097}% raw: results/P11/PARTA.md:12 [10,000,000, 256 | accesses] = 231,492,097
 \defnum{p3.window}{1}% raw: results/P7/TABLES.md:16 /W-TinyLFU \(Count-Min, window=(\d+)%\)/ group 1 = 1
 \defnum{rtl.vecw}{128}% raw: results/P7/TABLES.md:464 [RTL parameter VECTOR_WIDTH (default) | value] = 128
 \defnum{rtl.addrw}{20}% raw: results/P7/TABLES.md:463 [RTL parameter ADDR_WIDTH (default) | value] = 20
@@ -23,9 +18,6 @@
 \defnum{rtl.sat}{63}% raw: results/P7/TABLES.md:468 [RTL counter saturation value, 2^COUNTER_WIDTH - 1 | value] = 63
 \defnum{rtl.tests}{7}% raw: results/P7/TABLES.md:469 [unit testbench tests | value] = 7
 \defnum{rtl.simcap}{255}% raw: results/P7/TABLES.md:470 [trace simulator LFU counter cap (`min(N, ...)` in trace_sim/run_trace_sim.py) | value] = 255
-\defnum{p10.kw}{8}% raw: results/P10/SUMMARY.md:4 /KW = EW\+1 = (\d+) bits/ group 1 = 8
-\defnum{p11.ff.16}{4}% raw: results/P11/SUMMARY.md:24 /ptr width \(\+(\d+) / \+(\d+) / \+(\d+)\)/ group 1 = 4
-\defnum{p11.ff.64}{6}% raw: results/P11/SUMMARY.md:24 /ptr width \(\+(\d+) / \+(\d+) / \+(\d+)\)/ group 2 = 6
 \defnum{p11.ff.256}{8}% raw: results/P11/SUMMARY.md:24 /ptr width \(\+(\d+) / \+(\d+) / \+(\d+)\)/ group 3 = 8
 \defnum{tool.yosys}{0.33}% raw: results/P7/TABLES.md:675 [Yosys | value] = 0.33
 \defnum{tool.opensta}{3.1.0}% raw: results/P7/TABLES.md:673 /OpenSTA commit / version \| \w+ / ([\d.]+)/ group 1 = 3.1.0
@@ -33,21 +25,13 @@
 \defnum{p9.req}{2,560,448}% raw: results/P7/TABLES.md:944 /requests compared: ([\d,]+)/ group 1 = 2,560,448
 \defnum{p9.mism}{0}% raw: results/P7/TABLES.md:939 [256, 0, row0, full | mismatches (RTL-exact / structural)] = 0; same value in 48 more cells
 \defnum{p9.slicereq}{200,000}% raw: results/P7/TABLES.md:939 [256, 0, row0, full | requests] = 200,000
-\defnum{p14.B.64}{64}% raw: results/P14/SUMMARY.md:9 [64, per_table | B] = 64
 \defnum{p14.pt.64}{74.35}% hit: results/P14/SUMMARY.md:9 [64, per_table | L2 read hit %] = 74.3535
-\defnum{p14.cc.64}{76.35}% hit: results/P14/SUMMARY.md:10 [64, concat | L2 read hit %] = 76.3465
-\defnum{p14.B.1024}{1,024}% raw: results/P14/SUMMARY.md:11 [1,024, per_table | B] = 1,024
-\defnum{p14.pt.1024}{68.24}% hit: results/P14/SUMMARY.md:11 [1,024, per_table | L2 read hit %] = 68.2354
-\defnum{p14.B.16384}{16,384}% raw: results/P14/SUMMARY.md:13 [16,384, per_table | B] = 16,384
 \defnum{p14.pt.16384}{56.26}% hit: results/P14/SUMMARY.md:13 [16,384, per_table | L2 read hit %] = 56.2621
-\defnum{p14.cc.16384}{54.04}% hit: results/P14/SUMMARY.md:14 [16,384, concat | L2 read hit %] = 54.0394
 \defnum{p14.rows}{2M}% raw: results/P14/SUMMARY.md:1 /first (2M) rows/ group 1 = 2M
 \defnum{p14.batches}{20}% raw: results/P14/SUMMARY.md:5 /Profiled: (\d+) batches/ group 1 = 20
 \defnum{p14.dim}{128}% raw: results/P14/SUMMARY.md:4 /dim (\d+) float32/ group 1 = 128
 \defnum{p14.cap}{100,000}% raw: results/P14/SUMMARY.md:22 /closest P3b capacity: ([\d,]+)/ group 1 = 100,000
-\defnum{p14.l2bytes}{52,428,800}% raw: results/P14/SUMMARY.md:22 /H100 L2 = ([\d,]+) B/ group 1 = 52,428,800
 \defnum{p14.vecbytes}{512}% raw: results/P14/SUMMARY.md:19 /A vector is (\d+) B/ group 1 = 512
-\defnum{p14.sectorbytes}{32}% raw: results/P14/SUMMARY.md:19 /sectors of (\d+) B/ group 1 = 32
 \defnum{p3.2M.256.LRU}{67.32}% hit: results/P7/TABLES.md:20 [256 | LRU] = 67.3151
 \defnum{p3.2M.256.LFUr}{70.10}% hit: results/P7/TABLES.md:20 [256 | LFU (gem5 LFURP — reset on eviction)] = 70.0951
 \defnum{p3.2M.256.LFUp}{71.80}% hit: results/P7/TABLES.md:20 [256 | LFU (persistent counters)] = 71.8034
@@ -56,7 +40,6 @@
 \defnum{p3.2M.256.ARC}{72.60}% hit: results/P7/TABLES.md:20 [256 | ARC] = 72.6030
 \defnum{p3.2M.256.BEL}{78.67}% hit: results/P7/TABLES.md:20 [256 | Belady (MIN, offline)] = 78.6721
 \defnum{p3b.2M.256.LRU}{41.40}% hit: results/P7/TABLES.md:195 [256 | LRU] = 41.4010
-\defnum{p3b.2M.100000.LRU}{90.42}% hit: results/P7/TABLES.md:198 [100,000 | LRU] = 90.4240
 \defnum{p3b.2M.256.LFUr}{47.67}% hit: results/P7/TABLES.md:195 [256 | LFU (gem5 LFURP — reset on eviction)] = 47.6719
 \defnum{p3b.2M.100000.LFUr}{91.61}% hit: results/P7/TABLES.md:198 [100,000 | LFU (gem5 LFURP — reset on eviction)] = 91.6117
 \defnum{p3b.2M.256.LFUp}{41.00}% hit: results/P7/TABLES.md:195 [256 | LFU (persistent counters)] = 41.0006
@@ -70,49 +53,23 @@
 \defnum{p3.10M.256.ARC}{72.42}% hit: results/P7/TABLES.md:37 [256 | ARC] = 72.4225
 \defnum{p3.10M.256.BEL}{78.42}% hit: results/P7/TABLES.md:37 [256 | Belady (MIN, offline)] = 78.4180
 \defnum{p3b.10M.256.LRU}{41.26}% hit: results/P7/TABLES.md:205 [256 | LRU] = 41.2640
-\defnum{p3b.10M.1000.LRU}{53.47}% hit: results/P7/TABLES.md:206 [1,000 | LRU] = 53.4740
-\defnum{p3b.10M.100000.LRU}{90.02}% hit: results/P7/TABLES.md:208 [100,000 | LRU] = 90.0219
 \defnum{p3b.10M.256.LFUr}{48.16}% hit: results/P7/TABLES.md:205 [256 | LFU (gem5 LFURP — reset on eviction)] = 48.1592
 \defnum{p3b.10M.256.LFUp}{38.49}% hit: results/P7/TABLES.md:205 [256 | LFU (persistent counters)] = 38.4896
-\defnum{p3b.10M.1000.LFUp}{52.91}% hit: results/P7/TABLES.md:206 [1,000 | LFU (persistent counters)] = 52.9099
 \defnum{p3b.10M.256.WTLFU}{50.91}% hit: results/P7/TABLES.md:205 [256 | W-TinyLFU (Count-Min, window=1%)] = 50.9101
 \defnum{p3b.10M.256.ARC}{50.88}% hit: results/P7/TABLES.md:205 [256 | ARC] = 50.8773
 \defnum{p3b.drop.lo}{2.5109}% abs: results/P3b/SUMMARY.md:28 /\((-[\d.]+) to (-[\d.]+) pp/ group 1 = -2.5109
 \defnum{p3b.drop.hi}{3.6112}% abs: results/P3b/SUMMARY.md:28 /\((-[\d.]+) to (-[\d.]+) pp/ group 2 = -3.6112
 \defnum{p9.2M.256.v2}{39.37}% hit: results/P7/TABLES.md:1014 [256 | RTL-exact mode 0] = 39.3685
-\defnum{p11.2M.16.v2}{9.43}% hit: results/P7/TABLES.md:1109 [16 | RTL-exact m0 (v2 rule)] = 9.4309
-\defnum{p11.2M.16.LRU}{0.08}% hit: results/P7/TABLES.md:1109 [16 | LRU] = 0.0792
-\defnum{p11.2M.16.LFUr}{14.24}% hit: results/P7/TABLES.md:1109 [16 | LFU-reset (oldest)] = 14.2361
-\defnum{p11.2M.64.v2}{28.33}% hit: results/P7/TABLES.md:1110 [64 | RTL-exact m0 (v2 rule)] = 28.3291
-\defnum{p11.2M.64.LRU}{24.91}% hit: results/P7/TABLES.md:1110 [64 | LRU] = 24.9119
-\defnum{p11.2M.64.LFUr}{39.00}% hit: results/P7/TABLES.md:1110 [64 | LFU-reset (oldest)] = 38.9979
 \defnum{p11.2M.256.v3}{47.67}% hit: results/P7/TABLES.md:1111 [256 | Rotate-victim m0 (v3 rule)] = 47.6719
 \defnum{p9.10M.256.v2}{39.82}% hit: results/P7/TABLES.md:1052 [256 | RTL-exact mode 0] = 39.8162
-\defnum{p9.10M.100000.v2}{88.33}% hit: results/P7/TABLES.md:1055 [100,000 | RTL-exact mode 0] = 88.3256
 \defnum{p11.10M.256.v3}{48.16}% hit: results/P7/TABLES.md:1120 [256 | Rotate-victim m0 (v3 rule)] = 48.1592
 \defnum{d.v3lru}{6.90}% sub (results/P7/TABLES.md:1120 [256 | Rotate-victim m0 (v3 rule)] = 48.1592) - (results/P7/TABLES.md:1052 [256 | LRU] = 41.2640), 2 decimals
 \defnum{d.v3v2}{8.34}% sub (results/P7/TABLES.md:1120 [256 | Rotate-victim m0 (v3 rule)] = 48.1592) - (results/P7/TABLES.md:1052 [256 | RTL-exact mode 0] = 39.8162), 2 decimals
-\defnum{p9.prev.v2}{118,522}% raw: results/P7/TABLES.md:983 [row0, 256 | RTL-exact mode 0] = 118,522
 \defnum{p9.prev.v2.n}{118,523}% raw: results/P7/TABLES.md:983 [row0, 256 | RTL-exact mode 0] = 118,523
-\defnum{p9.prev.old}{0}% raw: results/P7/TABLES.md:983 [row0, 256 | LFU-reset (oldest)] = 0
-\defnum{p9.prev.old.n}{96,362}% raw: results/P7/TABLES.md:983 [row0, 256 | LFU-reset (oldest)] = 96,362
 \defnum{p9.gap.10M.256}{19,313,343}% raw: results/P7/TABLES.md:1065 [256 | gap] = 19,313,343; same value in 1 more cells
-\defnum{p9.sat}{0}% raw: results/P7/TABLES.md:1027 [256 | sat] = 0; same value in 8 more cells
-\defnum{p9.int}{0}% raw: results/P7/TABLES.md:1027 [256 | interaction] = 0; same value in 8 more cells
 \defnum{p9.rec}{100.0}% raw: results/P7/TABLES.md:1039 [256 | recovered % Rotate-victim mode 0] = 100.0; same value in 8 more cells
-\defnum{p9.rvdiff.lo}{\ensuremath{-}2}% raw: results/P9/SUMMARY.md:37 /Rotate-victim differs by (-?\d+) to (\+[\d,]+) hits/ group 1 = -2
-\defnum{p9.rvdiff.hi}{+918}% raw: results/P9/SUMMARY.md:37 /Rotate-victim differs by (-?\d+) to (\+[\d,]+) hits/ group 2 = +918
 \defnum{p11.tl.16}{10}% raw: results/P11/PARTA.md:7 [2,000,000, 16 | tables with v3 < v2 (of 26)] = 10; same value in 1 more cells
-\defnum{p11.tl.64}{4}% raw: results/P11/PARTA.md:8 [2,000,000, 64 | tables with v3 < v2 (of 26)] = 4; same value in 1 more cells
 \defnum{p11.tl.256}{2}% raw: results/P11/PARTA.md:9 [2,000,000, 256 | tables with v3 < v2 (of 26)] = 2; same value in 1 more cells
-\defnum{p11.lost.2M.16}{890,527}% raw: results/P11/PARTA.md:7 [2,000,000, 16 | v3 hits lost on those tables] = 890,527
-\defnum{p11.gain.2M.16}{2,216,578}% abs: results/P11/PARTA.md:7 [2,000,000, 16 | v3 - v2 hits] = +2,216,578
-\defnum{p10.16.row0.v3}{17,035}% raw: results/P7/TABLES.md:1089 [16, 0, row0 | RTL hits] = 17,035
-\defnum{p10.16.row0.v2}{19,946}% raw: results/P7/TABLES.md:1089 [16, 0, row0 | v2-rule hits (m0) / equals P9 v2 log (m1)] = 19,946
-\defnum{p10.16.row1M.v3}{5,217}% raw: results/P7/TABLES.md:1090 [16, 0, row1M | RTL hits] = 5,217
-\defnum{p10.16.row1M.v2}{18,254}% raw: results/P7/TABLES.md:1090 [16, 0, row1M | v2-rule hits (m0) / equals P9 v2 log (m1)] = 18,254
-\defnum{p10.256.row0.v3}{103,382}% raw: results/P7/TABLES.md:1093 [256, 0, row0 | RTL hits] = 103,382
-\defnum{p10.256.row0.v2}{81,221}% raw: results/P7/TABLES.md:1093 [256, 0, row0 | v2-rule hits (m0) / equals P9 v2 log (m1)] = 81,221
 \defnum{p10.runs}{12}% raw: results/P10/SUMMARY.md:14 /Mismatches = 0 in all (\d+) runs/ group 1 = 12
 \defnum{p10.mism}{0}% raw: results/P10/SUMMARY.md:14 /Mismatches = (\d+) in all \d+ runs/ group 1 = 0
 \defnum{p10.mut}{3}% raw: results/P10/SUMMARY.md:12 /all (\d+) caught/ group 1 = 3
@@ -126,59 +83,29 @@
 \defnum{p15.mism}{0}% raw: results/P15/TABLES.md:175 [v3, row0, sdf | mismatching cycles] = 0; same value in 12 more cells
 \defnum{p15.sdf.path}{100.00}% raw: results/P15/TABLES.md:175 [v3, row0, sdf | SDF path delays annotated] = 100.00; same value in 1 more cells
 \defnum{p15.sdf.check}{0.00}% raw: results/P15/TABLES.md:175 [v3, row0, sdf | SDF timing checks annotated] = 0.00; same value in 1 more cells
-\defnum{p11.nfmax.lo}{\ensuremath{-}5.08}% raw: results/P11/SUMMARY.md:23 /Every v3 mode-0 Fmax change \((\+[\d.]+)%, (-[\d.]+)%, (-[\d.]+)% at 1 GHz/ group 3 = -5.08
-\defnum{p11.nfmax.hi}{+4.14}% raw: results/P11/SUMMARY.md:23 /Every v3 mode-0 Fmax change \((\+[\d.]+)%, (-[\d.]+)%, (-[\d.]+)% at 1 GHz/ group 1 = +4.14
 \defnum{p11.nnoise}{6.44}% raw: results/P11/SUMMARY.md:23 /This ([\d.]+)% is the observed flow variation/ group 1 = 6.44
-\defnum{p12.br.16.met}{0.65}% raw: results/P12/TABLES.md:129 [v2, 0, 16 | tightest met (ns)] = 0.65; same value in 4 more cells
-\defnum{p12.br.16.fail}{0.5}% raw: results/P12/TABLES.md:129 [v2, 0, 16 | loosest failed (ns)] = 0.5; same value in 4 more cells
-\defnum{p12.br.64.met}{0.8}% raw: results/P12/TABLES.md:130 [v2, 0, 64 | tightest met (ns)] = 0.8; same value in 3 more cells
-\defnum{p12.br.64.fail}{0.65}% raw: results/P12/TABLES.md:130 [v2, 0, 64 | loosest failed (ns)] = 0.65; same value in 3 more cells
 \defnum{p12.br.256.met}{0.8}% raw: results/P12/TABLES.md:131 [v2, 0, 256 | tightest met (ns)] = 0.8; same value in 4 more cells
 \defnum{p12.br.256.fail}{0.65}% raw: results/P12/TABLES.md:131 [v2, 0, 256 | loosest failed (ns)] = 0.65; same value in 4 more cells
 \defnum{p12.per.min}{0.5}% raw: results/P12/TABLES.md:129 [v2, 0, 16 | periods run (ns)] = 0.5
 \defnum{p12.per.max}{2.0}% raw: results/P12/TABLES.md:129 [v2, 0, 16 | periods run (ns)] = 2.0
 \defnum{p12.io}{0.2}% raw: results/P12/TABLES.md:3 /I/O delay ([\d.]+) x period/ group 1 = 0.2
 \defnum{p12.relax}{2.0}% raw: results/P12/TABLES.md:92 [0, 16, 2.0 | period (ns)] = 2.0
-\defnum{p12.a.16.m0}{+0.40}% raw: results/P12/TABLES.md:92 [0, 16, 2.0 | area change] = +0.40
-\defnum{p12.a.64.m0}{+0.11}% raw: results/P12/TABLES.md:98 [0, 64, 2.0 | area change] = +0.11
-\defnum{p12.a.256.m0}{\ensuremath{-}0.11}% raw: results/P12/TABLES.md:104 [0, 256, 2.0 | area change] = -0.11
-\defnum{p12.a.16.m1}{\ensuremath{-}0.21}% raw: results/P12/TABLES.md:110 [1, 16, 2.0 | area change] = -0.21
-\defnum{p12.a.64.m1}{\ensuremath{-}0.26}% raw: results/P12/TABLES.md:116 [1, 64, 2.0 | area change] = -0.26
-\defnum{p12.a.256.m1}{\ensuremath{-}0.65}% raw: results/P12/TABLES.md:122 [1, 256, 2.0 | area change] = -0.65
 \defnum{p12.area.v2}{214925.587}% raw: results/P12/TABLES.md:104 [0, 256, 2.0 | area v2 (library units)] = 214925.587
 \defnum{p12.area.v3}{214687.478}% raw: results/P12/TABLES.md:104 [0, 256, 2.0 | area v3] = 214687.478
 \defnum{p12.mo.v2}{4.06}% abs: results/P12/TABLES.md:164 [v2, 0.65, merge-off | Fmax change] = +4.06
-\defnum{p12.mo.a.v2}{+0.31}% raw: results/P12/TABLES.md:164 [v2, 0.65, merge-off | area change] = +0.31
 \defnum{p12.fmo.v2}{1310.6}% raw: results/P12/TABLES.md:164 [v2, 0.65, merge-off | Fmax (MHz)] = 1310.6
 \defnum{p12.f.v2}{1259.4}% raw: results/P12/TABLES.md:163 [v2, 0.65, normal | Fmax (MHz)] = 1259.4
 \defnum{p12.mo.v3}{4.60}% abs: results/P12/TABLES.md:168 [v3, 0.65, merge-off | Fmax change] = +4.60
-\defnum{p12.mo.a.v3}{+4.06}% raw: results/P12/TABLES.md:168 [v3, 0.65, merge-off | area change] = +4.06
 \defnum{p12.fmo.v3}{1314.1}% raw: results/P12/TABLES.md:168 [v3, 0.65, merge-off | Fmax (MHz)] = 1314.1
 \defnum{p12.f.v3}{1256.3}% raw: results/P12/TABLES.md:167 [v3, 0.65, normal | Fmax (MHz)] = 1256.3
 \defnum{p12.copies}{320}% raw: results/P12/TABLES.md:164 [v2, 0.65, merge-off | req_addr_grp flops] = 320; same value in 4 more cells
 \defnum{p13.period}{0.8}% raw: results/P13/SUMMARY.md:2 /clock ([\d.]+) ns;/ group 1 = 0.8
 \defnum{p13.req}{200,000}% raw: results/P13/SUMMARY.md:2 /([\d,]+) requests per slice/ group 1 = 200,000
-\defnum{p13.fill.lo}{0}% raw: results/P13/SUMMARY.md:29 /(\d)-(\d) random cycles/ group 1 = 0
-\defnum{p13.fill.hi}{3}% raw: results/P13/SUMMARY.md:29 /(\d)-(\d) random cycles/ group 2 = 3
-\defnum{p13.P.lo}{\ensuremath{2.27986\times10^{-1}}}% min of 4: results/P13/TABLES.md:28 [v2, row0 | total] = 2.27987e-01; results/P13/TABLES.md:29 [v2, row1M | total] = 2.27986e-01; results/P13/TABLES.md:30 [v3, row0 | total] = 2.29104e-01; results/P13/TABLES.md:31 [v3, row1M | total] = 2.29615e-01
-\defnum{p13.P.hi}{\ensuremath{2.29615\times10^{-1}}}% max of 4: results/P13/TABLES.md:28 [v2, row0 | total] = 2.27987e-01; results/P13/TABLES.md:29 [v2, row1M | total] = 2.27986e-01; results/P13/TABLES.md:30 [v3, row0 | total] = 2.29104e-01; results/P13/TABLES.md:31 [v3, row1M | total] = 2.29615e-01
 \defnum{p13.E.v2.row0}{743.94}% raw: results/P13/TABLES.md:28 [v2, row0 | energy per request] = 743.94
 \defnum{p13.E.v2.row1M}{737.64}% raw: results/P13/TABLES.md:29 [v2, row1M | energy per request] = 737.64
 \defnum{p13.E.v3.row0}{676.39}% raw: results/P13/TABLES.md:30 [v3, row0 | energy per request] = 676.39
 \defnum{p13.E.v3.row1M}{682.79}% raw: results/P13/TABLES.md:31 [v3, row1M | energy per request] = 682.79
-\defnum{p13.cov.lo}{41.95}% min of 4: results/P13/TABLES.md:28 [v2, row0 | driver nets annotated] = 41.95; results/P13/TABLES.md:29 [v2, row1M | driver nets annotated] = 41.95; results/P13/TABLES.md:30 [v3, row0 | driver nets annotated] = 42.15; results/P13/TABLES.md:31 [v3, row1M | driver nets annotated] = 42.15
-\defnum{p13.cov.hi}{42.15}% max of 4: results/P13/TABLES.md:28 [v2, row0 | driver nets annotated] = 41.95; results/P13/TABLES.md:29 [v2, row1M | driver nets annotated] = 41.95; results/P13/TABLES.md:30 [v3, row0 | driver nets annotated] = 42.15; results/P13/TABLES.md:31 [v3, row1M | driver nets annotated] = 42.15
-\defnum{p13.logic.lo}{1.49}% min of 4: results/P13/TABLES.md:28 [v2, row0 | logic share] = 1.49; results/P13/TABLES.md:29 [v2, row1M | logic share] = 1.49; results/P13/TABLES.md:30 [v3, row0 | logic share] = 2.00; results/P13/TABLES.md:31 [v3, row1M | logic share] = 2.21
 \defnum{p13.logic.hi}{2.21}% max of 4: results/P13/TABLES.md:28 [v2, row0 | logic share] = 1.49; results/P13/TABLES.md:29 [v2, row1M | logic share] = 1.49; results/P13/TABLES.md:30 [v3, row0 | logic share] = 2.00; results/P13/TABLES.md:31 [v3, row1M | logic share] = 2.21
-\defnum{p13.reg.lo}{97.79}% min of 4: results/P13/TABLES.md:28 [v2, row0 | register share] = 98.51; results/P13/TABLES.md:29 [v2, row1M | register share] = 98.51; results/P13/TABLES.md:30 [v3, row0 | register share] = 98.00; results/P13/TABLES.md:31 [v3, row1M | register share] = 97.79
-\defnum{p13.reg.hi}{98.51}% max of 4: results/P13/TABLES.md:28 [v2, row0 | register share] = 98.51; results/P13/TABLES.md:29 [v2, row1M | register share] = 98.51; results/P13/TABLES.md:30 [v3, row0 | register share] = 98.00; results/P13/TABLES.md:31 [v3, row1M | register share] = 97.79
-\defnum{p13.bound}{2.2}% raw: results/P13/TABLES.md:33 /about \+/-([\d.]+)%/ group 1 = 2.2
-\defnum{p13.dE.row0}{\ensuremath{-}9.08}% raw: results/P13/TABLES.md:39 [row0 | change] = -9.08
-\defnum{p13.dP.row0}{0.49}% abs: results/P13/TABLES.md:39 [row0 | total power change] = +0.49
-\defnum{p13.dC.row0.abs}{9.52}% abs: results/P13/TABLES.md:39 [row0 | cycles change] = -9.52
-\defnum{p13.dE.row1M}{\ensuremath{-}7.44}% raw: results/P13/TABLES.md:40 [row1M | change] = -7.44
-\defnum{p13.dP.row1M}{0.71}% abs: results/P13/TABLES.md:40 [row1M | total power change] = +0.71
-\defnum{p13.dC.row1M.abs}{8.09}% abs: results/P13/TABLES.md:40 [row1M | cycles change] = -8.09
 \defnum{p15.met}{1.0}% raw: results/P15/TABLES.md:128 [v2_m0_d256_p0.8_nomerge, target-slack flow, latest hold pass at each period | tightest met ns] = 1.0; same value in 1 more cells
 \defnum{p15.fail}{0.9}% raw: results/P15/TABLES.md:128 [v2_m0_d256_p0.8_nomerge, target-slack flow, latest hold pass at each period | loosest failed ns] = 0.9; same value in 1 more cells
 \defnum{p15.oldfail}{1.1}% raw: results/P15/SUMMARY.md:18 /Earlier flows failed ([\d.]+)-([\d.]+) ns/ group 2 = 1.1
@@ -190,81 +117,72 @@
 \defnum{p15.la.v2}{240979.5}% raw: results/P15/TABLES.md:36 [v2_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 1.0 | logic cell area] = 240979.5
 \defnum{p15.core.v2}{379007.7}% raw: results/P15/TABLES.md:36 [v2_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 1.0 | core area] = 379007.7
 \defnum{p15.s.v2.09}{\ensuremath{-}0.008}% raw: results/P15/TABLES.md:31 [v2_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 0.9 | setup WNS ns] = -0.008
-\defnum{p15.n.v2.09}{56}% raw: results/P15/TABLES.md:31 [v2_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 0.9 | setup viol. paths] = 56
-\defnum{p15.s.v2.09dv}{\ensuremath{-}0.022}% raw: results/P15/TABLES.md:28 [v2_m0_d256_p0.8_nomerge, multi-row dont_use, 0.9 | setup WNS ns] = -0.022
-\defnum{p15.rs.v2}{8}% raw: results/P15/TABLES.md:104 [v2_m0_d256_p0.8_nomerge, 1.0 | resized to single-row] = 8
 \defnum{p15.s.v3.10}{0.014}% raw: results/P15/TABLES.md:51 [v3_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 1.0 | setup WNS ns] = 0.014
 \defnum{p15.h.v3.10}{0.008}% raw: results/P15/TABLES.md:51 [v3_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 1.0 | hold WNS ns] = 0.008
 \defnum{p15.la.v3}{246532.5}% raw: results/P15/TABLES.md:51 [v3_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 1.0 | logic cell area] = 246532.5
 \defnum{p15.core.v3}{376946.3}% raw: results/P15/TABLES.md:51 [v3_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 1.0 | core area] = 376946.3
 \defnum{p15.s.v3.09}{\ensuremath{-}0.056}% raw: results/P15/TABLES.md:46 [v3_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 0.9 | setup WNS ns] = -0.056
-\defnum{p15.n.v3.09}{1841}% raw: results/P15/TABLES.md:46 [v3_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 0.9 | setup viol. paths] = 1841
-\defnum{p15.s.v3.09dv}{\ensuremath{-}0.071}% raw: results/P15/TABLES.md:43 [v3_m0_d256_p0.8_nomerge, multi-row dont_use, 0.9 | setup WNS ns] = -0.071
-\defnum{p15.rs.v3}{6}% raw: results/P15/TABLES.md:116 [v3_m0_d256_p0.8_nomerge, 1.0 | resized to single-row] = 6
-\defnum{p15.drc}{0}% raw: results/P15/TABLES.md:36 [v2_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 1.0 | DRC] = 0; same value in 12 more cells
-\defnum{p15.conn}{0}% raw: results/P15/TABLES.md:36 [v2_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 1.0 | conn. problems all nets] = 0; same value in 12 more cells
 \defnum{p15.wtv}{2}% raw: results/P15/TABLES.md:36 [v2_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 1.0 | well-tap viol. full core] = 2; same value in 1 more cells
-\defnum{p15.d16.period}{0.8}% raw: results/P15/TABLES.md:40 [v3_m0_d16_p0.8, multi-row dont_use, 0.8 | period ns] = 0.8
-\defnum{p15.d16.wns}{0.001}% abs: results/P15/TABLES.md:40 [v3_m0_d16_p0.8, multi-row dont_use, 0.8 | setup WNS ns] = -0.001
-\defnum{p15.d16.n}{1}% raw: results/P15/TABLES.md:40 [v3_m0_d16_p0.8, multi-row dont_use, 0.8 | setup viol. paths] = 1
-\defnum{p15.d16.drc}{0}% raw: results/P15/TABLES.md:40 [v3_m0_d16_p0.8, multi-row dont_use, 0.8 | DRC] = 0
 \defnum{p15.gls.period}{1.1}% raw: results/P15/TABLES.md:202 /## v3 against v2 per slice \(([\d.]+) ns/ group 1 = 1.1
 \defnum{p15.E.v2.row0}{1011.49}% raw: results/P15/TABLES.md:197 [v2, row0 | energy per request] = 1011.49
 \defnum{p15.E.v2.row1M}{1000.41}% raw: results/P15/TABLES.md:198 [v2, row1M | energy per request] = 1000.41
 \defnum{p15.E.v3.row0}{924.68}% raw: results/P15/TABLES.md:199 [v3, row0 | energy per request] = 924.68
 \defnum{p15.E.v3.row1M}{932.72}% raw: results/P15/TABLES.md:200 [v3, row1M | energy per request] = 932.72
-\defnum{p15.reg.lo}{71.89}% min of 4: results/P15/TABLES.md:197 [v2, row0 | register share] = 72.74; results/P15/TABLES.md:198 [v2, row1M | register share] = 72.92; results/P15/TABLES.md:199 [v3, row0 | register share] = 71.98; results/P15/TABLES.md:200 [v3, row1M | register share] = 71.89
-\defnum{p15.reg.hi}{72.92}% max of 4: results/P15/TABLES.md:197 [v2, row0 | register share] = 72.74; results/P15/TABLES.md:198 [v2, row1M | register share] = 72.92; results/P15/TABLES.md:199 [v3, row0 | register share] = 71.98; results/P15/TABLES.md:200 [v3, row1M | register share] = 71.89
-\defnum{p15.clk.lo}{24.54}% min of 4: results/P15/TABLES.md:197 [v2, row0 | clock (clock tree) share] = 24.54; results/P15/TABLES.md:198 [v2, row1M | clock (clock tree) share] = 24.60; results/P15/TABLES.md:199 [v3, row0 | clock (clock tree) share] = 24.80; results/P15/TABLES.md:200 [v3, row1M | clock (clock tree) share] = 24.77
-\defnum{p15.clk.hi}{24.80}% max of 4: results/P15/TABLES.md:197 [v2, row0 | clock (clock tree) share] = 24.54; results/P15/TABLES.md:198 [v2, row1M | clock (clock tree) share] = 24.60; results/P15/TABLES.md:199 [v3, row0 | clock (clock tree) share] = 24.80; results/P15/TABLES.md:200 [v3, row1M | clock (clock tree) share] = 24.77
 \defnum{p15.logic.lo}{2.48}% min of 4: results/P15/TABLES.md:197 [v2, row0 | logic (combinational) share = uncertainty bound] = 2.72; results/P15/TABLES.md:198 [v2, row1M | logic (combinational) share = uncertainty bound] = 2.48; results/P15/TABLES.md:199 [v3, row0 | logic (combinational) share = uncertainty bound] = 3.21; results/P15/TABLES.md:200 [v3, row1M | logic (combinational) share = uncertainty bound] = 3.34
 \defnum{p15.logic.hi}{3.34}% max of 4: results/P15/TABLES.md:197 [v2, row0 | logic (combinational) share = uncertainty bound] = 2.72; results/P15/TABLES.md:198 [v2, row1M | logic (combinational) share = uncertainty bound] = 2.48; results/P15/TABLES.md:199 [v3, row0 | logic (combinational) share = uncertainty bound] = 3.21; results/P15/TABLES.md:200 [v3, row1M | logic (combinational) share = uncertainty bound] = 3.34
 \defnum{p15.cov.v2}{48.74}% raw: results/P15/TABLES.md:197 [v2, row0 | driver nets annotated] = 48.74; same value in 1 more cells
 \defnum{p15.cov.v3}{48.95}% raw: results/P15/TABLES.md:199 [v3, row0 | driver nets annotated] = 48.95; same value in 1 more cells
-\defnum{p15.dE.row0}{\ensuremath{-}8.58}% raw: results/P15/TABLES.md:205 [row0 | change] = -8.58
 \defnum{p15.dE.row0.abs}{8.58}% abs: results/P15/TABLES.md:205 [row0 | change] = -8.58
-\defnum{p15.dP.row0}{1.04}% abs: results/P15/TABLES.md:205 [row0 | total power change] = +1.04
-\defnum{p15.dC.row0.abs}{9.52}% abs: results/P15/TABLES.md:205 [row0 | cycles change] = -9.52
-\defnum{p15.dE.row1M}{\ensuremath{-}6.77}% raw: results/P15/TABLES.md:206 [row1M | change] = -6.77
 \defnum{p15.dE.row1M.abs}{6.77}% abs: results/P15/TABLES.md:206 [row1M | change] = -6.77
-\defnum{p15.dP.row1M}{1.44}% abs: results/P15/TABLES.md:206 [row1M | total power change] = +1.44
-\defnum{p15.dC.row1M.abs}{8.09}% abs: results/P15/TABLES.md:206 [row1M | cycles change] = -8.09
 \defnum{p16.ss.v}{0.90}% raw: results/P16/SUMMARY.md:2 /ss = slow ([\d.]+) V (\d+) C/ group 1 = 0.90
 \defnum{p16.ss.t}{125}% raw: results/P16/SUMMARY.md:2 /ss = slow ([\d.]+) V (\d+) C/ group 2 = 125
 \defnum{p16.ff.v}{1.10}% raw: results/P16/SUMMARY.md:3 /ff = fast ([\d.]+) V (-\d+) C/ group 1 = 1.10
 \defnum{p16.ff.t}{\ensuremath{-}40}% raw: results/P16/SUMMARY.md:3 /ff = fast ([\d.]+) V (-\d+) C/ group 2 = -40
 \defnum{p16.ss.s.v2.10}{\ensuremath{-}0.257}% raw: results/P16/TABLES.md:22 [d256 v2, 1.0, ss | setup WNS ns] = -0.257
-\defnum{p16.ss.hn.v2.10}{6048}% raw: results/P16/TABLES.md:22 [d256 v2, 1.0, ss | hold viol. paths] = 6048
-\defnum{p16.ss.hr.v2.10}{0.012}% raw: results/P16/TABLES.md:42 [d256 v2, 1.0, ss | hold reg2reg] = 0.012
-\defnum{p16.ff.hrn.v2}{14}% raw: results/P16/TABLES.md:43 [d256 v2, 1.0, ff | hold reg2reg] = 14
 \defnum{p16.dp.v2.10}{1.257}% raw: results/P16/TABLES.md:68 [d256 v2, 1.0 | derived slow-corner period ns] = 1.257
-\defnum{p16.dp.v2.11}{1.365}% raw: results/P16/TABLES.md:70 [d256 v2, 1.1 | derived slow-corner period ns] = 1.365
 \defnum{p16.ss.s.v3.10}{\ensuremath{-}0.236}% raw: results/P16/TABLES.md:25 [d256 v3, 1.0, ss | setup WNS ns] = -0.236
-\defnum{p16.ss.hn.v3.10}{6507}% raw: results/P16/TABLES.md:25 [d256 v3, 1.0, ss | hold viol. paths] = 6507
-\defnum{p16.ss.hr.v3.10}{0.014}% raw: results/P16/TABLES.md:45 [d256 v3, 1.0, ss | hold reg2reg] = 0.014
-\defnum{p16.ff.hrn.v3}{46}% raw: results/P16/TABLES.md:46 [d256 v3, 1.0, ff | hold reg2reg] = 46
 \defnum{p16.dp.v3.10}{1.236}% raw: results/P16/TABLES.md:69 [d256 v3, 1.0 | derived slow-corner period ns] = 1.236
-\defnum{p16.dp.v3.11}{1.362}% raw: results/P16/TABLES.md:71 [d256 v3, 1.1 | derived slow-corner period ns] = 1.362
-\defnum{d.dp10}{0.021}% sub (results/P16/TABLES.md:68 [d256 v2, 1.0 | derived slow-corner period ns] = 1.257) - (results/P16/TABLES.md:69 [d256 v3, 1.0 | derived slow-corner period ns] = 1.236), 3 decimals
 \defnum{p16.io.indelay}{0.200}% raw: results/P16/TABLES.md:80 [ss | worst in2reg hold path: input delay] = 0.200
-\defnum{p16.io.arr}{0.202}% raw: results/P16/TABLES.md:80 [ss | data arrival] = 0.202
 \defnum{p16.io.clk}{0.414}% raw: results/P16/TABLES.md:80 [ss | clock arrival at register] = 0.414
 \defnum{p16.io.slack}{\ensuremath{-}0.212}% raw: results/P16/TABLES.md:80 [ss | slack] = -0.212
-\defnum{p16.io.lat}{\ensuremath{-}0.315}% raw: results/P16/TABLES.md:79 [tt | capture clock source latency] = -0.315
-\defnum{p16.io.tree}{0.319}% raw: results/P16/TABLES.md:79 [tt | tree insertion delay (arrival - source latency)] = 0.319
-\defnum{p16.io.ttslack}{0.191}% raw: results/P16/TABLES.md:79 [tt | slack] = 0.191
-\defnum{p16.io.in2reg}{6503}% raw: results/P16/TABLES.md:90 [ss | violating hold paths in2reg] = 6503
-\defnum{p16.io.all}{6507}% raw: results/P16/TABLES.md:91 /Failing hold paths at ss in timeDesign: (\d+)/ group 1 = 6507
-\defnum{p9.ff.rs}{8}% raw: results/P9/CANDIDATES.md:12 [R2 Rotate-step | added state (by construction, depth 256, 16 groups)] = 8; same value in 1 more cells
-\defnum{p9.ff.yb}{256}% raw: results/P9/CANDIDATES.md:13 [R3 Young-bit | added state (by construction, depth 256, 16 groups)] = 256
-\defnum{p9.rs.beats}{7}% raw: results/P9/SUMMARY.md:37 /Rotate-step beats LFU-reset \(oldest\) at (\d+) of (\d+) points/ group 1 = 7
-\defnum{p9.rs.pts}{8}% raw: results/P9/SUMMARY.md:37 /Rotate-step beats LFU-reset \(oldest\) at (\d+) of (\d+) points/ group 2 = 8
 \defnum{p9.probe.n}{60}% raw: results/P7/TABLES.md:1000 /Synthetic probe \(not Criteo; (\d+) random Zipf traces.*Rotate-victim mode 0 (\d+), Rotate-step mode 0 (\d+)/ group 1 = 60
 \defnum{p9.probe.rv}{9}% raw: results/P7/TABLES.md:1000 /Synthetic probe \(not Criteo; (\d+) random Zipf traces.*Rotate-victim mode 0 (\d+), Rotate-step mode 0 (\d+)/ group 2 = 9
 \defnum{p9.probe.rs}{54}% raw: results/P7/TABLES.md:1000 /Synthetic probe \(not Criteo; (\d+) random Zipf traces.*Rotate-victim mode 0 (\d+), Rotate-step mode 0 (\d+)/ group 3 = 54
 \defnum{p14.start}{1,048,576}% raw: results/P14/SUMMARY.md:5 /Profiled: \d+ batches from row ([\d,]+)/ group 1 = 1,048,576
 \defnum{p15.ladiff}{2.30}% ratio 100 x ((results/P15/TABLES.md:51 [v3_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 1.0 | logic cell area] = 246532.5) / (results/P15/TABLES.md:36 [v2_m0_d256_p0.8_nomerge, nodvtsh database + hold target slack 0.01, optDesign -postRoute -hold, ecoRoute -fix_drc (+1 if verify_drc found a violation), 1.0 | logic cell area] = 240979.5) - 1), 2 decimals
-\defnum{p12.noise}{3.41}% abs: results/P12/SUMMARY.md:32 /the same-logic mode-1 difference reaches (-[\d.]+)%/ group 1 = -3.41
-\defnum{p16.io.r2o}{0}% raw: results/P16/TABLES.md:90 [ss | violating hold paths reg2out] = 0
-\defnum{p16.ff.hdn.lo}{563}% min of 4: results/P16/TABLES.md:43 [d256 v2, 1.0, ff | hold default] = 1693; results/P16/TABLES.md:49 [d256 v2, 1.1, ff | hold default] = 563; results/P16/TABLES.md:46 [d256 v3, 1.0, ff | hold default] = 2652; results/P16/TABLES.md:52 [d256 v3, 1.1, ff | hold default] = 1136
-\defnum{p16.ff.hdn.hi}{2652}% max of 4: results/P16/TABLES.md:43 [d256 v2, 1.0, ff | hold default] = 1693; results/P16/TABLES.md:49 [d256 v2, 1.1, ff | hold default] = 563; results/P16/TABLES.md:46 [d256 v3, 1.0, ff | hold default] = 2652; results/P16/TABLES.md:52 [d256 v3, 1.1, ff | hold default] = 1136
+\defnum{p14.l2mib}{50}% div (results/P14/SUMMARY.md:22 /H100 L2 = ([\d,]+) B/ group 1 = 52,428,800) / 1048576 (1 MiB = 1,048,576 bytes), exact
+\defnum{p13.mW.v2.row0}{227.987}% mW: results/P13/TABLES.md:28 [v2, row0 | total] = 2.27987e-01
+\defnum{p15.mW.v2.row0}{225.440}% mW: results/P15/TABLES.md:197 [v2, row0 | total] = 2.25440e-01
+\defnum{p13.mW.v2.row1M}{227.986}% mW: results/P13/TABLES.md:29 [v2, row1M | total] = 2.27986e-01
+\defnum{p15.mW.v2.row1M}{224.874}% mW: results/P15/TABLES.md:198 [v2, row1M | total] = 2.24874e-01
+\defnum{p13.mW.v3.row0}{229.104}% mW: results/P13/TABLES.md:30 [v3, row0 | total] = 2.29104e-01
+\defnum{p15.mW.v3.row0}{227.787}% mW: results/P15/TABLES.md:199 [v3, row0 | total] = 2.27787e-01
+\defnum{p13.mW.v3.row1M}{229.615}% mW: results/P13/TABLES.md:31 [v3, row1M | total] = 2.29615e-01
+\defnum{p15.mW.v3.row1M}{228.118}% mW: results/P15/TABLES.md:200 [v3, row1M | total] = 2.28118e-01
+\defnum{p15.reg.v2.row0}{72.74}% raw: results/P15/TABLES.md:197 [v2, row0 | register share] = 72.74
+\defnum{p15.clk.v2.row0}{24.54}% raw: results/P15/TABLES.md:197 [v2, row0 | clock (clock tree) share] = 24.54
+\defnum{p15.logic.v2.row0}{2.72}% raw: results/P15/TABLES.md:197 [v2, row0 | logic (combinational) share = uncertainty bound] = 2.72
+\defnum{p15.reg.v3.row0}{71.98}% raw: results/P15/TABLES.md:199 [v3, row0 | register share] = 71.98
+\defnum{p15.clk.v3.row0}{24.80}% raw: results/P15/TABLES.md:199 [v3, row0 | clock (clock tree) share] = 24.80
+\defnum{p15.logic.v3.row0}{3.21}% raw: results/P15/TABLES.md:199 [v3, row0 | logic (combinational) share = uncertainty bound] = 3.21
+\defnum{p13.dC.row0}{\ensuremath{-}9.52}% raw: results/P13/TABLES.md:39 [row0 | cycles change] = -9.52
+\defnum{p15.dC.row0}{\ensuremath{-}9.52}% raw: results/P15/TABLES.md:205 [row0 | cycles change] = -9.52
+\defnum{p13.dE.row0.abs}{9.08}% abs: results/P13/TABLES.md:39 [row0 | change] = -9.08
+\defnum{p13.dC.row1M}{\ensuremath{-}8.09}% raw: results/P13/TABLES.md:40 [row1M | cycles change] = -8.09
+\defnum{p15.dC.row1M}{\ensuremath{-}8.09}% raw: results/P15/TABLES.md:206 [row1M | cycles change] = -8.09
+\defnum{p13.dE.row1M.abs}{7.44}% abs: results/P13/TABLES.md:40 [row1M | change] = -7.44
+\defnum{p16.ss.hio.v2}{6048}% raw: results/P16/TABLES.md:42 [d256 v2, 1.0, ss | hold default] = 6048
+\defnum{p16.ss.hrr.v2}{0}% raw: results/P16/TABLES.md:42 [d256 v2, 1.0, ss | hold reg2reg] = 0
+\defnum{p16.ff.hio.v2}{1693}% raw: results/P16/TABLES.md:43 [d256 v2, 1.0, ff | hold default] = 1693
+\defnum{p16.ff.hrr.v2}{14}% raw: results/P16/TABLES.md:43 [d256 v2, 1.0, ff | hold reg2reg] = 14
+\defnum{p16.ss.hio.v3}{6507}% raw: results/P16/TABLES.md:45 [d256 v3, 1.0, ss | hold default] = 6507
+\defnum{p16.ss.hrr.v3}{0}% raw: results/P16/TABLES.md:45 [d256 v3, 1.0, ss | hold reg2reg] = 0
+\defnum{p16.ff.hio.v3}{2652}% raw: results/P16/TABLES.md:46 [d256 v3, 1.0, ff | hold default] = 2652
+\defnum{p16.ff.hrr.v3}{46}% raw: results/P16/TABLES.md:46 [d256 v3, 1.0, ff | hold reg2reg] = 46
+\defnum{d.in2reg.other}{4}% sub (results/P16/TABLES.md:91 /Failing hold paths at ss in timeDesign: (\d+)/ group 1 = 6507) - (results/P16/TABLES.md:90 [ss | violating hold paths in2reg] = 6503), 0 decimals
+\defnum{p13.fill.max}{3}% raw: results/P13/SUMMARY.md:29 /(\d)-(\d) random cycles/ group 2 = 3
+\defnum{p9.rvdiff.hi.abs}{918}% abs: results/P9/SUMMARY.md:37 /Rotate-victim differs by (-?\d+) to (\+[\d,]+) hits/ group 2 = +918
+\defnum{p12.a.16.m0.abs}{0.40}% abs: results/P12/TABLES.md:92 [0, 16, 2.0 | area change] = +0.40
+\defnum{p12.mo.a.v3.abs}{4.06}% abs: results/P12/TABLES.md:168 [v3, 0.65, merge-off | area change] = +4.06
+\defnum{p12.mo.a08.v3.abs}{1.10}% abs: results/P12/TABLES.md:170 [v3, 0.8, merge-off | area change] = +1.10
+\defnum{p12.a.256.m1.abs}{0.65}% abs: results/P12/TABLES.md:122 [1, 256, 2.0 | area change] = -0.65

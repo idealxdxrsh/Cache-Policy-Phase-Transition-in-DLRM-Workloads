@@ -26,3 +26,21 @@
 - Claims about other papers to re-check against the papers themselves: Gupta et al. (embedding operators can dominate
   inference time), Bandana and FAE (skewed accesses, hot rows), ScratchPipe (future accesses known from the training
   pipeline).
+
+## Verification of 2026-11-20 (readability revision)
+Checked against each paper's own text (arXiv abstract page or the authors' PDF; dblp blocked automated access):
+- Gupta et al. (HPCA 2020 preprint, arXiv 1906.03109v4): for RMC2 "SparseLengthsSum consumes 80% of the execution time
+  of the model" -> paper says "embedding operations ... can dominate inference time" (no number quoted).
+- RecNMP (arXiv 1912.12953): "dominated by memory-bound sparse embedding operations" -> "memory-bound".
+- Bandana (arXiv 1811.05922): NVM as primary storage with a small DRAM cache. Its abstract does not claim access skew,
+  so it is no longer cited for skew.
+- FAE (PVLDB 2022, arXiv 2103.00686): accesses "highly skewed"; hot embeddings in GPU memory during training.
+- ScratchPipe (ISCA 2022, arXiv 2205.04702): embedding cache that "sees the past but also the future" accesses.
+- Added: Bagpipe (SOSP 2023, DOI 10.1145/3600006.3613142; lookahead caching and prefetching in training; ~1% of
+  embeddings take >92% of accesses), Fleche (EuroSys 2022, DOI 10.1145/3492321.3519554; one GPU cache backend for all
+  tables, inference), HugeCTR inference parameter server (RecSys 2022, DOI 10.1145/3523227.3546765; GPU embedding
+  cache with hierarchical storage), UGache (SOSP 2023, DOI 10.1145/3600006.3613169; multi-GPU cache, policy from a
+  hotness metric), EVStore (ASPLOS 2023, DOI 10.1145/3575693.3575718; 3-layer caching of embedding lookups for
+  inference). Venue, year and DOI from each paper's ACM Reference Format block or arXiv record; authors and pages
+  from the Crossref record of the DOI (the HPS RecSys record names Jie Liu, Ji Shi, Zehuan Wang, not the arXiv forms).
+- Not confirmed and not used: "cDLRM: Look Ahead Caching ..." (RecSys 2021); no record found.

@@ -13,6 +13,8 @@ and the full source value. Display rules (agreed with the authors, 2026-11-19):
   sci   as raw, with the e-notation typeset as x 10^n (same digits)
   sub   a difference computed from the full source values, then rounded half-up to the given decimals
   min / max   the smallest / largest of several source values, shown exactly as written
+  mW    a power in W written in e-notation, shown in mW by moving the decimal point three places (same digits)
+  div   an exact quotient by a unit constant (e.g. bytes / 1,048,576 = MiB); fails unless the quotient is exact
 A spec may list `same` cells: the generator fails unless they all equal the chosen value (used where the text says
 "at every size" or "in every run").
 """
@@ -123,6 +125,8 @@ def show(fmt, src, k=2):
         return t.lstrip('+-')
     if fmt == 'hit':
         return str(_q(_num(src), 2))
+    if fmt == 'mW':
+        return str(Decimal(t).scaleb(3))
     if fmt == 'sci':
         m = re.fullmatch(r'([+-]?[\d.]+)e([+-]?\d+)', t)
         if not m:
@@ -145,6 +149,13 @@ def N(key, src, fmt='raw', same=()):
 def SUB(key, a, b, k):
     d = _q(_num(a) - _num(b), k)
     SPECS.append((key, _signed(str(d)), f'sub ({a.note()}) - ({b.note()}), {k} decimals'))
+
+
+def DIV(key, a, const, what):
+    q, r = divmod(_num(a), Decimal(const))
+    if r:
+        raise SystemExit(f'{key}: {a.tok} / {const} is not exact')
+    SPECS.append((key, str(q), f'div ({a.note()}) / {const} ({what}), exact'))
 
 
 def RATIO(key, a, b, k):
@@ -463,6 +474,34 @@ FFIO = [tab(P16T, PGR, {'design': f'd256 {v}', 'PnR period ns': p, 'corner': 'ff
         for v in ('v2', 'v3') for p in ('1.0', '1.1')]
 EXT('p16.ff.hdn.lo', FFIO, 'min')
 EXT('p16.ff.hdn.hi', FFIO, 'max')
+
+
+# added for the readability revision (2026-11-20): tables carry the detail, prose keeps 2-3 numbers per paragraph
+DIV('p14.l2mib', grep(P14S, r'H100 L2 = ([\d,]+) B'), 1048576, '1 MiB = 1,048,576 bytes')
+for n, s in NS:
+    N(f'p13.mW.{n}.{s}', tab(P13T, PW, {'netlist': n, 'slice': s}, 'total'), 'mW')
+    N(f'p15.mW.{n}.{s}', tab(P15T, PP, {'netlist': n, 'slice': s}, 'total'), 'mW')
+for n in ('v2', 'v3'):
+    for k, c in (('reg', 'register share'), ('clk', 'clock (clock tree) share'),
+                 ('logic', 'logic (combinational) share = uncertainty bound')):
+        N(f'p15.{k}.{n}.row0', tab(P15T, PP, {'netlist': n, 'slice': 'row0'}, c))
+for s in ('row0', 'row1M'):
+    N(f'p13.dC.{s}', tab(P13T, VV, {'slice': s}, 'cycles change'))
+    N(f'p15.dC.{s}', tab(P15T, VV, {'slice': s}, 'cycles change'))
+    N(f'p13.dE.{s}.abs', tab(P13T, VV, {'slice': s}, 'change', 1), 'abs')
+for v in ('v2', 'v3'):
+    for c, cn in (('ss', 'ss'), ('ff', 'ff')):
+        r = {'design': f'd256 {v}', 'PnR period ns': '1.0', 'corner': cn}
+        N(f'p16.{c}.hio.{v}', tab(P16T, PGR, r, 'hold default', 1))
+        N(f'p16.{c}.hrr.{v}', tab(P16T, PGR, r, 'hold reg2reg', 1))
+SUB('d.in2reg.other', grep(P16T, r'Failing hold paths at ss in timeDesign: (\d+)'),
+    tab(P16T, '| corner | violating hold paths in2reg', {'corner': 'ss'}, 'violating hold paths in2reg'), 0)
+N('p13.fill.max', grep(P13S, r'(\d)-(\d) random cycles', 2))
+N('p9.rvdiff.hi.abs', grep(P9S, r'Rotate-victim differs by (-?\d+) to (\+[\d,]+) hits', 2), 'abs')
+N('p12.a.16.m0.abs', tab(P12T, DA, {'mode': '0', 'depth': '16', 'period (ns)': '2.0'}, 'area change'), 'abs')
+N('p12.mo.a.v3.abs', tab(P12T, MO, {'version': 'v3', 'period (ns)': '0.65', 'flow': 'merge-off'}, 'area change'), 'abs')
+N('p12.mo.a08.v3.abs', tab(P12T, MO, {'version': 'v3', 'period (ns)': '0.8', 'flow': 'merge-off'}, 'area change'), 'abs')
+N('p12.a.256.m1.abs', tab(P12T, DA, {'mode': '1', 'depth': '256', 'period (ns)': '2.0'}, 'area change'), 'abs')
 
 
 # ------------------------------------------------------------------------------------------------ output
