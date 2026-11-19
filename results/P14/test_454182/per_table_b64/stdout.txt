@@ -1,0 +1,3 @@
+P14_RUN {"mode": "per_table", "batch": 64, "profiled_rows": [1048576, 1048704], "profiled_lookups_total": 2955, "l2_cache_size_bytes": 52428800, "warmup_s": 75.865}
+P14_RUN {"mode": "per_table", "batch": 64, "profiled_rows": [1048576, 1048704], "profiled_lookups_total": 2955, "l2_cache_size_bytes": 52428800, "warmup_s": 75.062}
+P14_RUN {"mode": "per_table", "batch": 64, "profiled_rows": [1048576, 1048704], "profiled_lookups_total": 2955, "l2_cache_size_bytes": 52428800, "warmup_s": 75.472}

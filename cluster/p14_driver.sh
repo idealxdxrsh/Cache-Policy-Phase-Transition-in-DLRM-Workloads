@@ -25,7 +25,8 @@ H=rahulkmr@hpc.bits-hyderabad.ac.in
 W=/scratch/rahulkmr/Adarsh
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ssh -o BatchMode=yes "$H" "mkdir -p $W/repo $W/logs $W/results/P14"
-rsync -a --delete --exclude .git --exclude .venv --exclude results "$ROOT/" "$H:$W/repo/"
+# No --delete (user decision 2026-11-19): the sync only adds and updates files in the scratch copy of the repo.
+rsync -a --exclude .git --exclude .venv --exclude results "$ROOT/" "$H:$W/repo/"
 ssh -o BatchMode=yes "$H" bash -l -s <<REMOTE
 set -e
 cd $W/repo/cluster/jobs

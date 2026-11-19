@@ -1,0 +1,2 @@
+per_table b=64 ncu_rc=0 kernels_with_metrics=52 wall_s=382 status=OK
+concat b=16384 ncu_rc=0 kernels_with_metrics=2 wall_s=19 status=OK

@@ -1,0 +1,1 @@
+per_table b=64 ncu_rc=0 kernels_with_metrics=520 wall_s=283 status=OK

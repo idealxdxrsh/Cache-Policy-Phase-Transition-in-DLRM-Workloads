@@ -1,0 +1,166 @@
+{
+ "criteo_path": "/scratch/rahulkmr/Adarsh/data/criteo/extracted/train.txt",
+ "dump_dir": "/scratch/rahulkmr/Adarsh/data/p3/traces_2000000",
+ "n_rows": 2000000,
+ "total_accesses": 46128690,
+ "total_unique_table_id": 2293344,
+ "all_tables_equal_p3_dump": true,
+ "tables": [
+  {
+   "table": 0,
+   "accesses": 2000000,
+   "unique": 1370,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 1,
+   "accesses": 2000000,
+   "unique": 541,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 2,
+   "accesses": 1930518,
+   "unique": 597025,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 3,
+   "accesses": 1930518,
+   "unique": 200784,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 4,
+   "accesses": 2000000,
+   "unique": 284,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 5,
+   "accesses": 1776645,
+   "unique": 16,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 6,
+   "accesses": 2000000,
+   "unique": 11387,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 7,
+   "accesses": 2000000,
+   "unique": 600,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 8,
+   "accesses": 2000000,
+   "unique": 3,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 9,
+   "accesses": 2000000,
+   "unique": 39666,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 10,
+   "accesses": 2000000,
+   "unique": 4953,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 11,
+   "accesses": 1930518,
+   "unique": 498706,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 12,
+   "accesses": 2000000,
+   "unique": 3097,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 13,
+   "accesses": 2000000,
+   "unique": 26,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 14,
+   "accesses": 2000000,
+   "unique": 10159,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 15,
+   "accesses": 1930518,
+   "unique": 371932,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 16,
+   "accesses": 2000000,
+   "unique": 10,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 17,
+   "accesses": 2000000,
+   "unique": 4256,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 18,
+   "accesses": 1058657,
+   "unique": 1956,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 19,
+   "accesses": 1058657,
+   "unique": 3,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 20,
+   "accesses": 1930518,
+   "unique": 443311,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 21,
+   "accesses": 534309,
+   "unique": 16,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 22,
+   "accesses": 2000000,
+   "unique": 15,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 23,
+   "accesses": 1930518,
+   "unique": 59875,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 24,
+   "accesses": 1058657,
+   "unique": 80,
+   "equals_p3_dump": true
+  },
+  {
+   "table": 25,
+   "accesses": 1058657,
+   "unique": 43273,
+   "equals_p3_dump": true
+  }
+ ]
+}

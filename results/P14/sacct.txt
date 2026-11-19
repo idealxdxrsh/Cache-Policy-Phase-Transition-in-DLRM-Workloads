@@ -5,3 +5,30 @@ JobID         Partition        NodeList      State ExitCode    Elapsed
 JobID         Partition        NodeList      State ExitCode    Elapsed 
 ------------ ---------- --------------- ---------- -------- ---------- 
 453629       gpu_h200_8        gpunode7     FAILED      5:0   00:02:07 
+JobID           JobName  Partition        NodeList      State ExitCode    Elapsed 
+------------ ---------- ---------- --------------- ---------- -------- ---------- 
+454181         p14_prep    compute           node7  COMPLETED      0:0   00:00:55 
+454182          p14_ncu gpu_h100_4        gpunode6  COMPLETED      0:0   00:06:48 
+JobID           JobName  Partition        NodeList      State ExitCode    Elapsed 
+------------ ---------- ---------- --------------- ---------- -------- ---------- 
+456792        p14_query gpu_h100_4   None assigned    PENDING      0:0   00:00:00 
+JobID           JobName  Partition        NodeList      State ExitCode    Elapsed 
+------------ ---------- ---------- --------------- ---------- -------- ---------- 
+456792        p14_query gpu_h100_4        gpunode6  COMPLETED      0:0   00:00:02 
+JobID           JobName  Partition        NodeList      State ExitCode    Elapsed 
+------------ ---------- ---------- --------------- ---------- -------- ---------- 
+459995       data_hash+    compute           node7  COMPLETED      0:0   00:01:04 
+459996       env_rebui+    compute           node7     FAILED      1:0   00:00:18 
+459998          p14_ncu gpu_h100_4   None assigned  CANCELLED      0:0   00:00:00 
+459999          p14_ncu gpu_h100_4   None assigned  CANCELLED      0:0   00:00:00 
+460000          p14_ncu gpu_h100_4   None assigned  CANCELLED      0:0   00:00:00 
+460012       env_rebui+    compute           node7  COMPLETED      0:0   00:03:16 
+460013          p14_ncu gpu_h100_4        gpunode6  COMPLETED      0:0   00:06:05 
+460014          p14_ncu gpu_h100_4        gpunode6  COMPLETED      0:0   00:01:13 
+460015          p14_ncu gpu_h100_4        gpunode6  COMPLETED      0:0   00:02:05 
+JobID           JobName  Partition        NodeList      State ExitCode    Elapsed 
+------------ ---------- ---------- --------------- ---------- -------- ---------- 
+456795          p14_ncu gpu_h100_4        gpunode6     FAILED      1:0   00:00:11 
+456796          p14_ncu gpu_h100_4        gpunode6     FAILED      1:0   00:00:14 
+456797          p14_ncu gpu_h100_4        gpunode6     FAILED      1:0   00:00:11 
+456798         p14_wait    compute           node5  COMPLETED      0:0   00:00:01 
