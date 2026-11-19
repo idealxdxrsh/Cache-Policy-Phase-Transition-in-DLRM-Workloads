@@ -69,3 +69,23 @@ Same layout, no re-optimisation at the new period; ignores hold and any change o
 | d256 v3 | 1.0 | -0.236 | 1.236 |
 | d256 v2 | 1.1 | -0.265 | 1.365 |
 | d256 v3 | 1.1 | -0.262 | 1.362 |
+
+## I/O hold diagnosis, d256 v3 1.0 ns (cadence/pnr/p16_diag_io.tcl, read-only; tools/p16_diag_table.py)
+report_timing -early -path_type full_clock, worst path per type, tt view AV and the added ss view AV_SS (ns). The saved database holds,
+for view AV only, a latency file written by the tool during the P15 flow (the flow scripts set no clock latency; clock source latency set_clock_latency -source: -0.315104 rise,
+-0.31156 fall, early and late); the added views AV_SS and AV_FF have none. ff not traced path by path.
+| corner | worst in2reg hold path: input delay | data arrival | capture clock source latency | clock arrival at register | tree insertion delay (arrival - source latency) | hold | required | slack |
+|---|---|---|---|---|---|---|---|---|
+| tt | 0.200 | 0.201 | -0.315 | 0.004 | 0.319 | 0.006 | 0.010 | 0.191 |
+| ss | 0.200 | 0.202 | 0.000 | 0.414 | 0.414 | 0.000 | 0.414 | -0.212 |
+
+| corner | worst reg2out hold path: launch clock source latency | clock arrival at launching register | data arrival at output | output delay | required | slack |
+|---|---|---|---|---|---|---|
+| tt | -0.315 | -0.009 | 0.054 | 0.200 | -0.200 | 0.254 |
+| ss | 0.000 | 0.397 | 0.478 | 0.200 | -0.200 | 0.678 |
+
+| corner | violating hold paths in2reg | violating hold paths reg2out |
+|---|---|---|
+| tt | 0 | 0 |
+| ss | 6503 | 0 |
+Failing hold paths at ss in timeDesign: 6507 (all path groups); in2reg 6503, reg2out 0, the other 4 not classified.
