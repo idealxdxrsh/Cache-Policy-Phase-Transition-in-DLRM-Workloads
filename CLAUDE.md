@@ -1,4 +1,4 @@
-# Project: cache-policy study for DLRM embedding lookups (BITS Pilani Goa, SOP)
+# Project: cache-policy study for DLRM embedding lookups (BITS Pilani Goa, Design Oriented Project, EEE F376)
 Owner: Adarsh. Mentor: Prof. Pravin Mane. Read PLAN.md for tasks. Work ONE phase at a time.
 
 Layout: rtl/v2 (current), rtl/v1_* (old, buggy), trace_sim/, profiling/, gem5/, synthesis/, results/<phase>/, tools/, bench/.
