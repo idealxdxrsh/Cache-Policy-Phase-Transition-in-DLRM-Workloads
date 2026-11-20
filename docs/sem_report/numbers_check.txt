@@ -1,0 +1,2 @@
+
+1140 sentences, cells and captions checked; 867 \R{} uses of 594 macros; 0 \todo{} left; 0 failed.

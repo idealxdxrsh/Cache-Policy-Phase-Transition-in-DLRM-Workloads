@@ -4,6 +4,8 @@ results file (read with `git show HEAD:<path>`, so only committed results can re
 Usage (from the repository root):
   python3 -I tools/make_paper_macros.py            write paper/v2/macros.tex
   python3 -I tools/make_paper_macros.py --check    exit 1 if macros.tex is stale, or main.tex uses an undefined key
+  add --target report to do the same for docs/sem_report/report.tex and docs/sem_report/macros.tex (semester report)
+Every spec below is extracted on every run; the output holds only the keys that the target's .tex uses.
 
 Every definition line ends with a comment naming the source: file:line, the table row and column (or the regex),
 and the full source value. Display rules (agreed with the authors, 2026-11-19):
@@ -25,8 +27,12 @@ from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / 'paper/v2/macros.tex'
-TEX = ROOT / 'paper/v2/main.tex'
+TARGETS = {'paper': ('paper/v2/main.tex', 'paper/v2/macros.tex'),          # --target paper (default)
+           'report': ('docs/sem_report/report.tex', 'docs/sem_report/macros.tex')}
+_t = sys.argv[sys.argv.index('--target') + 1] if '--target' in sys.argv else 'paper'
+if _t not in TARGETS:
+    raise SystemExit(f'unknown --target {_t}; one of {sorted(TARGETS)}')
+TEX, OUT = (ROOT / x for x in TARGETS[_t])
 TOK = re.compile(r'[+\-\u2212]?\d[\d,]*(?:\.\d+)?(?:e[+-]?\d+)?')
 _cache = {}
 
@@ -504,6 +510,221 @@ N('p12.mo.a08.v3.abs', tab(P12T, MO, {'version': 'v3', 'period (ns)': '0.8', 'fl
 N('p12.a.256.m1.abs', tab(P12T, DA, {'mode': '1', 'depth': '256', 'period (ns)': '2.0'}, 'area change'), 'abs')
 
 
+# ================================================================ semester report (docs/sem_report), 2026-11-20
+P0S, P1S, P2S, P3S, P4S = (f'results/{x}/SUMMARY.md' for x in ('P0', 'P1', 'P2', 'P3', 'P4'))
+P5bS, P5cS, P5dS, P5eS, P5fS = (f'results/{x}/SUMMARY.md' for x in ('P5b', 'P5c', 'P5d', 'P5e', 'P5f_gls'))
+P7S, P8R = 'results/P7/SUMMARY.md', 'results/P8/RESULTS.md'
+
+# P1
+N('p1.mutants', grep(P1S, r'(\d+) mutants x (\d+) modes = (\d+) runs', 1))
+N('p1.runs', grep(P1S, r'(\d+) mutants x (\d+) modes = (\d+) runs', 3))
+N('p1.survive', grep(P1S, r'(\d+) runs survive as expected'))
+# P2
+N('p2.archive', grep(P2S, r'Archive size (\d+) bytes'))
+N('p2.train', tab(P2S, '| File | Bytes |', {'File': 'train.txt'}, 'Bytes'))
+N('p2.cols', grep(P2S, r'Rows without (\d+) tab-separated columns'))
+N('p2.bad', grep(P2S, r'Rows without \d+ tab-separated columns: (\d+)'))
+N('p2.c.lo', grep(P2S, r'Categorical columns (\d+)-(\d+):', 1))
+N('p2.c.hi', grep(P2S, r'Categorical columns (\d+)-(\d+):', 2))
+N('p2.hexlen', grep(P2S, r'fields are (\d+)-char lowercase hex'))
+N('p2.hex', grep(P2S, r': (\d+) fields are \d+-char lowercase hex'))
+N('p2.empty', grep(P2S, r'hex, (\d+) empty'))
+N('p2.fields', grep(P2S, r'= (\d+) = \d+ rows'))
+# P3
+PT = r'2M: persistent LFU > LRU on (\d+) tables, tie on (\d+), worse on (\d+); LFURP > LRU on (\d+), tie (\d+), worse on (\d+)'
+for i, k in enumerate(('p3.t2M.p.win', 'p3.t2M.p.tie', 'p3.t2M.p.lose', 'p3.t2M.r.win', 'p3.t2M.r.tie', 'p3.t2M.r.lose'), 1):
+    N(k, grep(P3S, PT, i))
+PT10 = r'10M: persistent LFU > LRU on (\d+), tie (\d+), worse on (\d+)'
+for i, k in enumerate(('p3.t10M.p.win', 'p3.t10M.p.tie', 'p3.t10M.p.lose'), 1):
+    N(k, grep(P3S, PT10, i))
+PT10r = r'LFURP > LRU on (\d+), tie (\d+), worse on (\d+) \(tables 1, 4\)'
+for i, k in enumerate(('p3.t10M.r.win', 'p3.t10M.r.tie', 'p3.t10M.r.lose'), 1):
+    N(k, grep(P3S, PT10r, i))
+N('p3.zipf.n', grep(P3S, r'(\d+) of (\d+) tables fitted at both sizes', 1))
+N('p3.zipf.lo', grep(P3S, r'10M: ([\d.]+) \(table 2\) to ([\d.]+) \(table 5\)', 1))
+N('p3.zipf.hi', grep(P3S, r'10M: ([\d.]+) \(table 2\) to ([\d.]+) \(table 5\)', 2))
+N('p3.large.thr', grep(T7, r'unique ids >= ([\d,]+) at both row counts'))
+for L in ROWS:
+    for cap in ('64', '1,000', '10,000', '100,000'):
+        for k, c in P3COL.items():
+            N(f'p3.{L}.{cap.replace(",", "")}.{k}', tab(T7, f'### P3 combined (all 26 tables), {ROWS[L]} rows, hit %',
+                                                       {'capacity (vectors per table)': cap}, c), 'hit')
+    for k in ('LRU', 'LFUr', 'LFUp', 'WTLFU', 'ARC'):
+        N(f'p3b.{L}.10000.{k}', tab(T7, f'### P3b total hit %, {ROWS[L]} rows', {'capacity (vectors, total)': '10,000'},
+                                   P3COL[k]), 'hit')
+N('p3b.tests', grep(P3BS, r'test_shared_cache.py` (\d+) tests'))
+N('p3b.mut', grep(P3BS, r'mutation (\d+)/(\d+) \(`mutation.txt`\)', 1))
+N('p3b.mut.n', grep(P3BS, r'mutation (\d+)/(\d+) \(`mutation.txt`\)', 2))
+N('p5f.mism', tab(T7, '### P5f lockstep RTL vs netlist', {'run': 'd256_m0_1000MHz'}, 'mismatching cycles'),
+  same=[tab(T7, '### P5f lockstep RTL vs netlist', {'run': f'd{d}_m{m}_{f}MHz'}, 'mismatching cycles')
+        for d in ('16', '64', '256') for m in '01' for f in ('1000', '500')])
+N('p3b.large.acc', grep(T7, r'2,000,000 rows: large tables = ([\d.]+)% of all accesses'))
+N('p3b.large.hit.lo', tab(T7, '#### 2,000,000 rows: large tables', {'capacity': '256', 'policy': 'LRU'}, 'share of all hits %'))
+N('p3b.large.hit.hi', tab(T7, '#### 2,000,000 rows: large tables', {'capacity': '256', 'policy': 'ARC'}, 'share of all hits %'))
+# P4
+N('p4.cfg', grep(P4S, r'## Ran vs skipped \((\d+) configs per GPU'))
+N('p4.h100.ok', grep(P4S, r'H100: (\d+) ok, (\d+) skipped', 1))
+N('p4.h100.skip', grep(P4S, r'H100: (\d+) ok, (\d+) skipped', 2))
+N('p4.lb.pct', grep(P4S, r'CPU wall/iter within (\d+)% of the batch-64 wall'))
+N('p4.lb.h100.lo', grep(P4S, r'\(H100 ([\d.]+)-([\d.]+), H200 ([\d.]+)-([\d.]+)\)', 1))
+N('p4.lb.h100.hi', grep(P4S, r'\(H100 ([\d.]+)-([\d.]+), H200 ([\d.]+)-([\d.]+)\)', 2))
+N('p4.lb.h200.lo', grep(P4S, r'\(H100 ([\d.]+)-([\d.]+), H200 ([\d.]+)-([\d.]+)\)', 3))
+N('p4.lb.h200.hi', grep(P4S, r'\(H100 ([\d.]+)-([\d.]+), H200 ([\d.]+)-([\d.]+)\)', 4))
+N('p4.b8k.h100.lo', grep(P4S, r'H100 B=8192: ([\d.]+)-([\d.]+)\.', 1))
+N('p4.b8k.h100.hi', grep(P4S, r'H100 B=8192: ([\d.]+)-([\d.]+)\.', 2))
+N('p4.b8k.h200.lo', grep(P4S, r'; B=8192: ([\d.]+)-([\d.]+)\.', 1))
+N('p4.b8k.h200.hi', grep(P4S, r'; B=8192: ([\d.]+)-([\d.]+)\.', 2))
+N('p4.b.min', grep(P4S, r'batch-(\d+) wall'))
+N('p4.b.max', grep(P4S, r'H100 B=(\d+):'))
+N('p4.iters', grep(P4S, r'launch loop over (\d+) iterations'))
+N('p4.dim.hi', grep(P4S, r'Dim: (\d+) leaves the launch-bound region at a smaller batch than (\d+)', 1))
+N('p4.dim.lo', grep(P4S, r'Dim: (\d+) leaves the launch-bound region at a smaller batch than (\d+)', 2))
+# P14 table
+for B in ('64', '1,024', '16,384'):
+    b = B.replace(',', '')
+    for lay, lk in (('per_table', 'pt'), ('concat', 'cc')):
+        r = {'B': B, 'layout': lay}
+        N(f'p14.all.{b}.{lk}', tab(P14S, '| B | layout', r, 'L2 hit % (all)'), 'hit')
+        N(f'p14.dram.{b}.{lk}', tab(P14S, '| B | layout', r, 'DRAM B/lookup'))
+        N(f'p14.us.{b}.{lk}', tab(P14S, '| B | layout', r, 'GPU us/batch'))
+    N(f'p14.look.{b}', tab(P14S, '| B | layout', {'B': B, 'layout': 'per_table'}, 'lookups'))
+N('p14.acc', grep(P14S, r'True; ([\d,]+) accesses, ([\d,]+) unique', 1))
+N('p14.uniq', grep(P14S, r'True; ([\d,]+) accesses, ([\d,]+) unique', 2))
+N('p14.bad.pct', grep(P14S, r'wrong denominator, gave ([\d.]+) %'))
+N('p14.ncu', grep(P14S, r'ncu Version ([\d.]+)'))
+N('p14.sectors', grep(P14S, r'A vector is \d+ B = (\d+) sectors'))
+# P5 iterations, mode 0, 1 GHz netlists
+P5SEC = {'p5': '### P5: rtl-v2-baseline', 'p5b': '### P5b: Stage-B tree', 'p5c': '### P5c tree + copies',
+         'p5d': '### P5d: hit_idx priority tree', 'p5e': '### P5e: rtl-v2-final, timing-driven'}
+for ph, sec in P5SEC.items():
+    for d in ('16', '64', '256'):
+        N(f'{ph}.f.{d}', tab(T7, sec, {'depth': d, 'mode': '0', 'clock target': '1000 MHz'}, 'Fmax MHz (pre-layout)'))
+for d in ('16', '64', '256'):
+    for m in '01':
+        r = {'depth': d, 'mode': m, 'clock target': '1000 MHz'}
+        for k, c in (('cells', 'cells'), ('ff', 'flip-flops'), ('area', 'area um^2'), ('fmax', 'Fmax MHz (pre-layout)')):
+            N(f'p5e.{d}.{m}.{k}', tab(T7, P5SEC['p5e'], r, c))
+        N(f'p5e.{d}.{m}.wns500', tab(T7, P5SEC['p5e'], dict(r, **{'clock target': '500 MHz'}), 'WNS ns'))
+        N(f'p5d.noise.{d}.{m}', tab(T7, '#### old flow (P5d)', {'depth': d, 'mode': m}, 'spread'))
+        N(f'p5e.noise.{d}.{m}', tab(T7, '#### P5e flow', {'depth': d, 'mode': m}, 'spread'))
+N('clk.1000', tab(T7, P5SEC['p5e'], {'depth': '16', 'mode': '0', 'clock target': '1000 MHz'}, 'clock target'))
+N('clk.500', tab(T7, P5SEC['p5e'], {'depth': '16', 'mode': '0', 'clock target': '500 MHz'}, 'clock target'))
+N('p5e.budget', tab(T7, '### Flow settings and toolchain', {'item': 'timing-driven flow ABC budget, ps (ABC target = period - budget)'}, 'value'))
+N('p5c.rule', grep(P5cS, r'Fmax\(tree \+ copies\) >= ([\d.]+) x Fmax'))
+N('p5c.copy.m0', grep(P5cS, r'Rule met \(([+\d.]+)%, ([+\d.]+)%\)', 1))
+N('p5c.copy.m1', grep(P5cS, r'Rule met \(([+\d.]+)%, ([+\d.]+)%\)', 2))
+N('p5d.icarus', grep(P5dS, r'took Icarus (\d+) s per depth-256 lockstep run'))
+N('p5f.cells', grep(P5fS, r'(\d+) cells against the liberty functions, (\d+) PASS', 1))
+N('p5f.pass', grep(P5fS, r'(\d+) cells against the liberty functions, (\d+) PASS', 2))
+N('p5f.netlists', grep(P5fS, r'- Netlists: (\d+) \(depth'))
+N('p5f.cycles', tab(T7, '### P5f lockstep RTL vs netlist', {'run': 'd256_m0_1000MHz'}, 'cycles compared'))
+N('p5f.eq', tab(T7, '### P5f equivalence RTL vs netlist', {'run': 'd16_m0_1000MHz'}, '$equiv cells proven / unproven'))
+N('p5.mut.tb', grep(T7, r'All depths and modes: (\d+) mutant runs killed by the unit testbench, (\d+) by the lockstep check, (\d+) survived', 1))
+N('p5.mut.ls', grep(T7, r'All depths and modes: (\d+) mutant runs killed by the unit testbench, (\d+) by the lockstep check, (\d+) survived', 2))
+N('p5.mut.eq', grep(T7, r'All depths and modes: (\d+) mutant runs killed by the unit testbench, (\d+) by the lockstep check, (\d+) survived', 3))
+CS = '### Counter saturation in the lockstep stimulus'
+EXT('p7.sat.cyc.lo', [tab(T7, CS, {'depth': d, 'mode': m}, 'cycles with a line at max') for d in ('16', '64', '256') for m in '01'], 'min')
+EXT('p7.sat.cyc.hi', [tab(T7, CS, {'depth': d, 'mode': m}, 'cycles with a line at max') for d in ('16', '64', '256') for m in '01'], 'max')
+EXT('p7.sat.sup.lo', [tab(T7, CS, {'depth': d, 'mode': m}, 'hit increments suppressed at max') for d in ('16', '64', '256') for m in '01'], 'min')
+EXT('p7.sat.sup.hi', [tab(T7, CS, {'depth': d, 'mode': m}, 'hit increments suppressed at max') for d in ('16', '64', '256') for m in '01'], 'max')
+# P8 power components (NanGate45, 500 MHz netlists, Criteo slice row0, mode 0)
+for d in ('16', '64', '256'):
+    r = {'depth': d, 'mode': '0', 'activity source': 'Criteo slice row0'}
+    for k, c in (('ck', '(b) CK all flip-flops'), ('ffo', '(d) flip-flop other internal'), ('comb', '(e) combinational internal'),
+                 ('sw', '(f) switching'), ('leak', '(g) leakage mW')):
+        N(f'p8.{d}.{k}', tab(P8R, '## 1. Power components', r, c))
+N('p8.ckff', tab(P8R, '## 1. Power components', {'depth': '256', 'mode': '0', 'activity source': 'Criteo slice row0'},
+                 '(a) CK fJ per flip-flop per cycle'))
+N('p8.bias', grep(P8R, r'per-event recomputation [\d.]+ mW vs OpenSTA [\d.]+ mW \(\+([\d.]+)%\)'))
+N('p8.cycles', tab(P8R, '## 1. Power components', {'depth': '256', 'mode': '0', 'activity source': 'Criteo slice row0'}, 'recorded cycles'))
+# P9 full traces, 10M rows, and the candidate rules
+for e, lab in (('16', '16 (P11)'), ('64', '64 (P11)'), ('256', '256'), ('1000', '1,000'), ('10000', '10,000'), ('100000', '100,000')):
+    for k, c in (('LRU', 'LRU'), ('LFUr', 'LFU-reset (oldest)'), ('v2', 'RTL-exact mode 0')):
+        N(f'p9t.{e}.{k}', tab(T7, '#### 10,000,000 rows: total hit %', {'entries': lab}, c), 'hit')
+    N(f'p9t.{e}.v3', tab(T7, '#### 10,000,000 rows: candidate tie-break', {'entries': lab}, 'Rotate-victim mode 0'), 'hit')
+    if e not in ('16', '64'):
+        N(f'p9t.{e}.m1', tab(T7, '#### 10,000,000 rows: total hit %', {'entries': lab}, 'RTL-exact mode 1'), 'hit')
+        N(f'p9t.{e}.vslru', tab(T7, '#### 10,000,000 rows: RTL-exact vs LRU', {'entries': lab}, 'RTL-exact m0 vs LRU'))
+        N(f'p9t.{e}.gap', tab(T7, '#### 10,000,000 rows: RTL-exact vs LRU', {'entries': lab}, 'gap'))
+        for k, c in (('rv', 'recovered % Rotate-victim mode 0'), ('rs', 'recovered % Rotate-step mode 0'),
+                     ('yb', 'recovered % Young-bit mode 0'), ('rv1', 'recovered % Rotate-victim mode 1')):
+            N(f'p9c.{e}.{k}', tab(T7, '#### 10,000,000 rows: candidate tie-break', {'entries': lab}, c))
+N('p9.ff.rv', tab(CT, '| rule |', {'rule': 'R1 Rotate-victim'}, SC))
+# P10, all six mode-0 runs
+for d in ('16', '64', '256'):
+    for sl in ('row0', 'row1M'):
+        if f'p10.{d}.{sl}.v3' not in {k for k, _, _ in SPECS}:
+            N(f'p10.{d}.{sl}.v3', tab(T7, LK, {'depth': d, 'mode': '0', 'slice': sl}, 'RTL hits'))
+            N(f'p10.{d}.{sl}.v2', tab(T7, LK, {'depth': d, 'mode': '0', 'slice': sl}, V2C))
+# P12 brackets for every version, mode and depth
+for v in ('v2', 'v3'):
+    for m in '01':
+        for d in ('16', '64', '256'):
+            for k, c in (('met', 'tightest met (ns)'), ('fail', 'loosest failed (ns)')):
+                N(f'p12.b.{v}.{m}.{d}.{k}', tab(P12T, TL, {'version': v, 'mode': m, 'depth': d}, c))
+N('p12.fmo.a.v2', tab(P12T, MO, {'version': 'v2', 'period (ns)': '0.65', 'flow': 'merge-off'}, 'area change'))
+# P13 per run
+for n, sl in NS:
+    for k, c in (('logic', 'logic share'), ('cov', 'driver nets annotated'), ('reg', 'register share')):
+        N(f'p13.{k}.{n}.{sl}', tab(P13T, PW, {'netlist': n, 'slice': sl}, c))
+N('p13.variants', grep(P13S, r'timing checks 0% annotated \(conditional checks in the cell models; (\d+) write_sdf variants tried'))
+# P15 final runs per version and period
+TSF = 'multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt'
+for v in ('v2', 'v3'):
+    for per, fl in (('0.9', H2), ('1.0', H2), ('1.1', TSF)):
+        pk = per.replace('.', '')
+        for k, c in (('s', 'setup WNS ns'), ('sn', 'setup viol. paths'), ('h', 'hold WNS ns'), ('hn', 'hold viol. paths'),
+                     ('drc', 'DRC'), ('la', 'logic cell area'), ('core', 'core area')):
+            N(f'p15f.{v}.{pk}.{k}', pr(v, per, c, flow=fl))
+    for sl in ('row1M',):
+        for k, c in (('reg', 'register share'), ('clk', 'clock (clock tree) share'),
+                     ('logic', 'logic (combinational) share = uncertainty bound')):
+            N(f'p15.{k}.{v}.{sl}', tab(P15T, PP, {'netlist': v, 'slice': sl}, c))
+SH = r'd256 PG-rail shorts \((\d+)/(\d+)/(\d+)/(\d+)\)'
+for i, k in enumerate(('p15.sh.v2.08', 'p15.sh.v2.09', 'p15.sh.v3.08', 'p15.sh.v3.09'), 1):
+    N(k, grep(P15S, SH, i))
+N('p15.dontuse', tab(P15T, '## Fix: multi-row', {'run': 'v2_m0_d256_p0.8_nomerge', 'period ns': '1.0'},
+                     'multi-row library cells set dont_use', first=True))
+
+
+def _secs(t):
+    h, m, s_ = (int(x) for x in t.split(':'))
+    return h * 3600 + m * 60 + s_
+
+
+_rt = []
+for j, ln in enumerate(lines(P15T), 1):
+    c = [x.strip() for x in ln.strip().strip('|').split('|')] if ln.startswith('| v') else []
+    if len(c) == 4 and '_d256_' in c[0] and re.fullmatch(r'\d+:\d\d:\d\d', c[3]) and 'export' not in c[1] \
+            and 'holdfix' not in c[1]:
+        _rt.append(Src(c[3], P15T, j, f'[{c[0]}, {c[1]}, {c[2]} | real]'))
+_rt.sort(key=lambda x: _secs(x.tok))
+SPECS.append(('p15.rt.min', _rt[0].tok, f'min of {len(_rt)} depth-256 place-and-route run times: ' + _rt[0].note()))
+SPECS.append(('p15.rt.max', _rt[-1].tok, f'max of {len(_rt)} depth-256 place-and-route run times: ' + _rt[-1].note()))
+# P16 per design and corner
+for dk, des, per in (('d16v3', 'd16 v3', '0.8'), ('d256v2', 'd256 v2', '1.0'), ('d256v3', 'd256 v3', '1.0'),
+                     ('d256v2', 'd256 v2', '1.1'), ('d256v3', 'd256 v3', '1.1')):
+    for cn in ('tt', 'ss', 'ff'):
+        r = {'design': des, 'PnR period ns': per, 'corner': cn}
+        N(f'p16t.{dk}.{per.replace(".", "")}.{cn}.s', tab(P16T, TC, r, 'setup WNS ns'))
+        N(f'p16t.{dk}.{per.replace(".", "")}.{cn}.h', tab(P16T, TC, r, 'hold WNS ns'))
+N('p16.dp.d16', tab(P16T, DER, {'design': 'd16 v3', 'PnR period ns': '0.8'}, 'derived slow-corner period ns'))
+# environment rebuild and the claims audit
+ER = 'results/P14/env_rebuild/result_460012.txt'
+N('env.pkgs', grep(ER, r'conda-meta packages (\d+), files listed (\d+), missing (\d+)', 1))
+N('env.files', grep(ER, r'conda-meta packages (\d+), files listed (\d+), missing (\d+)', 2))
+N('env.missing', grep(ER, r'conda-meta packages (\d+), files listed (\d+), missing (\d+)', 3))
+CA = r'Section A: (\d+) earlier claims\. (\d+) CONTRADICTED, (\d+) UNSUPPORTED, (\d+) NOT RE-RUN, (\d+) SUPPORTED'
+for i, k in enumerate(('p7.a.n', 'p7.a.contra', 'p7.a.unsup', 'p7.a.notrerun', 'p7.a.sup'), 1):
+    N(k, grep(P7S, CA, i))
+CB = r'Section B: (\d+) new claims, .* (\d+) SUPPORTED, (\d+) NOT RE-RUN'
+for i, k in enumerate(('p7.b.n', 'p7.b.sup', 'p7.b.notrerun'), 1):
+    N(k, grep(P7S, CB, i))
+N('p7.rerun.cells', grep(P7S, r'contradicted by the Yosys rerun \(([\d,]+) cells, ([\d,]+) flip-flops\)', 1))
+N('p7.rerun.ff', grep(P7S, r'contradicted by the Yosys rerun \(([\d,]+) cells, ([\d,]+) flip-flops\)', 2))
+N('old.kshare', grep(T7, r'Kernel share: .* = ([\d.]+)%'))
+
+
 # ------------------------------------------------------------------------------------------------ output
 def render():
     keys = [k for k, _, _ in SPECS]
@@ -530,18 +751,18 @@ def main():
     if '--check' in sys.argv:
         bad = False
         if not OUT.exists() or OUT.read_text() != text:
-            print('FAIL: paper/v2/macros.tex is stale; run python3 -I tools/make_paper_macros.py')
+            print(f'FAIL: {OUT.relative_to(ROOT)} is stale; run python3 -I tools/make_paper_macros.py --target {_t}')
             bad = True
         if missing:
-            print(f'FAIL: keys used in main.tex but not defined: {missing}')
+            print(f'FAIL: keys used in {TEX.name} but not defined: {missing}')
             bad = True
         print(f'{len(SPECS)} macros; {len(unused)} defined but unused: {unused}')
         sys.exit(1 if bad else 0)
     OUT.write_text(text)
-    print(f'wrote {OUT.relative_to(ROOT)}: {len(SPECS) - len(unused)} macros used by main.tex '
+    print(f'wrote {OUT.relative_to(ROOT)}: {len(SPECS) - len(unused)} macros used by {TEX.name} '
           f'({len(SPECS)} extracted; extracted but unused: {unused})')
     if missing:
-        print(f'FAIL: keys used in main.tex but not defined: {missing}')
+        print(f'FAIL: keys used in {TEX.name} but not defined: {missing}')
         sys.exit(1)
 
 

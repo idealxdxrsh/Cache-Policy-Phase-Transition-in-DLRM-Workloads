@@ -84,6 +84,8 @@ does not define; a definition without a results/ source comment; the word TSMC; 
 (make_paper_macros.py --check). It prints each failing sentence with its numbers, and the number of \\todo{} left.
 It also fails a prose paragraph or list item with more than PAR_MAX distinct numbers, or an abstract with more than
 ABSTRACT_MAX (tables, figures and captions are exempt).
+A directory with report.tex (docs/sem_report) is checked against make_paper_macros.py --target report; there the word
+TSMC may appear only inside \\withdrawn{...} (the corrections chapter), and the paragraph limit does not apply.
 """
 NAMES = [                                    # identifiers that contain digits but are not results
     (r'28nm', 'technology node name'),
@@ -143,8 +145,9 @@ def paragraph_counts(nocom):
 def macro_mode(root):
     import subprocess
     bad, nsent, nuse = [], 0, 0
+    target = 'report' if (root / 'report.tex').exists() else 'paper'     # docs/sem_report has report.tex
     gen = subprocess.run([sys.executable, '-I', str(Path(__file__).resolve().parent / 'make_paper_macros.py'),
-                          '--check'], capture_output=True, text=True)
+                          '--check', '--target', target], capture_output=True, text=True)
     if gen.returncode:
         bad.append(('macros.tex', gen.stdout.strip()))
     defs = {}
@@ -162,11 +165,15 @@ def macro_mode(root):
         body = raw.split('\\begin{document}', 1)[-1]
         nocom = re.sub(r'(?<!\\)%.*', '', body)
         todos += len(re.findall(r'\\todo\{', nocom))
-        for label, keys, lim in paragraph_counts(nocom):
-            if len(keys) > lim:
-                bad.append((tex.name, f'{len(keys)} numbers (limit {lim}) in paragraph: {label}  keys: {keys}'))
-        if re.search(r'tsmc', nocom, re.I):
-            bad.append((tex.name, 'the word TSMC appears (withdrawn numbers)'))
+        if target == 'paper':                     # the readability limit is the paper's rule, not the report's
+            for label, keys, lim in paragraph_counts(nocom):
+                if len(keys) > lim:
+                    bad.append((tex.name, f'{len(keys)} numbers (limit {lim}) in paragraph: {label}  keys: {keys}'))
+        outside = re.sub(r'\\withdrawn\{(?:[^{}]|\{[^{}]*\})*\}', ' ', nocom)
+        if re.search(r'tsmc', outside, re.I):
+            bad.append((tex.name, 'the word TSMC appears outside \\withdrawn{...} (withdrawn numbers)'))
+        if target == 'paper' and '\\withdrawn{' in nocom:
+            bad.append((tex.name, '\\withdrawn{...} is for the semester report only'))
         for k in re.findall(r'\\R\{([^{}]+)\}', nocom):
             nuse += 1
             if k not in defs:
