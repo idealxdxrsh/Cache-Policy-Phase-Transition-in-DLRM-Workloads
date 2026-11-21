@@ -2,6 +2,9 @@
 
 Usage: python3 -I tools/paper_numbers_check.py [tex dir, default paper/v2] [tables, default results/P7/TABLES.md]
        (also used for docs/synthesis_report: python3 -I tools/paper_numbers_check.py docs/synthesis_report)
+       python3 -I tools/paper_numbers_check.py --macros [dir]     paper/v2 and docs/sem_report (MACROS_DOC below)
+       python3 -I tools/paper_numbers_check.py --readme [file]    README.md: every number against the files its
+                                                                  table row, list item or paragraph cites (README_DOC)
 Exit 1 if any number fails. Prints every number with the TABLES.md line it matched, so each match can be audited.
 Tested by tests/test_paper_numbers_check.py (planted old-paper figures must fail).
 
@@ -195,9 +198,125 @@ def macro_mode(root):
     sys.exit(1 if bad else 0)
 
 
+README_DOC = """
+README mode: python3 -I tools/paper_numbers_check.py --readme [file, default README.md]
+The file is split into items: a table row, a list item (with its continuation lines) or a paragraph. Every number in
+an item must occur, as written (thousands commas and the sign ignored, decimals exact), in one of the files the same
+item cites. A citation is a repository path (results/..., paper/..., docs/..., rtl/..., ...) of a file committed at
+HEAD; it is read with git show HEAD:<path>, so an uncommitted or missing source fails. An item with numbers and no
+citation fails. Not scanned: fenced code blocks (commands, BibTeX), inline code spans (paths, commands), link
+targets, HTML tags, and the identifiers in README_NAMES. Also fails on: a long dash, a mention of an AI tool, a
+student-ID-shaped user name (any case), and the word TSMC outside the section headed "Corrections".
+"""
+README_NAMES = [
+    (r'\b\d+nm\b', 'technology node name'),
+    (r'\b(?:[Mm]odes?|COUNTER_MODE)\s+[0-2]\b', 'COUNTER_MODE value'),
+]
+README_SRC = re.compile(r'(?<![\w/])((?:results|paper|docs|rtl|cluster|tools|trace_sim|synthesis|cadence|gem5|'
+                        r'profiling|tests)/[\w.+/-]*[\w])')
+README_BANNED = [
+    (r'[—–]', 'long dash'),
+    (r'(?i)\b(claude|chatgpt|gpt-?\d|copilot|anthropic|openai|gemini|llm|large language model)\b|\bAI\b',
+     'mention of an AI tool'),
+    (r'(?i)\b20\d\d[a-z]\d[a-z]\d{4,5}[a-z]\b', 'student-ID-shaped user name'),
+]
+
+
+def readme_items(text):
+    """(first line number, section heading, item text) for every table row, list item and paragraph."""
+    text = re.sub(r'<!--.*?-->', lambda m: '\n' * m.group(0).count('\n'), text, flags=re.S)
+    items, cur, start, section, fence = [], [], 0, '', False
+
+    def flush():
+        if cur:
+            items.append((start, section, '\n'.join(cur)))
+            cur.clear()
+    for i, ln in enumerate(text.splitlines(), 1):
+        if ln.lstrip().startswith('```'):
+            flush()
+            fence = not fence
+            continue
+        if fence:
+            continue
+        if ln.startswith('#'):
+            flush()
+            section = ln.lstrip('#').strip()
+            items.append((i, section, ln))
+        elif not ln.strip():
+            flush()
+        elif ln.lstrip().startswith('|'):
+            flush()
+            items.append((i, section, ln))
+        elif re.match(r'\s*([-*+]|\d+\.)\s', ln):
+            flush()
+            cur.append(ln)
+            start = i
+        else:
+            if not cur:
+                start = i
+            cur.append(ln)
+    flush()
+    return items
+
+
+def readme_mode(path):
+    import subprocess
+    tracked = set(subprocess.run(['git', 'ls-files'], capture_output=True, text=True).stdout.split())
+    cache, bad, n = {}, [], 0
+
+    def source(p):
+        if p not in cache:
+            r = subprocess.run(['git', 'show', f'HEAD:{p}'], capture_output=True)
+            cache[p] = {norm(m.group(0)) for m in NUM.finditer(r.stdout.decode('utf-8', 'replace'))} \
+                if r.returncode == 0 and p in tracked else None
+        return cache[p]
+
+    raw = Path(path).read_text()
+    for i, ln in enumerate(raw.splitlines(), 1):
+        for rx, why in README_BANNED:
+            if re.search(rx, ln):
+                bad.append(f'line {i}: {why}')
+    for line, section, item in readme_items(raw):
+        if re.search(r'tsmc', item, re.I) and not section.lower().startswith('corrections'):
+            bad.append(f'line {line}: the word TSMC outside the Corrections section')
+        srcs = README_SRC.findall(item)
+        body = re.sub(r'`[^`]*`', ' ', item)                       # inline code: paths and commands
+        body = re.sub(r'\]\([^)]*\)', '] ', body)                   # link targets
+        body = re.sub(r'<[^>]+>', ' ', body)                        # HTML tags (images)
+        body = re.sub(r'^\s*\d+\.\s', ' ', body, flags=re.M)        # ordered-list markers
+        for rx, _ in README_NAMES:
+            body = re.sub(rx, ' NAME ', body)
+        nums = [norm(m.group(0)) for m in NUM.finditer(body)]
+        nums = [v for v in nums if v]
+        if not nums:
+            continue
+        dirs = {p for p in srcs if p not in tracked and any(t.startswith(p.rstrip('/') + '/') for t in tracked)}
+        files = [p for p in dict.fromkeys(srcs) if p not in dirs]     # a folder name (rtl/v3) is not a source
+        sets = {p: source(p) for p in files}
+        for p, s in sets.items():
+            if s is None:
+                bad.append(f'line {line}: cited source {p} is not a file committed at HEAD')
+        for v in nums:
+            n += 1
+            hit = next((p for p, s in sets.items() if s and v in s), None)
+            if hit:
+                print(f'ok    line {line}: {v:>14}  {hit}')
+            elif v in WHITELIST:
+                print(f'list  line {line}: {v:>14}  {WHITELIST[v]}')
+            else:
+                why = 'no source cited in this item' if not files else f'not in {", ".join(files)}'
+                bad.append(f'line {line}: {v} {why}; item: {" ".join(item.split())[:120]}')
+    for b in bad:
+        print(f'FAIL  {b}')
+    print(f'\n{n} numbers in {path} checked against the files each item cites; {len(bad)} failed.')
+    sys.exit(1 if bad else 0)
+
+
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == '--macros':
         macro_mode(Path(sys.argv[2] if len(sys.argv) > 2 else 'paper/v2'))
+    if len(sys.argv) > 1 and sys.argv[1] == '--readme':
+        readme_mode(Path(sys.argv[2] if len(sys.argv) > 2 else 'README.md'))
     root = Path(sys.argv[1] if len(sys.argv) > 1 else 'paper/v2')
     tables = Path(sys.argv[2] if len(sys.argv) > 2 else 'results/P7/TABLES.md')
     where = index(tables)

@@ -76,5 +76,47 @@ class PaperNumbersCheck(unittest.TestCase):
             self.assertEqual(p.returncode, 0, p.stdout[-2000:])
 
 
+def run_readme(text):
+    with tempfile.TemporaryDirectory() as d:
+        (Path(d) / 'README.md').write_text(text)
+        p = subprocess.run([sys.executable, '-I', str(TOOL), '--readme', str(Path(d) / 'README.md')],
+                           capture_output=True, text=True, cwd=ROOT)
+        return p.returncode, p.stdout
+
+
+class ReadmeNumbersCheck(unittest.TestCase):
+    SRC = '[results/P15/SUMMARY.md]'
+
+    def test_sourced_number_passes(self):
+        self.assertEqual(run_readme(f'- Energy per request -8.58% {self.SRC}.\n')[0], 0)
+
+    def test_number_not_in_cited_file_fails(self):
+        for v in PLANTED:
+            self.assertEqual(run_readme(f'- The old paper said {v} {self.SRC}.\n')[0], 1, v)
+
+    def test_number_without_citation_fails(self):
+        self.assertEqual(run_readme('- Energy per request -8.58%.\n')[0], 1)
+
+    def test_citation_must_be_a_committed_file(self):
+        self.assertEqual(run_readme('- Value 8.58 [results/P15/NO_SUCH_FILE.md].\n')[0], 1)
+
+    def test_citation_applies_to_its_own_item_only(self):
+        self.assertEqual(run_readme(f'- Value 8.58 {self.SRC}.\n- Value 6.77.\n')[0], 1)
+
+    def test_code_blocks_and_inline_code_not_scanned(self):
+        self.assertEqual(run_readme('```\npython3 x.py --n_rows 2000000\n```\nRun `bash run.sh 99999`.\n')[0], 0)
+
+    def test_style_and_confidentiality_rules(self):
+        for t in ('Fast — really.', 'Written with ChatGPT.', 'Thanks to Claude.', 'User 2099A1B23456C here.',
+                  'Earlier TSMC numbers.'):
+            self.assertEqual(run_readme(t + '\n')[0], 1, t)
+        self.assertEqual(run_readme('## Corrections\n\nEarlier TSMC numbers were withdrawn.\n')[0], 0)
+
+    def test_repository_readme_passes(self):
+        p = subprocess.run([sys.executable, '-I', str(TOOL), '--readme', 'README.md'], capture_output=True,
+                           text=True, cwd=ROOT)
+        self.assertEqual(p.returncode, 0, p.stdout[-2000:])
+
+
 if __name__ == '__main__':
     unittest.main()
