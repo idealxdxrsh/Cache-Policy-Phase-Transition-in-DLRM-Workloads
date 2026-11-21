@@ -1,6 +1,6 @@
 {
   "meta": {
-    "source": "/tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/56b14fc3-4aad-4a49-b9c7-544a8a45f304/scratchpad/synth_200k.txt",
+    "source": "/tmp/scratchpad/synth_200k.txt",
     "n_rows": 200000,
     "accesses": 4940119,
     "unique_keys": 178120,

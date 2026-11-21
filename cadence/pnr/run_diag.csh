@@ -2,7 +2,7 @@
 # P15 diagnosis of the PG-rail shorts: diag_shorts.tcl on the place, cts and route databases of each finished run,
 # one Innovus session at a time (one licence), then which shorting instances are in the Genus netlist.
 # usage: ./run_diag.csh <run folder name> ...   (folders in $W/pnr, e.g. v2_m0_d256_p0.8_nomerge_pnr0.8)
-# Start with systemd-run --user (see CLAUDE.md). Output in each folder's rpt/ (diag_*.txt) and diag.log.
+# Start with systemd-run --user (it survives logout; nohup did not). Output in each folder's rpt/ (diag_*.txt) and diag.log.
 set W = $HOME/cadence_chipin_work/lfu_cache
 source /opt/cadence/cshrc
 foreach F ($argv)

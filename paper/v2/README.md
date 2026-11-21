@@ -22,7 +22,7 @@ is an exact division by 1,048,576.
 Area units: Genus states no unit in its area report, so synthesis areas are in library units; Innovus reports um^2
 (results/P15/TABLES.md: "um2 as reported by Innovus"), so post-route areas are in um^2.
 
-Technology naming (approved by Prof. Mane, 2026-11-19; CLAUDE.md): "an STMicroelectronics 28nm FD-SOI standard-cell
+Technology naming (approved by Prof. Mane, 2026-11-19): "an STMicroelectronics 28nm FD-SOI standard-cell
 library (accessed through CMP)" at first mention, "the 28nm FD-SOI library" elsewhere; no cell or file names, paths,
 metal stack, host or user names. Run `python3 -I tools/check_no_lib_leak.py` before any commit.
 

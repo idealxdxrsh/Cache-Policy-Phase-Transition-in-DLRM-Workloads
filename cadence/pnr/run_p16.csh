@@ -2,7 +2,7 @@
 # P16 multi-corner timing (p16_corners.tcl) of a finished PnR run; output in a new folder, the source run is not changed.
 # usage: ./run_p16.csh <source run folder name in $W/pnr> [cpus]
 # Output: $W/p16/<source>/ with p16.log, p16.stdout, rpt/{tt,ss,ff}/{setup,hold}/, rpt/p16_settings.txt.
-# Start with systemd-run --user (see CLAUDE.md), e.g.
+# Start with systemd-run --user (it survives logout; nohup did not), e.g.
 #   systemd-run --user --unit=p16-<name> csh -fc 'csh -f $W/pnr/run_p16.csh <source> 16 >& $W/p16/<source>.job.log'
 if ($#argv < 1) then
   echo "usage: $0 <source folder> [cpus]"

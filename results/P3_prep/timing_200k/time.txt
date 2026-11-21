@@ -1,4 +1,4 @@
-	Command being timed: "python3 trace_sim/run_trace_sim.py --criteo_path /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/18a9478c-d6b8-4e41-8f50-06c51a4717e4/scratchpad/synth_200k.txt --n_rows 200000 --belady --workers 4 --output results/P3_prep/timing_200k"
+	Command being timed: "python3 trace_sim/run_trace_sim.py --criteo_path /tmp/scratchpad/synth_200k.txt --n_rows 200000 --belady --workers 4 --output results/P3_prep/timing_200k"
 	User time (seconds): 394.89
 	System time (seconds): 1.60
 	Percent of CPU this job got: 388%

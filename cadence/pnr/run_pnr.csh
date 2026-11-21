@@ -22,7 +22,7 @@
 #   PNR_CTS_BUF_PAT     get_lib_cells pattern for the clock-tree buffers; PNR_CTS_INV_PAT for the inverters
 # Optional environment: PNR_TAG (folder suffix), PNR_BODY_MODE (route|convert, see stageA.tcl);
 #   PNR_ENDCAP_CORNER_TL, _TR, _BL, _BR  corner end caps (optional, stageA.tcl)
-# Long runs: start with systemd-run --user (see CLAUDE.md), e.g.
+# Long runs: start with systemd-run --user (it survives logout; nohup did not), e.g.
 #   mkdir -p $W/pnr/<run>_pnr<p>; systemd-run --user --unit=<name> csh -fc 'cd $W/pnr/<run>_pnr<p>; csh -f $W/pnr/run_pnr.csh <run> <p> 16 >& job.log'
 # Started directly over ssh instead, the job dies when that session ends.
 if ($#argv < 2) then

@@ -1,6 +1,6 @@
 #!/bin/csh -f
 # P15: export_gls.tcl on finished PnR folders, one Innovus session at a time (one licence).
-# usage: ./run_export.csh <PnR folder name in $W/pnr> ...   Start with systemd-run --user (see CLAUDE.md).
+# usage: ./run_export.csh <PnR folder name in $W/pnr> ...   Start with systemd-run --user (it survives logout; nohup did not).
 # Output: <folder>/gls/ and <folder>/export.log; counts of physical-only instances left in the netlist in gls/check.txt.
 set W = $HOME/cadence_chipin_work/lfu_cache
 source /opt/cadence/cshrc

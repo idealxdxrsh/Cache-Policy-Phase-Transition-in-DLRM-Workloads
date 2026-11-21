@@ -1,7 +1,7 @@
 #!/bin/csh -f
 # P16 I/O hold diagnosis (p16_diag_io.tcl, read-only) of a finished PnR run; output in $W/p16/<source>_diag/.
 # usage: ./run_p16_diag.csh <source run folder name in $W/pnr> [cpus]
-# Start with systemd-run --user (see CLAUDE.md).
+# Start with systemd-run --user (it survives logout; nohup did not).
 if ($#argv < 1) then
   echo "usage: $0 <source folder> [cpus]"
   exit 1

@@ -1,7 +1,7 @@
 #!/bin/csh -f
 # P15 optional hold pass (holdfix.tcl) on a finished PnR run, output in a new folder.
 # usage: ./run_holdfix.csh <source run folder name in $W/pnr> <new folder name in $W/pnr> [cpus]
-# Start with systemd-run --user (see CLAUDE.md). Output: <new>/holdfix.log, holdfix.stdout, route.enc, rpt/.
+# Start with systemd-run --user (it survives logout; nohup did not). Output: <new>/holdfix.log, holdfix.stdout, route.enc, rpt/.
 # Optional environment (passed to holdfix.tcl): HOLDFIX_HOLD_TARGET (ns), HOLDFIX_DRC_RETRY (any value).
 if ($#argv < 2) then
   echo "usage: $0 <source folder> <new folder> [cpus]"

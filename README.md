@@ -209,7 +209,8 @@ against committed `results/` files (`tools/make_paper_macros.py`, `tools/paper_n
 
 ## License
 
-No license has been chosen yet; there is no LICENSE file in this repository.
+The code in this repository is released under the MIT License (see `LICENSE`). The license does not cover the
+Criteo dataset or the commercial design-kit data used for the 28nm flow; neither is included in this repository.
 
 ## Acknowledgements
 

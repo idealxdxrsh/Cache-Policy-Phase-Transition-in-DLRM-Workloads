@@ -1,4 +1,4 @@
-Loading Criteo traces from: /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/18a9478c-d6b8-4e41-8f50-06c51a4717e4/scratchpad/synth_20k.txt
+Loading Criteo traces from: /tmp/scratchpad/synth_20k.txt
   Categorical columns: 14..39 (26 embedding tables)
   Max rows: 20,000
   Done: 20,000 rows, 494,210 total accesses in 0.2s

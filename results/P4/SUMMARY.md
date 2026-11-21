@@ -24,7 +24,7 @@ mode='sum')` (line 54); MLP 26*dim -> 512 -> ReLU -> 256 -> ReLU -> 1 (lines 56-
 - In these cells, the embedding ms is about the same for rows 1e6 and 1e7, and for every index pattern (spread tables in
   `RESULTS.md`, e.g. H100 dim 64 B=64: 0.4134-0.4256 ms over both row counts and 5 patterns). The time is set by the CPU
   issuing the ops (26 separate EmbeddingBag calls, a cat, the MLP layers), not by the lookups. So the embedding share there
-  (H100 0.5261-0.8112, H200 0.4434-0.7888) is the share of launch time, not lookup cost. Consistent with the CLAUDE.md note on the earlier run.
+  (H100 0.5261-0.8112, H200 0.4434-0.7888) is the share of launch time, not lookup cost. Consistent with the earlier correction (job 149046 was launch-bound).
 - "CPU wall" is the launch loop over 100 iterations plus one final synchronize, divided by 100. It is not a pure launch
   time: no per-op CPU timing was recorded.
 

@@ -17,4 +17,3 @@ not repeated here. This file replaces the hand-off of 2026-11-14 (in git history
 ## Open items (detail in `docs/plan_next_sem`)
 - Multi-corner sign-off: per-corner I/O clock latency or multi-corner optimisation (`results/P16/SUMMARY.md`).
 - SDF timing checks are not annotated in any gate-level run; H200 performance counters are blocked.
-- No LICENSE file has been chosen yet.

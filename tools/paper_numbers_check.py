@@ -205,8 +205,8 @@ an item must occur, as written (thousands commas and the sign ignored, decimals 
 item cites. A citation is a repository path (results/..., paper/..., docs/..., rtl/..., ...) of a file committed at
 HEAD; it is read with git show HEAD:<path>, so an uncommitted or missing source fails. An item with numbers and no
 citation fails. Not scanned: fenced code blocks (commands, BibTeX), inline code spans (paths, commands), link
-targets, HTML tags, and the identifiers in README_NAMES. Also fails on: a long dash, a mention of an AI tool, a
-student-ID-shaped user name (any case), and the word TSMC outside the section headed "Corrections".
+targets, HTML tags, and the identifiers in README_NAMES. Also fails on: a long dash, the name of a code-generation or chat assistant
+(tools/check_no_lib_leak.py, tool_name_regex), a student-ID-shaped user name (any case), and the word TSMC outside the section headed "Corrections".
 """
 README_NAMES = [
     (r'\b\d+nm\b', 'technology node name'),
@@ -214,10 +214,18 @@ README_NAMES = [
 ]
 README_SRC = re.compile(r'(?<![\w/])((?:results|paper|docs|rtl|cluster|tools|trace_sim|synthesis|cadence|gem5|'
                         r'profiling|tests)/[\w.+/-]*[\w])')
+def _load_leak_check():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('check_no_lib_leak', Path(__file__).resolve().parent / 'check_no_lib_leak.py')
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+_leak = _load_leak_check()      # one list of assistant-tool names, shared with the leak check
 README_BANNED = [
     (r'[—–]', 'long dash'),
-    (r'(?i)\b(claude|chatgpt|gpt-?\d|copilot|anthropic|openai|gemini|llm|large language model)\b|\bAI\b',
-     'mention of an AI tool'),
+    (_leak.tool_name_regex(), 'name of a code-generation or chat assistant'),
     (r'(?i)\b20\d\d[a-z]\d[a-z]\d{4,5}[a-z]\b', 'student-ID-shaped user name'),
 ]
 

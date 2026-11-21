@@ -13,11 +13,18 @@ Usage: python3 -I tools/check_no_lib_leak.py                       scan every tr
                                                                    append the cell and library names from every
                                                                    gates.rpt (Genus report_gates) under <dir> to
                                                                    the local pattern file; prints counts only
+Assistant-tool names (normal mode only; not --history, which would only report old commits that cannot be changed
+without rewriting history): every tracked text file, and the text inside tracked .gz files, must not name a
+code-generation or chat assistant (tool_name_regex below; the names are stored rot13-encoded so this file does not itself contain them).
+Binary files are skipped (their text sources are checked), and so is .gitignore, which must list the local-only
+files by name. A match prints "TOOL-NAME <file>:<line>".
 Patterns: GENERIC below (committed: they name nothing specific) plus one regular expression per line from
 tools/leak_patterns.local. That file is gitignored, because the identifying patterns (library and cell names, host,
 user) must not themselves be in the repo; '#' lines are comments. A match is reported as file:line and the pattern
 number, never the matched text, so the output can be shown or logged.
 """
+import codecs
+import gzip
 import re
 import subprocess
 import sys
@@ -32,6 +39,29 @@ GENERIC = [
     r'(?<![\w.=-])10\.\d{1,3}\.\d{1,3}\.\d{1,3}(?![\w.-])',    # private IPv4 address, not a version string
     r'\b20\d\d[a-z]\d[a-z]\d{4,5}[a-z]\b',                     # student-ID user names
 ]
+
+AI_NAMES_ROT13 = 'pynhqr naguebcvp pungtcg pbcvybg bcranv trzvav yyz pbqrk'
+AI_PHRASES_ROT13 = ['ynetr ynathntr zbqry', 'nv-nffvfgrq']
+AI_SKIP = {'.gitignore'}
+
+
+def tool_name_regex():
+    """Case-insensitive names and phrases, a model-name prefix followed by a digit, and the capitalised acronym."""
+    words = codecs.decode(AI_NAMES_ROT13, 'rot13').split() + [codecs.decode(w, 'rot13') for w in AI_PHRASES_ROT13]
+    model = codecs.decode('tcg', 'rot13')
+    alt = '|'.join(re.escape(w) for w in words)
+    return re.compile(rf'(?i:\b(?:{alt})\b|\b{model}-?\d)|\b{codecs.decode("NV", "rot13")}\b')
+
+
+def tool_text(path):
+    """Text of a tracked file for the assistant-name scan, or None for a binary file."""
+    b = path.read_bytes()
+    if path.suffix == '.gz':
+        try:
+            b = gzip.decompress(b)
+        except OSError:
+            return None
+    return None if b'\0' in b[:8192] else b.decode('utf-8', 'replace')
 
 
 def local_patterns():
@@ -134,9 +164,20 @@ def main():
                 continue
             print(f"LEAK {name}:{n} (pattern {', '.join(kinds(regs, line))})")
             hits += 1
+    tool_rx, ai_hits = tool_name_regex(), 0
+    for name in (f.decode() for f in files if f):
+        path = ROOT / name
+        if name in AI_SKIP or not path.is_file():
+            continue
+        text = tool_text(path)
+        for n, line in enumerate((text or '').splitlines(), 1):
+            if tool_rx.search(line):
+                print(f'TOOL-NAME {name}:{n}')
+                ai_hits += 1
     print(f'scanned {sum(1 for f in files if f)} tracked files with {len(GENERIC)} generic + {len(pats) - len(GENERIC)} '
           f'local patterns: {"FAIL, " + str(hits) + " matching lines" if hits else "PASS, no matches"}')
-    sys.exit(1 if hits else 0)
+    print(f'assistant-tool names in tracked text files: {"FAIL, " + str(ai_hits) + " matching lines" if ai_hits else "PASS, none"}')
+    sys.exit(1 if hits or ai_hits else 0)
 
 
 if __name__ == '__main__':

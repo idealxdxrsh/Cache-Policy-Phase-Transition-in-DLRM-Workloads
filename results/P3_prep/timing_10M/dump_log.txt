@@ -1,4 +1,4 @@
-Loading Criteo traces from: /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/18a9478c-d6b8-4e41-8f50-06c51a4717e4/scratchpad/p3time/synth_10M.txt
+Loading Criteo traces from: /tmp/scratchpad/p3time/synth_10M.txt
   Categorical columns: 14..39 (26 embedding tables)
   Max rows: 10,000,000
   Loaded 500,000 rows in 3.8s
@@ -21,4 +21,4 @@ Loading Criteo traces from: /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Tra
   Loaded 9,000,000 rows in 69.4s
   Loaded 9,500,000 rows in 73.2s
   Done: 10,000,000 rows, 247,002,827 total accesses in 77.1s
-Wrote 26 tables to /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/18a9478c-d6b8-4e41-8f50-06c51a4717e4/scratchpad/p3time/traces_10M
+Wrote 26 tables to /tmp/scratchpad/p3time/traces_10M

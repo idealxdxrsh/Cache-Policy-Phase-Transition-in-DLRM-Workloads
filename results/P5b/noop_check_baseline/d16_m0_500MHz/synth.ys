@@ -1,7 +1,7 @@
 # NanGate45 synthesis of rtl/v2 (P5). NanGate45, not TSMC. Pre-layout.
 # 16 = CACHE_DEPTH, 0 = COUNTER_MODE, 2000 = abc delay target in ps, /home/adarsh/eda/pdk/nangate45/NangateOpenCellLibrary_typical.lib = liberty
 read_liberty -lib /home/adarsh/eda/pdk/nangate45/NangateOpenCellLibrary_typical.lib
-read_verilog -sv /tmp/claude-1000/-home-adarsh-Cache-Policy-Phase-Transition-in-DLRM-Workloads/32e317e8-7aef-4302-aefe-49dcee3164eb/scratchpad/baseline_rtl.v
+read_verilog -sv /tmp/scratchpad/baseline_rtl.v
 chparam -set CACHE_DEPTH 16 -set COUNTER_MODE 0 lfu_cache_controller
 # P5b: registers declared (* keep *) in the RTL (the per-group address copies) must stay separate.
 # Yosys puts keep on the wire only and opt_merge then merges identical flip-flops, so the
