@@ -5,6 +5,8 @@ Usage (from the repository root):
   python3 -I tools/make_paper_macros.py            write paper/v2/macros.tex
   python3 -I tools/make_paper_macros.py --check    exit 1 if macros.tex is stale, or main.tex uses an undefined key
   add --target report to do the same for docs/sem_report/report.tex and docs/sem_report/macros.tex (semester report)
+  add --target synth for docs/synthesis_report (implementation report; its gen_*.tex tables, written by
+  docs/synthesis_report/gen_tables.py, are scanned for keys together with synthesis_report.tex)
 Every spec below is extracted on every run; the output holds only the keys that the target's .tex uses.
 
 Every definition line ends with a comment naming the source: file:line, the table row and column (or the regex),
@@ -28,7 +30,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TARGETS = {'paper': ('paper/v2/main.tex', 'paper/v2/macros.tex'),          # --target paper (default)
-           'report': ('docs/sem_report/report.tex', 'docs/sem_report/macros.tex')}
+           'report': ('docs/sem_report/report.tex', 'docs/sem_report/macros.tex'),
+           'synth': ('docs/synthesis_report/synthesis_report.tex', 'docs/synthesis_report/macros.tex')}
 _t = sys.argv[sys.argv.index('--target') + 1] if '--target' in sys.argv else 'paper'
 if _t not in TARGETS:
     raise SystemExit(f'unknown --target {_t}; one of {sorted(TARGETS)}')
@@ -725,6 +728,79 @@ N('p7.rerun.ff', grep(P7S, r'contradicted by the Yosys rerun \(([\d,]+) cells, (
 N('old.kshare', grep(T7, r'Kernel share: .* = ([\d.]+)%'))
 
 
+# ================================================================ implementation report (docs/synthesis_report), 2026-11-21
+P12MAIN = '| version | mode | depth | period (ns) | WNS (ps)'
+for v in ('v2', 'v3'):
+    for m in '01':
+        for d in ('16', '64', '256'):
+            r = {'version': v, 'mode': m, 'depth': d, 'period (ns)': '2.0'}
+            N(f'sr.ff.{v}.{m}.{d}', tab(P12T, P12MAIN, r, 'flip-flops'))
+            N(f'sr.area.{v}.{m}.{d}', tab(P12T, P12MAIN, r, 'area (library units)'))
+            N(f'sr.cells.{v}.{m}.{d}', tab(P12T, P12MAIN, r, 'cells'))
+for v, d, per in (('v2', '64', '0.65'), ('v2', '64', '0.5'), ('v2', '256', '0.65'), ('v2', '256', '0.5'),
+                  ('v3', '256', '0.65'), ('v3', '256', '0.5')):
+    r = {'version': v, 'mode': '0', 'depth': d, 'period (ns)': per}
+    N(f'sr.fx.{v}.{d}.{per.replace(".", "")}', tab(P12T, P12MAIN, r, 'Fmax (MHz)'))
+    N(f'sr.wns.{v}.{d}.{per.replace(".", "")}', tab(P12T, P12MAIN, r, 'WNS (ps)'))
+N('sr.per.065', tab(P12T, P12MAIN, {'version': 'v2', 'mode': '0', 'depth': '64', 'period (ns)': '0.65'}, 'period (ns)'))
+N('sr.per.10', tab(P12T, P12MAIN, {'version': 'v2', 'mode': '0', 'depth': '64', 'period (ns)': '1.0'}, 'period (ns)'))
+N('sr.per.13', tab(P12T, P12MAIN, {'version': 'v2', 'mode': '0', 'depth': '64', 'period (ns)': '1.3'}, 'period (ns)'))
+for v in ('v2', 'v3'):
+    for per in ('0.65', '0.8'):
+        for fl in ('normal', 'merge-off'):
+            r = {'version': v, 'period (ns)': per, 'flow': fl}
+            k = f'sr.mo.{v}.{per.replace(".", "")}.{"mo" if fl == "merge-off" else "n"}'
+            N(f'{k}.ff', tab(P12T, MO, r, 'flip-flops'))
+            N(f'{k}.area', tab(P12T, MO, r, 'area (library units)'))
+N('sr.p12.mo.a08.v2', tab(P12T, MO, {'version': 'v2', 'period (ns)': '0.8', 'flow': 'merge-off'}, 'area change'))
+N('sr.p12.mo.a08.v3', tab(P12T, MO, {'version': 'v3', 'period (ns)': '0.8', 'flow': 'merge-off'}, 'area change'))
+# P13
+N('sr.p13.indelay', grep(P13T, r'SDF inputs (\d+) ps after the clock edge'))
+for n, s in NS:
+    N(f'sr.p13.cyc.{n}.{s}', tab(P13T, GL, {'netlist': n, 'slice': s}, 'cycles'))
+    for k, c in (('sw', 'switching'), ('int', 'internal')):
+        N(f'sr.p13.{k}.{n}.{s}', tab(P13T, PW, {'netlist': n, 'slice': s}, c), 'mW')
+for n in ('v2', 'v3'):
+    r = {'netlist': n, 'slice': 'row0'}
+    N(f'sr.p13.pd.{n}', tab(P13T, GL, r, 'SDF path delays annotated', 0))
+    N(f'sr.p13.pdn.{n}', tab(P13T, GL, r, 'SDF path delays annotated', 1))
+    N(f'sr.p13.tc.{n}', tab(P13T, GL, r, 'SDF timing checks annotated', 0))
+    N(f'sr.p13.tcn.{n}', tab(P13T, GL, r, 'SDF timing checks annotated', 1))
+# P15
+D16 = dict(v=None, period='0.8', flow='multi-row dont_use', run='v3_m0_d16_p0.8')
+for k, c in (('h', 'hold WNS ns'), ('hn', 'hold viol. paths'), ('core', 'core area'), ('la', 'logic cell area'),
+             ('conn', 'conn. problems all nets')):
+    N(f'sr.d16.{k}', pr(col=c, **D16))
+N('sr.d16.s', pr(col='setup WNS ns', **D16))
+N('sr.p15.metal', pr('v2', '1.0', '4 PG nets metal only'),
+  same=[pr(v, p, '4 PG nets metal only') for v in ('v2', 'v3') for p in ('1.0', '0.9')])
+TS0 = 'multi-row dont_use + 2nd ecoRoute + setup target slack 0.03 + extra postRoute setup opt'
+H1 = 'nodvts database + one extra optDesign -postRoute -hold and ecoRoute -fix_drc'
+for v in ('v2', 'v3'):
+    for k, fl in (('ts', TS0), ('h1', H1)):
+        N(f'sr.hold.{v}.{k}', pr(v, '1.0', 'hold WNS ns', flow=fl))
+        N(f'sr.hold.{v}.{k}.n', pr(v, '1.0', 'hold viol. paths', flow=fl))
+    N(f'sr.first.{v}.s', pr(v, '0.8', 'setup WNS ns', flow='multi-row allowed'))
+    N(f'sr.first.{v}.drc', pr(v, '0.8', 'DRC', flow='multi-row allowed'))
+N('sr.htarget', grep(P15T, r'HOLDFIX_HOLD_TARGET ([\d.]+)'))
+N('sr.cpus', grep(P15T, r'(\d+) CPUs each, up to (\d+) runs in parallel'))
+for n in ('v2', 'v3'):
+    r = {'netlist': n, 'slice': 'row0', 'mode': 'sdf'}
+    N(f'sr.p15.pd.{n}', tab(P15T, PG, r, 'SDF path delays annotated', 0))
+    N(f'sr.p15.tcn.{n}', tab(P15T, PG, r, 'SDF timing checks annotated', 1))
+    N(f'sr.p15.spef.{n}', tab(P15T, PP, {'netlist': n, 'slice': 'row0'}, 'SPEF read (read_spef statistics)', 0))
+    N(f'sr.p15.spef0.{n}', tab(P15T, PP, {'netlist': n, 'slice': 'row0'}, 'SPEF read (read_spef statistics)', 1))
+N('sr.p15.indelay', tab(P15T, PG, {'netlist': 'v2', 'slice': 'row0', 'mode': 'sdf'}, 'clock / input delay ps', 1))
+for n, s in NS:
+    N(f'sr.p15.cyc.{n}.{s}', tab(P15T, PP, {'netlist': n, 'slice': s}, 'cycles'))
+    for k, c in (('sw', 'switching'), ('int', 'internal')):
+        N(f'sr.p15.{k}.{n}.{s}', tab(P15T, PP, {'netlist': n, 'slice': s}, c), 'mW')
+# P16: derived 1.1 ns periods and the d16 derived period exist above; fast-corner setup WNS range
+EXT('sr.ff.s.lo', [tab(P16T, TC, {'design': d, 'PnR period ns': p, 'corner': 'ff'}, 'setup WNS ns')
+                   for d, p in (('d16 v3', '0.8'), ('d256 v2', '1.0'), ('d256 v3', '1.0'), ('d256 v2', '1.1'),
+                                ('d256 v3', '1.1'))], 'min')
+
+
 # ------------------------------------------------------------------------------------------------ output
 def render():
     keys = [k for k, _, _ in SPECS]
@@ -739,7 +815,8 @@ def render():
 
 
 def used_keys():
-    tex = re.sub(r'(?<!\\)%.*', '', TEX.read_text())
+    srcs = [TEX] + sorted(TEX.parent.glob('gen_*.tex')) if _t == 'synth' else [TEX]
+    tex = re.sub(r'(?<!\\)%.*', '', '\n'.join(s.read_text() for s in srcs))
     return set(re.findall(r'\\R\{([^{}]+)\}', tex))
 
 

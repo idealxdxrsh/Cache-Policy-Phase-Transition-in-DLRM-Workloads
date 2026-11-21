@@ -50,7 +50,8 @@ class PaperNumbersCheck(unittest.TestCase):
     def test_comments_and_lengths_ignored(self):
         self.assertEqual(run('% 99999.123 in a comment\n\\includegraphics[width=0.93\\columnwidth]{x}\n')[0], 0)
 
-    DOCS = [ROOT / 'paper/v2/main.tex'] + sorted((ROOT / 'docs/synthesis_report').glob('*.tex'))
+    DOCS = [ROOT / 'paper/v2/main.tex'] + sorted(p for p in (ROOT / 'docs/synthesis_report').glob('*.tex')
+                                                 if p.name != 'macros.tex')     # macros.tex: generated values
 
     def test_paper_text_has_no_old_figures(self):
         import re
@@ -73,9 +74,10 @@ class PaperNumbersCheck(unittest.TestCase):
             self.assertEqual(sorted(ids & old), [], f'pre-rewrite commit IDs in {f.relative_to(ROOT)}')
 
     def test_report_numbers_pass(self):
-        rep = ROOT / 'docs/synthesis_report'
+        rep = ROOT / 'docs/synthesis_report'           # macro mode since the 2026-11-21 rewrite
         if list(rep.glob('*.tex')):
-            p = subprocess.run([sys.executable, '-I', str(TOOL), str(rep), str(TABLES)], capture_output=True, text=True)
+            p = subprocess.run([sys.executable, '-I', str(TOOL), '--macros', str(rep)], capture_output=True, text=True,
+                               cwd=ROOT)
             self.assertEqual(p.returncode, 0, p.stdout[-2000:])
 
 

@@ -1,0 +1,14 @@
+# LaTeX byproducts
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.out
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.synctex.gz
+# copy with the student ID (also a lab-server user name): local only, never committed
+synthesis_report_submission.pdf

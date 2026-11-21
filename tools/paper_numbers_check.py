@@ -87,8 +87,9 @@ does not define; a definition without a results/ source comment; the word TSMC; 
 (make_paper_macros.py --check). It prints each failing sentence with its numbers, and the number of \\todo{} left.
 It also fails a prose paragraph or list item with more than PAR_MAX distinct numbers, or an abstract with more than
 ABSTRACT_MAX (tables, figures and captions are exempt).
-A directory with report.tex (docs/sem_report) is checked against make_paper_macros.py --target report; there the word
-TSMC may appear only inside \\withdrawn{...} (the corrections chapter), and the paragraph limit does not apply.
+A directory with report.tex (docs/sem_report) is checked against make_paper_macros.py --target report, and one with
+synthesis_report.tex (docs/synthesis_report, all its .tex files including the generated gen_*.tex tables) against
+--target synth; there the word TSMC may appear only inside \\withdrawn{...}, and the paragraph limit does not apply.
 """
 NAMES = [                                    # identifiers that contain digits but are not results
     (r'28nm', 'technology node name'),
@@ -148,7 +149,8 @@ def paragraph_counts(nocom):
 def macro_mode(root):
     import subprocess
     bad, nsent, nuse = [], 0, 0
-    target = 'report' if (root / 'report.tex').exists() else 'paper'     # docs/sem_report has report.tex
+    target = ('report' if (root / 'report.tex').exists() else                # docs/sem_report
+              'synth' if (root / 'synthesis_report.tex').exists() else 'paper')  # docs/synthesis_report
     gen = subprocess.run([sys.executable, '-I', str(Path(__file__).resolve().parent / 'make_paper_macros.py'),
                           '--check', '--target', target], capture_output=True, text=True)
     if gen.returncode:
