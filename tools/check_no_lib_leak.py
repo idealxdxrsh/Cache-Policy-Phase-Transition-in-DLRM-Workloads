@@ -16,8 +16,8 @@ Usage: python3 -I tools/check_no_lib_leak.py                       scan every tr
 Assistant-tool names (normal mode only; not --history, which would only report old commits that cannot be changed
 without rewriting history): every tracked text file, and the text inside tracked .gz files, must not name a
 code-generation or chat assistant (tool_name_regex below; the names are stored rot13-encoded so this file does not itself contain them).
-Binary files are skipped (their text sources are checked), and so is .gitignore, which must list the local-only
-files by name. A match prints "TOOL-NAME <file>:<line>".
+Binary files are skipped (their text sources are checked). Local-only files are ignored through .git/info/exclude,
+so no tracked file needs to name them. A match prints "TOOL-NAME <file>:<line>".
 Patterns: GENERIC below (committed: they name nothing specific) plus one regular expression per line from
 tools/leak_patterns.local. That file is gitignored, because the identifying patterns (library and cell names, host,
 user) must not themselves be in the repo; '#' lines are comments. A match is reported as file:line and the pattern
@@ -42,7 +42,6 @@ GENERIC = [
 
 AI_NAMES_ROT13 = 'pynhqr naguebcvp pungtcg pbcvybg bcranv trzvav yyz pbqrk'
 AI_PHRASES_ROT13 = ['ynetr ynathntr zbqry', 'nv-nffvfgrq']
-AI_SKIP = {'.gitignore'}
 
 
 def tool_name_regex():
@@ -167,7 +166,7 @@ def main():
     tool_rx, ai_hits = tool_name_regex(), 0
     for name in (f.decode() for f in files if f):
         path = ROOT / name
-        if name in AI_SKIP or not path.is_file():
+        if not path.is_file():
             continue
         text = tool_text(path)
         for n, line in enumerate((text or '').splitlines(), 1):

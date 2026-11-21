@@ -56,9 +56,3 @@ cadence/local.env
 results_c2/
 # identifying leak-check patterns (library, cell, host, user names); local only, see tools/check_no_lib_leak.py
 tools/leak_patterns.local
-
-# local-only project notes and tool settings (never committed)
-/CLAUDE.md
-/PLAN.md
-/results/COMMIT_MAP.md
-/.claude/
